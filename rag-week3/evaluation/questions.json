@@ -1,0 +1,126 @@
+[
+  {
+    "id": "Q1",
+    "question": "How long is a CloudDesk password reset link valid?",
+    "type": "standard",
+    "expected_article_id": "HC-001",
+    "expected_product_area": "Authentication",
+    "answer_keys": [
+      "valid for 30 minutes"
+    ],
+    "table_header": null,
+    "gold_answer": "A password reset link is valid for 30 minutes.",
+    "answer_must_contain": [
+      "30 minutes"
+    ]
+  },
+  {
+    "id": "Q2",
+    "question": "How long does a CloudDesk account stay locked after too many failed login attempts?",
+    "type": "standard",
+    "expected_article_id": "HC-002",
+    "expected_product_area": "Authentication",
+    "answer_keys": [
+      "15 minutes"
+    ],
+    "table_header": null,
+    "gold_answer": "A temporary CloudDesk account lock lasts 15 minutes.",
+    "answer_must_contain": [
+      "15 minutes"
+    ]
+  },
+  {
+    "id": "Q3",
+    "question": "What should I do if my CloudDesk password reset link has expired?",
+    "type": "table",
+    "expected_article_id": "HC-001",
+    "expected_product_area": "Authentication",
+    "answer_keys": [
+      "Reset link has expired",
+      "Request a new password reset link"
+    ],
+    "table_header": "| Problem | Possible Cause | Solution |",
+    "gold_answer": "The link is older than 30 minutes. Request a new password reset link.",
+    "answer_must_contain": [
+      "request a new"
+    ]
+  },
+  {
+    "id": "Q4",
+    "question": "My card expired and the CloudDesk payment failed. What should I do?",
+    "type": "table",
+    "expected_article_id": "HC-003",
+    "expected_product_area": "Billing",
+    "answer_keys": [
+      "Card expired",
+      "Update the payment method"
+    ],
+    "table_header": "| Problem | Possible Cause | Solution |",
+    "gold_answer": "The payment method is no longer valid. Update the payment method.",
+    "answer_must_contain": [
+      "update the payment method"
+    ]
+  },
+  {
+    "id": "Q5",
+    "question": "Why did my CloudDesk notifications stop suddenly?",
+    "type": "table",
+    "expected_article_id": "HC-005",
+    "expected_product_area": "Notifications",
+    "answer_keys": [
+      "Notifications stopped suddenly",
+      "Contact the CloudDesk administrator"
+    ],
+    "table_header": "| Problem | Possible Cause | Solution |",
+    "gold_answer": "Organization settings changed. Contact the CloudDesk administrator.",
+    "answer_must_contain": [
+      "administrator"
+    ]
+  },
+  {
+    "id": "Q6",
+    "question": "Why is the Upload File button unavailable in CloudDesk?",
+    "type": "table",
+    "expected_article_id": "HC-006",
+    "expected_product_area": "Storage",
+    "answer_keys": [
+      "Upload button unavailable",
+      "Contact the CloudDesk administrator"
+    ],
+    "table_header": "| Problem | Possible Cause | Solution |",
+    "gold_answer": "The user lacks the required permission. Contact the CloudDesk administrator.",
+    "answer_must_contain": [
+      "permission"
+    ]
+  },
+  {
+    "id": "Q7",
+    "question": "What are the password requirements for a new CloudDesk password?",
+    "type": "standard",
+    "expected_article_id": "HC-001",
+    "expected_product_area": "Authentication",
+    "answer_keys": [
+      "at least 8 characters"
+    ],
+    "table_header": null,
+    "gold_answer": "At least 8 characters, one uppercase letter, one lowercase letter, one number, and not the same as the previous password.",
+    "answer_must_contain": [
+      "8 characters"
+    ]
+  },
+  {
+    "id": "Q8",
+    "question": "How do I filter CloudDesk tickets by priority?",
+    "type": "standard",
+    "expected_article_id": "HC-004",
+    "expected_product_area": "Ticket Management",
+    "answer_keys": [
+      "Select the Priority filter"
+    ],
+    "table_header": null,
+    "gold_answer": "Open the Tickets section, select the Priority filter, choose the required priority, and apply the filter.",
+    "answer_must_contain": [
+      "priority"
+    ]
+  }
+]

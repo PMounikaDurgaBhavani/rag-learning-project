@@ -1,0 +1,224 @@
+{
+  "records": [
+    {
+      "id": "Q1",
+      "question": "How long is a CloudDesk password reset link valid?",
+      "supported": true,
+      "type": "standard",
+      "top1_distance": 0.375,
+      "top1_chunk_id": "HC-001-markdown-15"
+    },
+    {
+      "id": "Q2",
+      "question": "How long does a CloudDesk account stay locked after too many failed login attempts?",
+      "supported": true,
+      "type": "standard",
+      "top1_distance": 0.2947,
+      "top1_chunk_id": "HC-002-markdown-20"
+    },
+    {
+      "id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "supported": true,
+      "type": "table",
+      "top1_distance": 0.3611,
+      "top1_chunk_id": "HC-001-markdown-2"
+    },
+    {
+      "id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "supported": true,
+      "type": "table",
+      "top1_distance": 0.734,
+      "top1_chunk_id": "HC-003-markdown-11"
+    },
+    {
+      "id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "supported": true,
+      "type": "table",
+      "top1_distance": 0.3528,
+      "top1_chunk_id": "HC-005-markdown-22"
+    },
+    {
+      "id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "supported": true,
+      "type": "table",
+      "top1_distance": 0.3716,
+      "top1_chunk_id": "HC-006-markdown-11"
+    },
+    {
+      "id": "Q7",
+      "question": "What are the password requirements for a new CloudDesk password?",
+      "supported": true,
+      "type": "standard",
+      "top1_distance": 0.2739,
+      "top1_chunk_id": "HC-001-markdown-6"
+    },
+    {
+      "id": "Q8",
+      "question": "How do I filter CloudDesk tickets by priority?",
+      "supported": true,
+      "type": "standard",
+      "top1_distance": 0.451,
+      "top1_chunk_id": "HC-004-markdown-1"
+    },
+    {
+      "id": "U1",
+      "question": "What is CloudDesk's refund policy for annual subscriptions?",
+      "supported": false,
+      "type": "out_of_scope_in_domain",
+      "top1_distance": 0.9194,
+      "top1_chunk_id": "HC-003-markdown-1"
+    },
+    {
+      "id": "U2",
+      "question": "Does CloudDesk integrate with Salesforce?",
+      "supported": false,
+      "type": "out_of_scope_in_domain",
+      "top1_distance": 0.7744,
+      "top1_chunk_id": "HC-003-markdown-1"
+    },
+    {
+      "id": "U3",
+      "question": "What is the maximum file size limit for CloudDesk uploads in megabytes?",
+      "supported": false,
+      "type": "near_miss_trap",
+      "top1_distance": 0.2729,
+      "top1_chunk_id": "HC-006-markdown-3"
+    },
+    {
+      "id": "U4",
+      "question": "How many failed login attempts lock a CloudDesk account?",
+      "supported": false,
+      "type": "near_miss_trap",
+      "top1_distance": 0.2902,
+      "top1_chunk_id": "HC-002-markdown-1"
+    },
+    {
+      "id": "U5",
+      "question": "How much does the CloudDesk Enterprise plan cost per user?",
+      "supported": false,
+      "type": "out_of_scope_in_domain",
+      "top1_distance": 1.0468,
+      "top1_chunk_id": "HC-003-markdown-1"
+    },
+    {
+      "id": "U6",
+      "question": "What is the capital of France?",
+      "supported": false,
+      "type": "out_of_domain",
+      "top1_distance": 1.7898,
+      "top1_chunk_id": "HC-005-markdown-13"
+    }
+  ],
+  "sweep": [
+    {
+      "threshold": 0.5,
+      "answered_correctly": 7,
+      "wrongly_refused": 1,
+      "wrongly_answered": 2,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.55,
+      "answered_correctly": 7,
+      "wrongly_refused": 1,
+      "wrongly_answered": 2,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.6,
+      "answered_correctly": 7,
+      "wrongly_refused": 1,
+      "wrongly_answered": 2,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.65,
+      "answered_correctly": 7,
+      "wrongly_refused": 1,
+      "wrongly_answered": 2,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.7,
+      "answered_correctly": 7,
+      "wrongly_refused": 1,
+      "wrongly_answered": 2,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.75,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 2,
+      "accuracy": 85.71428571428571
+    },
+    {
+      "threshold": 0.8,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 3,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.85,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 3,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.9,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 3,
+      "accuracy": 78.57142857142857
+    },
+    {
+      "threshold": 0.95,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 4,
+      "accuracy": 71.42857142857143
+    },
+    {
+      "threshold": 1.0,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 4,
+      "accuracy": 71.42857142857143
+    },
+    {
+      "threshold": 1.05,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 5,
+      "accuracy": 64.28571428571429
+    },
+    {
+      "threshold": 1.1,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 5,
+      "accuracy": 64.28571428571429
+    },
+    {
+      "threshold": 1.15,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 5,
+      "accuracy": 64.28571428571429
+    },
+    {
+      "threshold": 1.2,
+      "answered_correctly": 8,
+      "wrongly_refused": 0,
+      "wrongly_answered": 5,
+      "accuracy": 64.28571428571429
+    }
+  ],
+  "best_threshold": 0.75
+}

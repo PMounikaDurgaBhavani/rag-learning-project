@@ -1,0 +1,44 @@
+[
+  {
+    "id": "U1",
+    "question": "What is CloudDesk's refund policy for annual subscriptions?",
+    "type": "out_of_scope_in_domain",
+    "why_unsupported": "The Billing article covers invoices, payment methods and failed payments, but never mentions refunds.",
+    "expected_behaviour": "refuse"
+  },
+  {
+    "id": "U2",
+    "question": "Does CloudDesk integrate with Salesforce?",
+    "type": "out_of_scope_in_domain",
+    "why_unsupported": "No article mentions third-party integrations.",
+    "expected_behaviour": "refuse"
+  },
+  {
+    "id": "U3",
+    "question": "What is the maximum file size limit for CloudDesk uploads in megabytes?",
+    "type": "near_miss_trap",
+    "why_unsupported": "HC-006 discusses a file size limit at length but never states a number. Retrieval returns a highly relevant chunk, so the distance gate will not fire.",
+    "expected_behaviour": "refuse"
+  },
+  {
+    "id": "U4",
+    "question": "How many failed login attempts lock a CloudDesk account?",
+    "type": "near_miss_trap",
+    "why_unsupported": "HC-002 says 'multiple' and 'several' incorrect attempts but never gives a threshold number.",
+    "expected_behaviour": "refuse"
+  },
+  {
+    "id": "U5",
+    "question": "How much does the CloudDesk Enterprise plan cost per user?",
+    "type": "out_of_scope_in_domain",
+    "why_unsupported": "No pricing information exists anywhere in the corpus.",
+    "expected_behaviour": "refuse"
+  },
+  {
+    "id": "U6",
+    "question": "What is the capital of France?",
+    "type": "out_of_domain",
+    "why_unsupported": "Completely unrelated to the CloudDesk help centre.",
+    "expected_behaviour": "refuse"
+  }
+]

@@ -1,0 +1,1704 @@
+{
+  "configs": [
+    {
+      "label": "recursive/200/0",
+      "chunks": 165,
+      "avg_chunk_size": 116,
+      "mrr": 0.5416666666666666,
+      "article_hit@3": 87.5,
+      "chunk_hit@3": 62.5,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 62.5,
+      "table_ok@5": 0.0,
+      "strategy": "recursive",
+      "chunk_size": 200,
+      "chunk_overlap": 0
+    },
+    {
+      "label": "recursive/300/50",
+      "chunks": 103,
+      "avg_chunk_size": 191,
+      "mrr": 0.4375,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 50.0,
+      "table_ok@5": 0.0,
+      "strategy": "recursive",
+      "chunk_size": 300,
+      "chunk_overlap": 50
+    },
+    {
+      "label": "recursive/500/100",
+      "chunks": 67,
+      "avg_chunk_size": 294,
+      "mrr": 0.4416666666666667,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 62.5,
+      "table_ok@5": 25.0,
+      "strategy": "recursive",
+      "chunk_size": 500,
+      "chunk_overlap": 100
+    },
+    {
+      "label": "recursive/800/150",
+      "chunks": 33,
+      "avg_chunk_size": 591,
+      "mrr": 0.4416666666666667,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 62.5,
+      "table_ok@3": 25.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 75.0,
+      "table_ok@5": 50.0,
+      "strategy": "recursive",
+      "chunk_size": 800,
+      "chunk_overlap": 150
+    },
+    {
+      "label": "fixed/200/0",
+      "chunks": 123,
+      "avg_chunk_size": 156,
+      "mrr": 0.3645833333333333,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 62.5,
+      "table_ok@5": 0.0,
+      "strategy": "fixed",
+      "chunk_size": 200,
+      "chunk_overlap": 0
+    },
+    {
+      "label": "fixed/300/50",
+      "chunks": 82,
+      "avg_chunk_size": 253,
+      "mrr": 0.4479166666666667,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 62.5,
+      "table_ok@5": 0.0,
+      "strategy": "fixed",
+      "chunk_size": 300,
+      "chunk_overlap": 50
+    },
+    {
+      "label": "fixed/500/100",
+      "chunks": 51,
+      "avg_chunk_size": 439,
+      "mrr": 0.5208333333333334,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 75.0,
+      "table_ok@3": 25.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 75.0,
+      "table_ok@5": 25.0,
+      "strategy": "fixed",
+      "chunk_size": 500,
+      "chunk_overlap": 100
+    },
+    {
+      "label": "fixed/800/150",
+      "chunks": 32,
+      "avg_chunk_size": 705,
+      "mrr": 0.4729166666666667,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 0.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 75.0,
+      "table_ok@5": 25.0,
+      "strategy": "fixed",
+      "chunk_size": 800,
+      "chunk_overlap": 150
+    },
+    {
+      "label": "markdown/200/0",
+      "chunks": 190,
+      "avg_chunk_size": 158,
+      "mrr": 0.35416666666666663,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 50.0,
+      "table_ok@3": 50.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 50.0,
+      "table_ok@5": 50.0,
+      "strategy": "markdown",
+      "chunk_size": 200,
+      "chunk_overlap": 0
+    },
+    {
+      "label": "markdown/300/50",
+      "chunks": 123,
+      "avg_chunk_size": 216,
+      "mrr": 0.65,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 75.0,
+      "table_ok@3": 50.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 87.5,
+      "table_ok@5": 75.0,
+      "strategy": "markdown",
+      "chunk_size": 300,
+      "chunk_overlap": 50
+    },
+    {
+      "label": "markdown/500/100",
+      "chunks": 65,
+      "avg_chunk_size": 337,
+      "mrr": 0.4833333333333334,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 62.5,
+      "table_ok@3": 25.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 75.0,
+      "table_ok@5": 50.0,
+      "strategy": "markdown",
+      "chunk_size": 500,
+      "chunk_overlap": 100
+    },
+    {
+      "label": "markdown/800/150",
+      "chunks": 54,
+      "avg_chunk_size": 386,
+      "mrr": 0.45833333333333337,
+      "article_hit@3": 100.0,
+      "chunk_hit@3": 62.5,
+      "table_ok@3": 25.0,
+      "article_hit@5": 100.0,
+      "chunk_hit@5": 62.5,
+      "table_ok@5": 25.0,
+      "strategy": "markdown",
+      "chunk_size": 800,
+      "chunk_overlap": 150
+    }
+  ],
+  "best": "markdown/300/50",
+  "failures": [
+    {
+      "config": "recursive/200/0",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-recursive-6",
+          "distance": 0.3838
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-recursive-4",
+          "distance": 0.3943
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-3",
+          "distance": 0.4042
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-recursive-11",
+          "distance": 0.4175
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-recursive-5",
+          "distance": 0.4306
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/200/0",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-002-recursive-28",
+          "distance": 0.712
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-recursive-25",
+          "distance": 0.7231
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-recursive-22",
+          "distance": 0.7283
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-21",
+          "distance": 0.7449
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-003-recursive-19",
+          "distance": 0.7451
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/200/0",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-recursive-21",
+          "distance": 0.3215
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-recursive-27",
+          "distance": 0.3578
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-recursive-15",
+          "distance": 0.4125
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-recursive-26",
+          "distance": 0.4276
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-recursive-31",
+          "distance": 0.4287
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/200/0",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-recursive-17",
+          "distance": 0.3155
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-recursive-8",
+          "distance": 0.4137
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-recursive-24",
+          "distance": 0.4355
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-recursive-26",
+          "distance": 0.4532
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-recursive-34",
+          "distance": 0.5204
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/200/0",
+      "question_id": "Q7",
+      "question": "What are the password requirements for a new CloudDesk password?",
+      "type": "standard",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "at least 8 characters"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-recursive-9",
+          "distance": 0.2761
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-recursive-20",
+          "distance": 0.5761
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.5864
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-23",
+          "distance": 0.6148
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-recursive-11",
+          "distance": 0.6191
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/300/50",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.3943
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-recursive-3",
+          "distance": 0.4089
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-14",
+          "distance": 0.4523
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-13",
+          "distance": 0.5153
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-recursive-1",
+          "distance": 0.5187
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/300/50",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-recursive-11",
+          "distance": 0.7451
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-recursive-8",
+          "distance": 0.749
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-recursive-16",
+          "distance": 0.757
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.8373
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-recursive-12",
+          "distance": 0.8671
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/300/50",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-recursive-18",
+          "distance": 0.4034
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-recursive-9",
+          "distance": 0.4162
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-recursive-21",
+          "distance": 0.4287
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-recursive-15",
+          "distance": 0.4918
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-recursive-23",
+          "distance": 0.5757
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/300/50",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-recursive-4",
+          "distance": 0.4137
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-recursive-16",
+          "distance": 0.4369
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-recursive-15",
+          "distance": 0.4581
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-recursive-5",
+          "distance": 0.4637
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-recursive-2",
+          "distance": 0.5092
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/500/100",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-recursive-11",
+          "distance": 0.3301
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.3943
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-3",
+          "distance": 0.4068
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-10",
+          "distance": 0.5153
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-recursive-1",
+          "distance": 0.5187
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/500/100",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-recursive-6",
+          "distance": 0.5825
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-003-recursive-3",
+          "distance": 0.8184
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.8373
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-3",
+          "distance": 0.8443
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-recursive-7",
+          "distance": 0.8671
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/500/100",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-recursive-5",
+          "distance": 0.4543
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-recursive-10",
+          "distance": 0.4755
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-recursive-9",
+          "distance": 0.5603
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-recursive-14",
+          "distance": 0.5757
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-recursive-12",
+          "distance": 0.5772
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/800/150",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-recursive-4",
+          "distance": 0.3176
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.3722
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-recursive-1",
+          "distance": 0.3798
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-recursive-4",
+          "distance": 0.5541
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-recursive-5",
+          "distance": 0.571
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "recursive/800/150",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-recursive-3",
+          "distance": 0.669
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-003-recursive-2",
+          "distance": 0.8296
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-recursive-2",
+          "distance": 0.8786
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-recursive-2",
+          "distance": 0.9229
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-recursive-1",
+          "distance": 0.9249
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/200/0",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-fixed-5",
+          "distance": 0.3474
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-fixed-4",
+          "distance": 0.3838
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-fixed-16",
+          "distance": 0.3944
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-fixed-3",
+          "distance": 0.4306
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-fixed-9",
+          "distance": 0.4421
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/200/0",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-fixed-11",
+          "distance": 0.6245
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-fixed-24",
+          "distance": 0.712
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-fixed-19",
+          "distance": 0.7283
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-fixed-15",
+          "distance": 0.7525
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-fixed-9",
+          "distance": 0.8032
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/200/0",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-fixed-19",
+          "distance": 0.3882
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-fixed-10",
+          "distance": 0.4
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-fixed-15",
+          "distance": 0.413
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-fixed-18",
+          "distance": 0.4662
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-fixed-26",
+          "distance": 0.4782
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/200/0",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-fixed-11",
+          "distance": 0.3155
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-fixed-16",
+          "distance": 0.3738
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-fixed-4",
+          "distance": 0.4727
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-fixed-18",
+          "distance": 0.4838
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-fixed-24",
+          "distance": 0.5155
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/200/0",
+      "question_id": "Q7",
+      "question": "What are the password requirements for a new CloudDesk password?",
+      "type": "standard",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "at least 8 characters"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-fixed-5",
+          "distance": 0.485
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-fixed-14",
+          "distance": 0.496
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-fixed-1",
+          "distance": 0.6315
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-fixed-9",
+          "distance": 0.6505
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-fixed-19",
+          "distance": 0.6758
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/300/50",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-fixed-4",
+          "distance": 0.3311
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-fixed-2",
+          "distance": 0.3879
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-fixed-15",
+          "distance": 0.494
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-fixed-3",
+          "distance": 0.4956
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-fixed-11",
+          "distance": 0.505
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/300/50",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-fixed-8",
+          "distance": 0.6995
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-fixed-15",
+          "distance": 0.712
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-fixed-6",
+          "distance": 0.826
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-fixed-2",
+          "distance": 0.8473
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-fixed-11",
+          "distance": 0.8958
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/300/50",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-fixed-7",
+          "distance": 0.3696
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-fixed-14",
+          "distance": 0.4151
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-fixed-13",
+          "distance": 0.4516
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-fixed-16",
+          "distance": 0.4647
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-fixed-12",
+          "distance": 0.4941
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/300/50",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-fixed-11",
+          "distance": 0.4156
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-fixed-12",
+          "distance": 0.4375
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-fixed-4",
+          "distance": 0.4627
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-fixed-8",
+          "distance": 0.4962
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-fixed-2",
+          "distance": 0.5181
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/500/100",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-fixed-7",
+          "distance": 0.298
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-fixed-2",
+          "distance": 0.3603
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-fixed-6",
+          "distance": 0.3654
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-fixed-8",
+          "distance": 0.4141
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-fixed-3",
+          "distance": 0.4251
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/500/100",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-fixed-11",
+          "distance": 0.465
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-fixed-8",
+          "distance": 0.4826
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-fixed-6",
+          "distance": 0.4937
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-fixed-7",
+          "distance": 0.5618
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-fixed-10",
+          "distance": 0.574
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/500/100",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-fixed-10",
+          "distance": 0.239
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-fixed-7",
+          "distance": 0.4029
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-fixed-8",
+          "distance": 0.4939
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-fixed-2",
+          "distance": 0.5449
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-fixed-1",
+          "distance": 0.549
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/800/150",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-fixed-2",
+          "distance": 0.3589
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-fixed-1",
+          "distance": 0.3798
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-fixed-5",
+          "distance": 0.3862
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-fixed-6",
+          "distance": 0.4726
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-fixed-4",
+          "distance": 0.4778
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/800/150",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-fixed-3",
+          "distance": 0.7633
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-fixed-4",
+          "distance": 0.8275
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-fixed-6",
+          "distance": 0.8449
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-fixed-2",
+          "distance": 0.8824
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-fixed-3",
+          "distance": 0.9173
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "fixed/800/150",
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "type": "table_header_lost",
+      "expected_article_id": "HC-005",
+      "answer_keys": [
+        "Notifications stopped suddenly",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-005-fixed-4",
+          "distance": 0.4629
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-005-fixed-7",
+          "distance": 0.465
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-005-fixed-5",
+          "distance": 0.4997
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-005-fixed-3",
+          "distance": 0.5419
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-005-fixed-1",
+          "distance": 0.6206
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/200/0",
+      "question_id": "Q1",
+      "question": "How long is a CloudDesk password reset link valid?",
+      "type": "standard",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "valid for 30 minutes"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-24",
+          "distance": 0.5469
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-8",
+          "distance": 0.5612
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-1",
+          "distance": 0.5857
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-21",
+          "distance": 0.6144
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-27",
+          "distance": 0.6177
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/200/0",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-3",
+          "distance": 0.3611
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-4",
+          "distance": 0.3959
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-22",
+          "distance": 0.4568
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-8",
+          "distance": 0.5083
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-5",
+          "distance": 0.5241
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/200/0",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-markdown-21",
+          "distance": 0.734
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-28",
+          "distance": 0.8503
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-markdown-29",
+          "distance": 0.8514
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-37",
+          "distance": 0.9027
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-markdown-24",
+          "distance": 0.9163
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/200/0",
+      "question_id": "Q7",
+      "question": "What are the password requirements for a new CloudDesk password?",
+      "type": "standard",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "at least 8 characters"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-8",
+          "distance": 0.1967
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-3",
+          "distance": 0.6055
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-1",
+          "distance": 0.614
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-21",
+          "distance": 0.6247
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-24",
+          "distance": 0.6568
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/300/50",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-2",
+          "distance": 0.3611
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-3",
+          "distance": 0.4115
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-14",
+          "distance": 0.4741
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-4",
+          "distance": 0.5074
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-1",
+          "distance": 0.5503
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/500/100",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-2",
+          "distance": 0.3611
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-3",
+          "distance": 0.401
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-10",
+          "distance": 0.4235
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-9",
+          "distance": 0.4741
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-1",
+          "distance": 0.5503
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/500/100",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-markdown-6",
+          "distance": 0.6431
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-8",
+          "distance": 0.8906
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-003-markdown-3",
+          "distance": 0.8941
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-11",
+          "distance": 0.9095
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-2",
+          "distance": 0.923
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/800/150",
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "type": "table",
+      "expected_article_id": "HC-001",
+      "answer_keys": [
+        "Reset link has expired",
+        "Request a new password reset link"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-2",
+          "distance": 0.3139
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-7",
+          "distance": 0.4341
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-6",
+          "distance": 0.4741
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-1",
+          "distance": 0.5503
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-3",
+          "distance": 0.5746
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/800/150",
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "type": "table",
+      "expected_article_id": "HC-003",
+      "answer_keys": [
+        "Card expired",
+        "Update the payment method"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-markdown-6",
+          "distance": 0.6431
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-7",
+          "distance": 0.8906
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-003-markdown-3",
+          "distance": 0.8941
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-9",
+          "distance": 0.9095
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-2",
+          "distance": 0.9203
+        }
+      ],
+      "article_found": true
+    },
+    {
+      "config": "markdown/800/150",
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "type": "table",
+      "expected_article_id": "HC-006",
+      "answer_keys": [
+        "Upload button unavailable",
+        "Contact the CloudDesk administrator"
+      ],
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-006-markdown-4",
+          "distance": 0.4029
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-006-markdown-8",
+          "distance": 0.46
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-006-markdown-9",
+          "distance": 0.4845
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-006-markdown-11",
+          "distance": 0.5126
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-006-markdown-2",
+          "distance": 0.5687
+        }
+      ],
+      "article_found": true
+    }
+  ]
+}

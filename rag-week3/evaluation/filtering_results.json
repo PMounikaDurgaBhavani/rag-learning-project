@@ -1,0 +1,495 @@
+{
+  "strategy": "markdown",
+  "top_k": 5,
+  "summary": {
+    "unfiltered_hit@3": 75.0,
+    "unfiltered_hit@5": 87.5,
+    "filtered_hit@3": 87.5,
+    "filtered_hit@5": 87.5,
+    "wrong_filter_hit@5": 0.0,
+    "unfiltered_mrr": 0.65,
+    "filtered_mrr": 0.6666666666666667,
+    "total_off_topic_unfiltered": 2,
+    "total_chunks_changed": 4
+  },
+  "per_question": [
+    {
+      "question_id": "Q1",
+      "question": "How long is a CloudDesk password reset link valid?",
+      "product_area": "Authentication",
+      "unfiltered_chunk_ids": [
+        "HC-001-markdown-15",
+        "HC-001-markdown-6",
+        "HC-001-markdown-18",
+        "HC-001-markdown-1",
+        "HC-001-markdown-2"
+      ],
+      "filtered_chunk_ids": [
+        "HC-001-markdown-15",
+        "HC-001-markdown-6",
+        "HC-001-markdown-18",
+        "HC-001-markdown-1",
+        "HC-001-markdown-2"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-19",
+        "HC-006-markdown-27",
+        "HC-006-markdown-11",
+        "HC-006-markdown-18"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.375,
+      "filtered_top1_distance": 0.375
+    },
+    {
+      "question_id": "Q2",
+      "question": "How long does a CloudDesk account stay locked after too many failed login attempts?",
+      "product_area": "Authentication",
+      "unfiltered_chunk_ids": [
+        "HC-002-markdown-20",
+        "HC-002-markdown-1",
+        "HC-002-markdown-5",
+        "HC-002-markdown-18",
+        "HC-002-markdown-19"
+      ],
+      "filtered_chunk_ids": [
+        "HC-002-markdown-20",
+        "HC-002-markdown-1",
+        "HC-002-markdown-5",
+        "HC-002-markdown-18",
+        "HC-002-markdown-19"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-19",
+        "HC-006-markdown-11",
+        "HC-006-markdown-18",
+        "HC-006-markdown-20"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.2947,
+      "filtered_top1_distance": 0.2947
+    },
+    {
+      "question_id": "Q3",
+      "question": "What should I do if my CloudDesk password reset link has expired?",
+      "product_area": "Authentication",
+      "unfiltered_chunk_ids": [
+        "HC-001-markdown-2",
+        "HC-001-markdown-3",
+        "HC-001-markdown-14",
+        "HC-001-markdown-4",
+        "HC-001-markdown-1"
+      ],
+      "filtered_chunk_ids": [
+        "HC-001-markdown-2",
+        "HC-001-markdown-3",
+        "HC-001-markdown-14",
+        "HC-001-markdown-4",
+        "HC-001-markdown-1"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-006-markdown-19",
+        "HC-006-markdown-11",
+        "HC-006-markdown-18",
+        "HC-006-markdown-20",
+        "HC-006-markdown-3"
+      ],
+      "unfiltered_hit@3": false,
+      "unfiltered_hit@5": false,
+      "filtered_hit@3": false,
+      "filtered_hit@5": false,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.3611,
+      "filtered_top1_distance": 0.3611
+    },
+    {
+      "question_id": "Q4",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "product_area": "Billing",
+      "unfiltered_chunk_ids": [
+        "HC-003-markdown-11",
+        "HC-002-markdown-19",
+        "HC-002-markdown-23",
+        "HC-003-markdown-4",
+        "HC-003-markdown-13"
+      ],
+      "filtered_chunk_ids": [
+        "HC-003-markdown-11",
+        "HC-003-markdown-4",
+        "HC-003-markdown-13",
+        "HC-003-markdown-6",
+        "HC-003-markdown-1"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-005-markdown-22",
+        "HC-005-markdown-19",
+        "HC-005-markdown-18",
+        "HC-005-markdown-10",
+        "HC-005-markdown-16"
+      ],
+      "unfiltered_hit@3": false,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 2,
+      "chunks_changed_by_filter": 4,
+      "unfiltered_top1_distance": 0.734,
+      "filtered_top1_distance": 0.734
+    },
+    {
+      "question_id": "Q5",
+      "question": "Why did my CloudDesk notifications stop suddenly?",
+      "product_area": "Notifications",
+      "unfiltered_chunk_ids": [
+        "HC-005-markdown-22",
+        "HC-005-markdown-16",
+        "HC-005-markdown-10",
+        "HC-005-markdown-21",
+        "HC-005-markdown-5"
+      ],
+      "filtered_chunk_ids": [
+        "HC-005-markdown-22",
+        "HC-005-markdown-16",
+        "HC-005-markdown-10",
+        "HC-005-markdown-21",
+        "HC-005-markdown-5"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-003-markdown-11",
+        "HC-003-markdown-1",
+        "HC-003-markdown-4",
+        "HC-003-markdown-2",
+        "HC-003-markdown-17"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.3528,
+      "filtered_top1_distance": 0.3528
+    },
+    {
+      "question_id": "Q6",
+      "question": "Why is the Upload File button unavailable in CloudDesk?",
+      "product_area": "Storage",
+      "unfiltered_chunk_ids": [
+        "HC-006-markdown-11",
+        "HC-006-markdown-5",
+        "HC-006-markdown-18",
+        "HC-006-markdown-19",
+        "HC-006-markdown-20"
+      ],
+      "filtered_chunk_ids": [
+        "HC-006-markdown-11",
+        "HC-006-markdown-5",
+        "HC-006-markdown-18",
+        "HC-006-markdown-19",
+        "HC-006-markdown-20"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-001-markdown-3",
+        "HC-002-markdown-17",
+        "HC-002-markdown-23",
+        "HC-001-markdown-2",
+        "HC-002-markdown-1"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.3716,
+      "filtered_top1_distance": 0.3716
+    },
+    {
+      "question_id": "Q7",
+      "question": "What are the password requirements for a new CloudDesk password?",
+      "product_area": "Authentication",
+      "unfiltered_chunk_ids": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-2",
+        "HC-001-markdown-1",
+        "HC-001-markdown-14",
+        "HC-001-markdown-18"
+      ],
+      "filtered_chunk_ids": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-2",
+        "HC-001-markdown-1",
+        "HC-001-markdown-14",
+        "HC-001-markdown-18"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-11",
+        "HC-006-markdown-27",
+        "HC-006-markdown-5",
+        "HC-006-markdown-20"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.2739,
+      "filtered_top1_distance": 0.2739
+    },
+    {
+      "question_id": "Q8",
+      "question": "How do I filter CloudDesk tickets by priority?",
+      "product_area": "Ticket Management",
+      "unfiltered_chunk_ids": [
+        "HC-004-markdown-1",
+        "HC-004-markdown-8",
+        "HC-004-markdown-2",
+        "HC-004-markdown-5",
+        "HC-004-markdown-7"
+      ],
+      "filtered_chunk_ids": [
+        "HC-004-markdown-1",
+        "HC-004-markdown-8",
+        "HC-004-markdown-2",
+        "HC-004-markdown-5",
+        "HC-004-markdown-7"
+      ],
+      "wrong_filter_chunk_ids": [
+        "HC-003-markdown-1",
+        "HC-003-markdown-2",
+        "HC-003-markdown-11",
+        "HC-003-markdown-4",
+        "HC-003-markdown-6"
+      ],
+      "unfiltered_hit@3": true,
+      "unfiltered_hit@5": true,
+      "filtered_hit@3": true,
+      "filtered_hit@5": true,
+      "wrong_filter_hit@5": false,
+      "off_topic_in_unfiltered_top5": 0,
+      "chunks_changed_by_filter": 0,
+      "unfiltered_top1_distance": 0.451,
+      "filtered_top1_distance": 0.451
+    }
+  ],
+  "ambiguous": [
+    {
+      "question_id": "A1",
+      "question": "How do I fix it?",
+      "filter": {
+        "product_area": "Billing"
+      },
+      "unfiltered": [
+        {
+          "chunk_id": "HC-001-markdown-7",
+          "article_id": "HC-001",
+          "product_area": "Authentication",
+          "distance": 1.3865
+        },
+        {
+          "chunk_id": "HC-001-markdown-10",
+          "article_id": "HC-001",
+          "product_area": "Authentication",
+          "distance": 1.4422
+        },
+        {
+          "chunk_id": "HC-006-markdown-13",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.4433
+        }
+      ],
+      "filtered": [
+        {
+          "chunk_id": "HC-003-markdown-13",
+          "article_id": "HC-003",
+          "product_area": "Billing",
+          "distance": 1.5678
+        },
+        {
+          "chunk_id": "HC-003-markdown-14",
+          "article_id": "HC-003",
+          "product_area": "Billing",
+          "distance": 1.593
+        },
+        {
+          "chunk_id": "HC-003-markdown-15",
+          "article_id": "HC-003",
+          "product_area": "Billing",
+          "distance": 1.6264
+        }
+      ],
+      "distinct_articles_unfiltered": 2,
+      "distinct_articles_filtered": 1
+    },
+    {
+      "question_id": "A2",
+      "question": "Why is it not working?",
+      "filter": {
+        "product_area": "Notifications"
+      },
+      "unfiltered": [
+        {
+          "chunk_id": "HC-005-markdown-24",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.3633
+        },
+        {
+          "chunk_id": "HC-005-markdown-13",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.4709
+        },
+        {
+          "chunk_id": "HC-005-markdown-14",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.4723
+        }
+      ],
+      "filtered": [
+        {
+          "chunk_id": "HC-005-markdown-24",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.3633
+        },
+        {
+          "chunk_id": "HC-005-markdown-13",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.4709
+        },
+        {
+          "chunk_id": "HC-005-markdown-14",
+          "article_id": "HC-005",
+          "product_area": "Notifications",
+          "distance": 1.4723
+        }
+      ],
+      "distinct_articles_unfiltered": 1,
+      "distinct_articles_filtered": 1
+    },
+    {
+      "question_id": "A3",
+      "question": "What are the limits?",
+      "filter": {
+        "product_area": "Storage"
+      },
+      "unfiltered": [
+        {
+          "chunk_id": "HC-006-markdown-26",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.1185
+        },
+        {
+          "chunk_id": "HC-006-markdown-3",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.2942
+        },
+        {
+          "chunk_id": "HC-006-markdown-27",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.4142
+        }
+      ],
+      "filtered": [
+        {
+          "chunk_id": "HC-006-markdown-26",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.1185
+        },
+        {
+          "chunk_id": "HC-006-markdown-3",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.2942
+        },
+        {
+          "chunk_id": "HC-006-markdown-27",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.4142
+        }
+      ],
+      "distinct_articles_unfiltered": 1,
+      "distinct_articles_filtered": 1
+    },
+    {
+      "question_id": "A4",
+      "question": "How long do I have to wait?",
+      "filter": {
+        "article_id": "HC-002"
+      },
+      "unfiltered": [
+        {
+          "chunk_id": "HC-006-markdown-8",
+          "article_id": "HC-006",
+          "product_area": "Storage",
+          "distance": 1.4138
+        },
+        {
+          "chunk_id": "HC-002-markdown-20",
+          "article_id": "HC-002",
+          "product_area": "Authentication",
+          "distance": 1.4726
+        },
+        {
+          "chunk_id": "HC-002-markdown-6",
+          "article_id": "HC-002",
+          "product_area": "Authentication",
+          "distance": 1.5039
+        }
+      ],
+      "filtered": [
+        {
+          "chunk_id": "HC-002-markdown-20",
+          "article_id": "HC-002",
+          "product_area": "Authentication",
+          "distance": 1.4726
+        },
+        {
+          "chunk_id": "HC-002-markdown-6",
+          "article_id": "HC-002",
+          "product_area": "Authentication",
+          "distance": 1.5039
+        },
+        {
+          "chunk_id": "HC-002-markdown-22",
+          "article_id": "HC-002",
+          "product_area": "Authentication",
+          "distance": 1.597
+        }
+      ],
+      "distinct_articles_unfiltered": 2,
+      "distinct_articles_filtered": 1
+    }
+  ]
+}

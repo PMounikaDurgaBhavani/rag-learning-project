@@ -1,0 +1,30 @@
+[
+  {
+    "id": "A1",
+    "question": "How do I fix it?",
+    "type": "ambiguous",
+    "note": "No subject. Retrieval has nothing to anchor on; used to show that metadata filtering can supply the missing scope.",
+    "disambiguating_filter": {"product_area": "Billing"}
+  },
+  {
+    "id": "A2",
+    "question": "Why is it not working?",
+    "type": "ambiguous",
+    "note": "No subject and no product area.",
+    "disambiguating_filter": {"product_area": "Notifications"}
+  },
+  {
+    "id": "A3",
+    "question": "What are the limits?",
+    "type": "ambiguous",
+    "note": "'Limits' could mean file size, storage, lock period or link expiry.",
+    "disambiguating_filter": {"product_area": "Storage"}
+  },
+  {
+    "id": "A4",
+    "question": "How long do I have to wait?",
+    "type": "ambiguous",
+    "note": "Genuinely ambiguous between the 30 minute reset link validity (HC-001) and the 15 minute account lock (HC-002).",
+    "disambiguating_filter": {"article_id": "HC-002"}
+  }
+]

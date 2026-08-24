@@ -1,0 +1,9 @@
+venv/
+.env
+__pycache__/
+*.pyc
+.DS_Store
+vectorstores/
+
+# Regenerable vector indexes - rebuild with: python main.py ingest
+chroma_db/

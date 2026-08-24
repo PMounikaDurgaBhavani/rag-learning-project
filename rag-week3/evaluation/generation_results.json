@@ -1,0 +1,313 @@
+{
+  "strategy": "markdown",
+  "top_k": 5,
+  "supported": {
+    "summary": {
+      "answer_rate": 75.0,
+      "accuracy": 62.5,
+      "citation_article_correct": 100.0,
+      "citation_points_to_gold_chunk": 100.0,
+      "answered": 6,
+      "total": 8
+    },
+    "rows": [
+      {
+        "id": "Q1",
+        "question": "How long is a CloudDesk password reset link valid?",
+        "type": "standard",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "30 minutes [1]",
+        "raw_answer": "30 minutes",
+        "correct": true,
+        "cited_chunk_ids": [
+          "HC-001-markdown-15"
+        ],
+        "cited_articles": [
+          "HC-001"
+        ],
+        "gold_chunk_ids": [
+          "HC-001-markdown-15"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.375,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q2",
+        "question": "How long does a CloudDesk account stay locked after too many failed login attempts?",
+        "type": "standard",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "A temporary CloudDesk account lock lasts 15 minutes. [1]",
+        "raw_answer": "A temporary CloudDesk account lock lasts 15 minutes.",
+        "correct": true,
+        "cited_chunk_ids": [
+          "HC-002-markdown-20"
+        ],
+        "cited_articles": [
+          "HC-002"
+        ],
+        "gold_chunk_ids": [
+          "HC-002-markdown-20"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.2947,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q3",
+        "question": "What should I do if my CloudDesk password reset link has expired?",
+        "type": "table",
+        "answered": false,
+        "refusal_reason": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": "Not_in_sources",
+        "correct": false,
+        "cited_chunk_ids": [],
+        "cited_articles": [],
+        "gold_chunk_ids": [],
+        "citation_article_correct": false,
+        "citation_points_to_gold_chunk": false,
+        "best_distance": 0.3611,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q4",
+        "question": "My card expired and the CloudDesk payment failed. What should I do?",
+        "type": "table",
+        "answered": false,
+        "refusal_reason": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": "To resolve this issue, follow these steps:\n\n1. Check if your card has expired.\n2. If it has, update your payment method on CloudDesk.\n3. Contact your bank to renew your card.\n4. Reset your password if prompted by CloudDesk.\n5. Notify your administrator about the problem.\n\nAlways ensure that you have the correct credentials before resetting your password.",
+        "correct": false,
+        "cited_chunk_ids": [],
+        "cited_articles": [],
+        "gold_chunk_ids": [
+          "HC-003-markdown-13"
+        ],
+        "citation_article_correct": false,
+        "citation_points_to_gold_chunk": false,
+        "best_distance": 0.734,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q5",
+        "question": "Why did my CloudDesk notifications stop suddenly?",
+        "type": "table",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "Organization settings changed [1]",
+        "raw_answer": "Organization settings changed",
+        "correct": false,
+        "cited_chunk_ids": [
+          "HC-005-markdown-16"
+        ],
+        "cited_articles": [
+          "HC-005"
+        ],
+        "gold_chunk_ids": [
+          "HC-005-markdown-16"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.3528,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q6",
+        "question": "Why is the Upload File button unavailable in CloudDesk?",
+        "type": "table",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "User lacks required permission. [1] [2]",
+        "raw_answer": "User lacks required permission.",
+        "correct": true,
+        "cited_chunk_ids": [
+          "HC-006-markdown-11",
+          "HC-006-markdown-20"
+        ],
+        "cited_articles": [
+          "HC-006",
+          "HC-006"
+        ],
+        "gold_chunk_ids": [
+          "HC-006-markdown-11"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.3716,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q7",
+        "question": "What are the password requirements for a new CloudDesk password?",
+        "type": "standard",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "The password requirements for a new CloudDesk password are:\n\n- At least 8 characters.\n- At least one uppercase letter.\n- At least one lowercase letter.\n- At least one number.\n- Not be the same as the previous password. [1]",
+        "raw_answer": "The password requirements for a new CloudDesk password are:\n\n- At least 8 characters.\n- At least one uppercase letter.\n- At least one lowercase letter.\n- At least one number.\n- Not be the same as the previous password.",
+        "correct": true,
+        "cited_chunk_ids": [
+          "HC-001-markdown-6"
+        ],
+        "cited_articles": [
+          "HC-001"
+        ],
+        "gold_chunk_ids": [
+          "HC-001-markdown-6"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.2739,
+        "model_cited_markers": []
+      },
+      {
+        "id": "Q8",
+        "question": "How do I filter CloudDesk tickets by priority?",
+        "type": "standard",
+        "answered": true,
+        "refusal_reason": null,
+        "answer": "To filter CloudDesk tickets by priority, follow these steps:\n\n1. Open the Tickets section.\n2. Select the Priority filter.\n3. Choose the required priority.\n4. Apply the filter. [1]",
+        "raw_answer": "To filter CloudDesk tickets by priority, follow these steps:\n\n1. Open the Tickets section.\n2. Select the Priority filter.\n3. Choose the required priority.\n4. Apply the filter.",
+        "correct": true,
+        "cited_chunk_ids": [
+          "HC-004-markdown-8"
+        ],
+        "cited_articles": [
+          "HC-004"
+        ],
+        "gold_chunk_ids": [
+          "HC-004-markdown-8"
+        ],
+        "citation_article_correct": true,
+        "citation_points_to_gold_chunk": true,
+        "best_distance": 0.451,
+        "model_cited_markers": []
+      }
+    ]
+  },
+  "unsupported": {
+    "summary": {
+      "refusal_rate": 100.0,
+      "refused": 6,
+      "total": 6,
+      "by_gate": {
+        "distance_gate": 4,
+        "model_reported_not_in_sources": 2
+      }
+    },
+    "rows": [
+      {
+        "id": "U1",
+        "question": "What is CloudDesk's refund policy for annual subscriptions?",
+        "type": "out_of_scope_in_domain",
+        "why_unsupported": "The Billing article covers invoices, payment methods and failed payments, but never mentions refunds.",
+        "refused": true,
+        "refusal_reason": "distance_gate (0.9194 > 0.75)",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": null,
+        "best_distance": 0.9194
+      },
+      {
+        "id": "U2",
+        "question": "Does CloudDesk integrate with Salesforce?",
+        "type": "out_of_scope_in_domain",
+        "why_unsupported": "No article mentions third-party integrations.",
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7744 > 0.75)",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": null,
+        "best_distance": 0.7744
+      },
+      {
+        "id": "U3",
+        "question": "What is the maximum file size limit for CloudDesk uploads in megabytes?",
+        "type": "near_miss_trap",
+        "why_unsupported": "HC-006 discusses a file size limit at length but never states a number. Retrieval returns a highly relevant chunk, so the distance gate will not fire.",
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": "NOT_IN_SOURCES",
+        "best_distance": 0.2729
+      },
+      {
+        "id": "U4",
+        "question": "How many failed login attempts lock a CloudDesk account?",
+        "type": "near_miss_trap",
+        "why_unsupported": "HC-002 says 'multiple' and 'several' incorrect attempts but never gives a threshold number.",
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": "NOT_IN_SOURCES",
+        "best_distance": 0.2902
+      },
+      {
+        "id": "U5",
+        "question": "How much does the CloudDesk Enterprise plan cost per user?",
+        "type": "out_of_scope_in_domain",
+        "why_unsupported": "No pricing information exists anywhere in the corpus.",
+        "refused": true,
+        "refusal_reason": "distance_gate (1.0468 > 0.75)",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": null,
+        "best_distance": 1.0468
+      },
+      {
+        "id": "U6",
+        "question": "What is the capital of France?",
+        "type": "out_of_domain",
+        "why_unsupported": "Completely unrelated to the CloudDesk help centre.",
+        "refused": true,
+        "refusal_reason": "distance_gate (1.7898 > 0.75)",
+        "answer": "I don't have enough information to answer that.",
+        "raw_answer": null,
+        "best_distance": 1.7898
+      }
+    ]
+  },
+  "ambiguous": [
+    {
+      "id": "A1",
+      "question": "How do I fix it?",
+      "note": "No subject. Retrieval has nothing to anchor on; used to show that metadata filtering can supply the missing scope.",
+      "refused": true,
+      "refusal_reason": "distance_gate (1.3865 > 0.75)",
+      "answer": "I don't have enough information to answer that.",
+      "best_distance": 1.3865,
+      "cited_chunk_ids": []
+    },
+    {
+      "id": "A2",
+      "question": "Why is it not working?",
+      "note": "No subject and no product area.",
+      "refused": true,
+      "refusal_reason": "distance_gate (1.3633 > 0.75)",
+      "answer": "I don't have enough information to answer that.",
+      "best_distance": 1.3633,
+      "cited_chunk_ids": []
+    },
+    {
+      "id": "A3",
+      "question": "What are the limits?",
+      "note": "'Limits' could mean file size, storage, lock period or link expiry.",
+      "refused": true,
+      "refusal_reason": "distance_gate (1.1185 > 0.75)",
+      "answer": "I don't have enough information to answer that.",
+      "best_distance": 1.1185,
+      "cited_chunk_ids": []
+    },
+    {
+      "id": "A4",
+      "question": "How long do I have to wait?",
+      "note": "Genuinely ambiguous between the 30 minute reset link validity (HC-001) and the 15 minute account lock (HC-002).",
+      "refused": true,
+      "refusal_reason": "distance_gate (1.4138 > 0.75)",
+      "answer": "I don't have enough information to answer that.",
+      "best_distance": 1.4138,
+      "cited_chunk_ids": []
+    }
+  ]
+}
