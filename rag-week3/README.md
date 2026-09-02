@@ -71,7 +71,7 @@ from these files.
 ```
 data/                     6 mock articles with YAML frontmatter
 src/
-  loader.py               reads articles, extracts metadata
+  loader.py               loads any file type (pdf, docx, pptx, xlsx, csv, json, html, md, txt…) and extracts metadata
   chunking.py             3 chunking strategies + registry
   embeddings.py           cached sentence-transformers model
   vector_store.py         one ChromaDB collection per strategy

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CloudDesk Knowledge Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f3ee;
+    --bg-elev: #ffffff;
+    --bg-sunk: #ebeae3;
+    --ink: #17191c;
+    --ink-2: #4b5057;
+    --ink-3: #868b93;
+    --line: #dedcd3;
+    --line-strong: #c9c6ba;
+    --accent: #0b6e63;
+    --accent-ink: #ffffff;
+    --accent-soft: #d9efe9;
+    --warn: #b4530a;
+    --warn-soft: #fbe9d8;
+    --danger: #b3261e;
+    --danger-soft: #f9dedc;
+    --info: #2b4c9b;
+    --info-soft: #dfe6f7;
+    --violet: #6b3fa0;
+    --violet-soft: #ebe1f7;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(20,20,20,.05), 0 8px 24px -12px rgba(20,20,20,.15);
+    --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  :root[data-theme="dark"] {
+    --bg: #131416;
+    --bg-elev: #1c1e21;
+    --bg-sunk: #0e0f10;
+    --ink: #eceef0;
+    --ink-2: #b4b9c0;
+    --ink-3: #7c828b;
+    --line: #2b2e33;
+    --line-strong: #3a3e45;
+    --accent: #3fc5b0;
+    --accent-ink: #072a25;
+    --accent-soft: #143b35;
+    --warn: #f0a35c;
+    --warn-soft: #3d2a17;
+    --danger: #f28b82;
+    --danger-soft: #3f1f1d;
+    --info: #8fb0f5;
+    --info-soft: #1e2a45;
+    --violet: #c4a3f0;
+    --violet-soft: #2c2140;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  a { color: var(--accent); }
+  .mono { font-family: var(--mono); font-size: .8em; }
+  .muted { color: var(--ink-3); }
+  .hidden { display: none !important; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: .7rem 1.5rem;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: .65rem; font-weight: 800; letter-spacing: -.01em; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--accent), #2b4c9b);
+    display: grid; place-items: center; color: #fff; font-size: 15px;
+  }
+  .brand small { display: block; font-weight: 500; color: var(--ink-3); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+  nav.tabs { display: flex; gap: .25rem; margin-left: .5rem; }
+  nav.tabs button {
+    border: 0; background: transparent; padding: .45rem .9rem; border-radius: 999px;
+    color: var(--ink-2); font-weight: 600; cursor: pointer;
+  }
+  nav.tabs button:hover { background: var(--bg-sunk); }
+  nav.tabs button.active { background: var(--ink); color: var(--bg); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
+  .status-chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .3rem .65rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg-elev);
+    font-size: .75rem; font-weight: 600; color: var(--ink-2);
+  }
+  .status-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
+  .status-chip.ready .dot { background: var(--accent); }
+  .status-chip.missing .dot { background: var(--danger); }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--bg-elev); cursor: pointer; display: grid; place-items: center;
+  }
+  .icon-btn:hover { border-color: var(--line-strong); }
+
+  /* ---------- layout ---------- */
+  .page { max-width: 1180px; margin: 0 auto; padding: 1.75rem 1.5rem 5rem; }
+  .view { display: none; }
+  .view.active { display: block; animation: rise .25s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none; } }
+
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  h1 { font-size: 1.75rem; letter-spacing: -.02em; margin: 0 0 .25rem; font-weight: 800; }
+  h2 { font-size: 1.05rem; margin: 0; font-weight: 700; }
+  .eyebrow { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; }
+  .lede { color: var(--ink-2); margin: 0 0 1.5rem; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .6rem 1.05rem; border-radius: 10px; border: 1px solid var(--line-strong);
+    background: var(--bg-elev); font-weight: 700; cursor: pointer; transition: transform .08s, background .15s;
+  }
+  .btn:hover { background: var(--bg-sunk); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  .btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn.ghost:hover { background: var(--bg-sunk); }
+  .btn.danger { color: var(--danger); }
+  .btn.sm { padding: .35rem .7rem; font-size: .8rem; border-radius: 8px; }
+  .spinner {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid currentColor; border-right-color: transparent;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- ask view ---------- */
+  .ask-grid { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 1.5rem; align-items: start; }
+  @media (max-width: 900px) { .ask-grid { grid-template-columns: 1fr; } .settings { position: static !important; } }
+
+  .composer { padding: 1.1rem; }
+  .composer textarea {
+    width: 100%; min-height: 96px; resize: vertical; border: 0; outline: 0;
+    background: transparent; font-size: 1.1rem; line-height: 1.5; padding: .25rem;
+  }
+  .composer-foot { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-top: .5rem; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .chip {
+    padding: .3rem .7rem; border-radius: 999px; border: 1px dashed var(--line-strong);
+    background: transparent; font-size: .78rem; color: var(--ink-2); cursor: pointer;
+  }
+  .chip:hover { border-style: solid; color: var(--ink); background: var(--bg-sunk); }
+  .kbd { font-family: var(--mono); font-size: .7rem; padding: .1rem .35rem; border: 1px solid var(--line); border-radius: 5px; color: var(--ink-3); }
+
+  .thread { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; }
+  .thread-empty { text-align: center; padding: 3.5rem 1rem; color: var(--ink-3); }
+  .thread-empty .big { font-size: 2.2rem; }
+
+  .turn { display: flex; flex-direction: column; gap: .6rem; }
+  .q-bubble {
+    align-self: flex-end; max-width: 80%;
+    background: var(--ink); color: var(--bg);
+    padding: .65rem 1rem; border-radius: 16px 16px 4px 16px; font-weight: 600;
+  }
+  .a-card { padding: 1.1rem 1.25rem; }
+  .a-head { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  .pill { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .6rem; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .03em; }
+  .pill.ok { background: var(--accent-soft); color: var(--accent); }
+  .pill.bad { background: var(--danger-soft); color: var(--danger); }
+  .pill.info { background: var(--info-soft); color: var(--info); }
+  .pill.violet { background: var(--violet-soft); color: var(--violet); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .a-text { font-size: 1.02rem; line-height: 1.65; }
+  .cite { display: inline-block; font-family: var(--mono); font-size: .72rem; padding: 0 .35rem; border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-weight: 700; margin: 0 .1rem; vertical-align: 2px; }
+  .refusal-note { margin-top: .75rem; padding: .75rem .9rem; border-radius: var(--radius-sm); background: var(--warn-soft); color: var(--warn); font-size: .88rem; }
+
+  .sources { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: .9rem; }
+  .source { display: grid; grid-template-columns: auto 1fr auto; gap: .75rem; align-items: center; padding: .55rem 0; border-bottom: 1px dashed var(--line); }
+  .source:last-child { border-bottom: 0; }
+  .source .marker { font-family: var(--mono); font-weight: 700; color: var(--accent); }
+  .source .title { font-weight: 600; font-size: .9rem; }
+  .source .meta { font-size: .78rem; color: var(--ink-3); }
+  .coverage { width: 110px; }
+  .coverage .bar { height: 6px; border-radius: 4px; background: var(--bg-sunk); overflow: hidden; }
+  .coverage .bar i { display: block; height: 100%; background: var(--accent); }
+  .coverage span { font-size: .72rem; color: var(--ink-3); }
+  .a-foot { margin-top: .9rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+
+  /* ---------- settings drawer ---------- */
+  .settings { position: sticky; top: 76px; padding: 1.1rem; display: flex; flex-direction: column; gap: 1rem; }
+  .field label { display: block; font-size: .74rem; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .35rem; }
+  .field select, .field input[type=text] {
+    width: 100%; padding: .55rem .7rem; border-radius: 9px; border: 1px solid var(--line);
+    background: var(--bg); outline: 0;
+  }
+  .field select:focus, .field input:focus { border-color: var(--accent); }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .switch-row { display: flex; align-items: center; justify-content: space-between; padding: .35rem 0; }
+  .switch-row span { font-weight: 600; font-size: .9rem; }
+  .switch { position: relative; width: 40px; height: 22px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch i { position: absolute; inset: 0; border-radius: 999px; background: var(--line-strong); transition: .2s; cursor: pointer; }
+  .switch i::after { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+  .switch input:checked + i { background: var(--accent); }
+  .switch input:checked + i::after { transform: translateX(18px); }
+
+  /* ---------- library view ---------- */
+  .lib-grid { display: grid; grid-template-columns: 380px minmax(0,1fr); gap: 1.5rem; align-items: start; }
+  @media (max-width: 900px) { .lib-grid { grid-template-columns: 1fr; } }
+  .dropzone {
+    border: 2px dashed var(--line-strong); border-radius: var(--radius);
+    padding: 2rem 1.25rem; text-align: center; cursor: pointer; transition: .15s;
+    background: var(--bg);
+  }
+  .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
+  .dropzone .ico { font-size: 2rem; }
+  .dropzone strong { display: block; margin: .4rem 0 .2rem; }
+  .dropzone .muted { font-size: .8rem; }
+  .type-row { display: flex; flex-wrap: wrap; gap: .3rem; justify-content: center; margin-top: .75rem; }
+  .type-row .t { font-family: var(--mono); font-size: .66rem; padding: .15rem .4rem; border-radius: 5px; background: var(--bg-sunk); color: var(--ink-2); }
+
+  .queue { display: flex; flex-direction: column; gap: .5rem; }
+  .qitem { display: grid; grid-template-columns: 34px 1fr auto; gap: .6rem; align-items: center; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+  .qitem .ficon { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-family: var(--mono); font-size: .62rem; font-weight: 700; background: var(--info-soft); color: var(--info); text-transform: uppercase; }
+  .qitem .fname { font-weight: 600; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qitem .fsub { font-size: .74rem; color: var(--ink-3); }
+  .qitem.done .ficon { background: var(--accent-soft); color: var(--accent); }
+  .qitem.fail .ficon { background: var(--danger-soft); color: var(--danger); }
+  .qitem.fail .fsub { color: var(--danger); }
+
+  details.paste { border: 1px solid var(--line); border-radius: 10px; padding: .6rem .8rem; }
+  details.paste summary { cursor: pointer; font-weight: 700; font-size: .88rem; }
+  details.paste textarea { width: 100%; min-height: 140px; margin-top: .6rem; padding: .6rem; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); font-family: var(--mono); font-size: .8rem; resize: vertical; }
+
+  .doc-list { display: flex; flex-direction: column; }
+  .doc { display: grid; grid-template-columns: 44px 1fr auto; gap: .9rem; align-items: center; padding: .8rem 1rem; border-bottom: 1px solid var(--line); }
+  .doc:last-child { border-bottom: 0; }
+  .doc .ficon { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-family: var(--mono); font-size: .68rem; font-weight: 700; text-transform: uppercase; background: var(--bg-sunk); color: var(--ink-2); }
+  .doc .ficon.pdf { background: var(--danger-soft); color: var(--danger); }
+  .doc .ficon.md, .doc .ficon.txt { background: var(--info-soft); color: var(--info); }
+  .doc .ficon.docx, .doc .ficon.pptx { background: var(--violet-soft); color: var(--violet); }
+  .doc .ficon.xlsx, .doc .ficon.csv, .doc .ficon.json { background: var(--accent-soft); color: var(--accent); }
+  .doc .name { font-weight: 700; }
+  .doc .meta { font-size: .78rem; color: var(--ink-3); display: flex; gap: .6rem; flex-wrap: wrap; }
+  .doc .actions { display: flex; gap: .35rem; }
+  .doc-toolbar { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1rem; border-bottom: 1px solid var(--line); }
+  .doc-toolbar input { padding: .45rem .7rem; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); outline: 0; width: 220px; }
+
+  /* ---------- inspect view ---------- */
+  .stage-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+  @media (max-width: 900px) { .stage-grid { grid-template-columns: 1fr; } }
+  .stage { padding: 1rem; }
+  .stage h3 { margin: 0; font-size: .9rem; display: flex; justify-content: space-between; align-items: center; }
+  .stage p.sub { margin: .15rem 0 .8rem; font-size: .76rem; color: var(--ink-3); }
+  .hit { padding: .55rem .6rem; border-radius: 9px; border: 1px solid var(--line); margin-bottom: .45rem; background: var(--bg); }
+  .hit.final { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+  .hit .row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .hit .id { font-family: var(--mono); font-size: .74rem; font-weight: 700; }
+  .hit .sc { font-family: var(--mono); font-size: .7rem; color: var(--ink-3); }
+  .hit .snip { font-size: .76rem; color: var(--ink-2); margin-top: .3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .hit .bar { height: 4px; border-radius: 3px; background: var(--bg-sunk); margin-top: .4rem; overflow: hidden; }
+  .hit .bar i { display: block; height: 100%; }
+  .query-strip { padding: .9rem 1.1rem; margin-bottom: 1rem; display: grid; gap: .5rem; }
+  .query-strip .k { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 700; }
+
+  /* ---------- console ---------- */
+  pre.console { margin: 0; padding: 1.1rem; font-family: var(--mono); font-size: .78rem; line-height: 1.55; overflow: auto; max-height: 70vh; white-space: pre-wrap; word-break: break-word; }
+
+  /* ---------- toast ---------- */
+  .toasts { position: fixed; right: 1.25rem; bottom: 1.25rem; display: flex; flex-direction: column; gap: .5rem; z-index: 100; }
+  .toast { padding: .7rem 1rem; border-radius: 10px; background: var(--ink); color: var(--bg); font-weight: 600; font-size: .88rem; box-shadow: var(--shadow); animation: rise .2s ease; max-width: 360px; }
+  .toast.err { background: var(--danger); color: #fff; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">◈</div>
+    <div>CloudDesk<small>Knowledge Studio</small></div>
+  </div>
+  <nav class="tabs" id="nav">
+    <button data-view="ask" class="active">Ask</button>
+    <button data-view="library">Library <span id="navDocCount" class="muted"></span></button>
+    <button data-view="inspect">Inspect</button>
+    <button data-view="console">Console</button>
+  </nav>
+  <div class="topbar-right">
+    <span class="status-chip" id="chip-markdown"><span class="dot"></span>markdown</span>
+    <span class="status-chip" id="chip-recursive"><span class="dot"></span>recursive</span>
+    <span class="status-chip" id="chip-fixed"><span class="dot"></span>fixed</span>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">◐</button>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ================= ASK ================= -->
+  <section class="view active" id="view-ask">
+    <div class="ask-grid">
+      <div>
+        <div class="card composer">
+          <textarea id="query" placeholder="Ask anything about the documents in your library…">How long is a CloudDesk password reset link valid?</textarea>
+          <div class="composer-foot">
+            <button class="btn primary" id="askBtn"><span id="askSpinner" class="spinner hidden"></span><span id="askLabel">Ask</span></button>
+            <button class="btn" id="inspectBtn">Inspect retrieval</button>
+            <span class="muted" style="font-size:.78rem;"><span class="kbd">⌘</span>+<span class="kbd">↵</span> to ask</span>
+            <button class="btn ghost sm" id="clearThread" style="margin-left:auto;">Clear thread</button>
+          </div>
+        </div>
+        <div class="chip-row" style="margin-top:.8rem;" id="presets">
+          <button class="chip" data-q="How long is a CloudDesk password reset link valid?">Reset link validity</button>
+          <button class="chip" data-q="My card expired and payment failed in HC-003. What do I do?">Expired card, failed payment</button>
+          <button class="chip" data-q="Why is the Upload File button unavailable in CloudDesk?">Upload button unavailable</button>
+          <button class="chip" data-q="What is the maximum file size limit for CloudDesk uploads in megabytes?">Refusal test: file size limit</button>
+        </div>
+
+        <div class="thread" id="thread">
+          <div class="thread-empty" id="threadEmpty">
+            <div class="big">✦</div>
+            <div>Answers appear here as a thread, each with verified citations.</div>
+            <div style="font-size:.85rem;margin-top:.3rem;">Add your own files in <a href="#" data-goto="library">Library</a>.</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card settings">
+        <div class="eyebrow">Retrieval settings</div>
+        <div class="field">
+          <label>Mode</label>
+          <select id="mode">
+            <option value="hybrid_rerank" selected>Hybrid RRF + cross-encoder rerank</option>
+            <option value="hybrid">Hybrid RRF (dense + BM25)</option>
+            <option value="dense">Dense only (MiniLM)</option>
+            <option value="bm25">BM25 only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Chunking strategy</label>
+          <select id="strategy">
+            <option value="markdown" selected>markdown — header &amp; table aware</option>
+            <option value="recursive">recursive — character hierarchy</option>
+            <option value="fixed">fixed — character budget</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Product area</label>
+          <select id="productArea"><option value="">All areas</option></select>
+        </div>
+        <div class="field">
+          <label>Document</label>
+          <select id="articleId"><option value="">All documents</option></select>
+        </div>
+        <div class="field">
+          <label>Top-K chunks · <span id="topKVal" style="color:var(--accent)">5</span></label>
+          <input type="range" id="topK" min="1" max="10" value="5">
+        </div>
+        <div class="field">
+          <label>Refusal distance gate · <span id="thresholdVal" style="color:var(--accent)">0.75</span></label>
+          <input type="range" id="threshold" min="0.10" max="2.00" step="0.05" value="0.75">
+          <div class="muted" style="font-size:.7rem;line-height:1.35;margin-top:.25rem;">
+            0.75 is calibrated on the help-centre prose. Record-style documents
+            retrieve much further out — raise it to answer those, and refusals loosen with it.
+          </div>
+        </div>
+        <div>
+          <div class="switch-row"><span>Query rewriter</span><label class="switch"><input type="checkbox" id="rewrite"><i></i></label></div>
+          <div class="switch-row"><span>HyDE expansion</span><label class="switch"><input type="checkbox" id="hyde"><i></i></label></div>
+        </div>
+        <div class="muted" style="font-size:.74rem;line-height:1.4;">
+          Stack: all-MiniLM-L6-v2 · BM25 Okapi · ms-marco cross-encoder · Qwen2.5-0.5B
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= LIBRARY ================= -->
+  <section class="view" id="view-library">
+    <h1>Library</h1>
+    <p class="lede">Drop in any file. Text is extracted, chunked, embedded and added to the vector and BM25 indexes.</p>
+
+    <div class="lib-grid">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div class="card" style="padding:1rem;display:flex;flex-direction:column;gap:.9rem;">
+          <div class="dropzone" id="dropzone">
+            <div class="ico">⤓</div>
+            <strong>Drop files here or click to browse</strong>
+            <div class="muted">Any file type · multiple files at once</div>
+            <div class="type-row">
+              <span class="t">pdf</span><span class="t">docx</span><span class="t">pptx</span><span class="t">xlsx</span>
+              <span class="t">csv</span><span class="t">json</span><span class="t">html</span><span class="t">md</span>
+              <span class="t">txt</span><span class="t">code</span><span class="t">images·ocr</span><span class="t">…</span>
+            </div>
+            <input type="file" id="fileInput" multiple class="hidden">
+          </div>
+          <div class="field">
+            <label>Product area for new uploads</label>
+            <input type="text" id="uploadArea" placeholder="e.g. Billing, Policies, Engineering">
+          </div>
+          <details class="paste">
+            <summary>Or paste text directly</summary>
+            <div class="field" style="margin-top:.6rem;"><label>Filename</label><input type="text" id="pasteName" placeholder="refund-policy.md"></div>
+            <textarea id="pasteBody" placeholder="# Title&#10;&#10;Paste markdown or plain text…"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:.6rem;">
+              <button class="btn primary sm" id="pasteBtn">Add to library</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="card" style="padding:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+            <h2>Upload queue</h2>
+            <button class="btn ghost sm" id="clearQueue">Clear</button>
+          </div>
+          <div class="queue" id="queue"><div class="muted" style="font-size:.85rem;">Nothing queued yet.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="doc-toolbar">
+          <div><h2>Indexed documents <span class="muted" id="docCount">(0)</span></h2></div>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <input type="text" id="docFilter" placeholder="Filter…">
+            <button class="btn sm" id="reindexBtn"><span class="spinner hidden" id="reindexSpinner"></span>Rebuild indexes</button>
+          </div>
+        </div>
+        <div class="doc-list" id="docList"><div class="muted" style="padding:1.5rem;text-align:center;">Loading…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INSPECT ================= -->
+  <section class="view" id="view-inspect">
+    <h1>Retrieval inspector</h1>
+    <p class="lede">How each stage ranked the chunks for the latest query. Highlighted rows survived into the final reranked set.</p>
+    <div id="inspectEmpty" class="card" style="padding:2.5rem;text-align:center;color:var(--ink-3);">
+      Run a question from <a href="#" data-goto="ask">Ask</a> (or click “Inspect retrieval”) to populate this view.
+    </div>
+    <div id="inspectBody" class="hidden">
+      <div class="card query-strip" id="queryStrip"></div>
+      <div class="stage-grid">
+        <div class="card stage">
+          <h3>Dense <span class="pill info">MiniLM</span></h3>
+          <p class="sub">Cosine distance — lower is closer</p>
+          <div id="stageDense"></div>
+        </div>
+        <div class="card stage">
+          <h3>Sparse <span class="pill ok">BM25</span></h3>
+          <p class="sub">Lexical score — higher is better</p>
+          <div id="stageBm25"></div>
+        </div>
+        <div class="card stage">
+          <h3>Fused + reranked <span class="pill violet">RRF → cross-encoder</span></h3>
+          <p class="sub">Final order handed to the generator</p>
+          <div id="stageRerank"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONSOLE ================= -->
+  <section class="view" id="view-console">
+    <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:1rem;">
+      <div><h1>Console</h1><p class="lede" style="margin:0;">Raw JSON of the last response.</p></div>
+      <button class="btn sm" id="copyJson">Copy JSON</button>
+    </div>
+    <div class="card"><pre class="console" id="rawJson">{}</pre></div>
+  </section>
+</main>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* ------------------------------------------------------------------ utils */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = (n, d = 3) => (typeof n === 'number' ? n.toFixed(d) : '–');
+const kb = (n) => n > 1e6 ? (n/1e6).toFixed(1)+' MB' : n > 1e3 ? (n/1e3).toFixed(0)+' KB' : n+' B';
+
+function toast(msg, isErr = false) {
+  const el = document.createElement('div');
+  el.className = 'toast' + (isErr ? ' err' : '');
+  el.textContent = msg;
+  $('toasts').appendChild(el);
+  setTimeout(() => el.remove(), isErr ? 7000 : 4000);
+}
+
+async function api(path, body) {
+  const res = await fetch(path, body === undefined
+    ? {} : { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
+  const data = await res.json().catch(() => ({ status: 'error', error: res.statusText }));
+  if (!res.ok || data.status === 'error') throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
+}
+
+/* ------------------------------------------------------------------ theme */
+(function initTheme() {
+  let t = null;
+  try { t = localStorage.getItem('ks-theme'); } catch {}
+  if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  $('themeBtn').onclick = () => {
+    const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = n;
+    try { localStorage.setItem('ks-theme', n); } catch {}
+  };
+})();
+
+/* ------------------------------------------------------------------ nav */
+function show(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  if (view === 'library') loadDocuments();
+  window.scrollTo({ top: 0 });
+}
+document.querySelectorAll('#nav button').forEach(b => b.onclick = () => show(b.dataset.view));
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-goto]');
+  if (a) { e.preventDefault(); show(a.dataset.goto); }
+});
+
+/* ------------------------------------------------------------------ status */
+async function loadStatus() {
+  try {
+    const s = await api('/api/status');
+    for (const k of ['markdown', 'recursive', 'fixed']) {
+      const chip = $('chip-' + k);
+      const st = s[k] || {};
+      chip.className = 'status-chip ' + (st.status === 'ready' ? 'ready' : 'missing');
+      chip.innerHTML = `<span class="dot"></span>${k} <span class="muted">${st.count ?? 0}</span>`;
+      chip.title = st.status === 'ready' ? `${st.count} chunks indexed` : 'Index not built';
+    }
+  } catch {}
+}
+
+/* ------------------------------------------------------------------ ask */
+let lastResponse = null;
+
+function payload() {
+  return {
+    query: $('query').value.trim(),
+    mode: $('mode').value,
+    strategy: $('strategy').value,
+    product_area: $('productArea').value || null,
+    article_id: $('articleId').value || null,
+    top_k: parseInt($('topK').value, 10),
+    threshold: parseFloat($('threshold').value),
+    rewrite: $('rewrite').checked,
+    hyde: $('hyde').checked,
+  };
+}
+$('topK').oninput = () => $('topKVal').textContent = $('topK').value;
+$('threshold').oninput = () => $('thresholdVal').textContent = parseFloat($('threshold').value).toFixed(2);
+$('presets').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  $('query').value = c.dataset.q; $('query').focus();
+});
+$('query').addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') runAsk(); });
+$('clearThread').onclick = () => {
+  // Keep a handle on the empty-state node: wiping innerHTML detaches it,
+  // and looking it up again afterwards returns null.
+  const empty = $('threadEmpty');
+  $('thread').innerHTML = '';
+  if (empty) { $('thread').appendChild(empty); empty.classList.remove('hidden'); }
+};
+
+function busy(on, label) {
+  $('askBtn').disabled = on; $('inspectBtn').disabled = on;
+  $('askSpinner').classList.toggle('hidden', !on);
+  $('askLabel').textContent = on ? (label || 'Thinking…') : 'Ask';
+}
+
+async function runAsk(inspectOnly = false) {
+  const p = payload();
+  if (!p.query) { $('query').focus(); return; }
+  busy(true, inspectOnly ? 'Retrieving…' : 'Thinking…');
+  try {
+    const data = await api(inspectOnly ? '/api/inspect' : '/api/ask', p);
+    lastResponse = data;
+    $('rawJson').textContent = JSON.stringify(data, null, 2);
+    const gen = inspectOnly ? data.generation : data;
+    const insp = inspectOnly ? data : data.inspection;
+    addTurn(p, gen, insp);
+    renderInspect(insp);
+    show(inspectOnly ? 'inspect' : 'ask');
+  } catch (err) {
+    toast('Request failed: ' + err.message, true);
+  } finally { busy(false); }
+}
+$('askBtn').onclick = () => runAsk(false);
+$('inspectBtn').onclick = () => runAsk(true);
+
+// Each gate fails for a different reason, so each one gets its own next step.
+function refusalHint(gen) {
+  const reason = gen.refusal_reason || '';
+  if (reason.startsWith('distance_gate')) {
+    const need = (Number(gen.best_distance) + 0.05).toFixed(2);
+    return `Nothing retrieved closely enough for the current gate. The closest chunk sat at
+      ${fmt(gen.best_distance)} — raise the gate above ${need} to let this query through.
+      The 0.75 default is calibrated on help-centre prose; record-style documents sit further out.`;
+  }
+  if (reason === 'model_reported_not_in_sources') {
+    return `Chunks were retrieved, but the model reported the specific fact is not in them.
+      A distance threshold cannot catch this — the topic is in the corpus, the fact is not.`;
+  }
+  if (reason === 'ungrounded_answer') {
+    return `The model produced text, but no single chunk covered enough of it, or it asserted
+      numbers no chunk contains. Summary-style questions land here by design: an answer spanning
+      many chunks cannot be verified against any one of them.`;
+  }
+  if (reason === 'no_chunks_retrieved') {
+    return `The filter excluded every chunk. Widen the product area or document filter.`;
+  }
+  return `The pipeline refuses rather than guess when no chunk supports an answer.`;
+}
+
+function addTurn(p, gen, insp) {
+  $('threadEmpty')?.classList.add('hidden');
+  const turn = document.createElement('div');
+  turn.className = 'turn';
+
+  const refused = !!gen.refused;
+  const answer = esc(gen.answer || '').replace(/\[(\d+)\]/g, '<span class="cite">[$1]</span>');
+  const sources = gen.sources || [];
+  const filters = [p.product_area && `area: ${p.product_area}`, p.article_id && `doc: ${p.article_id}`].filter(Boolean);
+
+  turn.innerHTML = `
+    <div class="q-bubble">${esc(p.query)}</div>
+    <div class="card a-card">
+      <div class="a-head">
+        ${refused ? `<span class="pill bad">✕ Refused</span>` : `<span class="pill ok">✓ Grounded · ${sources.length} citation${sources.length === 1 ? '' : 's'}`}
+        <span class="pill info">${esc(p.strategy)}</span>
+        ${insp?.rewritten_query ? `<span class="pill violet">rewritten</span>` : ''}
+        ${insp?.hyde_doc ? `<span class="pill violet">HyDE</span>` : ''}
+        ${filters.map(f => `<span class="pill warn">${esc(f)}</span>`).join('')}
+        <span class="pill violet">${esc(gen.retrieval_mode || p.mode || '')}</span>
+        ${gen.best_distance != null
+          ? `<span class="muted" style="font-size:.74rem;margin-left:auto;">best distance ${fmt(gen.best_distance)} · gate ${Number(gen.threshold ?? 0.75).toFixed(2)}</span>`
+          : `<span class="muted" style="font-size:.74rem;margin-left:auto;">no dense score · gate skipped</span>`}
+      </div>
+      <div class="a-text">${answer}</div>
+      ${refused ? `<div class="refusal-note">Reason: <b>${esc(gen.refusal_reason || 'ungrounded')}</b>. ${refusalHint(gen)}</div>` : ''}
+      ${sources.length ? `<div class="sources">
+        <div class="eyebrow" style="margin-bottom:.4rem;">Verified sources</div>
+        ${sources.map(s => `
+          <div class="source">
+            <span class="marker">${esc(s.marker)}</span>
+            <div>
+              <div class="title">${esc(s.chunk_id)} <span class="muted" style="font-weight:500;">· ${esc(s.section || 'General')}</span></div>
+              <div class="meta">${esc(s.product_area)} · ${esc(s.source_file)} · distance ${esc(s.retrieval_distance ?? '–')}</div>
+            </div>
+            <div class="coverage"><div class="bar"><i style="width:${Math.round((s.coverage || 0) * 100)}%"></i></div><span>coverage ${Math.round((s.coverage || 0) * 100)}%</span></div>
+          </div>`).join('')}
+      </div>` : ''}
+      <div class="a-foot">
+        <button class="btn ghost sm" data-goto="inspect">View retrieval stages →</button>
+        <button class="btn ghost sm" data-goto="console">Raw JSON</button>
+      </div>
+    </div>`;
+  $('thread').appendChild(turn);
+  turn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ------------------------------------------------------------------ inspect */
+function hitHTML(c, score, width, color, isFinal) {
+  return `<div class="hit ${isFinal ? 'final' : ''}">
+    <div class="row"><span class="id">${esc(c.chunk_id)}</span><span class="sc">${score}</span></div>
+    <div class="snip">${esc((c.content || '').replace(/\s+/g, ' ').slice(0, 220))}</div>
+    <div class="bar"><i style="width:${Math.max(4, Math.min(100, width))}%;background:${color}"></i></div>
+  </div>`;
+}
+
+function renderInspect(d) {
+  if (!d) return;
+  $('inspectEmpty').classList.add('hidden');
+  $('inspectBody').classList.remove('hidden');
+
+  const finalIds = new Set((d.reranked || []).map(c => c.chunk_id));
+  const dense = d.dense || [], bm25 = d.bm25 || [], rr = d.reranked || [];
+
+  $('queryStrip').innerHTML = `
+    <div><span class="k">Query</span><div>${esc(d.query)}</div></div>
+    ${d.rewritten_query ? `<div><span class="k">Rewritten</span><div>${esc(d.rewritten_query)}</div></div>` : ''}
+    ${d.hyde_doc ? `<div><span class="k">HyDE document</span><div class="muted" style="font-size:.85rem;">${esc(d.hyde_doc)}</div></div>` : ''}
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;"><span class="pill info">${esc(d.strategy || '')}</span><span class="pill violet">${esc(d.mode || '')}</span></div>`;
+
+  $('stageDense').innerHTML = dense.map(c =>
+    hitHTML(c, 'dist ' + fmt(c.distance), (1 - (c.distance ?? 1)) * 100, 'var(--info)', finalIds.has(c.chunk_id))).join('') || '<div class="muted">No hits</div>';
+
+  const maxB = Math.max(...bm25.map(c => c.bm25_score || 0), 1e-9);
+  $('stageBm25').innerHTML = bm25.map(c =>
+    hitHTML(c, 'bm25 ' + fmt(c.bm25_score, 2), (c.bm25_score || 0) / maxB * 100, 'var(--accent)', finalIds.has(c.chunk_id))).join('') || '<div class="muted">No hits</div>';
+
+  const scores = rr.map(c => c.rerank_score ?? 0);
+  const lo = Math.min(...scores, 0), hi = Math.max(...scores, 1e-9);
+  $('stageRerank').innerHTML = rr.map(c => {
+    const w = hi === lo ? 100 : ((c.rerank_score ?? 0) - lo) / (hi - lo) * 100;
+    const s = `rrf ${fmt(c.rrf_score, 4)} · ce ${fmt(c.rerank_score, 2)}` + (c.dense_rank || c.bm25_rank ? ` · d${c.dense_rank ?? '–'}/b${c.bm25_rank ?? '–'}` : '');
+    return hitHTML(c, s, w, 'var(--violet)', true);
+  }).join('') || '<div class="muted">No hits</div>';
+}
+
+/* ------------------------------------------------------------------ console */
+$('copyJson').onclick = async () => {
+  try { await navigator.clipboard.writeText($('rawJson').textContent); toast('Copied to clipboard'); }
+  catch { toast('Clipboard unavailable', true); }
+};
+
+/* ------------------------------------------------------------------ library */
+let docs = [];
+
+async function loadDocuments() {
+  try {
+    docs = await api('/api/documents');
+    renderDocs();
+    // filters in the settings drawer
+    const areas = [...new Set(docs.map(d => d.product_area).filter(Boolean))].sort();
+    const areaSel = $('productArea'), keepA = areaSel.value;
+    areaSel.innerHTML = '<option value="">All areas</option>' + areas.map(a => `<option value="${esc(a)}">${esc(a)}</option>`).join('');
+    areaSel.value = areas.includes(keepA) ? keepA : '';
+    const artSel = $('articleId'), keepD = artSel.value;
+    artSel.innerHTML = '<option value="">All documents</option>' + docs.map(d => `<option value="${esc(d.article_id)}">${esc(d.article_id)} · ${esc(d.source_file)}</option>`).join('');
+    artSel.value = docs.some(d => d.article_id === keepD) ? keepD : '';
+    $('navDocCount').textContent = docs.length ? `· ${docs.length}` : '';
+  } catch (err) {
+    $('docList').innerHTML = `<div class="muted" style="padding:1.5rem;text-align:center;">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+function renderDocs() {
+  const q = $('docFilter').value.trim().toLowerCase();
+  const list = docs.filter(d => !q || [d.source_file, d.article_id, d.product_area, d.title].join(' ').toLowerCase().includes(q));
+  $('docCount').textContent = `(${docs.length})`;
+  if (!list.length) { $('docList').innerHTML = '<div class="muted" style="padding:1.5rem;text-align:center;">No documents.</div>'; return; }
+  $('docList').innerHTML = list.map(d => `
+    <div class="doc">
+      <div class="ficon ${esc(d.file_type)}">${esc((d.file_type || 'txt').slice(0, 4))}</div>
+      <div>
+        <div class="name">${esc(d.source_file)}</div>
+        <div class="meta"><span class="mono">${esc(d.article_id)}</span><span>${esc(d.product_area)}</span><span>${(d.chars || 0).toLocaleString()} chars</span><span>${esc(d.last_updated || '')}</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn sm" data-ask="${esc(d.article_id)}" data-file="${esc(d.source_file)}">Ask</button>
+        <button class="btn sm ghost danger" data-del="${esc(d.source_file)}">Remove</button>
+      </div>
+    </div>`).join('');
+}
+$('docFilter').oninput = renderDocs;
+
+$('docList').addEventListener('click', async e => {
+  const ask = e.target.closest('[data-ask]');
+  if (ask) {
+    $('articleId').value = ask.dataset.ask;
+    $('query').value = `What are the key points in ${ask.dataset.file}?`;
+    show('ask'); runAsk(false); return;
+  }
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    if (!confirm(`Remove ${del.dataset.del} from the library and rebuild the indexes?`)) return;
+    del.disabled = true; del.textContent = 'Removing…';
+    try { await api('/api/documents/delete', { source_file: del.dataset.del }); toast(`Removed ${del.dataset.del}`); await loadDocuments(); loadStatus(); }
+    catch (err) { toast(err.message, true); del.disabled = false; del.textContent = 'Remove'; }
+  }
+});
+
+$('reindexBtn').onclick = async () => {
+  $('reindexBtn').disabled = true; $('reindexSpinner').classList.remove('hidden');
+  try { const r = await api('/api/reindex', {}); toast(`Rebuilt: ${Object.entries(r.chunks).map(([k, v]) => `${k} ${v}`).join(', ')}`); loadStatus(); }
+  catch (err) { toast(err.message, true); }
+  finally { $('reindexBtn').disabled = false; $('reindexSpinner').classList.add('hidden'); }
+};
+
+/* ---- upload queue: any file type, sent as base64, one reindex at the end */
+const queue = [];   // {file, name, size, status, note, el}
+let uploading = false;
+
+const dz = $('dropzone');
+dz.onclick = () => $('fileInput').click();
+$('fileInput').onchange = e => { enqueue([...e.target.files]); e.target.value = ''; };
+['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
+dz.addEventListener('drop', e => enqueue([...e.dataTransfer.files]));
+// allow dropping anywhere on the library view
+$('view-library').addEventListener('dragover', e => e.preventDefault());
+$('view-library').addEventListener('drop', e => { e.preventDefault(); if (!dz.contains(e.target)) enqueue([...e.dataTransfer.files]); });
+
+$('clearQueue').onclick = () => {
+  for (let i = queue.length - 1; i >= 0; i--) if (queue[i].status !== 'uploading') queue.splice(i, 1);
+  renderQueue();
+};
+
+function enqueue(files) {
+  if (!files.length) return;
+  for (const f of files) queue.push({ file: f, name: f.name, size: f.size, status: 'waiting', note: kb(f.size) });
+  renderQueue();
+  processQueue();
+}
+
+function renderQueue() {
+  if (!queue.length) { $('queue').innerHTML = '<div class="muted" style="font-size:.85rem;">Nothing queued yet.</div>'; return; }
+  $('queue').innerHTML = queue.map(it => {
+    const ext = (it.name.split('.').pop() || 'file').slice(0, 4);
+    const cls = it.status === 'done' ? 'done' : it.status === 'failed' ? 'fail' : '';
+    const icon = it.status === 'uploading' ? '<span class="spinner"></span>' : it.status === 'done' ? '✓' : it.status === 'failed' ? '!' : esc(ext);
+    return `<div class="qitem ${cls}">
+      <div class="ficon">${icon}</div>
+      <div><div class="fname" title="${esc(it.name)}">${esc(it.name)}</div><div class="fsub">${esc(it.note)}</div></div>
+      <div class="muted" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;">${it.status}</div>
+    </div>`;
+  }).join('');
+}
+
+function readAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1] || '');
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
+}
+
+async function processQueue() {
+  if (uploading) return;
+  uploading = true;
+  const area = $('uploadArea').value.trim() || 'Custom Upload';
+  let anyDone = false;
+  try {
+    for (const it of queue) {
+      if (it.status !== 'waiting') continue;
+      it.status = 'uploading'; it.note = 'Uploading & extracting text…'; renderQueue();
+      try {
+        const b64 = await readAsBase64(it.file);
+        const r = await api('/api/upload', { filename: it.name, content_b64: b64, product_area: area, reindex: false });
+        it.status = 'done'; it.note = `${r.article_id} · ${r.chars.toLocaleString()} chars extracted`; anyDone = true;
+      } catch (err) {
+        it.status = 'failed'; it.note = err.message;
+      }
+      renderQueue();
+    }
+    if (anyDone) {
+      toast('Rebuilding indexes…');
+      const r = await api('/api/reindex', {});
+      toast(`Indexed — ${r.chunks.markdown} chunks (markdown strategy)`);
+      await loadDocuments(); loadStatus();
+    }
+  } catch (err) {
+    toast('Re-index failed: ' + err.message, true);
+  } finally {
+    uploading = false;
+    if (queue.some(i => i.status === 'waiting')) processQueue();
+  }
+}
+
+$('pasteBtn').onclick = async () => {
+  const name = $('pasteName').value.trim(), body = $('pasteBody').value.trim();
+  if (!name || !body) { toast('Filename and content are both required', true); return; }
+  $('pasteBtn').disabled = true;
+  try {
+    const r = await api('/api/upload', { filename: name, content: body, product_area: $('uploadArea').value.trim() || 'Custom Upload', reindex: true });
+    toast(`Added ${r.filename} · ${r.chunks} chunks indexed`);
+    $('pasteName').value = ''; $('pasteBody').value = '';
+    await loadDocuments(); loadStatus();
+  } catch (err) { toast(err.message, true); }
+  finally { $('pasteBtn').disabled = false; }
+};
+
+/* ------------------------------------------------------------------ boot */
+loadStatus();
+loadDocuments();
+</script>
+</body>
+</html>

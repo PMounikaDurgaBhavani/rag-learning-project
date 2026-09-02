@@ -1,0 +1,80 @@
+---
+article_id: HC-007
+product_area: API Access
+last_updated: 2026-09-01
+---
+
+# API Access and Rate Limits
+
+## Overview
+
+CloudDesk provides a REST API that lets an organization create tickets, read notification settings and export billing records programmatically.
+
+API access is disabled by default and must be enabled by a CloudDesk administrator before any key can be issued.
+
+## Creating an API Key
+
+Follow these steps to create a CloudDesk API key:
+
+1. Open CloudDesk and go to Settings.
+2. Select the Developer tab.
+3. Click "Create API Key".
+4. Enter a label that describes where the key will be used.
+5. Select the scopes the key is allowed to use.
+6. Click "Generate".
+7. Copy the key immediately and store it securely.
+
+A newly generated API key is shown only once. CloudDesk does not display the full key again after the dialog is closed.
+
+An API key expires 90 days after it is created.
+
+An organization may hold several active API keys at the same time.
+
+## Rate Limits
+
+Each API key is limited to 1000 requests per hour.
+
+The rate limit window resets at the top of every hour.
+
+A request that exceeds the limit is rejected with error code ERR-4029.
+
+The maximum request payload size is 5 MB.
+
+## Authentication Errors
+
+A request sent without an Authorization header is rejected with error code ERR-4013.
+
+A request sent with an expired key is rejected with error code ERR-4014.
+
+## API Troubleshooting
+
+| Problem | Possible Cause | Solution |
+|---|---|---|
+| Request rejected with ERR-4029 | Hourly rate limit exceeded | Wait for the next hourly window or reduce request frequency |
+| Request rejected with ERR-4013 | Authorization header is missing | Send the API key in the Authorization header |
+| Request rejected with ERR-4014 | API key has expired | Generate a new API key in the Developer tab |
+| Request rejected with ERR-5002 | Temporary CloudDesk service issue | Retry the request after a short delay |
+| API key cannot be created | API access is disabled for the organization | Ask a CloudDesk administrator to enable API access |
+| Response is truncated | Payload exceeds the 5 MB limit | Request fewer records per call using pagination |
+
+## Key Rotation
+
+A key should be rotated before it expires so that integrations are not interrupted.
+
+To rotate a key, create a new key, update the integration to use it, and then revoke the old key from the Developer tab.
+
+Revoking a key takes effect immediately.
+
+## Frequently Asked Questions
+
+### How long is an API key valid?
+
+An API key is valid for 90 days from the date it was created.
+
+### What happens when the rate limit is reached?
+
+Further requests are rejected with error code ERR-4029 until the next hourly window begins.
+
+## Related Information
+
+API access issues are often related to notification settings and organization permissions.

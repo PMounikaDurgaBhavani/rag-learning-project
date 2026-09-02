@@ -60,6 +60,151 @@ def get_pipeline():
 
 
 # ============================================================
+# Retrieval modes
+# ============================================================
+#
+# The answer path defaults to "dense", which is exactly what Week 3
+# and the Week 4 baseline used - every recorded evaluation number
+# depends on that default staying put. The other modes exist so the
+# UI can answer from the same retriever it is displaying.
+# ============================================================
+
+RETRIEVAL_MODES = ("dense", "bm25", "hybrid", "hybrid_rerank")
+
+
+def chunk_distance(chunk):
+    """Dense distance for a chunk, or None if it never had one.
+
+    BM25 reaches chunks that dense retrieval never scored, so a fused
+    result can legitimately carry no distance at all.
+    """
+
+    value = chunk.get("distance")
+
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+
+    return float(value)
+
+
+# A term may appear in at most this fraction of the corpus and still
+# count as rare enough to identify a specific chunk.
+ANCHOR_MAX_DOC_FRACTION = 0.05
+
+# How far down the ranking a lexical anchor is still trusted.
+ANCHOR_TOP_N = 3
+
+# Shorter than this and a term identifies nothing.
+ANCHOR_MIN_TOKEN_LENGTH = 3
+
+
+def lexical_anchors(query, chunks, strategy):
+    """Rare query terms that actually appear in the top retrieved chunks.
+
+    A dense distance gate assumes the question and its answer are
+    phrased alike. That holds for prose and fails completely for
+    record data: "How old is Marcus Feld?" sits 1.82 away from the row
+    that answers it, because a table of names and numbers shares no
+    wording with a question.
+
+    A name, an error code or a profile ID is different evidence
+    entirely - it identifies one chunk regardless of similarity. When
+    such a term is both rare in the corpus and present in what was
+    retrieved, distance is the wrong test to be applying.
+    """
+
+    from bm25_retriever import get_bm25_index, tokenize
+    from grounding import STOPWORDS
+
+    index = get_bm25_index(strategy=strategy)
+    corpus_size = len(index.tokenized_corpus)
+
+    # A short or common word can be rare by accident in a small corpus.
+    # An anchor has to be a term that identifies something.
+    query_tokens = {
+        token
+        for token in tokenize(query)
+        if len(token) >= ANCHOR_MIN_TOKEN_LENGTH
+        and token not in STOPWORDS
+    }
+
+    if not corpus_size or not query_tokens:
+        return []
+
+    document_frequency = {}
+
+    for tokens in index.tokenized_corpus:
+        for token in query_tokens.intersection(tokens):
+            document_frequency[token] = (
+                document_frequency.get(token, 0) + 1
+            )
+
+    limit = max(1, int(corpus_size * ANCHOR_MAX_DOC_FRACTION))
+
+    rare = {
+        token
+        for token, count in document_frequency.items()
+        if count <= limit
+    }
+
+    if not rare:
+        return []
+
+    found = set()
+
+    for chunk in chunks[:ANCHOR_TOP_N]:
+        found |= rare.intersection(tokenize(chunk["content"]))
+
+    return sorted(found)
+
+
+def retrieve_for_mode(
+    query,
+    top_k,
+    strategy,
+    where,
+    mode="dense"
+):
+    """Retrieve chunks using the requested retriever."""
+
+    if mode not in RETRIEVAL_MODES:
+        raise ValueError(
+            f"Unknown retrieval mode: {mode}. "
+            f"Available: {list(RETRIEVAL_MODES)}"
+        )
+
+    if mode == "dense":
+        return retrieve_chunks(
+            query,
+            top_k=top_k,
+            strategy=strategy,
+            where=where
+        )
+
+    # Imported lazily so the dense path never pays for loading the
+    # BM25 index or the cross-encoder.
+    if mode == "bm25":
+        from bm25_retriever import retrieve_bm25
+
+        return retrieve_bm25(
+            query,
+            top_k=top_k,
+            strategy=strategy,
+            where=where
+        )
+
+    from hybrid_retriever import retrieve_hybrid
+
+    return retrieve_hybrid(
+        query,
+        top_k=top_k,
+        strategy=strategy,
+        where=where,
+        rerank=(mode == "hybrid_rerank")
+    )
+
+
+# ============================================================
 # Prompt construction
 # ============================================================
 
@@ -112,6 +257,8 @@ def said_no_answer(answer):
 
 
 def make_citation(chunk, score, marker):
+    distance = chunk_distance(chunk)
+
     return {
         "marker": marker,
         "chunk_id": chunk["chunk_id"],
@@ -120,7 +267,11 @@ def make_citation(chunk, score, marker):
         "product_area": chunk["product_area"],
         "last_updated": chunk["last_updated"],
         "section": chunk.get("section"),
-        "retrieval_distance": round(chunk["distance"], 4),
+        "retrieval_distance": (
+            round(distance, 4)
+            if distance is not None
+            else None
+        ),
         "coverage": score["coverage"],
     }
 
@@ -137,6 +288,7 @@ def generate_answer(
     article_id=None,
     threshold=RELEVANCE_THRESHOLD,
     min_coverage=MIN_COVERAGE,
+    retrieval_mode="dense",
     verbose=False
 ):
     """Answer a question from the indexed help centre articles.
@@ -158,23 +310,30 @@ def generate_answer(
         article_id=article_id
     )
 
-    chunks = retrieve_chunks(
+    chunks = retrieve_for_mode(
         query,
         top_k=top_k,
         strategy=strategy,
-        where=where
+        where=where,
+        mode=retrieval_mode
     )
 
     result = {
         "query": query,
         "strategy": strategy,
+        "retrieval_mode": retrieval_mode,
         "top_k": top_k,
+        "threshold": threshold,
         "filter": where,
         "retrieved": [
             {
                 "rank": chunk["rank"],
                 "chunk_id": chunk["chunk_id"],
-                "distance": round(chunk["distance"], 4),
+                "distance": (
+                    round(distance, 4)
+                    if (distance := chunk_distance(chunk)) is not None
+                    else None
+                ),
             }
             for chunk in chunks
         ],
@@ -197,19 +356,61 @@ def generate_answer(
         result["refusal_reason"] = "no_chunks_retrieved"
         return result
 
-    best_distance = chunks[0]["distance"]
-    result["best_distance"] = round(best_distance, 4)
+    # The gate is a dense-similarity gate. Under a fused ranking the
+    # first chunk is ordered by RRF or rerank score, so its own dense
+    # distance is not the closest one retrieved - take the minimum
+    # over every chunk that carries a distance at all.
+    distances = [
+        distance
+        for distance in (chunk_distance(chunk) for chunk in chunks)
+        if distance is not None
+    ]
+
+    best_distance = min(distances) if distances else None
+
+    result["best_distance"] = (
+        round(best_distance, 4)
+        if best_distance is not None
+        else None
+    )
 
     if verbose:
-        print(f"  best distance: {best_distance:.4f}")
-
-    if best_distance > threshold:
-        result["answer"] = REFUSAL_MESSAGE
-        result["refused"] = True
-        result["refusal_reason"] = (
-            f"distance_gate ({best_distance:.4f} > {threshold})"
+        print(
+            "  best distance: "
+            + (
+                f"{best_distance:.4f}"
+                if best_distance is not None
+                else "n/a (no dense score)"
+            )
         )
-        return result
+
+    # A lexical anchor overrides the distance gate, but only when a
+    # lexical retriever was actually used - the dense path keeps the
+    # Week 3 behaviour every recorded evaluation number depends on.
+    anchors = (
+        lexical_anchors(query, chunks, strategy)
+        if retrieval_mode != "dense"
+        else []
+    )
+
+    result["lexical_anchors"] = anchors
+
+    if best_distance is not None and best_distance > threshold:
+
+        if not anchors:
+            result["answer"] = REFUSAL_MESSAGE
+            result["refused"] = True
+            result["refusal_reason"] = (
+                f"distance_gate ({best_distance:.4f} > {threshold})"
+            )
+            return result
+
+        result["gate_bypass"] = (
+            f"lexical_anchor ({', '.join(anchors)})"
+        )
+
+        if verbose:
+            print(f"  distance gate bypassed by: {anchors}")
 
     # --------------------------------------------------------
     # Generate

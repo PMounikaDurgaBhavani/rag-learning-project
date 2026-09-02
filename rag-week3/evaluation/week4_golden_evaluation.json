@@ -1,0 +1,195 @@
+{
+  "baseline": {
+    "hit_rate_at_3": 66.66666666666666,
+    "hits": 8,
+    "total": 12,
+    "p50_latency_ms": 17.967333551496267,
+    "failure_tally": {
+      "R": 4,
+      "G": 0,
+      "Not-In-Corpus": 0
+    },
+    "classified_failures": [
+      {
+        "id": "GS-01",
+        "question": "How long is a password reset link valid in CloudDesk?",
+        "classification": "R",
+        "evidence": "Expected chunk [HC-001-markdown-5] not in Top-3. Retrieved: ['HC-001-markdown-15', 'HC-001-markdown-6', 'HC-001-markdown-18'].",
+        "expected": "HC-001-markdown-5",
+        "retrieved": [
+          "HC-001-markdown-15",
+          "HC-001-markdown-6",
+          "HC-001-markdown-18"
+        ]
+      },
+      {
+        "id": "GS-05",
+        "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+        "classification": "R",
+        "evidence": "Expected chunk [HC-002-markdown-10] not in Top-3. Retrieved: ['HC-002-markdown-7', 'HC-002-markdown-4', 'HC-002-markdown-3'].",
+        "expected": "HC-002-markdown-10",
+        "retrieved": [
+          "HC-002-markdown-7",
+          "HC-002-markdown-4",
+          "HC-002-markdown-3"
+        ]
+      },
+      {
+        "id": "GS-09",
+        "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+        "classification": "R",
+        "evidence": "Expected chunk [HC-005-markdown-12] not in Top-3. Retrieved: ['HC-005-markdown-22', 'HC-005-markdown-16', 'HC-005-markdown-10'].",
+        "expected": "HC-005-markdown-12",
+        "retrieved": [
+          "HC-005-markdown-22",
+          "HC-005-markdown-16",
+          "HC-005-markdown-10"
+        ]
+      },
+      {
+        "id": "GS-12",
+        "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+        "classification": "R",
+        "evidence": "Expected chunk [HC-006-markdown-9] not in Top-3. Retrieved: ['HC-006-markdown-24', 'HC-006-markdown-11', 'HC-006-markdown-20'].",
+        "expected": "HC-006-markdown-9",
+        "retrieved": [
+          "HC-006-markdown-24",
+          "HC-006-markdown-11",
+          "HC-006-markdown-20"
+        ]
+      }
+    ]
+  },
+  "improved": {
+    "retrieval_improvement": "BM25 + RRF Hybrid Fusion",
+    "hit_rate_at_3": 75.0,
+    "hits": 9,
+    "total": 12,
+    "p50_latency_ms": 11.34985452517867,
+    "fixed_count": 1,
+    "unfixed_count": 3
+  },
+  "shipping_decision": "SHIP",
+  "comparison": [
+    {
+      "id": "GS-01",
+      "question": "How long is a password reset link valid in CloudDesk?",
+      "expected_chunk_id": "HC-001-markdown-5",
+      "baseline_hit": false,
+      "baseline_rank": "Miss",
+      "improved_hit": true,
+      "improved_rank": 2,
+      "fix_status": "FIXED"
+    },
+    {
+      "id": "GS-02",
+      "question": "What are the minimum character requirements for a new password under HC-001?",
+      "expected_chunk_id": "HC-001-markdown-6",
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "improved_hit": true,
+      "improved_rank": 2,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-03",
+      "question": "What is the troubleshooting solution when the reset link has expired?",
+      "expected_chunk_id": "HC-001-markdown-11",
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-04",
+      "question": "How long does a temporary CloudDesk account lock last after failed logins?",
+      "expected_chunk_id": "HC-002-markdown-5",
+      "baseline_hit": true,
+      "baseline_rank": 2,
+      "improved_hit": true,
+      "improved_rank": 2,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-05",
+      "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+      "expected_chunk_id": "HC-002-markdown-10",
+      "baseline_hit": false,
+      "baseline_rank": "Miss",
+      "improved_hit": false,
+      "improved_rank": "Miss",
+      "fix_status": "UNFIXED"
+    },
+    {
+      "id": "GS-06",
+      "question": "How do I update an expired payment method in CloudDesk?",
+      "expected_chunk_id": "HC-003-markdown-9",
+      "baseline_hit": true,
+      "baseline_rank": 2,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-07",
+      "question": "My card expired and payment failed under HC-003. What is the solution?",
+      "expected_chunk_id": "HC-003-markdown-13",
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-08",
+      "question": "How do I filter CloudDesk tickets by Priority in HC-004?",
+      "expected_chunk_id": "HC-004-markdown-8",
+      "baseline_hit": true,
+      "baseline_rank": 3,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-09",
+      "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+      "expected_chunk_id": "HC-005-markdown-12",
+      "baseline_hit": false,
+      "baseline_rank": "Miss",
+      "improved_hit": false,
+      "improved_rank": "Miss",
+      "fix_status": "UNFIXED"
+    },
+    {
+      "id": "GS-10",
+      "question": "Who can manage organization-level notification controls in HC-005?",
+      "expected_chunk_id": "HC-005-markdown-23",
+      "baseline_hit": true,
+      "baseline_rank": 3,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-11",
+      "question": "What is the maximum individual file size limit for CloudDesk uploads?",
+      "expected_chunk_id": "HC-006-markdown-3",
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "fix_status": "MAINTAINED_HIT"
+    },
+    {
+      "id": "GS-12",
+      "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+      "expected_chunk_id": "HC-006-markdown-9",
+      "baseline_hit": false,
+      "baseline_rank": "Miss",
+      "improved_hit": false,
+      "improved_rank": "Miss",
+      "fix_status": "UNFIXED"
+    }
+  ]
+}
