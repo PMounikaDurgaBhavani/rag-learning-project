@@ -1,0 +1,764 @@
+{
+  "k": 3,
+  "strategy": "markdown",
+  "rrf_k": 60,
+  "candidate_k": 25,
+  "single_change": "Dense-only ranking replaced by dense + BM25 fused with RRF (k=60)",
+  "baseline": {
+    "arm": "baseline",
+    "label": "Dense only (cosine)",
+    "k": 3,
+    "hits": 8,
+    "total": 12,
+    "hit_rate": 66.7,
+    "p50_latency_ms": 12.63,
+    "p95_latency_ms": 13.44,
+    "questions": [
+      {
+        "id": "GS-01",
+        "question": "How long is a password reset link valid in CloudDesk?",
+        "expected_chunk_id": "HC-001-markdown-5",
+        "has_exact_identifier": false,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": 8,
+        "top_k_ids": [
+          "HC-001-markdown-15",
+          "HC-001-markdown-6",
+          "HC-001-markdown-18"
+        ],
+        "latency_ms": 12.86
+      },
+      {
+        "id": "GS-02",
+        "question": "What are the minimum character requirements for a new password under HC-001?",
+        "expected_chunk_id": "HC-001-markdown-6",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-001-markdown-6",
+          "HC-001-markdown-12",
+          "HC-001-markdown-15"
+        ],
+        "latency_ms": 12.46
+      },
+      {
+        "id": "GS-03",
+        "question": "What is the troubleshooting solution when the reset link has expired?",
+        "expected_chunk_id": "HC-001-markdown-11",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-001-markdown-11",
+          "HC-001-markdown-17",
+          "HC-001-markdown-16"
+        ],
+        "latency_ms": 12.77
+      },
+      {
+        "id": "GS-04",
+        "question": "How long does a temporary CloudDesk account lock last after failed logins?",
+        "expected_chunk_id": "HC-002-markdown-5",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 2,
+        "rank_in_candidates": 2,
+        "top_k_ids": [
+          "HC-002-markdown-20",
+          "HC-002-markdown-5",
+          "HC-002-markdown-1"
+        ],
+        "latency_ms": 13.44
+      },
+      {
+        "id": "GS-05",
+        "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+        "expected_chunk_id": "HC-002-markdown-10",
+        "has_exact_identifier": true,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": 7,
+        "top_k_ids": [
+          "HC-002-markdown-7",
+          "HC-002-markdown-4",
+          "HC-002-markdown-3"
+        ],
+        "latency_ms": 12.69
+      },
+      {
+        "id": "GS-06",
+        "question": "How do I update an expired payment method in CloudDesk?",
+        "expected_chunk_id": "HC-003-markdown-9",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 2,
+        "rank_in_candidates": 2,
+        "top_k_ids": [
+          "HC-003-markdown-4",
+          "HC-003-markdown-9",
+          "HC-003-markdown-6"
+        ],
+        "latency_ms": 13.0
+      },
+      {
+        "id": "GS-07",
+        "question": "My card expired and payment failed under HC-003. What is the solution?",
+        "expected_chunk_id": "HC-003-markdown-13",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-003-markdown-13",
+          "HC-003-markdown-10",
+          "HC-003-markdown-9"
+        ],
+        "latency_ms": 12.44
+      },
+      {
+        "id": "GS-08",
+        "question": "How do I filter CloudDesk tickets by Priority in HC-004?",
+        "expected_chunk_id": "HC-004-markdown-8",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 3,
+        "rank_in_candidates": 3,
+        "top_k_ids": [
+          "HC-004-markdown-1",
+          "HC-004-markdown-2",
+          "HC-004-markdown-8"
+        ],
+        "latency_ms": 13.62
+      },
+      {
+        "id": "GS-09",
+        "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+        "expected_chunk_id": "HC-005-markdown-12",
+        "has_exact_identifier": false,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": null,
+        "top_k_ids": [
+          "HC-005-markdown-22",
+          "HC-005-markdown-16",
+          "HC-005-markdown-10"
+        ],
+        "latency_ms": 12.51
+      },
+      {
+        "id": "GS-10",
+        "question": "Who can manage organization-level notification controls in HC-005?",
+        "expected_chunk_id": "HC-005-markdown-23",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 3,
+        "rank_in_candidates": 3,
+        "top_k_ids": [
+          "HC-005-markdown-3",
+          "HC-005-markdown-26",
+          "HC-005-markdown-23"
+        ],
+        "latency_ms": 12.37
+      },
+      {
+        "id": "GS-11",
+        "question": "What is the maximum individual file size limit for CloudDesk uploads?",
+        "expected_chunk_id": "HC-006-markdown-3",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-006-markdown-3",
+          "HC-006-markdown-27",
+          "HC-006-markdown-1"
+        ],
+        "latency_ms": 12.52
+      },
+      {
+        "id": "GS-12",
+        "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+        "expected_chunk_id": "HC-006-markdown-9",
+        "has_exact_identifier": true,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": 7,
+        "top_k_ids": [
+          "HC-006-markdown-24",
+          "HC-006-markdown-11",
+          "HC-006-markdown-20"
+        ],
+        "latency_ms": 12.57
+      }
+    ]
+  },
+  "improved": {
+    "arm": "improved",
+    "label": "Dense + BM25 \u00b7 RRF k=60",
+    "k": 3,
+    "hits": 9,
+    "total": 12,
+    "hit_rate": 75.0,
+    "p50_latency_ms": 13.09,
+    "p95_latency_ms": 13.55,
+    "questions": [
+      {
+        "id": "GS-01",
+        "question": "How long is a password reset link valid in CloudDesk?",
+        "expected_chunk_id": "HC-001-markdown-5",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 2,
+        "rank_in_candidates": 2,
+        "top_k_ids": [
+          "HC-001-markdown-15",
+          "HC-001-markdown-5",
+          "HC-001-markdown-3"
+        ],
+        "latency_ms": 12.88
+      },
+      {
+        "id": "GS-02",
+        "question": "What are the minimum character requirements for a new password under HC-001?",
+        "expected_chunk_id": "HC-001-markdown-6",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 2,
+        "rank_in_candidates": 2,
+        "top_k_ids": [
+          "HC-001-markdown-12",
+          "HC-001-markdown-6",
+          "HC-001-markdown-15"
+        ],
+        "latency_ms": 13.18
+      },
+      {
+        "id": "GS-03",
+        "question": "What is the troubleshooting solution when the reset link has expired?",
+        "expected_chunk_id": "HC-001-markdown-11",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-001-markdown-11",
+          "HC-001-markdown-17",
+          "HC-001-markdown-16"
+        ],
+        "latency_ms": 15.1
+      },
+      {
+        "id": "GS-04",
+        "question": "How long does a temporary CloudDesk account lock last after failed logins?",
+        "expected_chunk_id": "HC-002-markdown-5",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 2,
+        "rank_in_candidates": 2,
+        "top_k_ids": [
+          "HC-002-markdown-20",
+          "HC-002-markdown-5",
+          "HC-002-markdown-18"
+        ],
+        "latency_ms": 12.74
+      },
+      {
+        "id": "GS-05",
+        "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+        "expected_chunk_id": "HC-002-markdown-10",
+        "has_exact_identifier": true,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": 8,
+        "top_k_ids": [
+          "HC-002-markdown-2",
+          "HC-002-markdown-3",
+          "HC-002-markdown-21"
+        ],
+        "latency_ms": 13.28
+      },
+      {
+        "id": "GS-06",
+        "question": "How do I update an expired payment method in CloudDesk?",
+        "expected_chunk_id": "HC-003-markdown-9",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-003-markdown-9",
+          "HC-003-markdown-8",
+          "HC-003-markdown-13"
+        ],
+        "latency_ms": 13.12
+      },
+      {
+        "id": "GS-07",
+        "question": "My card expired and payment failed under HC-003. What is the solution?",
+        "expected_chunk_id": "HC-003-markdown-13",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-003-markdown-13",
+          "HC-003-markdown-9",
+          "HC-003-markdown-12"
+        ],
+        "latency_ms": 13.55
+      },
+      {
+        "id": "GS-08",
+        "question": "How do I filter CloudDesk tickets by Priority in HC-004?",
+        "expected_chunk_id": "HC-004-markdown-8",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-004-markdown-8",
+          "HC-004-markdown-7",
+          "HC-004-markdown-5"
+        ],
+        "latency_ms": 12.88
+      },
+      {
+        "id": "GS-09",
+        "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+        "expected_chunk_id": "HC-005-markdown-12",
+        "has_exact_identifier": false,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": null,
+        "top_k_ids": [
+          "HC-005-markdown-16",
+          "HC-005-markdown-10",
+          "HC-005-markdown-21"
+        ],
+        "latency_ms": 13.19
+      },
+      {
+        "id": "GS-10",
+        "question": "Who can manage organization-level notification controls in HC-005?",
+        "expected_chunk_id": "HC-005-markdown-23",
+        "has_exact_identifier": true,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-005-markdown-23",
+          "HC-005-markdown-4",
+          "HC-005-markdown-26"
+        ],
+        "latency_ms": 12.75
+      },
+      {
+        "id": "GS-11",
+        "question": "What is the maximum individual file size limit for CloudDesk uploads?",
+        "expected_chunk_id": "HC-006-markdown-3",
+        "has_exact_identifier": false,
+        "hit": true,
+        "rank": 1,
+        "rank_in_candidates": 1,
+        "top_k_ids": [
+          "HC-006-markdown-3",
+          "HC-006-markdown-4",
+          "HC-006-markdown-1"
+        ],
+        "latency_ms": 13.05
+      },
+      {
+        "id": "GS-12",
+        "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+        "expected_chunk_id": "HC-006-markdown-9",
+        "has_exact_identifier": true,
+        "hit": false,
+        "rank": null,
+        "rank_in_candidates": 5,
+        "top_k_ids": [
+          "HC-006-markdown-24",
+          "HC-006-markdown-11",
+          "HC-006-markdown-20"
+        ],
+        "latency_ms": 12.67
+      }
+    ]
+  },
+  "comparison": [
+    {
+      "id": "GS-01",
+      "question": "How long is a password reset link valid in CloudDesk?",
+      "expected_chunk_id": "HC-001-markdown-5",
+      "has_exact_identifier": false,
+      "baseline_hit": false,
+      "baseline_rank": null,
+      "baseline_rank_in_candidates": 8,
+      "baseline_top_k_ids": [
+        "HC-001-markdown-15",
+        "HC-001-markdown-6",
+        "HC-001-markdown-18"
+      ],
+      "baseline_latency_ms": 12.86,
+      "improved_hit": true,
+      "improved_rank": 2,
+      "improved_rank_in_candidates": 2,
+      "improved_top_k_ids": [
+        "HC-001-markdown-15",
+        "HC-001-markdown-5",
+        "HC-001-markdown-3"
+      ],
+      "improved_latency_ms": 12.88,
+      "failure_label": "R",
+      "evidence": "Expected chunk HC-001-markdown-5 ranked #8 under dense retrieval, outside top-3. Top-3 returned: HC-001-markdown-15, HC-001-markdown-6, HC-001-markdown-18.",
+      "status": "FIXED"
+    },
+    {
+      "id": "GS-02",
+      "question": "What are the minimum character requirements for a new password under HC-001?",
+      "expected_chunk_id": "HC-001-markdown-6",
+      "has_exact_identifier": true,
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "baseline_rank_in_candidates": 1,
+      "baseline_top_k_ids": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-12",
+        "HC-001-markdown-15"
+      ],
+      "baseline_latency_ms": 12.46,
+      "improved_hit": true,
+      "improved_rank": 2,
+      "improved_rank_in_candidates": 2,
+      "improved_top_k_ids": [
+        "HC-001-markdown-12",
+        "HC-001-markdown-6",
+        "HC-001-markdown-15"
+      ],
+      "improved_latency_ms": 13.18,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-03",
+      "question": "What is the troubleshooting solution when the reset link has expired?",
+      "expected_chunk_id": "HC-001-markdown-11",
+      "has_exact_identifier": false,
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "baseline_rank_in_candidates": 1,
+      "baseline_top_k_ids": [
+        "HC-001-markdown-11",
+        "HC-001-markdown-17",
+        "HC-001-markdown-16"
+      ],
+      "baseline_latency_ms": 12.77,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-001-markdown-11",
+        "HC-001-markdown-17",
+        "HC-001-markdown-16"
+      ],
+      "improved_latency_ms": 15.1,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-04",
+      "question": "How long does a temporary CloudDesk account lock last after failed logins?",
+      "expected_chunk_id": "HC-002-markdown-5",
+      "has_exact_identifier": false,
+      "baseline_hit": true,
+      "baseline_rank": 2,
+      "baseline_rank_in_candidates": 2,
+      "baseline_top_k_ids": [
+        "HC-002-markdown-20",
+        "HC-002-markdown-5",
+        "HC-002-markdown-1"
+      ],
+      "baseline_latency_ms": 13.44,
+      "improved_hit": true,
+      "improved_rank": 2,
+      "improved_rank_in_candidates": 2,
+      "improved_top_k_ids": [
+        "HC-002-markdown-20",
+        "HC-002-markdown-5",
+        "HC-002-markdown-18"
+      ],
+      "improved_latency_ms": 12.74,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-05",
+      "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+      "expected_chunk_id": "HC-002-markdown-10",
+      "has_exact_identifier": true,
+      "baseline_hit": false,
+      "baseline_rank": null,
+      "baseline_rank_in_candidates": 7,
+      "baseline_top_k_ids": [
+        "HC-002-markdown-7",
+        "HC-002-markdown-4",
+        "HC-002-markdown-3"
+      ],
+      "baseline_latency_ms": 12.69,
+      "improved_hit": false,
+      "improved_rank": null,
+      "improved_rank_in_candidates": 8,
+      "improved_top_k_ids": [
+        "HC-002-markdown-2",
+        "HC-002-markdown-3",
+        "HC-002-markdown-21"
+      ],
+      "improved_latency_ms": 13.28,
+      "failure_label": "R",
+      "evidence": "Expected chunk HC-002-markdown-10 ranked #7 under dense retrieval, outside top-3. Top-3 returned: HC-002-markdown-7, HC-002-markdown-4, HC-002-markdown-3.",
+      "status": "UNFIXED"
+    },
+    {
+      "id": "GS-06",
+      "question": "How do I update an expired payment method in CloudDesk?",
+      "expected_chunk_id": "HC-003-markdown-9",
+      "has_exact_identifier": false,
+      "baseline_hit": true,
+      "baseline_rank": 2,
+      "baseline_rank_in_candidates": 2,
+      "baseline_top_k_ids": [
+        "HC-003-markdown-4",
+        "HC-003-markdown-9",
+        "HC-003-markdown-6"
+      ],
+      "baseline_latency_ms": 13.0,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-003-markdown-9",
+        "HC-003-markdown-8",
+        "HC-003-markdown-13"
+      ],
+      "improved_latency_ms": 13.12,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-07",
+      "question": "My card expired and payment failed under HC-003. What is the solution?",
+      "expected_chunk_id": "HC-003-markdown-13",
+      "has_exact_identifier": true,
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "baseline_rank_in_candidates": 1,
+      "baseline_top_k_ids": [
+        "HC-003-markdown-13",
+        "HC-003-markdown-10",
+        "HC-003-markdown-9"
+      ],
+      "baseline_latency_ms": 12.44,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-003-markdown-13",
+        "HC-003-markdown-9",
+        "HC-003-markdown-12"
+      ],
+      "improved_latency_ms": 13.55,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-08",
+      "question": "How do I filter CloudDesk tickets by Priority in HC-004?",
+      "expected_chunk_id": "HC-004-markdown-8",
+      "has_exact_identifier": true,
+      "baseline_hit": true,
+      "baseline_rank": 3,
+      "baseline_rank_in_candidates": 3,
+      "baseline_top_k_ids": [
+        "HC-004-markdown-1",
+        "HC-004-markdown-2",
+        "HC-004-markdown-8"
+      ],
+      "baseline_latency_ms": 13.62,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-004-markdown-8",
+        "HC-004-markdown-7",
+        "HC-004-markdown-5"
+      ],
+      "improved_latency_ms": 12.88,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-09",
+      "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+      "expected_chunk_id": "HC-005-markdown-12",
+      "has_exact_identifier": false,
+      "baseline_hit": false,
+      "baseline_rank": null,
+      "baseline_rank_in_candidates": null,
+      "baseline_top_k_ids": [
+        "HC-005-markdown-22",
+        "HC-005-markdown-16",
+        "HC-005-markdown-10"
+      ],
+      "baseline_latency_ms": 12.51,
+      "improved_hit": false,
+      "improved_rank": null,
+      "improved_rank_in_candidates": null,
+      "improved_top_k_ids": [
+        "HC-005-markdown-16",
+        "HC-005-markdown-10",
+        "HC-005-markdown-21"
+      ],
+      "improved_latency_ms": 13.19,
+      "failure_label": "Not-In-Corpus",
+      "evidence": "Expected chunk HC-005-markdown-12 did not appear anywhere in the top 25 dense candidates.",
+      "status": "UNFIXED"
+    },
+    {
+      "id": "GS-10",
+      "question": "Who can manage organization-level notification controls in HC-005?",
+      "expected_chunk_id": "HC-005-markdown-23",
+      "has_exact_identifier": true,
+      "baseline_hit": true,
+      "baseline_rank": 3,
+      "baseline_rank_in_candidates": 3,
+      "baseline_top_k_ids": [
+        "HC-005-markdown-3",
+        "HC-005-markdown-26",
+        "HC-005-markdown-23"
+      ],
+      "baseline_latency_ms": 12.37,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-005-markdown-23",
+        "HC-005-markdown-4",
+        "HC-005-markdown-26"
+      ],
+      "improved_latency_ms": 12.75,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-11",
+      "question": "What is the maximum individual file size limit for CloudDesk uploads?",
+      "expected_chunk_id": "HC-006-markdown-3",
+      "has_exact_identifier": false,
+      "baseline_hit": true,
+      "baseline_rank": 1,
+      "baseline_rank_in_candidates": 1,
+      "baseline_top_k_ids": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-27",
+        "HC-006-markdown-1"
+      ],
+      "baseline_latency_ms": 12.52,
+      "improved_hit": true,
+      "improved_rank": 1,
+      "improved_rank_in_candidates": 1,
+      "improved_top_k_ids": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-4",
+        "HC-006-markdown-1"
+      ],
+      "improved_latency_ms": 13.05,
+      "failure_label": null,
+      "evidence": null,
+      "status": "MAINTAINED"
+    },
+    {
+      "id": "GS-12",
+      "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+      "expected_chunk_id": "HC-006-markdown-9",
+      "has_exact_identifier": true,
+      "baseline_hit": false,
+      "baseline_rank": null,
+      "baseline_rank_in_candidates": 7,
+      "baseline_top_k_ids": [
+        "HC-006-markdown-24",
+        "HC-006-markdown-11",
+        "HC-006-markdown-20"
+      ],
+      "baseline_latency_ms": 12.57,
+      "improved_hit": false,
+      "improved_rank": null,
+      "improved_rank_in_candidates": 5,
+      "improved_top_k_ids": [
+        "HC-006-markdown-24",
+        "HC-006-markdown-11",
+        "HC-006-markdown-20"
+      ],
+      "improved_latency_ms": 12.67,
+      "failure_label": "R",
+      "evidence": "Expected chunk HC-006-markdown-9 ranked #7 under dense retrieval, outside top-3. Top-3 returned: HC-006-markdown-24, HC-006-markdown-11, HC-006-markdown-20.",
+      "status": "UNFIXED"
+    }
+  ],
+  "tally": {
+    "R": 3,
+    "G": 0,
+    "Not-In-Corpus": 1
+  },
+  "evidence": [
+    {
+      "id": "GS-01",
+      "question": "How long is a password reset link valid in CloudDesk?",
+      "label": "R",
+      "evidence": "Expected chunk HC-001-markdown-5 ranked #8 under dense retrieval, outside top-3. Top-3 returned: HC-001-markdown-15, HC-001-markdown-6, HC-001-markdown-18."
+    },
+    {
+      "id": "GS-05",
+      "question": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+      "label": "R",
+      "evidence": "Expected chunk HC-002-markdown-10 ranked #7 under dense retrieval, outside top-3. Top-3 returned: HC-002-markdown-7, HC-002-markdown-4, HC-002-markdown-3."
+    },
+    {
+      "id": "GS-09",
+      "question": "What is the cause if CloudDesk notifications stopped suddenly?",
+      "label": "Not-In-Corpus",
+      "evidence": "Expected chunk HC-005-markdown-12 did not appear anywhere in the top 25 dense candidates."
+    },
+    {
+      "id": "GS-12",
+      "question": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+      "label": "R",
+      "evidence": "Expected chunk HC-006-markdown-9 ranked #7 under dense retrieval, outside top-3. Top-3 returned: HC-006-markdown-24, HC-006-markdown-11, HC-006-markdown-20."
+    }
+  ],
+  "fixed": [
+    "GS-01"
+  ],
+  "unfixed": [
+    "GS-05",
+    "GS-09",
+    "GS-12"
+  ],
+  "regressed": [],
+  "delta_hit_rate": 8.3,
+  "delta_p50_ms": 0.46,
+  "p50_noise_band_ms": 0.63,
+  "p50_within_noise": true,
+  "latency_repeats": 5,
+  "decision": "SHIP",
+  "rationale": "hit-rate@3 rose 66.7% \u2192 75.0% (+8.3pp) with no regressions, for no measurable latency cost (+0.46 ms is inside the \u00b10.63 ms noise band)."
+}

@@ -8,6 +8,8 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/ask               grounded answer + retrieval stages
   POST /api/inspect           retrieval stages + grounded answer
   POST /api/upload            upload ANY file (text or base64) and index it
+  GET  /api/golden            the 12 golden questions
+  POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
   POST /api/documents/delete  remove a document and re-index
 """
@@ -31,6 +33,7 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
 from generator import generate_answer, RELEVANCE_THRESHOLD
+import golden_eval
 from retriever import retrieve_chunks, build_where
 from bm25_retriever import retrieve_bm25, clear_bm25_cache
 from hybrid_retriever import reciprocal_rank_fusion
@@ -40,6 +43,8 @@ from loader import (
     load_articles,
     extract_text_from_file,
     meta_path_for,
+    split_frontmatter,
+    derive_title,
     ExtractionError,
     DATA_DIR,
     META_SUFFIX,
@@ -108,9 +113,12 @@ def document_list():
 def save_upload(filename: str, data: bytes, product_area: str) -> dict:
     """Persist an uploaded file into DATA_DIR and validate it is readable.
 
-    Text-like files (.md/.txt/...) get YAML frontmatter prepended when they
-    have none. Every other type is stored verbatim with a sidecar
-    ``<name>.meta.json`` carrying its metadata.
+    The file is stored byte-for-byte as the user supplied it, whatever it
+    contains. Metadata always goes to a sidecar ``<name>.meta.json`` — we
+    never inject a frontmatter block, because doing so assumes the document
+    is markdown-shaped and damages anything that is not: a CSV gains a bogus
+    first row, a log or code file gains a fake header, and a file that
+    already opened with "---" had its real first section eaten.
     """
     DATA_DIR.mkdir(exist_ok=True)
 
@@ -118,7 +126,7 @@ def save_upload(filename: str, data: bytes, product_area: str) -> dict:
     if not filename:
         raise ValueError("Filename is empty after sanitising.")
     if not Path(filename).suffix:
-        filename += ".md"
+        filename += ".txt"
 
     ext = Path(filename).suffix.lower()
     stem = Path(filename).stem
@@ -127,44 +135,43 @@ def save_upload(filename: str, data: bytes, product_area: str) -> dict:
     file_path = DATA_DIR / filename
     sidecar = meta_path_for(file_path)
 
-    if ext in TEXT_FRONTMATTER_EXTS:
-        text = data.decode("utf-8", errors="ignore").lstrip("﻿").strip()
-        if not text.startswith("---"):
-            text = (
-                f"---\n"
-                f"article_id: {article_id}\n"
-                f"product_area: {product_area}\n"
-                f"last_updated: {today}\n"
-                f"---\n\n{text}\n"
-            )
-        file_path.write_text(text, encoding="utf-8")
-        if sidecar.exists():
-            sidecar.unlink()
-    else:
-        file_path.write_bytes(data)
-        sidecar.write_text(json.dumps({
-            "article_id": article_id,
-            "product_area": product_area,
-            "last_updated": today,
-            "title": stem,
-        }, indent=2), encoding="utf-8")
+    file_path.write_bytes(data)
 
-    # Validate that we can actually get text out of it.
+    # Validate that we can actually get text out of it before committing a
+    # sidecar for a file we cannot read.
     try:
         extracted = extract_text_from_file(file_path)
         if not extracted.strip():
             raise ExtractionError("The file contains no text.")
     except ExtractionError:
         file_path.unlink(missing_ok=True)
-        sidecar.unlink(missing_ok=True)
         raise
+
+    # A hand-written text file may already carry its own frontmatter; when
+    # it does that wins, and the sidecar only fills the gaps.
+    existing, body = split_frontmatter(
+        extracted, allow=ext in TEXT_FRONTMATTER_EXTS
+    )
+
+    meta = {
+        "article_id": article_id,
+        "product_area": product_area,
+        "last_updated": today,
+        "title": derive_title(file_path, body or extracted),
+    }
+    meta.update({k: v for k, v in existing.items() if v not in (None, "")})
+
+    sidecar.write_text(
+        json.dumps(meta, indent=2, default=str), encoding="utf-8"
+    )
 
     return {
         "filename": filename,
-        "article_id": article_id,
-        "product_area": product_area,
+        "article_id": meta["article_id"],
+        "product_area": meta["product_area"],
+        "title": meta["title"],
         "file_type": ext.lstrip("."),
-        "chars": len(extracted),
+        "chars": len(body or extracted),
         "bytes": len(data),
     }
 
@@ -225,6 +232,14 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(document_list())
             elif parsed.path == "/api/status":
                 self._send_json(index_status())
+            elif parsed.path == "/api/golden":
+                self._send_json({
+                    "questions": golden_eval.load_golden_set(),
+                    "k": golden_eval.DEFAULT_K,
+                    "rrf_k": golden_eval.RRF_K,
+                    "candidate_k": golden_eval.CANDIDATE_K,
+                    "arms": golden_eval.ARM_LABELS,
+                })
             else:
                 self.send_error(404, "Not Found")
         except Exception as e:
@@ -246,6 +261,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/upload":
                 self._handle_upload(payload)
+            elif parsed.path == "/api/golden/evaluate":
+                self._handle_golden(payload)
             elif parsed.path == "/api/reindex":
                 self._send_json({"status": "ok", "chunks": rebuild_indexes()})
             elif parsed.path == "/api/documents/delete":
@@ -279,6 +296,21 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         info["status"] = "ok"
         info["chunks"] = rebuild_indexes().get(DEFAULT_STRATEGY) if reindex else None
         self._send_json(info)
+
+    def _handle_golden(self, payload):
+        try:
+            k = int(payload.get("k", golden_eval.DEFAULT_K))
+        except (TypeError, ValueError):
+            k = golden_eval.DEFAULT_K
+        k = max(1, min(k, 10))
+
+        strategy = payload.get("strategy") or DEFAULT_STRATEGY
+        if strategy not in STRATEGIES:
+            raise ValueError(f"Unknown strategy: {strategy}")
+
+        report = golden_eval.evaluate(k=k, strategy=strategy)
+        report["status"] = "ok"
+        self._send_json(report)
 
     def _handle_delete(self, payload):
         name = safe_filename(payload.get("source_file") or "")

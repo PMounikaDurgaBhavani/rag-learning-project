@@ -5,55 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CloudDesk Knowledge Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* ============================================================
+     Theme: graphite + amber
+     ============================================================ */
   :root {
-    --bg: #f4f3ee;
-    --bg-elev: #ffffff;
-    --bg-sunk: #ebeae3;
-    --ink: #17191c;
-    --ink-2: #4b5057;
-    --ink-3: #868b93;
-    --line: #dedcd3;
-    --line-strong: #c9c6ba;
-    --accent: #0b6e63;
+    --bg: #ffffff;
+    --surface: #f7f7f8;
+    --surface-2: #ededf0;
+    --surface-3: #e2e2e6;
+    --ink: #17171a;
+    --ink-2: #55555f;
+    --ink-3: #8a8a94;
+    --line: #e3e3e7;
+    --line-strong: #cfcfd6;
+    --accent: #b45309;
     --accent-ink: #ffffff;
-    --accent-soft: #d9efe9;
-    --warn: #b4530a;
-    --warn-soft: #fbe9d8;
-    --danger: #b3261e;
-    --danger-soft: #f9dedc;
-    --info: #2b4c9b;
-    --info-soft: #dfe6f7;
-    --violet: #6b3fa0;
-    --violet-soft: #ebe1f7;
+    --accent-soft: #fdf0e0;
+    --bubble: #f1f1f3;
+    --ok: #15803d;
+    --ok-soft: #e7f5ec;
+    --warn: #a16207;
+    --warn-soft: #fbf3dd;
+    --danger: #b91c1c;
+    --danger-soft: #fbe6e6;
+    --info: #1d4ed8;
+    --info-soft: #e6ecfd;
+    --violet: #6d28d9;
+    --violet-soft: #efe8fd;
     --radius: 14px;
-    --radius-sm: 8px;
-    --shadow: 0 1px 2px rgba(20,20,20,.05), 0 8px 24px -12px rgba(20,20,20,.15);
-    --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --radius-sm: 9px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+    --shadow: 0 4px 6px -2px rgba(0,0,0,.05), 0 12px 28px -12px rgba(0,0,0,.18);
+    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sidebar-w: 268px;
+    --measure: 760px;
   }
   :root[data-theme="dark"] {
-    --bg: #131416;
-    --bg-elev: #1c1e21;
-    --bg-sunk: #0e0f10;
-    --ink: #eceef0;
-    --ink-2: #b4b9c0;
-    --ink-3: #7c828b;
-    --line: #2b2e33;
-    --line-strong: #3a3e45;
-    --accent: #3fc5b0;
-    --accent-ink: #072a25;
-    --accent-soft: #143b35;
-    --warn: #f0a35c;
-    --warn-soft: #3d2a17;
-    --danger: #f28b82;
-    --danger-soft: #3f1f1d;
-    --info: #8fb0f5;
-    --info-soft: #1e2a45;
-    --violet: #c4a3f0;
-    --violet-soft: #2c2140;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+    --bg: #1a1a1d;
+    --surface: #121214;
+    --surface-2: #26262c;
+    --surface-3: #32323a;
+    --ink: #ececee;
+    --ink-2: #a6a6b0;
+    --ink-3: #74747f;
+    --line: #2e2e35;
+    --line-strong: #40404a;
+    --accent: #f59e0b;
+    --accent-ink: #1c1400;
+    --accent-soft: #2e2410;
+    --bubble: #2a2a31;
+    --ok: #4ade80;
+    --ok-soft: #16301f;
+    --warn: #fbbf24;
+    --warn-soft: #322610;
+    --danger: #f87171;
+    --danger-soft: #351a1a;
+    --info: #93b4fd;
+    --info-soft: #1a2440;
+    --violet: #c4b5fd;
+    --violet-soft: #241d3d;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow: 0 4px 10px -4px rgba(0,0,0,.5), 0 16px 36px -18px rgba(0,0,0,.8);
   }
 
   * { box-sizing: border-box; }
@@ -63,424 +79,741 @@
     background: var(--bg);
     color: var(--ink);
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+    overflow: hidden;
   }
   button, input, select, textarea { font: inherit; color: inherit; }
   a { color: var(--accent); }
-  .mono { font-family: var(--mono); font-size: .8em; }
+  h1 { font-size: 1.35rem; margin: 0 0 .2rem; letter-spacing: -.02em; }
+  h2 { font-size: 1rem; margin: 0; letter-spacing: -.01em; }
+  h3 { font-size: .9rem; margin: 0; letter-spacing: -.01em; }
+  .mono { font-family: var(--mono); font-size: .82em; }
   .muted { color: var(--ink-3); }
   .hidden { display: none !important; }
+  .lede { color: var(--ink-2); margin: 0 0 1.1rem; font-size: .92rem; }
+  .eyebrow {
+    font-size: .68rem; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--line-strong); background-clip: content-box; }
+  ::-webkit-scrollbar-track { background: transparent; }
 
-  /* ---------- top bar ---------- */
-  .topbar {
-    position: sticky; top: 0; z-index: 50;
-    display: flex; align-items: center; gap: 1.5rem;
-    padding: .7rem 1.5rem;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(12px);
+  /* ============================================================
+     Shell: sidebar + main column
+     ============================================================ */
+  .app { display: flex; height: 100%; }
+
+  .sidebar {
+    width: var(--sidebar-w); flex: 0 0 var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+    transition: margin-left .22s ease;
+  }
+  .sidebar.collapsed { margin-left: calc(var(--sidebar-w) * -1); }
+
+  .side-head { padding: .85rem .8rem .5rem; }
+  .brand { display: flex; align-items: center; gap: .6rem; padding: .25rem .35rem .75rem; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 9px; flex: 0 0 30px;
+    background: linear-gradient(140deg, var(--accent), #7c2d12);
+    display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 700;
+  }
+  .brand b { font-size: .93rem; font-weight: 700; letter-spacing: -.01em; display: block; }
+  .brand small { color: var(--ink-3); font-size: .7rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 600; }
+
+  .new-chat {
+    width: 100%; display: flex; align-items: center; gap: .55rem;
+    padding: .6rem .7rem; border-radius: var(--radius-sm);
+    border: 1px solid var(--line-strong); background: var(--bg);
+    font-weight: 600; font-size: .88rem; cursor: pointer; text-align: left;
+    box-shadow: var(--shadow-sm);
+  }
+  .new-chat:hover { border-color: var(--accent); color: var(--accent); }
+
+  .side-scroll { flex: 1; overflow-y: auto; padding: .5rem .5rem 1rem; }
+  .side-group { margin-top: .9rem; }
+  .side-group > .eyebrow { padding: 0 .55rem .35rem; }
+
+  .side-link {
+    width: 100%; display: flex; align-items: center; gap: .6rem;
+    padding: .5rem .6rem; border-radius: var(--radius-sm);
+    border: 0; background: transparent; cursor: pointer;
+    color: var(--ink-2); font-size: .875rem; font-weight: 500; text-align: left;
+  }
+  .side-link .ic { width: 17px; text-align: center; flex: 0 0 17px; opacity: .85; }
+  .side-link:hover { background: var(--surface-2); color: var(--ink); }
+  .side-link.active { background: var(--surface-2); color: var(--ink); font-weight: 600; }
+  .side-link .tail { margin-left: auto; font-size: .72rem; color: var(--ink-3); font-weight: 600; }
+
+  .side-doc {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .38rem .6rem; border-radius: var(--radius-sm);
+    font-size: .82rem; color: var(--ink-2); cursor: pointer;
+    border: 0; background: transparent; width: 100%; text-align: left;
+  }
+  .side-doc:hover { background: var(--surface-2); color: var(--ink); }
+  .side-doc .dt {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .side-doc .ext {
+    flex: 0 0 auto; font-size: .6rem; font-weight: 700; text-transform: uppercase;
+    padding: .1rem .3rem; border-radius: 4px; background: var(--surface-2); color: var(--ink-3);
+    letter-spacing: .04em;
+  }
+
+  .side-foot { border-top: 1px solid var(--line); padding: .6rem; display: flex; flex-direction: column; gap: .5rem; }
+  .idx-row { display: flex; gap: .3rem; flex-wrap: wrap; }
+  .status-chip {
+    display: inline-flex; align-items: center; gap: .32rem;
+    padding: .22rem .48rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg);
+    font-size: .68rem; font-weight: 600; color: var(--ink-2);
+  }
+  .status-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+  .status-chip.ready .dot { background: var(--ok); }
+  .status-chip.missing .dot { background: var(--danger); }
+
+  /* ---- main column ---- */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100%; }
+  .main-head {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .6rem .95rem; border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px); flex: 0 0 auto; min-height: 52px;
+  }
+  .main-head .ttl { font-weight: 650; font-size: .95rem; letter-spacing: -.01em; }
+  .main-head .sp { margin-left: auto; display: flex; gap: .4rem; align-items: center; }
+
+  .icon-btn {
+    width: 33px; height: 33px; border-radius: var(--radius-sm);
+    border: 1px solid transparent; background: transparent; cursor: pointer;
+    display: grid; place-items: center; color: var(--ink-2); font-size: 15px;
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .icon-btn.bordered { border-color: var(--line); background: var(--bg); }
+
+  .scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
+  .measure { max-width: var(--measure); margin: 0 auto; padding: 1.4rem 1.25rem 2rem; }
+  .measure.wide { max-width: 1100px; }
+  .view { display: none; height: 100%; }
+  .view.active { display: flex; flex-direction: column; min-height: 0; }
+
+  /* ============================================================
+     Chat
+     ============================================================ */
+  #thread { display: flex; flex-direction: column; gap: 1.6rem; }
+
+  .msg { display: flex; gap: .8rem; }
+  .msg .avatar {
+    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px;
+    display: grid; place-items: center; font-size: .72rem; font-weight: 700;
+    margin-top: .1rem;
+  }
+  .msg.user { justify-content: flex-end; }
+  .msg.user .bubble {
+    background: var(--bubble); padding: .65rem .95rem;
+    border-radius: 18px 18px 4px 18px; max-width: 78%;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .msg.bot .avatar { background: linear-gradient(140deg, var(--accent), #7c2d12); color: #fff; }
+  .msg.bot .body { min-width: 0; flex: 1; }
+
+  .a-meta { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin-bottom: .5rem; }
+  .a-text { white-space: pre-wrap; word-break: break-word; }
+  .a-text .cite {
+    display: inline-block; font-family: var(--mono); font-size: .72em; font-weight: 600;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 5px; padding: 0 .28rem; margin: 0 .06rem; vertical-align: .06em;
+  }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: .25rem;
+    font-size: .68rem; font-weight: 600; padding: .16rem .46rem;
+    border-radius: 999px; background: var(--surface-2); color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.bad { background: var(--danger-soft); color: var(--danger); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.info { background: var(--info-soft); color: var(--info); }
+  .pill.violet { background: var(--violet-soft); color: var(--violet); }
+
+  .refusal-note {
+    margin-top: .7rem; padding: .65rem .8rem; border-radius: var(--radius-sm);
+    background: var(--warn-soft); color: var(--ink-2);
+    font-size: .84rem; border-left: 3px solid var(--warn);
+  }
+
+  details.src-peek { margin-top: .6rem; }
+  details.src-peek > summary {
+    cursor: pointer; font-size: .78rem; font-weight: 600; color: var(--ink-2);
+    padding: .35rem 0; list-style: none;
+  }
+  details.src-peek > summary::-webkit-details-marker { display: none; }
+  details.src-peek > summary::before { content: '▸ '; color: var(--ink-3); }
+  details.src-peek[open] > summary::before { content: '▾ '; }
+  details.src-peek > summary:hover { color: var(--accent); }
+  .peek { border-left: 2px solid var(--line-strong); padding: .35rem 0 .35rem .6rem; margin-top: .4rem; }
+  .peek-h { font-size: .7rem; font-weight: 600; }
+  .peek-b { font-size: .8rem; color: var(--ink-2); white-space: pre-wrap; margin-top: .15rem; }
+
+  .sources { margin-top: .85rem; border-top: 1px solid var(--line); padding-top: .7rem; }
+  .source {
+    display: flex; gap: .6rem; align-items: flex-start;
+    padding: .5rem 0; border-bottom: 1px solid var(--line);
+  }
+  .source:last-child { border-bottom: 0; }
+  .source .marker {
+    font-family: var(--mono); font-size: .7rem; font-weight: 700;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 5px; padding: .08rem .3rem; flex: 0 0 auto; margin-top: .12rem;
+  }
+  .source .title { font-size: .82rem; font-weight: 600; }
+  .source .meta { font-size: .72rem; color: var(--ink-3); }
+  .source .coverage { margin-left: auto; text-align: right; flex: 0 0 96px; }
+  .source .coverage span { font-size: .66rem; color: var(--ink-3); }
+  .source .bar { height: 4px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin-bottom: .2rem; }
+  .source .bar i { display: block; height: 100%; background: var(--accent); }
+
+  .a-foot { display: flex; gap: .35rem; margin-top: .7rem; }
+
+  .thread-empty { text-align: center; padding: 3.5rem 1rem 1rem; color: var(--ink-2); }
+  .thread-empty .big {
+    width: 46px; height: 46px; margin: 0 auto .9rem; border-radius: 13px;
+    background: linear-gradient(140deg, var(--accent), #7c2d12);
+    display: grid; place-items: center; color: #fff; font-size: 21px;
+  }
+  .thread-empty h1 { font-size: 1.5rem; }
+
+  .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; justify-content: center; margin-top: 1.4rem; }
+  .chip {
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink-2);
+    padding: .45rem .75rem; border-radius: 999px; font-size: .8rem; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- composer ---- */
+  .composer-wrap {
+    flex: 0 0 auto; padding: .3rem 1.25rem 1rem;
+    background: linear-gradient(to bottom, transparent, var(--bg) 28%);
+  }
+  .composer-inner { max-width: var(--measure); margin: 0 auto; }
+  .composer {
+    border: 1px solid var(--line-strong); background: var(--bg);
+    border-radius: 24px; padding: .5rem .5rem .5rem .95rem;
+    display: flex; align-items: flex-end; gap: .5rem;
+    box-shadow: var(--shadow);
+  }
+  .composer:focus-within { border-color: var(--accent); }
+  .composer textarea {
+    flex: 1; border: 0; outline: 0; background: transparent; resize: none;
+    padding: .42rem 0; max-height: 210px; min-height: 24px; line-height: 1.5;
+  }
+  .composer textarea::placeholder { color: var(--ink-3); }
+  .composer-actions { display: flex; align-items: center; gap: .25rem; }
+  .send-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: 0; cursor: pointer;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center; font-size: 15px; flex: 0 0 34px;
+  }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .composer-hint {
+    text-align: center; font-size: .7rem; color: var(--ink-3); margin-top: .5rem;
+  }
+  .kbd {
+    font-family: var(--mono); font-size: .68rem; border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 4px; padding: 0 .25rem; background: var(--surface);
+  }
+
+  /* ---- settings drawer ---- */
+  .drawer-back {
+    position: fixed; inset: 0; background: rgba(0,0,0,.32); z-index: 60;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+  }
+  .drawer-back.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed; top: 0; right: 0; height: 100%; width: 340px; max-width: 92vw;
+    background: var(--bg); border-left: 1px solid var(--line); z-index: 61;
+    transform: translateX(100%); transition: transform .22s ease;
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: none; }
+  .drawer-head {
+    display: flex; align-items: center; padding: .8rem 1rem;
     border-bottom: 1px solid var(--line);
   }
-  .brand { display: flex; align-items: center; gap: .65rem; font-weight: 800; letter-spacing: -.01em; }
-  .brand-mark {
-    width: 30px; height: 30px; border-radius: 9px;
-    background: linear-gradient(135deg, var(--accent), #2b4c9b);
-    display: grid; place-items: center; color: #fff; font-size: 15px;
-  }
-  .brand small { display: block; font-weight: 500; color: var(--ink-3); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
-  nav.tabs { display: flex; gap: .25rem; margin-left: .5rem; }
-  nav.tabs button {
-    border: 0; background: transparent; padding: .45rem .9rem; border-radius: 999px;
-    color: var(--ink-2); font-weight: 600; cursor: pointer;
-  }
-  nav.tabs button:hover { background: var(--bg-sunk); }
-  nav.tabs button.active { background: var(--ink); color: var(--bg); }
-  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
-  .status-chip {
-    display: inline-flex; align-items: center; gap: .4rem;
-    padding: .3rem .65rem; border-radius: 999px;
-    border: 1px solid var(--line); background: var(--bg-elev);
-    font-size: .75rem; font-weight: 600; color: var(--ink-2);
-  }
-  .status-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
-  .status-chip.ready .dot { background: var(--accent); }
-  .status-chip.missing .dot { background: var(--danger); }
-  .icon-btn {
-    width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line);
-    background: var(--bg-elev); cursor: pointer; display: grid; place-items: center;
-  }
-  .icon-btn:hover { border-color: var(--line-strong); }
+  .drawer-body { padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
 
-  /* ---------- layout ---------- */
-  .page { max-width: 1180px; margin: 0 auto; padding: 1.75rem 1.5rem 5rem; }
-  .view { display: none; }
-  .view.active { display: block; animation: rise .25s ease; }
-  @keyframes rise { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none; } }
-
-  .card {
-    background: var(--bg-elev); border: 1px solid var(--line);
-    border-radius: var(--radius); box-shadow: var(--shadow);
+  .field { display: flex; flex-direction: column; gap: .3rem; }
+  .field > label { font-size: .74rem; font-weight: 600; color: var(--ink-2); }
+  .field select, .field input[type="text"] {
+    padding: .5rem .6rem; border-radius: var(--radius-sm);
+    border: 1px solid var(--line); background: var(--bg); outline: 0;
   }
-  h1 { font-size: 1.75rem; letter-spacing: -.02em; margin: 0 0 .25rem; font-weight: 800; }
-  h2 { font-size: 1.05rem; margin: 0; font-weight: 700; }
-  .eyebrow { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; }
-  .lede { color: var(--ink-2); margin: 0 0 1.5rem; }
+  .field select:focus, .field input[type="text"]:focus { border-color: var(--accent); }
+  input[type="range"] { accent-color: var(--accent); width: 100%; }
+  .help { font-size: .7rem; line-height: 1.45; color: var(--ink-3); }
 
-  /* ---------- buttons ---------- */
   .btn {
-    display: inline-flex; align-items: center; gap: .5rem;
-    padding: .6rem 1.05rem; border-radius: 10px; border: 1px solid var(--line-strong);
-    background: var(--bg-elev); font-weight: 700; cursor: pointer; transition: transform .08s, background .15s;
+    display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+    padding: .48rem .8rem; border-radius: var(--radius-sm);
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+    font-size: .84rem; font-weight: 600; cursor: pointer;
   }
-  .btn:hover { background: var(--bg-sunk); }
-  .btn:active { transform: translateY(1px); }
+  .btn:hover { border-color: var(--line-strong); background: var(--surface); }
   .btn:disabled { opacity: .55; cursor: not-allowed; }
-  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
-  .btn.primary:hover { filter: brightness(1.08); background: var(--accent); }
-  .btn.ghost { border-color: transparent; background: transparent; }
-  .btn.ghost:hover { background: var(--bg-sunk); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+  .btn.ghost:hover { background: var(--surface-2); color: var(--ink); }
+  .btn.sm { padding: .32rem .6rem; font-size: .77rem; }
   .btn.danger { color: var(--danger); }
-  .btn.sm { padding: .35rem .7rem; font-size: .8rem; border-radius: 8px; }
+
   .spinner {
-    width: 14px; height: 14px; border-radius: 50%;
-    border: 2px solid currentColor; border-right-color: transparent;
-    animation: spin .7s linear infinite;
+    width: 13px; height: 13px; border-radius: 50%; flex: 0 0 13px;
+    border: 2px solid currentColor; border-top-color: transparent;
+    animation: spin .7s linear infinite; display: inline-block;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ---------- ask view ---------- */
-  .ask-grid { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 1.5rem; align-items: start; }
-  @media (max-width: 900px) { .ask-grid { grid-template-columns: 1fr; } .settings { position: static !important; } }
-
-  .composer { padding: 1.1rem; }
-  .composer textarea {
-    width: 100%; min-height: 96px; resize: vertical; border: 0; outline: 0;
-    background: transparent; font-size: 1.1rem; line-height: 1.5; padding: .25rem;
+  /* ============================================================
+     Cards / library / inspector
+     ============================================================ */
+  .card {
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1rem;
   }
-  .composer-foot { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-top: .5rem; }
-  .chip-row { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .chip {
-    padding: .3rem .7rem; border-radius: 999px; border: 1px dashed var(--line-strong);
-    background: transparent; font-size: .78rem; color: var(--ink-2); cursor: pointer;
-  }
-  .chip:hover { border-style: solid; color: var(--ink); background: var(--bg-sunk); }
-  .kbd { font-family: var(--mono); font-size: .7rem; padding: .1rem .35rem; border: 1px solid var(--line); border-radius: 5px; color: var(--ink-3); }
-
-  .thread { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; }
-  .thread-empty { text-align: center; padding: 3.5rem 1rem; color: var(--ink-3); }
-  .thread-empty .big { font-size: 2.2rem; }
-
-  .turn { display: flex; flex-direction: column; gap: .6rem; }
-  .q-bubble {
-    align-self: flex-end; max-width: 80%;
-    background: var(--ink); color: var(--bg);
-    padding: .65rem 1rem; border-radius: 16px 16px 4px 16px; font-weight: 600;
-  }
-  .a-card { padding: 1.1rem 1.25rem; }
-  .a-head { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .75rem; }
-  .pill { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .6rem; border-radius: 999px; font-size: .72rem; font-weight: 700; letter-spacing: .03em; }
-  .pill.ok { background: var(--accent-soft); color: var(--accent); }
-  .pill.bad { background: var(--danger-soft); color: var(--danger); }
-  .pill.info { background: var(--info-soft); color: var(--info); }
-  .pill.violet { background: var(--violet-soft); color: var(--violet); }
-  .pill.warn { background: var(--warn-soft); color: var(--warn); }
-  .a-text { font-size: 1.02rem; line-height: 1.65; }
-  .cite { display: inline-block; font-family: var(--mono); font-size: .72rem; padding: 0 .35rem; border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-weight: 700; margin: 0 .1rem; vertical-align: 2px; }
-  .refusal-note { margin-top: .75rem; padding: .75rem .9rem; border-radius: var(--radius-sm); background: var(--warn-soft); color: var(--warn); font-size: .88rem; }
-
-  .sources { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: .9rem; }
-  .source { display: grid; grid-template-columns: auto 1fr auto; gap: .75rem; align-items: center; padding: .55rem 0; border-bottom: 1px dashed var(--line); }
-  .source:last-child { border-bottom: 0; }
-  .source .marker { font-family: var(--mono); font-weight: 700; color: var(--accent); }
-  .source .title { font-weight: 600; font-size: .9rem; }
-  .source .meta { font-size: .78rem; color: var(--ink-3); }
-  .coverage { width: 110px; }
-  .coverage .bar { height: 6px; border-radius: 4px; background: var(--bg-sunk); overflow: hidden; }
-  .coverage .bar i { display: block; height: 100%; background: var(--accent); }
-  .coverage span { font-size: .72rem; color: var(--ink-3); }
-  .a-foot { margin-top: .9rem; display: flex; gap: .5rem; flex-wrap: wrap; }
-
-  /* ---------- settings drawer ---------- */
-  .settings { position: sticky; top: 76px; padding: 1.1rem; display: flex; flex-direction: column; gap: 1rem; }
-  .field label { display: block; font-size: .74rem; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .35rem; }
-  .field select, .field input[type=text] {
-    width: 100%; padding: .55rem .7rem; border-radius: 9px; border: 1px solid var(--line);
-    background: var(--bg); outline: 0;
-  }
-  .field select:focus, .field input:focus { border-color: var(--accent); }
-  input[type=range] { width: 100%; accent-color: var(--accent); }
-  .switch-row { display: flex; align-items: center; justify-content: space-between; padding: .35rem 0; }
-  .switch-row span { font-weight: 600; font-size: .9rem; }
-  .switch { position: relative; width: 40px; height: 22px; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .switch i { position: absolute; inset: 0; border-radius: 999px; background: var(--line-strong); transition: .2s; cursor: pointer; }
-  .switch i::after { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
-  .switch input:checked + i { background: var(--accent); }
-  .switch input:checked + i::after { transform: translateX(18px); }
-
-  /* ---------- library view ---------- */
-  .lib-grid { display: grid; grid-template-columns: 380px minmax(0,1fr); gap: 1.5rem; align-items: start; }
+  .lib-grid { display: grid; grid-template-columns: 340px 1fr; gap: 1rem; align-items: start; }
   @media (max-width: 900px) { .lib-grid { grid-template-columns: 1fr; } }
+
   .dropzone {
-    border: 2px dashed var(--line-strong); border-radius: var(--radius);
-    padding: 2rem 1.25rem; text-align: center; cursor: pointer; transition: .15s;
-    background: var(--bg);
+    border: 1.5px dashed var(--line-strong); border-radius: var(--radius);
+    padding: 1.5rem 1rem; text-align: center; cursor: pointer;
+    background: var(--surface); transition: .15s;
   }
   .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
-  .dropzone .ico { font-size: 2rem; }
-  .dropzone strong { display: block; margin: .4rem 0 .2rem; }
-  .dropzone .muted { font-size: .8rem; }
-  .type-row { display: flex; flex-wrap: wrap; gap: .3rem; justify-content: center; margin-top: .75rem; }
-  .type-row .t { font-family: var(--mono); font-size: .66rem; padding: .15rem .4rem; border-radius: 5px; background: var(--bg-sunk); color: var(--ink-2); }
+  .dropzone .ico { font-size: 22px; margin-bottom: .3rem; }
+  .type-row { display: flex; flex-wrap: wrap; gap: .25rem; justify-content: center; margin-top: .7rem; }
+  .type-row .t {
+    font-size: .63rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+    padding: .12rem .34rem; border-radius: 4px; background: var(--surface-2); color: var(--ink-3);
+  }
+  details.paste summary { cursor: pointer; font-size: .82rem; font-weight: 600; color: var(--ink-2); }
+  details.paste textarea {
+    width: 100%; min-height: 110px; margin-top: .5rem; padding: .55rem;
+    border-radius: var(--radius-sm); border: 1px solid var(--line);
+    background: var(--bg); outline: 0; resize: vertical; font-size: .84rem;
+  }
+  details.paste textarea:focus { border-color: var(--accent); }
 
-  .queue { display: flex; flex-direction: column; gap: .5rem; }
-  .qitem { display: grid; grid-template-columns: 34px 1fr auto; gap: .6rem; align-items: center; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
-  .qitem .ficon { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-family: var(--mono); font-size: .62rem; font-weight: 700; background: var(--info-soft); color: var(--info); text-transform: uppercase; }
-  .qitem .fname { font-weight: 600; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .qitem .fsub { font-size: .74rem; color: var(--ink-3); }
-  .qitem.done .ficon { background: var(--accent-soft); color: var(--accent); }
-  .qitem.fail .ficon { background: var(--danger-soft); color: var(--danger); }
-  .qitem.fail .fsub { color: var(--danger); }
-
-  details.paste { border: 1px solid var(--line); border-radius: 10px; padding: .6rem .8rem; }
-  details.paste summary { cursor: pointer; font-weight: 700; font-size: .88rem; }
-  details.paste textarea { width: 100%; min-height: 140px; margin-top: .6rem; padding: .6rem; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); font-family: var(--mono); font-size: .8rem; resize: vertical; }
-
-  .doc-list { display: flex; flex-direction: column; }
-  .doc { display: grid; grid-template-columns: 44px 1fr auto; gap: .9rem; align-items: center; padding: .8rem 1rem; border-bottom: 1px solid var(--line); }
+  .queue { display: flex; flex-direction: column; gap: .4rem; max-height: 260px; overflow-y: auto; }
+  .qitem, .doc {
+    display: flex; gap: .6rem; align-items: center;
+    padding: .5rem; border-radius: var(--radius-sm); border: 1px solid var(--line);
+  }
+  .qitem.done { border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); background: var(--ok-soft); }
+  .qitem.fail { border-color: color-mix(in srgb, var(--danger) 40%, var(--line)); background: var(--danger-soft); }
+  .ficon {
+    width: 30px; height: 30px; flex: 0 0 30px; border-radius: 7px;
+    background: var(--surface-2); color: var(--ink-2);
+    display: grid; place-items: center; font-size: .6rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .02em;
+  }
+  .fname, .doc .name { font-size: .84rem; font-weight: 600; word-break: break-all; }
+  .fsub, .doc .meta { font-size: .71rem; color: var(--ink-3); }
+  .doc .meta { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .doc { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
   .doc:last-child { border-bottom: 0; }
-  .doc .ficon { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-family: var(--mono); font-size: .68rem; font-weight: 700; text-transform: uppercase; background: var(--bg-sunk); color: var(--ink-2); }
-  .doc .ficon.pdf { background: var(--danger-soft); color: var(--danger); }
-  .doc .ficon.md, .doc .ficon.txt { background: var(--info-soft); color: var(--info); }
-  .doc .ficon.docx, .doc .ficon.pptx { background: var(--violet-soft); color: var(--violet); }
-  .doc .ficon.xlsx, .doc .ficon.csv, .doc .ficon.json { background: var(--accent-soft); color: var(--accent); }
-  .doc .name { font-weight: 700; }
-  .doc .meta { font-size: .78rem; color: var(--ink-3); display: flex; gap: .6rem; flex-wrap: wrap; }
-  .doc .actions { display: flex; gap: .35rem; }
-  .doc-toolbar { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1rem; border-bottom: 1px solid var(--line); }
-  .doc-toolbar input { padding: .45rem .7rem; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); outline: 0; width: 220px; }
+  .doc > div:nth-child(2) { min-width: 0; flex: 1; }
+  .doc .actions { margin-left: auto; display: flex; gap: .3rem; flex: 0 0 auto; }
+  .doc-toolbar { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-bottom: .5rem; flex-wrap: wrap; }
+  .doc-toolbar input { padding: .38rem .55rem; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--bg); outline: 0; font-size: .82rem; }
+  .doc-list { max-height: 62vh; overflow-y: auto; }
 
-  /* ---------- inspect view ---------- */
-  .stage-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
-  @media (max-width: 900px) { .stage-grid { grid-template-columns: 1fr; } }
-  .stage { padding: 1rem; }
-  .stage h3 { margin: 0; font-size: .9rem; display: flex; justify-content: space-between; align-items: center; }
-  .stage p.sub { margin: .15rem 0 .8rem; font-size: .76rem; color: var(--ink-3); }
-  .hit { padding: .55rem .6rem; border-radius: 9px; border: 1px solid var(--line); margin-bottom: .45rem; background: var(--bg); }
-  .hit.final { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
-  .hit .row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
-  .hit .id { font-family: var(--mono); font-size: .74rem; font-weight: 700; }
-  .hit .sc { font-family: var(--mono); font-size: .7rem; color: var(--ink-3); }
-  .hit .snip { font-size: .76rem; color: var(--ink-2); margin-top: .3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .hit .bar { height: 4px; border-radius: 3px; background: var(--bg-sunk); margin-top: .4rem; overflow: hidden; }
+  .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+  @media (max-width: 980px) { .stage-grid { grid-template-columns: 1fr; } }
+  .stage .sub { font-size: .72rem; color: var(--ink-3); margin: .1rem 0 .7rem; }
+  .hit { padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  .hit:last-child { border-bottom: 0; }
+  .hit.final { background: var(--accent-soft); border-radius: var(--radius-sm); padding: .5rem; margin-bottom: .2rem; }
+  .hit .row { display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; }
+  .hit .id { font-family: var(--mono); font-size: .68rem; font-weight: 600; word-break: break-all; }
+  .hit .sc { font-size: .66rem; color: var(--ink-3); white-space: nowrap; font-family: var(--mono); }
+  .hit .snip { font-size: .75rem; color: var(--ink-2); margin: .25rem 0; }
+  .hit .bar { height: 3px; border-radius: 2px; background: var(--surface-2); overflow: hidden; }
   .hit .bar i { display: block; height: 100%; }
-  .query-strip { padding: .9rem 1.1rem; margin-bottom: 1rem; display: grid; gap: .5rem; }
-  .query-strip .k { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 700; }
+  .query-strip { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .8rem; }
+  .query-strip .k { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }
 
-  /* ---------- console ---------- */
-  pre.console { margin: 0; padding: 1.1rem; font-family: var(--mono); font-size: .78rem; line-height: 1.55; overflow: auto; max-height: 70vh; white-space: pre-wrap; word-break: break-word; }
+  /* ---- golden set ---- */
+  .metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .7rem; margin-bottom: 1rem; }
+  .metric { padding: .8rem .9rem; }
+  .metric .k { font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+  .metric .v { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; margin-top: .2rem; display: flex; align-items: baseline; gap: .35rem; flex-wrap: wrap; }
+  .metric .v .arrow { color: var(--ink-3); font-size: .95rem; font-weight: 500; }
+  .metric .v .nb { white-space: nowrap; }
+  .metric .d { font-size: .74rem; font-weight: 600; }
+  .metric .d.up { color: var(--ok); }
+  .metric .d.down { color: var(--danger); }
+  .metric .d.flat { color: var(--ink-3); }
 
-  /* ---------- toast ---------- */
-  .toasts { position: fixed; right: 1.25rem; bottom: 1.25rem; display: flex; flex-direction: column; gap: .5rem; z-index: 100; }
-  .toast { padding: .7rem 1rem; border-radius: 10px; background: var(--ink); color: var(--bg); font-weight: 600; font-size: .88rem; box-shadow: var(--shadow); animation: rise .2s ease; max-width: 360px; }
+  table.gs { width: 100%; border-collapse: collapse; font-size: .8rem; }
+  table.gs th {
+    text-align: left; font-size: .66rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ink-3); padding: .45rem .5rem;
+    border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  table.gs td { padding: .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.gs tr:last-child td { border-bottom: 0; }
+  table.gs tbody tr:hover { background: var(--surface); }
+  table.gs .qid { font-family: var(--mono); font-size: .72rem; font-weight: 600; white-space: nowrap; }
+  table.gs .qtext { min-width: 220px; }
+  table.gs .cid { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); white-space: nowrap; }
+  .rank { font-family: var(--mono); font-size: .74rem; font-weight: 600; white-space: nowrap; }
+  .rank.hit { color: var(--ok); }
+  .rank.miss { color: var(--danger); }
+  .st { font-size: .66rem; font-weight: 700; padding: .14rem .42rem; border-radius: 999px; white-space: nowrap; }
+  .st.FIXED { background: var(--ok-soft); color: var(--ok); }
+  .st.UNFIXED { background: var(--danger-soft); color: var(--danger); }
+  .st.MAINTAINED { background: var(--surface-2); color: var(--ink-3); }
+  .st.REGRESSED { background: var(--warn-soft); color: var(--warn); }
+  .ev { display: flex; gap: .55rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .8rem; }
+  .ev:last-child { border-bottom: 0; }
+  .decision { padding: .9rem 1rem; border-radius: var(--radius); border-left: 3px solid var(--accent); background: var(--accent-soft); }
+  .decision b { font-size: 1rem; }
+  .gs-wrap { overflow-x: auto; }
+
+  pre.console {
+    font-family: var(--mono); font-size: .76rem; line-height: 1.55;
+    background: var(--surface); border-radius: var(--radius-sm); padding: .9rem;
+    overflow: auto; max-height: 68vh; margin: 0; white-space: pre-wrap; word-break: break-word;
+  }
+
+  /* ---- toasts ---- */
+  .toasts { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 90; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
+  .toast {
+    background: var(--ink); color: var(--bg); padding: .55rem .9rem;
+    border-radius: 999px; font-size: .82rem; font-weight: 500; box-shadow: var(--shadow);
+    animation: pop .18s ease;
+  }
   .toast.err { background: var(--danger); color: #fff; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px); } }
+
+  @media (max-width: 760px) {
+    .sidebar { position: fixed; z-index: 70; height: 100%; box-shadow: var(--shadow); }
+    .sidebar.collapsed { margin-left: calc(var(--sidebar-w) * -1); }
+  }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-mark">◈</div>
-    <div>CloudDesk<small>Knowledge Studio</small></div>
-  </div>
-  <nav class="tabs" id="nav">
-    <button data-view="ask" class="active">Ask</button>
-    <button data-view="library">Library <span id="navDocCount" class="muted"></span></button>
-    <button data-view="inspect">Inspect</button>
-    <button data-view="console">Console</button>
-  </nav>
-  <div class="topbar-right">
-    <span class="status-chip" id="chip-markdown"><span class="dot"></span>markdown</span>
-    <span class="status-chip" id="chip-recursive"><span class="dot"></span>recursive</span>
-    <span class="status-chip" id="chip-fixed"><span class="dot"></span>fixed</span>
-    <button class="icon-btn" id="themeBtn" title="Toggle theme">◐</button>
-  </div>
-</header>
+<div class="app">
 
-<main class="page">
-
-  <!-- ================= ASK ================= -->
-  <section class="view active" id="view-ask">
-    <div class="ask-grid">
-      <div>
-        <div class="card composer">
-          <textarea id="query" placeholder="Ask anything about the documents in your library…">How long is a CloudDesk password reset link valid?</textarea>
-          <div class="composer-foot">
-            <button class="btn primary" id="askBtn"><span id="askSpinner" class="spinner hidden"></span><span id="askLabel">Ask</span></button>
-            <button class="btn" id="inspectBtn">Inspect retrieval</button>
-            <span class="muted" style="font-size:.78rem;"><span class="kbd">⌘</span>+<span class="kbd">↵</span> to ask</span>
-            <button class="btn ghost sm" id="clearThread" style="margin-left:auto;">Clear thread</button>
-          </div>
-        </div>
-        <div class="chip-row" style="margin-top:.8rem;" id="presets">
-          <button class="chip" data-q="How long is a CloudDesk password reset link valid?">Reset link validity</button>
-          <button class="chip" data-q="My card expired and payment failed in HC-003. What do I do?">Expired card, failed payment</button>
-          <button class="chip" data-q="Why is the Upload File button unavailable in CloudDesk?">Upload button unavailable</button>
-          <button class="chip" data-q="What is the maximum file size limit for CloudDesk uploads in megabytes?">Refusal test: file size limit</button>
-        </div>
-
-        <div class="thread" id="thread">
-          <div class="thread-empty" id="threadEmpty">
-            <div class="big">✦</div>
-            <div>Answers appear here as a thread, each with verified citations.</div>
-            <div style="font-size:.85rem;margin-top:.3rem;">Add your own files in <a href="#" data-goto="library">Library</a>.</div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="card settings">
-        <div class="eyebrow">Retrieval settings</div>
-        <div class="field">
-          <label>Mode</label>
-          <select id="mode">
-            <option value="hybrid_rerank" selected>Hybrid RRF + cross-encoder rerank</option>
-            <option value="hybrid">Hybrid RRF (dense + BM25)</option>
-            <option value="dense">Dense only (MiniLM)</option>
-            <option value="bm25">BM25 only</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Chunking strategy</label>
-          <select id="strategy">
-            <option value="markdown" selected>markdown — header &amp; table aware</option>
-            <option value="recursive">recursive — character hierarchy</option>
-            <option value="fixed">fixed — character budget</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Product area</label>
-          <select id="productArea"><option value="">All areas</option></select>
-        </div>
-        <div class="field">
-          <label>Document</label>
-          <select id="articleId"><option value="">All documents</option></select>
-        </div>
-        <div class="field">
-          <label>Top-K chunks · <span id="topKVal" style="color:var(--accent)">5</span></label>
-          <input type="range" id="topK" min="1" max="10" value="5">
-        </div>
-        <div class="field">
-          <label>Refusal distance gate · <span id="thresholdVal" style="color:var(--accent)">0.75</span></label>
-          <input type="range" id="threshold" min="0.10" max="2.00" step="0.05" value="0.75">
-          <div class="muted" style="font-size:.7rem;line-height:1.35;margin-top:.25rem;">
-            0.75 is calibrated on the help-centre prose. Record-style documents
-            retrieve much further out — raise it to answer those, and refusals loosen with it.
-          </div>
-        </div>
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-head">
+      <div class="brand">
+        <div class="brand-mark">◆</div>
         <div>
-          <div class="switch-row"><span>Query rewriter</span><label class="switch"><input type="checkbox" id="rewrite"><i></i></label></div>
-          <div class="switch-row"><span>HyDE expansion</span><label class="switch"><input type="checkbox" id="hyde"><i></i></label></div>
+          <b>CloudDesk</b>
+          <small>Knowledge Studio</small>
         </div>
-        <div class="muted" style="font-size:.74rem;line-height:1.4;">
-          Stack: all-MiniLM-L6-v2 · BM25 Okapi · ms-marco cross-encoder · Qwen2.5-0.5B
-        </div>
-      </aside>
+      </div>
+      <button class="new-chat" id="newChat"><span>✎</span> New chat</button>
     </div>
-  </section>
 
-  <!-- ================= LIBRARY ================= -->
-  <section class="view" id="view-library">
-    <h1>Library</h1>
-    <p class="lede">Drop in any file. Text is extracted, chunked, embedded and added to the vector and BM25 indexes.</p>
+    <div class="side-scroll">
+      <nav id="nav">
+        <button class="side-link active" data-view="ask"><span class="ic">✦</span> Chat</button>
+        <button class="side-link" data-view="library"><span class="ic">☰</span> Library <span class="tail" id="navDocCount"></span></button>
+        <button class="side-link" data-view="inspect"><span class="ic">◎</span> Retrieval inspector</button>
+        <button class="side-link" data-view="golden"><span class="ic">▤</span> Golden set <span class="tail" id="navGoldenCount"></span></button>
+        <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
+      </nav>
 
-    <div class="lib-grid">
-      <div style="display:flex;flex-direction:column;gap:1rem;">
-        <div class="card" style="padding:1rem;display:flex;flex-direction:column;gap:.9rem;">
-          <div class="dropzone" id="dropzone">
-            <div class="ico">⤓</div>
-            <strong>Drop files here or click to browse</strong>
-            <div class="muted">Any file type · multiple files at once</div>
-            <div class="type-row">
-              <span class="t">pdf</span><span class="t">docx</span><span class="t">pptx</span><span class="t">xlsx</span>
-              <span class="t">csv</span><span class="t">json</span><span class="t">html</span><span class="t">md</span>
-              <span class="t">txt</span><span class="t">code</span><span class="t">images·ocr</span><span class="t">…</span>
+      <div class="side-group">
+        <div class="eyebrow">Documents</div>
+        <div id="sideDocs"><div class="muted" style="padding:.4rem .6rem;font-size:.8rem;">Loading…</div></div>
+      </div>
+    </div>
+
+    <div class="side-foot">
+      <div class="idx-row">
+        <span class="status-chip" id="chip-markdown"><span class="dot"></span>markdown</span>
+        <span class="status-chip" id="chip-recursive"><span class="dot"></span>recursive</span>
+        <span class="status-chip" id="chip-fixed"><span class="dot"></span>fixed</span>
+      </div>
+      <div style="display:flex;gap:.3rem;align-items:center;">
+        <button class="btn ghost sm" id="themeBtn" style="flex:1;">◐ Theme</button>
+        <button class="btn ghost sm" id="settingsBtn" style="flex:1;">⚙ Settings</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+    <header class="main-head">
+      <button class="icon-btn" id="sidebarBtn" title="Toggle sidebar">☰</button>
+      <span class="ttl" id="viewTitle">Chat</span>
+      <div class="sp">
+        <button class="icon-btn bordered" id="inspectBtn" title="Inspect retrieval without generating">◎</button>
+        <button class="icon-btn bordered" id="settingsBtn2" title="Retrieval settings">⚙</button>
+      </div>
+    </header>
+
+    <!-- ---------------- ASK ---------------- -->
+    <section class="view active" id="view-ask">
+      <div class="scroll" id="chatScroll">
+        <div class="measure">
+          <div id="thread">
+            <div class="thread-empty" id="threadEmpty">
+              <div class="big">◆</div>
+              <h1>Ask your documents</h1>
+              <p class="lede">Grounded answers with verified citations. The pipeline refuses rather than guess when no source supports an answer.</p>
+              <div class="chip-row" id="presets">
+                <button class="chip" data-q="How long is a CloudDesk password reset link valid?">Reset link validity</button>
+                <button class="chip" data-q="My card expired and payment failed in HC-003. What do I do?">Expired card, failed payment</button>
+                <button class="chip" data-q="Why is the Upload File button unavailable in CloudDesk?">Upload button unavailable</button>
+                <button class="chip" data-q="What is the maximum file size limit for CloudDesk uploads in megabytes?">Refusal test</button>
+              </div>
             </div>
-            <input type="file" id="fileInput" multiple class="hidden">
           </div>
-          <div class="field">
-            <label>Product area for new uploads</label>
-            <input type="text" id="uploadArea" placeholder="e.g. Billing, Policies, Engineering">
-          </div>
-          <details class="paste">
-            <summary>Or paste text directly</summary>
-            <div class="field" style="margin-top:.6rem;"><label>Filename</label><input type="text" id="pasteName" placeholder="refund-policy.md"></div>
-            <textarea id="pasteBody" placeholder="# Title&#10;&#10;Paste markdown or plain text…"></textarea>
-            <div style="display:flex;justify-content:flex-end;margin-top:.6rem;">
-              <button class="btn primary sm" id="pasteBtn">Add to library</button>
+        </div>
+      </div>
+
+      <div class="composer-wrap">
+        <div class="composer-inner">
+          <div class="composer">
+            <textarea id="query" rows="1" placeholder="Ask anything about the documents in your library…"></textarea>
+            <div class="composer-actions">
+              <button class="send-btn" id="askBtn" title="Send">
+                <span id="askSpinner" class="spinner hidden"></span>
+                <span id="askLabel">↑</span>
+              </button>
             </div>
-          </details>
-        </div>
-
-        <div class="card" style="padding:1rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
-            <h2>Upload queue</h2>
-            <button class="btn ghost sm" id="clearQueue">Clear</button>
           </div>
-          <div class="queue" id="queue"><div class="muted" style="font-size:.85rem;">Nothing queued yet.</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="doc-toolbar">
-          <div><h2>Indexed documents <span class="muted" id="docCount">(0)</span></h2></div>
-          <div style="display:flex;gap:.5rem;align-items:center;">
-            <input type="text" id="docFilter" placeholder="Filter…">
-            <button class="btn sm" id="reindexBtn"><span class="spinner hidden" id="reindexSpinner"></span>Rebuild indexes</button>
+          <div class="composer-hint">
+            <span class="kbd">↵</span> to send · <span class="kbd">⇧↵</span> for a new line
           </div>
         </div>
-        <div class="doc-list" id="docList"><div class="muted" style="padding:1.5rem;text-align:center;">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- ---------------- LIBRARY ---------------- -->
+    <section class="view" id="view-library">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Library</h1>
+          <p class="lede">Drop in any file. Text is extracted, chunked, embedded and added to the vector and BM25 indexes. Nothing about the file's internal layout is assumed — headings, tables and frontmatter are used when present and never required.</p>
+
+          <div class="lib-grid">
+            <div style="display:flex;flex-direction:column;gap:1rem;">
+              <div class="card" style="display:flex;flex-direction:column;gap:.9rem;">
+                <div class="dropzone" id="dropzone">
+                  <div class="ico">⤓</div>
+                  <strong>Drop files here or click to browse</strong>
+                  <div class="muted" style="font-size:.8rem;">Any file type · multiple files at once</div>
+                  <div class="type-row">
+                    <span class="t">pdf</span><span class="t">docx</span><span class="t">pptx</span><span class="t">xlsx</span>
+                    <span class="t">csv</span><span class="t">json</span><span class="t">html</span><span class="t">md</span>
+                    <span class="t">txt</span><span class="t">code</span><span class="t">images·ocr</span><span class="t">…</span>
+                  </div>
+                  <input type="file" id="fileInput" multiple class="hidden">
+                </div>
+                <div class="field">
+                  <label>Product area for new uploads</label>
+                  <input type="text" id="uploadArea" placeholder="e.g. Billing, Policies, Engineering">
+                </div>
+                <details class="paste">
+                  <summary>Or paste text directly</summary>
+                  <div class="field" style="margin-top:.6rem;"><label>Filename</label><input type="text" id="pasteName" placeholder="notes.txt"></div>
+                  <textarea id="pasteBody" placeholder="Paste anything — prose, notes, records, a table, a log…"></textarea>
+                  <div style="display:flex;justify-content:flex-end;margin-top:.6rem;">
+                    <button class="btn primary sm" id="pasteBtn">Add to library</button>
+                  </div>
+                </details>
+              </div>
+
+              <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+                  <h2>Upload queue</h2>
+                  <button class="btn ghost sm" id="clearQueue">Clear</button>
+                </div>
+                <div class="queue" id="queue"><div class="muted" style="font-size:.85rem;">Nothing queued yet.</div></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="doc-toolbar">
+                <h2>Indexed documents <span class="muted" id="docCount">(0)</span></h2>
+                <div style="display:flex;gap:.5rem;align-items:center;">
+                  <input type="text" id="docFilter" placeholder="Filter…">
+                  <button class="btn sm" id="reindexBtn"><span class="spinner hidden" id="reindexSpinner"></span>Rebuild indexes</button>
+                </div>
+              </div>
+              <div class="doc-list" id="docList"><div class="muted" style="padding:1.5rem;text-align:center;">Loading…</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- INSPECT ---------------- -->
+    <section class="view" id="view-inspect">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Retrieval inspector</h1>
+          <p class="lede">How each stage ranked the chunks for the latest query. Highlighted rows survived into the final reranked set.</p>
+          <div id="inspectEmpty" class="card" style="padding:2.5rem;text-align:center;color:var(--ink-3);">
+            Run a question from <a href="#" data-goto="ask">Chat</a> (or use the ◎ button) to populate this view.
+          </div>
+          <div id="inspectBody" class="hidden">
+            <div class="card query-strip" id="queryStrip"></div>
+            <div class="stage-grid">
+              <div class="card stage">
+                <h3>Dense <span class="pill info">MiniLM</span></h3>
+                <p class="sub">Cosine distance — lower is closer</p>
+                <div id="stageDense"></div>
+              </div>
+              <div class="card stage">
+                <h3>Sparse <span class="pill ok">BM25</span></h3>
+                <p class="sub">Lexical score — higher is better</p>
+                <div id="stageBm25"></div>
+              </div>
+              <div class="card stage">
+                <h3>Fused + reranked <span class="pill violet">RRF → cross-encoder</span></h3>
+                <p class="sub">Final order handed to the generator</p>
+                <div id="stageRerank"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- GOLDEN SET ---------------- -->
+    <section class="view" id="view-golden">
+      <div class="scroll">
+        <div class="measure wide">
+          <div style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;">
+            <div>
+              <h1>Golden set — hit-rate@<span id="gsK">3</span></h1>
+              <p class="lede" style="margin:0;">
+                The same 12 questions through two retrievers with exactly one variable changed:
+                dense-only ranking replaced by dense + BM25 fused with RRF (k=60). Same corpus,
+                same chunking, same k. Click any row to open it in the inspector.
+              </p>
+            </div>
+            <div style="display:flex;gap:.5rem;align-items:center;">
+              <div class="field" style="min-width:96px;">
+                <label>k</label>
+                <select id="gsKSelect">
+                  <option value="3" selected>3</option>
+                  <option value="5">5</option>
+                  <option value="1">1</option>
+                </select>
+              </div>
+              <button class="btn primary" id="gsRun"><span class="spinner hidden" id="gsSpinner"></span>Run evaluation</button>
+            </div>
+          </div>
+
+          <div id="gsIntro" class="card" style="margin-top:1rem;">
+            <div class="eyebrow" style="margin-bottom:.5rem;">The 12 questions</div>
+            <div class="gs-wrap"><table class="gs" id="gsPreview"></table></div>
+            <p class="help" style="margin-top:.8rem;">
+              Press <b>Run evaluation</b> to measure hit-rate@k and p50 latency for both arms.
+              Nothing is cached — each run re-measures from the live index.
+            </p>
+          </div>
+
+          <div id="gsResults" class="hidden" style="margin-top:1rem;">
+            <div class="metric-row" id="gsMetrics"></div>
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="eyebrow" style="margin-bottom:.5rem;">Per-question ranking · baseline → improved</div>
+              <div class="gs-wrap"><table class="gs" id="gsTable"></table></div>
+            </div>
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="eyebrow" style="margin-bottom:.5rem;">Baseline failure tally &amp; evidence</div>
+              <div id="gsEvidence"></div>
+            </div>
+            <div class="decision" id="gsDecision"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- CONSOLE ---------------- -->
+    <section class="view" id="view-console">
+      <div class="scroll">
+        <div class="measure wide">
+          <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:1rem;gap:1rem;">
+            <div><h1>Console</h1><p class="lede" style="margin:0;">Raw JSON of the last response.</p></div>
+            <button class="btn sm" id="copyJson">Copy JSON</button>
+          </div>
+          <div class="card"><pre class="console" id="rawJson">{}</pre></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ================= SETTINGS DRAWER ================= -->
+<div class="drawer-back" id="drawerBack"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>Retrieval settings</h2>
+    <button class="icon-btn" id="drawerClose" style="margin-left:auto;">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="field">
+      <label>Mode</label>
+      <select id="mode">
+        <option value="hybrid_rerank" selected>Hybrid RRF + cross-encoder rerank</option>
+        <option value="hybrid">Hybrid RRF (dense + BM25)</option>
+        <option value="dense">Dense only (MiniLM)</option>
+        <option value="bm25">BM25 only</option>
+      </select>
+      <div class="help">Hybrid modes let a rare term in the question (a name, an ID, an error code) vouch for a chunk that dense similarity alone would have rejected.</div>
+    </div>
+    <div class="field">
+      <label>Chunking strategy</label>
+      <select id="strategy">
+        <option value="markdown" selected>markdown — structure &amp; table aware</option>
+        <option value="recursive">recursive — character hierarchy</option>
+        <option value="fixed">fixed — character budget</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Product area</label>
+      <select id="productArea"><option value="">All areas</option></select>
+    </div>
+    <div class="field">
+      <label>Document</label>
+      <select id="articleId"><option value="">All documents</option></select>
+    </div>
+    <div class="field">
+      <label>Top-K chunks · <span id="topKVal" style="color:var(--accent)">5</span></label>
+      <input type="range" id="topK" min="1" max="10" value="5">
+    </div>
+    <div class="field">
+      <label>Refusal distance gate · <span id="thresholdVal" style="color:var(--accent)">0.75</span></label>
+      <input type="range" id="threshold" min="0.10" max="2.00" step="0.05" value="0.75">
+      <div class="help">
+        0.75 is calibrated on the help-centre prose. Free-form documents — notes, bios,
+        exported records — retrieve much further out, so raise it to answer those.
+        Refusals loosen as it rises.
       </div>
     </div>
-  </section>
-
-  <!-- ================= INSPECT ================= -->
-  <section class="view" id="view-inspect">
-    <h1>Retrieval inspector</h1>
-    <p class="lede">How each stage ranked the chunks for the latest query. Highlighted rows survived into the final reranked set.</p>
-    <div id="inspectEmpty" class="card" style="padding:2.5rem;text-align:center;color:var(--ink-3);">
-      Run a question from <a href="#" data-goto="ask">Ask</a> (or click “Inspect retrieval”) to populate this view.
+    <div class="help" style="border-top:1px solid var(--line);padding-top:.8rem;">
+      Stack: all-MiniLM-L6-v2 · BM25 Okapi · ms-marco cross-encoder · Qwen2.5-0.5B
     </div>
-    <div id="inspectBody" class="hidden">
-      <div class="card query-strip" id="queryStrip"></div>
-      <div class="stage-grid">
-        <div class="card stage">
-          <h3>Dense <span class="pill info">MiniLM</span></h3>
-          <p class="sub">Cosine distance — lower is closer</p>
-          <div id="stageDense"></div>
-        </div>
-        <div class="card stage">
-          <h3>Sparse <span class="pill ok">BM25</span></h3>
-          <p class="sub">Lexical score — higher is better</p>
-          <div id="stageBm25"></div>
-        </div>
-        <div class="card stage">
-          <h3>Fused + reranked <span class="pill violet">RRF → cross-encoder</span></h3>
-          <p class="sub">Final order handed to the generator</p>
-          <div id="stageRerank"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CONSOLE ================= -->
-  <section class="view" id="view-console">
-    <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:1rem;">
-      <div><h1>Console</h1><p class="lede" style="margin:0;">Raw JSON of the last response.</p></div>
-      <button class="btn sm" id="copyJson">Copy JSON</button>
-    </div>
-    <div class="card"><pre class="console" id="rawJson">{}</pre></div>
-  </section>
-</main>
+  </div>
+</aside>
 
 <div class="toasts" id="toasts"></div>
 
@@ -520,18 +853,35 @@ async function api(path, body) {
   };
 })();
 
-/* ------------------------------------------------------------------ nav */
+/* ------------------------------------------------------------------ shell */
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', console: 'Console' };
+
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
-  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  document.querySelectorAll('#nav .side-link').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  $('viewTitle').textContent = VIEW_TITLES[view] || view;
+  // Inspect and settings only mean anything for a question.
+  $('inspectBtn').classList.toggle('hidden', view !== 'ask');
+  $('settingsBtn2').classList.toggle('hidden', view !== 'ask');
   if (view === 'library') loadDocuments();
-  window.scrollTo({ top: 0 });
+  if (view === 'golden') loadGolden();
+  if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
-document.querySelectorAll('#nav button').forEach(b => b.onclick = () => show(b.dataset.view));
+document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-goto]');
   if (a) { e.preventDefault(); show(a.dataset.goto); }
 });
+$('sidebarBtn').onclick = () => $('sidebar').classList.toggle('collapsed');
+
+/* ---- settings drawer ---- */
+const openDrawer = () => { $('drawer').classList.add('open'); $('drawerBack').classList.add('open'); };
+const closeDrawer = () => { $('drawer').classList.remove('open'); $('drawerBack').classList.remove('open'); };
+$('settingsBtn').onclick = openDrawer;
+$('settingsBtn2').onclick = openDrawer;
+$('drawerClose').onclick = closeDrawer;
+$('drawerBack').onclick = closeDrawer;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
 /* ------------------------------------------------------------------ status */
 async function loadStatus() {
@@ -559,45 +909,62 @@ function payload() {
     article_id: $('articleId').value || null,
     top_k: parseInt($('topK').value, 10),
     threshold: parseFloat($('threshold').value),
-    rewrite: $('rewrite').checked,
-    hyde: $('hyde').checked,
   };
 }
 $('topK').oninput = () => $('topKVal').textContent = $('topK').value;
 $('threshold').oninput = () => $('thresholdVal').textContent = parseFloat($('threshold').value).toFixed(2);
+
 $('presets').addEventListener('click', e => {
   const c = e.target.closest('.chip'); if (!c) return;
-  $('query').value = c.dataset.q; $('query').focus();
+  $('query').value = c.dataset.q; autoGrow(); $('query').focus();
 });
-$('query').addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') runAsk(); });
-$('clearThread').onclick = () => {
-  // Keep a handle on the empty-state node: wiping innerHTML detaches it,
-  // and looking it up again afterwards returns null.
+
+/* composer: auto-grow, Enter sends, Shift+Enter newlines */
+function autoGrow() {
+  const t = $('query');
+  t.style.height = 'auto';
+  t.style.height = Math.min(t.scrollHeight, 210) + 'px';
+}
+$('query').addEventListener('input', autoGrow);
+$('query').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); runAsk(false); }
+});
+
+$('newChat').onclick = () => {
   const empty = $('threadEmpty');
   $('thread').innerHTML = '';
   if (empty) { $('thread').appendChild(empty); empty.classList.remove('hidden'); }
+  $('query').value = ''; autoGrow();
+  show('ask'); $('query').focus();
 };
 
-function busy(on, label) {
+function busy(on) {
   $('askBtn').disabled = on; $('inspectBtn').disabled = on;
   $('askSpinner').classList.toggle('hidden', !on);
-  $('askLabel').textContent = on ? (label || 'Thinking…') : 'Ask';
+  $('askLabel').classList.toggle('hidden', on);
 }
 
 async function runAsk(inspectOnly = false) {
   const p = payload();
   if (!p.query) { $('query').focus(); return; }
-  busy(true, inspectOnly ? 'Retrieving…' : 'Thinking…');
+  busy(true);
+  addQuestion(p.query);
+  $('query').value = ''; autoGrow();
+  const pending = addPending();
   try {
     const data = await api(inspectOnly ? '/api/inspect' : '/api/ask', p);
     lastResponse = data;
     $('rawJson').textContent = JSON.stringify(data, null, 2);
     const gen = inspectOnly ? data.generation : data;
     const insp = inspectOnly ? data : data.inspection;
-    addTurn(p, gen, insp);
+    pending.remove();
+    addAnswer(p, gen, insp);
     renderInspect(insp);
-    show(inspectOnly ? 'inspect' : 'ask');
+    if (inspectOnly) show('inspect');
   } catch (err) {
+    // Put the question back in the composer so a failed request is retryable.
+    pending.remove();
+    $('query').value = p.query; autoGrow();
     toast('Request failed: ' + err.message, true);
   } finally { busy(false); }
 }
@@ -610,8 +977,8 @@ function refusalHint(gen) {
   if (reason.startsWith('distance_gate')) {
     const need = (Number(gen.best_distance) + 0.05).toFixed(2);
     return `Nothing retrieved closely enough for the current gate. The closest chunk sat at
-      ${fmt(gen.best_distance)} — raise the gate above ${need} to let this query through.
-      The 0.75 default is calibrated on help-centre prose; record-style documents sit further out.`;
+      ${fmt(gen.best_distance)} — raise the gate above ${need} in Settings to let this query through.
+      The 0.75 default is calibrated on help-centre prose; free-form documents sit further out.`;
   }
   if (reason === 'model_reported_not_in_sources') {
     return `Chunks were retrieved, but the model reported the specific fact is not in them.
@@ -623,43 +990,84 @@ function refusalHint(gen) {
       many chunks cannot be verified against any one of them.`;
   }
   if (reason === 'no_chunks_retrieved') {
-    return `The filter excluded every chunk. Widen the product area or document filter.`;
+    return `The filter excluded every chunk. Widen the product area or document filter in Settings.`;
   }
   return `The pipeline refuses rather than guess when no chunk supports an answer.`;
 }
 
-function addTurn(p, gen, insp) {
-  $('threadEmpty')?.classList.add('hidden');
-  const turn = document.createElement('div');
-  turn.className = 'turn';
+// A refusal that only says "not enough information" hides the fact that
+// the right passage was retrieved and simply does not contain the asked-for
+// fact. Showing what the sources DO say turns a dead end into an answer the
+// reader can act on, without the generator asserting anything.
+function sourceExcerpts(insp) {
+  const chunks = (insp && (insp.reranked || insp.dense)) || [];
+  if (!chunks.length) return '';
+  const top = chunks.slice(0, 3);
+  return `<details class="src-peek">
+    <summary>What the retrieved sources actually say (${top.length})</summary>
+    ${top.map(c => `<div class="peek">
+        <div class="peek-h"><span class="mono">${esc(c.chunk_id)}</span>${c.section ? ` <span class="muted">· ${esc(c.section)}</span>` : ''}</div>
+        <div class="peek-b">${esc((c.content || '').trim())}</div>
+      </div>`).join('')}
+  </details>`;
+}
 
+function scrollDown() {
+  const s = $('chatScroll');
+  s.scrollTo({ top: s.scrollHeight, behavior: 'smooth' });
+}
+
+function addQuestion(text) {
+  $('threadEmpty')?.classList.add('hidden');
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `<div class="bubble">${esc(text)}</div>`;
+  $('thread').appendChild(el);
+  scrollDown();
+}
+
+function addPending() {
+  const el = document.createElement('div');
+  el.className = 'msg bot';
+  el.innerHTML = `<div class="avatar">◆</div>
+    <div class="body"><span class="spinner"></span> <span class="muted">Retrieving and grounding…</span></div>`;
+  $('thread').appendChild(el);
+  scrollDown();
+  return el;
+}
+
+function addAnswer(p, gen, insp) {
   const refused = !!gen.refused;
   const answer = esc(gen.answer || '').replace(/\[(\d+)\]/g, '<span class="cite">[$1]</span>');
   const sources = gen.sources || [];
   const filters = [p.product_area && `area: ${p.product_area}`, p.article_id && `doc: ${p.article_id}`].filter(Boolean);
 
-  turn.innerHTML = `
-    <div class="q-bubble">${esc(p.query)}</div>
-    <div class="card a-card">
-      <div class="a-head">
-        ${refused ? `<span class="pill bad">✕ Refused</span>` : `<span class="pill ok">✓ Grounded · ${sources.length} citation${sources.length === 1 ? '' : 's'}`}
+  const el = document.createElement('div');
+  el.className = 'msg bot';
+  el.innerHTML = `
+    <div class="avatar">◆</div>
+    <div class="body">
+      <div class="a-meta">
+        ${refused
+          ? `<span class="pill bad">✕ Refused</span>`
+          : `<span class="pill ok">✓ Grounded · ${sources.length} citation${sources.length === 1 ? '' : 's'}</span>`}
         <span class="pill info">${esc(p.strategy)}</span>
-        ${insp?.rewritten_query ? `<span class="pill violet">rewritten</span>` : ''}
-        ${insp?.hyde_doc ? `<span class="pill violet">HyDE</span>` : ''}
-        ${filters.map(f => `<span class="pill warn">${esc(f)}</span>`).join('')}
         <span class="pill violet">${esc(gen.retrieval_mode || p.mode || '')}</span>
+        ${filters.map(f => `<span class="pill warn">${esc(f)}</span>`).join('')}
+        ${gen.gate_bypass ? `<span class="pill ok">${esc(gen.gate_bypass)}</span>` : ''}
         ${gen.best_distance != null
-          ? `<span class="muted" style="font-size:.74rem;margin-left:auto;">best distance ${fmt(gen.best_distance)} · gate ${Number(gen.threshold ?? 0.75).toFixed(2)}</span>`
-          : `<span class="muted" style="font-size:.74rem;margin-left:auto;">no dense score · gate skipped</span>`}
+          ? `<span class="muted" style="font-size:.7rem;margin-left:auto;">best distance ${fmt(gen.best_distance)} · gate ${Number(gen.threshold ?? 0.75).toFixed(2)}</span>`
+          : `<span class="muted" style="font-size:.7rem;margin-left:auto;">no dense score · gate skipped</span>`}
       </div>
       <div class="a-text">${answer}</div>
       ${refused ? `<div class="refusal-note">Reason: <b>${esc(gen.refusal_reason || 'ungrounded')}</b>. ${refusalHint(gen)}</div>` : ''}
+      ${refused ? sourceExcerpts(insp) : ''}
       ${sources.length ? `<div class="sources">
-        <div class="eyebrow" style="margin-bottom:.4rem;">Verified sources</div>
+        <div class="eyebrow" style="margin-bottom:.35rem;">Verified sources</div>
         ${sources.map(s => `
           <div class="source">
             <span class="marker">${esc(s.marker)}</span>
-            <div>
+            <div style="min-width:0;">
               <div class="title">${esc(s.chunk_id)} <span class="muted" style="font-weight:500;">· ${esc(s.section || 'General')}</span></div>
               <div class="meta">${esc(s.product_area)} · ${esc(s.source_file)} · distance ${esc(s.retrieval_distance ?? '–')}</div>
             </div>
@@ -667,12 +1075,12 @@ function addTurn(p, gen, insp) {
           </div>`).join('')}
       </div>` : ''}
       <div class="a-foot">
-        <button class="btn ghost sm" data-goto="inspect">View retrieval stages →</button>
+        <button class="btn ghost sm" data-goto="inspect">Retrieval stages →</button>
         <button class="btn ghost sm" data-goto="console">Raw JSON</button>
       </div>
     </div>`;
-  $('thread').appendChild(turn);
-  turn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('thread').appendChild(el);
+  scrollDown();
 }
 
 /* ------------------------------------------------------------------ inspect */
@@ -694,8 +1102,6 @@ function renderInspect(d) {
 
   $('queryStrip').innerHTML = `
     <div><span class="k">Query</span><div>${esc(d.query)}</div></div>
-    ${d.rewritten_query ? `<div><span class="k">Rewritten</span><div>${esc(d.rewritten_query)}</div></div>` : ''}
-    ${d.hyde_doc ? `<div><span class="k">HyDE document</span><div class="muted" style="font-size:.85rem;">${esc(d.hyde_doc)}</div></div>` : ''}
     <div style="display:flex;gap:.4rem;flex-wrap:wrap;"><span class="pill info">${esc(d.strategy || '')}</span><span class="pill violet">${esc(d.mode || '')}</span></div>`;
 
   $('stageDense').innerHTML = dense.map(c =>
@@ -703,7 +1109,7 @@ function renderInspect(d) {
 
   const maxB = Math.max(...bm25.map(c => c.bm25_score || 0), 1e-9);
   $('stageBm25').innerHTML = bm25.map(c =>
-    hitHTML(c, 'bm25 ' + fmt(c.bm25_score, 2), (c.bm25_score || 0) / maxB * 100, 'var(--accent)', finalIds.has(c.chunk_id))).join('') || '<div class="muted">No hits</div>';
+    hitHTML(c, 'bm25 ' + fmt(c.bm25_score, 2), (c.bm25_score || 0) / maxB * 100, 'var(--ok)', finalIds.has(c.chunk_id))).join('') || '<div class="muted">No hits</div>';
 
   const scores = rr.map(c => c.rerank_score ?? 0);
   const lo = Math.min(...scores, 0), hi = Math.max(...scores, 1e-9);
@@ -713,6 +1119,136 @@ function renderInspect(d) {
     return hitHTML(c, s, w, 'var(--violet)', true);
   }).join('') || '<div class="muted">No hits</div>';
 }
+
+/* ------------------------------------------------------------------ golden set */
+let goldenSet = null;
+let goldenReport = null;
+
+async function loadGolden() {
+  if (goldenSet) return;
+  try {
+    goldenSet = await api('/api/golden');
+    $('navGoldenCount').textContent = goldenSet.questions.length;
+    $('gsK').textContent = goldenSet.k;
+    renderGoldenPreview();
+  } catch (err) {
+    $('gsPreview').innerHTML = `<tr><td class="muted">Failed to load golden set: ${esc(err.message)}</td></tr>`;
+  }
+}
+
+function renderGoldenPreview() {
+  const rows = goldenSet.questions.map(q => `
+    <tr data-q="${esc(q.question)}">
+      <td class="qid">${esc(q.id)}</td>
+      <td class="qtext">${esc(q.question)}</td>
+      <td class="cid">${esc(q.expected_chunk_id)}</td>
+      <td>${q.has_exact_identifier ? '<span class="pill warn">exact token</span>' : '<span class="muted">semantic</span>'}</td>
+    </tr>`).join('');
+  $('gsPreview').innerHTML =
+    `<thead><tr><th>ID</th><th>Question</th><th>Known-correct chunk</th><th>Type</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+function rankCell(hit, rank, deepRank) {
+  if (hit) return `<span class="rank hit">#${rank}</span>`;
+  // A miss still says how far out the correct chunk sat, which is the
+  // difference between "ranked 7th" and "never retrieved at all".
+  return deepRank
+    ? `<span class="rank miss">miss (#${deepRank})</span>`
+    : `<span class="rank miss">not retrieved</span>`;
+}
+
+function metric(label, before, after, delta, betterIsUp, unit, footNote, isNoise) {
+  // A delta inside the measurement noise band is neither a win nor a cost.
+  const dir = isNoise || delta === 0 ? 'flat' : (delta > 0) === betterIsUp ? 'up' : 'down';
+  const sign = delta > 0 ? '+' : '';
+  const foot = footNote || `${sign}${delta}${unit}`;
+  return `<div class="card metric">
+    <div class="k">${esc(label)}</div>
+    <div class="v"><span class="nb">${before}${unit}</span> <span class="arrow">→</span> <span class="nb">${after}${unit}</span></div>
+    <div class="d ${dir}">${esc(foot)}</div>
+  </div>`;
+}
+
+function renderGolden(r) {
+  $('gsIntro').classList.add('hidden');
+  $('gsResults').classList.remove('hidden');
+  $('gsK').textContent = r.k;
+
+  $('gsMetrics').innerHTML =
+    metric(`Hit-rate@${r.k}`, r.baseline.hit_rate, r.improved.hit_rate, r.delta_hit_rate, true, '%')
+    + metric('p50 latency', r.baseline.p50_latency_ms, r.improved.p50_latency_ms, r.delta_p50_ms, false, ' ms',
+        `${r.delta_p50_ms >= 0 ? '+' : ''}${r.delta_p50_ms} ms · noise ±${r.p50_noise_band_ms} ms`
+        + (r.p50_within_noise ? ' (within)' : ''),
+        r.p50_within_noise)
+    + `<div class="card metric">
+         <div class="k">Hits</div>
+         <div class="v">${r.baseline.hits}/${r.baseline.total} <span class="arrow">→</span> ${r.improved.hits}/${r.improved.total}</div>
+         <div class="d flat">${r.fixed.length} fixed · ${r.unfixed.length} unfixed · ${r.regressed.length} regressed</div>
+       </div>`
+    + `<div class="card metric">
+         <div class="k">Baseline tally</div>
+         <div class="v" style="font-size:1.05rem;">R ${r.tally.R} · G ${r.tally.G} · NIC ${r.tally['Not-In-Corpus']}</div>
+         <div class="d flat">one change: RRF k=${r.rrf_k}</div>
+       </div>`;
+
+  const rows = r.comparison.map(c => `
+    <tr data-q="${esc(c.question)}">
+      <td class="qid">${esc(c.id)}</td>
+      <td class="qtext">${esc(c.question)}</td>
+      <td class="cid">${esc(c.expected_chunk_id)}</td>
+      <td>${c.has_exact_identifier ? '<span class="pill warn">exact</span>' : '<span class="muted">semantic</span>'}</td>
+      <td>${rankCell(c.baseline_hit, c.baseline_rank, c.baseline_rank_in_candidates)}</td>
+      <td>${rankCell(c.improved_hit, c.improved_rank, c.improved_rank_in_candidates)}</td>
+      <td>${c.failure_label ? `<span class="pill bad">${esc(c.failure_label)}</span>` : '<span class="muted">–</span>'}</td>
+      <td><span class="st ${esc(c.status)}">${esc(c.status)}</span></td>
+    </tr>`).join('');
+
+  $('gsTable').innerHTML = `<thead><tr>
+      <th>ID</th><th>Question</th><th>Known-correct chunk</th><th>Type</th>
+      <th>Baseline</th><th>Improved</th><th>Label</th><th>Status</th>
+    </tr></thead><tbody>${rows}</tbody>`;
+
+  $('gsEvidence').innerHTML = r.evidence.length
+    ? r.evidence.map(e => `<div class="ev">
+        <span class="pill bad">${esc(e.label)}</span>
+        <div><b class="mono">${esc(e.id)}</b> ${esc(e.question)}<div class="muted" style="margin-top:.2rem;">${esc(e.evidence)}</div></div>
+      </div>`).join('')
+    : '<div class="muted" style="font-size:.85rem;">No baseline failures.</div>';
+
+  const named = (list) => list.length ? list.join(', ') : 'none';
+  $('gsDecision').innerHTML = `
+    <div class="eyebrow" style="margin-bottom:.3rem;">Shipping decision</div>
+    <b>${esc(r.decision)}</b>
+    <div style="margin-top:.3rem;">${esc(r.rationale)}</div>
+    <div style="margin-top:.5rem;font-size:.82rem;">
+      Single change: ${esc(r.single_change)}.<br>
+      Fixed: <b>${esc(named(r.fixed))}</b> · Left untouched: <b>${esc(named(r.unfixed))}</b> · Regressed: <b>${esc(named(r.regressed))}</b>
+    </div>`;
+}
+
+$('gsRun').onclick = async () => {
+  $('gsRun').disabled = true; $('gsSpinner').classList.remove('hidden');
+  try {
+    goldenReport = await api('/api/golden/evaluate', { k: parseInt($('gsKSelect').value, 10) });
+    lastResponse = goldenReport;
+    $('rawJson').textContent = JSON.stringify(goldenReport, null, 2);
+    renderGolden(goldenReport);
+    toast(`hit-rate@${goldenReport.k}: ${goldenReport.baseline.hit_rate}% → ${goldenReport.improved.hit_rate}%`);
+  } catch (err) {
+    toast('Evaluation failed: ' + err.message, true);
+  } finally {
+    $('gsRun').disabled = false; $('gsSpinner').classList.add('hidden');
+  }
+};
+
+// Any row in either table opens that question in the retrieval inspector.
+$('view-golden').addEventListener('click', e => {
+  const row = e.target.closest('tr[data-q]');
+  if (!row) return;
+  $('query').value = row.dataset.q;
+  autoGrow();
+  runAsk(true);
+});
 
 /* ------------------------------------------------------------------ console */
 $('copyJson').onclick = async () => {
@@ -727,7 +1263,7 @@ async function loadDocuments() {
   try {
     docs = await api('/api/documents');
     renderDocs();
-    // filters in the settings drawer
+    renderSideDocs();
     const areas = [...new Set(docs.map(d => d.product_area).filter(Boolean))].sort();
     const areaSel = $('productArea'), keepA = areaSel.value;
     areaSel.innerHTML = '<option value="">All areas</option>' + areas.map(a => `<option value="${esc(a)}">${esc(a)}</option>`).join('');
@@ -735,11 +1271,31 @@ async function loadDocuments() {
     const artSel = $('articleId'), keepD = artSel.value;
     artSel.innerHTML = '<option value="">All documents</option>' + docs.map(d => `<option value="${esc(d.article_id)}">${esc(d.article_id)} · ${esc(d.source_file)}</option>`).join('');
     artSel.value = docs.some(d => d.article_id === keepD) ? keepD : '';
-    $('navDocCount').textContent = docs.length ? `· ${docs.length}` : '';
+    $('navDocCount').textContent = docs.length || '';
   } catch (err) {
     $('docList').innerHTML = `<div class="muted" style="padding:1.5rem;text-align:center;">Failed to load: ${esc(err.message)}</div>`;
   }
 }
+
+function renderSideDocs() {
+  if (!docs.length) {
+    $('sideDocs').innerHTML = '<div class="muted" style="padding:.4rem .6rem;font-size:.8rem;">No documents yet.</div>';
+    return;
+  }
+  $('sideDocs').innerHTML = docs.slice(0, 40).map(d => `
+    <button class="side-doc" data-pick="${esc(d.article_id)}" title="${esc(d.source_file)} — filter the next question to this document">
+      <span class="ext">${esc((d.file_type || 'txt').slice(0, 4))}</span>
+      <span class="dt">${esc(d.title || d.source_file)}</span>
+    </button>`).join('');
+}
+
+$('sideDocs').addEventListener('click', e => {
+  const b = e.target.closest('[data-pick]'); if (!b) return;
+  $('articleId').value = b.dataset.pick;
+  show('ask');
+  toast(`Next question is filtered to ${b.dataset.pick}`);
+  $('query').focus();
+});
 
 function renderDocs() {
   const q = $('docFilter').value.trim().toLowerCase();
@@ -748,7 +1304,7 @@ function renderDocs() {
   if (!list.length) { $('docList').innerHTML = '<div class="muted" style="padding:1.5rem;text-align:center;">No documents.</div>'; return; }
   $('docList').innerHTML = list.map(d => `
     <div class="doc">
-      <div class="ficon ${esc(d.file_type)}">${esc((d.file_type || 'txt').slice(0, 4))}</div>
+      <div class="ficon">${esc((d.file_type || 'txt').slice(0, 4))}</div>
       <div>
         <div class="name">${esc(d.source_file)}</div>
         <div class="meta"><span class="mono">${esc(d.article_id)}</span><span>${esc(d.product_area)}</span><span>${(d.chars || 0).toLocaleString()} chars</span><span>${esc(d.last_updated || '')}</span></div>
@@ -766,7 +1322,7 @@ $('docList').addEventListener('click', async e => {
   if (ask) {
     $('articleId').value = ask.dataset.ask;
     $('query').value = `What are the key points in ${ask.dataset.file}?`;
-    show('ask'); runAsk(false); return;
+    show('ask'); autoGrow(); runAsk(false); return;
   }
   const del = e.target.closest('[data-del]');
   if (del) {
@@ -785,7 +1341,7 @@ $('reindexBtn').onclick = async () => {
 };
 
 /* ---- upload queue: any file type, sent as base64, one reindex at the end */
-const queue = [];   // {file, name, size, status, note, el}
+const queue = [];   // {file, name, size, status, note}
 let uploading = false;
 
 const dz = $('dropzone');
@@ -794,7 +1350,6 @@ $('fileInput').onchange = e => { enqueue([...e.target.files]); e.target.value = 
 ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
 ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
 dz.addEventListener('drop', e => enqueue([...e.dataTransfer.files]));
-// allow dropping anywhere on the library view
 $('view-library').addEventListener('dragover', e => e.preventDefault());
 $('view-library').addEventListener('drop', e => { e.preventDefault(); if (!dz.contains(e.target)) enqueue([...e.dataTransfer.files]); });
 
@@ -818,8 +1373,8 @@ function renderQueue() {
     const icon = it.status === 'uploading' ? '<span class="spinner"></span>' : it.status === 'done' ? '✓' : it.status === 'failed' ? '!' : esc(ext);
     return `<div class="qitem ${cls}">
       <div class="ficon">${icon}</div>
-      <div><div class="fname" title="${esc(it.name)}">${esc(it.name)}</div><div class="fsub">${esc(it.note)}</div></div>
-      <div class="muted" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;">${it.status}</div>
+      <div style="min-width:0;"><div class="fname" title="${esc(it.name)}">${esc(it.name)}</div><div class="fsub">${esc(it.note)}</div></div>
+      <div class="muted" style="font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;margin-left:auto;">${it.status}</div>
     </div>`;
   }).join('');
 }
@@ -879,8 +1434,11 @@ $('pasteBtn').onclick = async () => {
 };
 
 /* ------------------------------------------------------------------ boot */
+show('ask');
+autoGrow();
 loadStatus();
 loadDocuments();
+loadGolden();
 </script>
 </body>
 </html>
