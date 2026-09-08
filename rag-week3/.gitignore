@@ -1,9 +1,16 @@
 venv/
 .env
+!.env.example
 __pycache__/
 *.pyc
 .DS_Store
 vectorstores/
 
-# Regenerable vector indexes - rebuild with: python main.py ingest
-chroma_db/
+# Document exports from the database - regenerate with:
+#   python main.py export --to export
+export/
+
+# Trace logs: raw traffic, can be large, and the JSONL is regenerable.
+# Commit the WEEK 5 ARTEFACTS (week5/*.md, week5/sample.json) instead —
+# those are the evidence; the log behind them is working data.
+traces/

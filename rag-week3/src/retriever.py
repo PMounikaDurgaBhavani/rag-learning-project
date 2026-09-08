@@ -1,9 +1,6 @@
+import db
 from embeddings import embed_query
-from vector_store import (
-    get_client,
-    collection_name,
-    DEFAULT_STRATEGY,
-)
+from vector_store import DEFAULT_STRATEGY
 
 
 def build_where(
@@ -11,10 +8,11 @@ def build_where(
     article_id=None,
     is_table=None
 ):
-    """Build a ChromaDB metadata filter.
+    """Build a metadata filter.
 
-    ChromaDB requires an explicit $and when more than one field
-    is constrained, so a single-key filter is passed through as-is.
+    The shape is inherited from the ChromaDB era and kept because the UI,
+    the CLI and the experiments all pass it around; `_where_to_columns`
+    flattens it into SQL column filters at the point of use.
     """
 
     conditions = []
@@ -37,34 +35,19 @@ def build_where(
     return {"$and": conditions}
 
 
-def format_results(raw):
-    """Flatten a ChromaDB query response into a list of chunk dicts."""
+def _where_to_columns(where):
+    """Flatten a Chroma filter into plain column equality filters."""
 
-    if not raw["ids"] or not raw["ids"][0]:
-        return []
+    if not where:
+        return {}
 
-    chunks = []
-
-    for index in range(len(raw["ids"][0])):
-
-        metadata = raw["metadatas"][0][index]
-
-        chunks.append(
-            {
-                "rank": index + 1,
-                "chunk_id": metadata.get("chunk_id"),
-                "article_id": metadata.get("article_id"),
-                "product_area": metadata.get("product_area"),
-                "last_updated": metadata.get("last_updated"),
-                "source_file": metadata.get("source_file"),
-                "section": metadata.get("section"),
-                "is_table": metadata.get("is_table"),
-                "content": raw["documents"][0][index],
-                "distance": raw["distances"][0][index],
-            }
-        )
-
-    return chunks
+    conditions = where.get("$and", [where])
+    columns = {}
+    for condition in conditions:
+        for key, value in condition.items():
+            if key in ("product_area", "article_id"):
+                columns[key] = value
+    return columns
 
 
 def retrieve_chunks(
@@ -75,22 +58,11 @@ def retrieve_chunks(
 ):
     """Retrieve the top_k most similar chunks, optionally filtered."""
 
-    client = get_client()
-
-    collection = client.get_collection(
-        name=collection_name(strategy)
-    )
-
-    query_kwargs = {
-        "query_embeddings": embed_query(query),
-        "n_results": top_k,
-    }
-
-    if where:
-        query_kwargs["where"] = where
-
-    return format_results(
-        collection.query(**query_kwargs)
+    return db.search(
+        embed_query(query)[0],
+        top_k=top_k,
+        strategy=strategy,
+        **_where_to_columns(where)
     )
 
 

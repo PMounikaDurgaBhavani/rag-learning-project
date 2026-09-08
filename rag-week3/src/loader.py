@@ -10,8 +10,12 @@ frontmatter and section markers are all used when present and never
 required; a file of unstructured prose, mixed notes or raw records is
 indexed exactly as well as a formatted help-centre article.
 
+Documents live in PostgreSQL (see src/db.py). This module is the reader
+that turns a FILE into a document row — used on import and upload, never
+on the query path.
+
 Metadata (article_id, product_area, last_updated) comes from either:
-  * a sidecar ``<filename>.meta.json`` (written for every upload), or
+  * a sidecar ``<filename>.meta.json`` next to the file being imported, or
   * optional YAML frontmatter on a hand-written text/markdown file,
   * falling back to values derived from the filename and first line.
 """
@@ -25,7 +29,10 @@ from datetime import datetime
 
 import yaml
 
-DATA_DIR = Path("data")
+# There is no documents directory any more — the database holds them.
+# This is only the default an explicit `import` reads from when no path is
+# given, and nothing creates it.
+DEFAULT_IMPORT_DIR = Path("import")
 
 META_SUFFIX = ".meta.json"
 
@@ -323,11 +330,28 @@ def _default_metadata(file_path: Path, article_content: str) -> dict:
 
 
 def load_articles():
-    """Load and parse all documents in the data directory regardless of file type."""
-    documents = []
-    DATA_DIR.mkdir(exist_ok=True)
+    """Every document, from the database.
 
-    for file_path in sorted(DATA_DIR.glob("*")):
+    Postgres is the only store. Reading the filesystem here would return
+    an empty corpus, since uploads no longer leave anything on disk.
+    Use load_articles_from_files(dir) to read files for an import.
+    """
+    import db
+    return db.load_documents()
+
+
+def load_articles_from_files(directory=None):
+    """Parse every file in a directory, regardless of format.
+
+    Used by `main.py import`. The application itself never calls this —
+    it reads documents from the database.
+    """
+    documents = []
+    directory = Path(directory or DEFAULT_IMPORT_DIR)
+    if not directory.exists():
+        return []
+
+    for file_path in sorted(directory.glob("*")):
         if file_path.name.startswith(".") or file_path.is_dir():
             continue
         if file_path.name.endswith(META_SUFFIX):

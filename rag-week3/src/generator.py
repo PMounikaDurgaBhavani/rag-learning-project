@@ -1,5 +1,8 @@
 import os
 import re
+import time
+
+import tracing
 
 from transformers import pipeline
 
@@ -43,6 +46,25 @@ SYSTEM_PROMPT = (
     "Never invent numbers, prices, limits or policies.\n"
     "Answer in under 60 words."
 )
+
+# Bump the version whenever SYSTEM_PROMPT changes. The sha is derived, so
+# an edit that forgets the bump is still visible in every trace.
+PROMPT_VERSION = "v1.0"
+
+# Decoding settings live here rather than inline at the call site so a
+# trace can record exactly what produced its output, and a replay can
+# reuse them without guessing.
+GENERATION_PARAMS = {
+    "max_new_tokens": 160,
+    "do_sample": False,
+    "return_full_text": False,
+}
+
+
+def prompt_sha():
+    from tracing import sha256
+    return sha256(SYSTEM_PROMPT)
+
 
 _PIPELINE = None
 
@@ -280,7 +302,7 @@ def make_citation(chunk, score, marker):
 # Main entry point
 # ============================================================
 
-def generate_answer(
+def _generate_answer(
     query,
     top_k=TOP_K,
     strategy=DEFAULT_STRATEGY,
@@ -324,16 +346,33 @@ def generate_answer(
         "retrieval_mode": retrieval_mode,
         "top_k": top_k,
         "threshold": threshold,
+        "min_coverage": min_coverage,
+        "prompt_version": PROMPT_VERSION,
+        "prompt_sha": prompt_sha(),
+        "prompt_messages": None,
+        "model_name": MODEL_NAME,
+        "model_params": dict(GENERATION_PARAMS),
         "filter": where,
+        # Every score that took part in the ordering, not just the dense
+        # one: under a fused ranking the distance alone does not explain
+        # why a chunk is where it is, and a trace that cannot explain the
+        # ordering cannot be replayed against a different retriever.
         "retrieved": [
             {
                 "rank": chunk["rank"],
                 "chunk_id": chunk["chunk_id"],
+                "article_id": chunk.get("article_id"),
+                "section": chunk.get("section"),
                 "distance": (
                     round(distance, 4)
                     if (distance := chunk_distance(chunk)) is not None
                     else None
                 ),
+                "bm25_score": chunk.get("bm25_score"),
+                "rrf_score": chunk.get("rrf_score"),
+                "rerank_score": chunk.get("rerank_score"),
+                "dense_rank": chunk.get("dense_rank"),
+                "bm25_rank": chunk.get("bm25_rank"),
             }
             for chunk in chunks
         ],
@@ -427,13 +466,12 @@ def generate_answer(
         },
     ]
 
+    # Stored verbatim: a replay that rebuilds the prompt from the index
+    # is testing today's chunks, not the ones this answer actually saw.
+    result["prompt_messages"] = messages
+
     raw_answer = extract_text(
-        get_pipeline()(
-            messages,
-            max_new_tokens=160,
-            do_sample=False,
-            return_full_text=False
-        )
+        get_pipeline()(messages, **GENERATION_PARAMS)
     )
 
     result["raw_answer"] = raw_answer
@@ -486,6 +524,39 @@ def generate_answer(
     result["sources"] = sources
 
     return result
+
+
+def generate_answer(*args, source="cli", trace_id=None, **kwargs):
+    """Answer a question and write a trace of how it was answered.
+
+    Tracing wraps the pipeline rather than living inside it: every early
+    return in _generate_answer is a distinct failure mode, and a wrapper
+    records all of them without a write at each exit.
+    """
+
+    started = time.perf_counter()
+    result = _generate_answer(*args, **kwargs)
+    elapsed_ms = round((time.perf_counter() - started) * 1000.0, 2)
+
+    try:
+        trace = tracing.append(
+            tracing.build_trace(
+                result,
+                latency_ms={"total": elapsed_ms},
+                source=source,
+                trace_id=trace_id,
+            )
+        )
+        result["trace_id"] = trace["trace_id"]
+    except Exception as error:            # answering must survive tracing
+        print(f"  [tracing] trace not recorded: {error}")
+
+    # The literal prompt is large and already in the trace; keeping it on
+    # the result would push it into every API response and console dump.
+    result.pop("prompt_messages", None)
+
+    return result
+
 
 
 def print_answer(result, show_retrieved=False):

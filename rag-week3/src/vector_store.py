@@ -1,86 +1,45 @@
-import chromadb
+"""Build and inspect the vector index. PostgreSQL + pgvector is the store.
 
+There is no second backend. Documents, chunks and embeddings all live in
+one database (see src/db.py and DATABASE.md), so "rebuild the index" is a
+transaction rather than a directory of files that has to be kept in step
+with data/.
+
+Index layout: one `chunks` table, separated logically by the `strategy`
+column rather than by three collections. Rebuilding one strategy touches
+only its rows, and the strategies can be compared with a GROUP BY instead
+of three round trips.
+"""
+
+import db
 from loader import load_articles
 from chunking import STRATEGIES, create_chunks
 from embeddings import create_embeddings
 
 
-CHROMA_PATH = "./chroma_db"
-
-# Default index used by the application.
+# The strategy the application queries unless told otherwise.
 DEFAULT_STRATEGY = "markdown"
 
 
-def collection_name(strategy):
-    return f"clouddesk_{strategy}"
-
-
-def get_client(path=CHROMA_PATH):
-    return chromadb.PersistentClient(path=path)
-
-
-def clean_metadata(metadata):
-    """Convert metadata into values ChromaDB accepts."""
-
-    cleaned = {}
-
-    for key, value in metadata.items():
-
-        if hasattr(value, "isoformat"):
-            cleaned[key] = value.isoformat()
-
-        elif isinstance(value, (str, int, float, bool)):
-            cleaned[key] = value
-
-        else:
-            cleaned[key] = str(value)
-
-    return cleaned
-
-
-def index_chunks(client, name, chunks, show_progress_bar=False):
-    """Embed chunks and upsert them into a named collection."""
-
-    # Rebuild from scratch so stale chunks never survive a re-ingest.
-    try:
-        client.delete_collection(name=name)
-    except Exception:
-        pass
-
-    collection = client.get_or_create_collection(name=name)
-
-    embeddings = create_embeddings(
-        chunks,
-        show_progress_bar=show_progress_bar
-    )
-
-    collection.upsert(
-        ids=[
-            chunk["metadata"]["chunk_id"]
-            for chunk in chunks
-        ],
-        documents=[
-            chunk["content"]
-            for chunk in chunks
-        ],
-        embeddings=embeddings.tolist(),
-        metadatas=[
-            clean_metadata(chunk["metadata"])
-            for chunk in chunks
-        ]
-    )
-
-    return collection
+def index_label(strategy):
+    """Human-readable name for one strategy's slice of the chunks table."""
+    return f"chunks[strategy={strategy}]"
 
 
 def build_index(
     strategy,
     chunk_size=300,
     chunk_overlap=50,
-    path=CHROMA_PATH,
     show_progress_bar=False
 ):
-    """Build one persistent index for a single chunking strategy."""
+    """Re-chunk, re-embed and replace one strategy's chunks.
+
+    The replace happens in a single transaction: a failure part-way
+    through leaves the previous chunks answering queries rather than a
+    half-written index that silently returns fewer results.
+    """
+
+    db.init_schema()
 
     documents = load_articles()
 
@@ -91,64 +50,59 @@ def build_index(
         chunk_overlap=chunk_overlap
     )
 
-    client = get_client(path)
-
-    collection = index_chunks(
-        client,
-        collection_name(strategy),
+    embeddings = create_embeddings(
         chunks,
         show_progress_bar=show_progress_bar
     )
 
-    return collection
+    written = db.replace_chunks(strategy, chunks, embeddings)
+
+    return {
+        "strategy": strategy,
+        "collection": index_label(strategy),
+        "chunks": written,
+    }
 
 
-def build_all_indexes(
-    chunk_size=300,
-    chunk_overlap=50,
-    path=CHROMA_PATH
-):
+def build_all_indexes(chunk_size=300, chunk_overlap=50):
     """Build one index per chunking strategy over the same documents."""
+
+    db.init_schema()
 
     results = []
 
     for strategy in STRATEGIES:
 
-        collection = build_index(
+        result = build_index(
             strategy,
             chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
-            path=path
+            chunk_overlap=chunk_overlap
         )
 
-        results.append(
-            {
-                "strategy": strategy,
-                "collection": collection_name(strategy),
-                "chunks": collection.count()
-            }
-        )
+        print(f"  {strategy:<12} -> {result['collection']:<28} "
+              f"{result['chunks']:>5} chunks")
 
-        print(
-            f"  {strategy:<12} -> "
-            f"{collection_name(strategy):<22} "
-            f"{collection.count()} chunks"
-        )
+        results.append(result)
 
     return results
 
 
-# Backwards-compatible helper used by earlier scripts.
-def create_vector_store():
-    return build_index("recursive")
+def index_counts():
+    """Chunks per strategy, straight from the database."""
+    try:
+        return db.stats()["chunks"]
+    except Exception:
+        return {}
 
 
 if __name__ == "__main__":
 
     print("=" * 70)
-    print("BUILDING VECTOR INDEXES (one per chunking strategy)")
+    print("BUILDING INDEXES  (PostgreSQL + pgvector)")
     print("=" * 70)
+    print(f"database: {db.DATABASE_URL}\n")
 
     build_all_indexes()
 
-    print("\nDone.")
+    print(f"\nstats: {db.stats()}")
+    print(f"default strategy for queries: {DEFAULT_STRATEGY}")

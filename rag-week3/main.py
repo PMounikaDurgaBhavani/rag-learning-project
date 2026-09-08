@@ -25,8 +25,7 @@ from chunking import STRATEGIES
 from vector_store import (
     build_all_indexes,
     DEFAULT_STRATEGY,
-    get_client,
-    collection_name,
+    index_counts,
 )
 
 
@@ -35,14 +34,22 @@ from vector_store import (
 # ============================================================
 
 def command_ingest(args):
-    print("=" * 72)
-    print("INGESTING ARTICLES")
-    print("=" * 72)
+    """Re-chunk and re-embed every document already in the database."""
+    import db
 
+    print("=" * 72)
+    print("RE-INDEXING DOCUMENTS FROM THE DATABASE")
+    print("=" * 72)
+    print(f"store: {db.DATABASE_URL}")
     print(
         f"chunk_size={args.chunk_size} "
         f"chunk_overlap={args.chunk_overlap}\n"
     )
+
+    if db.stats().get("documents", 0) == 0:
+        print("  No documents in the database. Add some first:")
+        print("    python main.py import <file-or-directory>")
+        return
 
     build_all_indexes(
         chunk_size=args.chunk_size,
@@ -50,6 +57,127 @@ def command_ingest(args):
     )
 
     print(f"\nDefault index for queries: {DEFAULT_STRATEGY}")
+
+
+def command_import(args):
+    """Read files from disk into the database, then re-index."""
+    import db
+    from pathlib import Path
+
+    source = Path(args.path)
+    if not source.exists():
+        print(f"No such path: {source}")
+        return
+
+    print("=" * 72)
+    print(f"IMPORTING {source}")
+    print("=" * 72)
+
+    if source.is_dir():
+        imported, skipped = db.import_directory(source, args.area)
+    else:
+        imported, skipped = [db.import_file(source, args.area)], []
+
+    for metadata in imported:
+        print(f"  + {metadata['source_file']:<28} {metadata['article_id']}")
+    for name, reason in skipped:
+        print(f"  - {name:<28} skipped: {reason}")
+
+    print(f"\n{len(imported)} imported, {len(skipped)} skipped")
+
+    if imported and not args.no_reindex:
+        print("\nRe-indexing…")
+        build_all_indexes()
+
+
+def command_db(args):
+    """Create, inspect, reset or move the database."""
+    import db
+    import subprocess
+
+    action = args.db_action
+    url = args.url or db.DATABASE_URL
+
+    if action == "url":
+        print(db.safe_url(url))
+        parts = db.parse_url(url)
+        print(f"  host     : {parts['host']}:{parts['port']}")
+        print(f"  database : {parts['database']}")
+        print(f"  user     : {parts['user']}")
+        print("\nOverride it per run:")
+        print("  DATABASE_URL=postgresql://user@host:5432/name python main.py status")
+        print("or put DATABASE_URL=... in a .env file at the project root.")
+        return
+
+    if action == "setup":
+        print("=" * 72)
+        print("DATABASE SETUP")
+        print("=" * 72)
+        try:
+            steps = db.setup(url)
+        except ConnectionError as error:
+            print(f"  {error}")
+            return
+        print(f"  url             : {steps['url']}")
+        print(f"  database created: {steps['created_database']} "
+              f"{'(it already existed)' if not steps['created_database'] else ''}")
+        print(f"  pgvector        : {steps['pgvector']}")
+        print(f"  tables          : documents, chunks")
+        print(f"  contents        : {steps['stats']}")
+        if steps["stats"]["documents"] == 0:
+            print("\n  Empty. Load documents with:")
+            print("    python main.py import <file-or-folder>")
+        return
+
+    if action == "status":
+        parts = db.parse_url(url)
+        print(f"  url       : {db.safe_url(url)}")
+        print(f"  reachable : {db.server_reachable(url)}")
+        print(f"  exists    : {db.database_exists(url)}")
+        if db.database_exists(url):
+            print(f"  contents  : {db.stats(url)}")
+        return
+
+    if action == "reset":
+        parts = db.parse_url(url)
+        answer = input(
+            f"Drop ALL documents and chunks in {parts['database']} "
+            f"at {parts['host']}:{parts['port']}? Type the database name: "
+        )
+        if answer.strip() != parts["database"]:
+            print("  Name did not match — nothing was changed.")
+            return
+        db.reset(url, confirm=True)
+        print("  Tables dropped and recreated, empty.")
+        return
+
+    if action in ("backup", "restore"):
+        parts = db.parse_url(url)
+        path = args.file
+        command = ["pg_dump" if action == "backup" else "psql",
+                   "-h", parts["host"], "-p", str(parts["port"])]
+        if parts["user"]:
+            command += ["-U", parts["user"]]
+        command += ["-d", parts["database"]]
+        command += ["-f", path]
+
+        print(f"  {' '.join(command)}")
+        result = subprocess.run(command)
+        if result.returncode == 0:
+            print(f"  {'Wrote' if action == 'backup' else 'Restored from'} {path}")
+        else:
+            print(f"  {action} failed (exit {result.returncode})")
+        return
+
+
+def command_export(args):
+    """Write every document in the database back out as files."""
+    import db
+
+    written = db.export_documents(args.to)
+    print(f"Exported {len(written)} documents to {args.to}/")
+    for name in written:
+        print(f"  {name}")
 
 
 def command_search(args):
@@ -203,20 +331,26 @@ def command_demo(args):
 
 
 def command_status(args):
-    client = get_client()
+    import db
 
     print("=" * 72)
     print("INDEX STATUS")
     print("=" * 72)
+    print(f"  store: {db.DATABASE_URL}\n")
+
+    counts = index_counts()
 
     for strategy in STRATEGIES:
-        name = collection_name(strategy)
-        try:
-            count = client.get_collection(name=name).count()
+        count = counts.get(strategy)
+        if count:
             marker = " (default)" if strategy == DEFAULT_STRATEGY else ""
-            print(f"  {name:<24} {count:>5} chunks{marker}")
-        except Exception:
-            print(f"  {name:<24}     - not built (run: python main.py ingest)")
+            print(f"  {strategy:<24} {count:>5} chunks{marker}")
+        else:
+            print(f"  {strategy:<24}     - not built "
+                  f"(run: python main.py ingest)")
+
+    documents = db.stats().get("documents", 0)
+    print(f"\n  {documents} documents")
 
 
 def command_ui(args):
@@ -247,11 +381,54 @@ def build_parser():
     # ingest
     ingest = subparsers.add_parser(
         "ingest",
-        help="chunk the articles and build one index per strategy"
+        help="re-chunk and re-embed the documents already in the database"
     )
     ingest.add_argument("--chunk-size", type=int, default=300)
     ingest.add_argument("--chunk-overlap", type=int, default=50)
     ingest.set_defaults(func=command_ingest)
+
+    # import
+    import_cmd = subparsers.add_parser(
+        "import",
+        help="read a file or directory into the database"
+    )
+    import_cmd.add_argument("path")
+    import_cmd.add_argument("--area", default=None, help="product_area to tag")
+    import_cmd.add_argument("--no-reindex", action="store_true")
+    import_cmd.set_defaults(func=command_import)
+
+    # export
+    export_cmd = subparsers.add_parser(
+        "export",
+        help="write every document back out as files"
+    )
+    export_cmd.add_argument("--to", default="export")
+    export_cmd.set_defaults(func=command_export)
+
+    # db
+    db_cmd = subparsers.add_parser(
+        "db",
+        help="create, inspect, reset, back up or move the database"
+    )
+    db_cmd.add_argument(
+        "--url",
+        default=None,
+        help="connection URL to act on (default: $DATABASE_URL or .env)"
+    )
+    db_actions = db_cmd.add_subparsers(dest="db_action", required=True)
+
+    db_actions.add_parser("setup", help="create the database, extension and tables")
+    db_actions.add_parser("status", help="is it reachable, does it exist, what is in it")
+    db_actions.add_parser("url", help="show the connection URL in use")
+    db_actions.add_parser("reset", help="drop and recreate the tables (destructive)")
+
+    db_backup = db_actions.add_parser("backup", help="pg_dump to a file")
+    db_backup.add_argument("--file", default="clouddesk_rag.sql")
+
+    db_restore = db_actions.add_parser("restore", help="psql restore from a file")
+    db_restore.add_argument("--file", default="clouddesk_rag.sql")
+
+    db_cmd.set_defaults(func=command_db)
 
     # status
     status = subparsers.add_parser(

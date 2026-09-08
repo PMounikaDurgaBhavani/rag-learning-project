@@ -24,13 +24,11 @@ sys.path.insert(
     )
 )
 
-import chromadb
+import numpy as np
 
 from loader import load_articles
 from chunking import STRATEGIES, create_chunks
 from embeddings import embed_texts, embed_query
-from retriever import format_results
-from vector_store import clean_metadata
 from metrics import (
     article_hit_at_k,
     hit_at_k,
@@ -67,7 +65,45 @@ def load_questions(path=QUESTIONS_FILE):
 # Index one configuration into an ephemeral collection
 # ============================================================
 
-def index_config(client, strategy, chunk_size, chunk_overlap, documents):
+class MemoryIndex:
+    """Exact in-memory nearest-neighbour search over one config's chunks.
+
+    This sweep builds and throws away ~15 indexes, so it never wanted a
+    persistent store. It used an ephemeral ChromaDB client; now that
+    Postgres is the only real store, keeping a second vector engine as a
+    dependency for one experiment is not worth it.
+
+    Distances match what the application reports: embeddings are unit-norm,
+    Chroma returned squared L2, and for unit vectors that equals
+    2 x cosine distance — the same expression db.search() uses. So numbers
+    from this sweep stay comparable with the recorded Week 3 results.
+    """
+
+    def __init__(self, chunks):
+        self.chunks = chunks
+        texts = [chunk["content"] for chunk in chunks]
+        self.matrix = np.asarray(embed_texts(texts), dtype=np.float32)
+
+    def query(self, query_embedding, n_results):
+        vector = np.asarray(query_embedding, dtype=np.float32).reshape(-1)
+        # squared L2 == 2 * cosine distance for unit-norm vectors
+        distances = np.sum((self.matrix - vector) ** 2, axis=1)
+        order = np.argsort(distances)[:n_results]
+
+        results = []
+        for rank, index in enumerate(order, start=1):
+            chunk = self.chunks[index]
+            record = dict(chunk["metadata"])
+            record.update({
+                "rank": rank,
+                "content": chunk["content"],
+                "distance": float(distances[index]),
+            })
+            results.append(record)
+        return results
+
+
+def index_config(strategy, chunk_size, chunk_overlap, documents):
 
     chunks = create_chunks(
         strategy,
@@ -76,26 +112,7 @@ def index_config(client, strategy, chunk_size, chunk_overlap, documents):
         chunk_overlap=chunk_overlap
     )
 
-    name = f"eval_{strategy}_{chunk_size}_{chunk_overlap}"
-
-    collection = client.get_or_create_collection(name=name)
-
-    texts = [chunk["content"] for chunk in chunks]
-
-    collection.upsert(
-        ids=[
-            chunk["metadata"]["chunk_id"]
-            for chunk in chunks
-        ],
-        documents=texts,
-        embeddings=embed_texts(texts).tolist(),
-        metadatas=[
-            clean_metadata(chunk["metadata"])
-            for chunk in chunks
-        ]
-    )
-
-    return collection, chunks
+    return MemoryIndex(chunks), chunks
 
 
 # ============================================================
@@ -117,11 +134,9 @@ def evaluate_config(collection, chunks, questions, label):
 
     for question in questions:
 
-        retrieved = format_results(
-            collection.query(
-                query_embeddings=embed_query(question["question"]),
-                n_results=max_k
-            )
+        retrieved = collection.query(
+            embed_query(question["question"]),
+            n_results=max_k
         )
 
         for k in TOP_K_VALUES:
@@ -244,8 +259,6 @@ if __name__ == "__main__":
         f"{len(STRATEGIES) * len(SIZE_CONFIGS)}"
     )
 
-    client = chromadb.EphemeralClient()
-
     all_results = []
     all_failures = []
 
@@ -256,7 +269,6 @@ if __name__ == "__main__":
             label = f"{strategy}/{chunk_size}/{chunk_overlap}"
 
             collection, chunks = index_config(
-                client,
                 strategy,
                 chunk_size,
                 chunk_overlap,

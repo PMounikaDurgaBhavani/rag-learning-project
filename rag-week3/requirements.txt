@@ -9,7 +9,7 @@ bcrypt==5.0.0
 build==1.5.0
 certifi==2026.7.22
 charset-normalizer==3.5.1
-chromadb==1.5.9
+# chromadb  <- removed: PostgreSQL + pgvector is the only store (see DATABASE.md)
 click==8.4.2
 distro==1.9.0
 durationpy==0.10
@@ -108,3 +108,8 @@ websockets==16.1.1
 xxhash==4.0.1
 yarl==1.24.5
 zstandard==0.25.0
+
+# --- PostgreSQL + pgvector store (documents, chunks, embeddings) ---
+# Server side also needs the extension:  brew install pgvector
+psycopg[binary]>=3.1
+pgvector>=0.2.5

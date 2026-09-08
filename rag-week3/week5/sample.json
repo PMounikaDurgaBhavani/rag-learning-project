@@ -1,0 +1,28 @@
+{
+  "seed": 20260907,
+  "n": 20,
+  "population": 99,
+  "selection_rule": "random.Random(20260907).sample(traces sorted by trace_id, 20)",
+  "trace_ids": [
+    "52df90703dac44be",
+    "4feb2225e1a746b4",
+    "9178a5b4424d4833",
+    "50e50263fa0d42dd",
+    "f1423117df0949ac",
+    "ca06d21aa6fc4204",
+    "5a50d54f665441d4",
+    "99bd69c5501749e4",
+    "5b4a156d4b2a412e",
+    "a7051c474be5456e",
+    "2d540dfaff77426b",
+    "55dc68f2276e4924",
+    "481c82d2b24a4c26",
+    "7fe81eaa6cdf466a",
+    "b11ac98da8764b29",
+    "66c2277862c449d4",
+    "c0579a1772764098",
+    "8d306c74d9c1499c",
+    "0397331973e145a3",
+    "59b27d3b9fdd4225"
+  ]
+}

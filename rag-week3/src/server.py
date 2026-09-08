@@ -21,6 +21,8 @@ import os
 import re
 import sys
 import traceback
+import shutil
+import tempfile
 import urllib.parse
 import webbrowser
 from datetime import datetime
@@ -39,23 +41,21 @@ from bm25_retriever import retrieve_bm25, clear_bm25_cache
 from hybrid_retriever import reciprocal_rank_fusion
 from reranker import rerank_chunks
 from query_transform import rewrite_query, generate_hypothetical_document
+import db
 from loader import (
     load_articles,
     extract_text_from_file,
-    meta_path_for,
     split_frontmatter,
     derive_title,
     ExtractionError,
-    DATA_DIR,
     META_SUFFIX,
     TEXT_FRONTMATTER_EXTS,
 )
 from vector_store import (
-    get_client,
-    collection_name,
     STRATEGIES,
     DEFAULT_STRATEGY,
     build_all_indexes,
+    index_counts,
 )
 
 STATIC_DIR = Path(SRC_DIR) / "static"
@@ -83,15 +83,14 @@ def rebuild_indexes():
 
 
 def index_status():
-    client = get_client()
-    status = {}
-    for strat in STRATEGIES:
-        try:
-            c = client.get_collection(collection_name(strat))
-            status[strat] = {"count": c.count(), "status": "ready"}
-        except Exception:
-            status[strat] = {"count": 0, "status": "not_built"}
-    return status
+    counts = index_counts()
+    return {
+        strategy: {
+            "count": counts.get(strategy, 0),
+            "status": "ready" if counts.get(strategy) else "not_built",
+        }
+        for strategy in STRATEGIES
+    }
 
 
 def document_list():
@@ -111,17 +110,13 @@ def document_list():
 
 
 def save_upload(filename: str, data: bytes, product_area: str) -> dict:
-    """Persist an uploaded file into DATA_DIR and validate it is readable.
+    """Extract an uploaded file into the database. Nothing is kept on disk.
 
-    The file is stored byte-for-byte as the user supplied it, whatever it
-    contains. Metadata always goes to a sidecar ``<name>.meta.json`` — we
-    never inject a frontmatter block, because doing so assumes the document
-    is markdown-shaped and damages anything that is not: a CSV gains a bogus
-    first row, a log or code file gains a fake header, and a file that
-    already opened with "---" had its real first section eaten.
+    Text extraction needs a real path (pypdf, python-docx and openpyxl all
+    open files), so the bytes go to a temp file that is deleted in the
+    finally block. The document row is the artefact; there is no inbox
+    directory to fall out of step with the database.
     """
-    DATA_DIR.mkdir(exist_ok=True)
-
     filename = safe_filename(filename)
     if not filename:
         raise ValueError("Filename is empty after sanitising.")
@@ -132,48 +127,47 @@ def save_upload(filename: str, data: bytes, product_area: str) -> dict:
     stem = Path(filename).stem
     article_id = re.sub(r"[^A-Z0-9\-_]+", "-", stem.upper()).strip("-") or "DOC"
     today = datetime.now().strftime("%Y-%m-%d")
-    file_path = DATA_DIR / filename
-    sidecar = meta_path_for(file_path)
 
-    file_path.write_bytes(data)
+    scratch = Path(tempfile.mkdtemp(prefix="clouddesk_upload_"))
+    file_path = scratch / filename
 
-    # Validate that we can actually get text out of it before committing a
-    # sidecar for a file we cannot read.
     try:
+        file_path.write_bytes(data)
+
         extracted = extract_text_from_file(file_path)
         if not extracted.strip():
             raise ExtractionError("The file contains no text.")
-    except ExtractionError:
-        file_path.unlink(missing_ok=True)
-        raise
 
-    # A hand-written text file may already carry its own frontmatter; when
-    # it does that wins, and the sidecar only fills the gaps.
-    existing, body = split_frontmatter(
-        extracted, allow=ext in TEXT_FRONTMATTER_EXTS
-    )
+        # A hand-written text file may carry its own frontmatter; when it
+        # does that wins, and the derived values only fill the gaps.
+        existing, body = split_frontmatter(
+            extracted, allow=ext in TEXT_FRONTMATTER_EXTS
+        )
 
-    meta = {
-        "article_id": article_id,
-        "product_area": product_area,
-        "last_updated": today,
-        "title": derive_title(file_path, body or extracted),
-    }
-    meta.update({k: v for k, v in existing.items() if v not in (None, "")})
+        meta = {
+            "source_file": filename,
+            "article_id": article_id,
+            "product_area": product_area,
+            "last_updated": today,
+            "title": derive_title(file_path, body or extracted),
+            "file_type": ext.lstrip("."),
+        }
+        meta.update({k: v for k, v in existing.items() if v not in (None, "")})
 
-    sidecar.write_text(
-        json.dumps(meta, indent=2, default=str), encoding="utf-8"
-    )
+        content = (body or extracted).strip()
+        db.upsert_document({"content": content, "metadata": meta})
 
-    return {
-        "filename": filename,
-        "article_id": meta["article_id"],
-        "product_area": meta["product_area"],
-        "title": meta["title"],
-        "file_type": ext.lstrip("."),
-        "chars": len(body or extracted),
-        "bytes": len(data),
-    }
+        return {
+            "filename": filename,
+            "article_id": meta["article_id"],
+            "product_area": meta["product_area"],
+            "title": meta["title"],
+            "file_type": ext.lstrip("."),
+            "chars": len(content),
+            "bytes": len(data),
+        }
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
 
 
 def run_retrieval(query, active_query, top_k, strategy, where):
@@ -316,13 +310,16 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         name = safe_filename(payload.get("source_file") or "")
         if not name:
             raise ValueError("Missing source_file")
-        file_path = DATA_DIR / name
-        if not file_path.exists():
-            self._send_json({"status": "error", "error": f"{name} not found"}, status=404)
+
+        removed = db.delete_document(name)     # chunks cascade
+        if not removed:
+            self._send_json(
+                {"status": "error", "error": f"{name} not found"}, status=404
+            )
             return
-        file_path.unlink()
-        meta_path_for(file_path).unlink(missing_ok=True)
-        self._send_json({"status": "ok", "deleted": name, "chunks": rebuild_indexes()})
+
+        self._send_json({"status": "ok", "deleted": name,
+                         "chunks": rebuild_indexes()})
 
     def _handle_query(self, path, payload):
         query = (payload.get("query") or "").strip()
@@ -366,6 +363,7 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
             article_id=article_id,
             threshold=threshold,
             retrieval_mode=mode,
+            source="ui",
         )
 
         inspection = {
@@ -395,7 +393,7 @@ def run_server(port: int = 8000, open_browser: bool = True):
     print("      CLOUDDESK KNOWLEDGE STUDIO — WEB UI")
     print("=" * 72)
     print(f"  Server running locally at: {url}")
-    print(f"  Documents folder: {DATA_DIR.resolve()}")
+    print(f"  Store: {db.DATABASE_URL}")
     print("  Press Ctrl+C to stop the server.")
     print("=" * 72 + "\n")
 
