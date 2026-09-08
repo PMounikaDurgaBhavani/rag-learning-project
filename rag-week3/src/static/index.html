@@ -487,6 +487,40 @@
   .decision b { font-size: 1rem; }
   .gs-wrap { overflow-x: auto; }
 
+  /* ---- week 5 ---- */
+  .w5-tabs { display: flex; gap: .3rem; border-bottom: 1px solid var(--line); margin-bottom: 1rem; flex-wrap: wrap; }
+  .w5-tabs button {
+    border: 0; background: transparent; padding: .5rem .8rem; cursor: pointer;
+    color: var(--ink-2); font-weight: 600; font-size: .85rem;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .w5-tabs button:hover { color: var(--ink); }
+  .w5-tabs button.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .md { font-size: .88rem; line-height: 1.65; }
+  .md h1 { font-size: 1.25rem; margin: 0 0 .6rem; }
+  .md h2 { font-size: 1rem; margin: 1.3rem 0 .5rem; }
+  .md h3 { font-size: .9rem; margin: 1rem 0 .3rem; }
+  .md p { margin: .5rem 0; }
+  .md ul, .md ol { margin: .5rem 0; padding-left: 1.3rem; }
+  .md li { margin: .25rem 0; }
+  .md code { font-family: var(--mono); font-size: .82em; background: var(--surface-2); padding: .08rem .3rem; border-radius: 4px; }
+  .md pre { background: var(--surface); padding: .7rem; border-radius: var(--radius-sm); overflow-x: auto; }
+  .md pre code { background: none; padding: 0; }
+  .md blockquote { margin: .6rem 0; padding: .5rem .8rem; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .md table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .7rem 0; }
+  .md th { text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); padding: .45rem .5rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .md td { padding: .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .md hr { border: 0; border-top: 1px solid var(--line); margin: 1.2rem 0; }
+  .w5-trace {
+    display: grid; grid-template-columns: 150px 1fr auto; gap: .6rem; align-items: start;
+    padding: .55rem .5rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: .82rem;
+  }
+  .w5-trace:hover { background: var(--surface); }
+  .w5-trace .tid { font-family: var(--mono); font-size: .72rem; font-weight: 600; }
+  .w5-detail { background: var(--surface); border-radius: var(--radius-sm); padding: .7rem; margin-top: .5rem; }
+  .w5-detail pre { font-family: var(--mono); font-size: .74rem; white-space: pre-wrap; word-break: break-word; margin: .2rem 0 .6rem; }
+  .w5-k { font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+
   pre.console {
     font-family: var(--mono); font-size: .76rem; line-height: 1.55;
     background: var(--surface); border-radius: var(--radius-sm); padding: .9rem;
@@ -532,6 +566,7 @@
         <button class="side-link" data-view="library"><span class="ic">☰</span> Library <span class="tail" id="navDocCount"></span></button>
         <button class="side-link" data-view="inspect"><span class="ic">◎</span> Retrieval inspector</button>
         <button class="side-link" data-view="golden"><span class="ic">▤</span> Golden set <span class="tail" id="navGoldenCount"></span></button>
+        <button class="side-link" data-view="week5"><span class="ic">◈</span> Error analysis <span class="tail" id="navW5Count"></span></button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
 
@@ -746,6 +781,29 @@
       </div>
     </section>
 
+    <!-- ---------------- WEEK 5 ---------------- -->
+    <section class="view" id="view-week5">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Error analysis — failure taxonomy</h1>
+          <p class="lede">
+            20 traces drawn at random with a pasted seed, read one by one, and clustered
+            into named failure modes. The write-up below is rendered from the files in
+            <code>week5/</code>, so what you see here is exactly what is submitted.
+          </p>
+          <div class="w5-tabs" id="w5Tabs">
+            <button data-tab="taxonomy" class="active">Taxonomy</button>
+            <button data-tab="traces">The 20 traces</button>
+            <button data-tab="notes">Open coding</button>
+            <button data-tab="replay">Replay evidence</button>
+            <button data-tab="prediction">Prediction</button>
+            <button data-tab="benchmark">Benchmark note</button>
+          </div>
+          <div id="w5Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ---------------- CONSOLE ---------------- -->
     <section class="view" id="view-console">
       <div class="scroll">
@@ -854,7 +912,7 @@ async function api(path, body) {
 })();
 
 /* ------------------------------------------------------------------ shell */
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', console: 'Console' };
 
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
@@ -865,6 +923,7 @@ function show(view) {
   $('settingsBtn2').classList.toggle('hidden', view !== 'ask');
   if (view === 'library') loadDocuments();
   if (view === 'golden') loadGolden();
+  if (view === 'week5') loadWeek5();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
 document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
@@ -1248,6 +1307,154 @@ $('view-golden').addEventListener('click', e => {
   $('query').value = row.dataset.q;
   autoGrow();
   runAsk(true);
+});
+
+/* ------------------------------------------------------------------ week 5 */
+let week5 = null;
+let w5Tab = 'taxonomy';
+
+// A deliberately small markdown renderer: the deliverables are markdown
+// files, and rendering them here keeps one source of truth rather than a
+// copy in the UI that can drift from what gets submitted.
+function md(src) {
+  const lines = String(src || '').split('\n');
+  let out = '', inCode = false, inTable = false, listType = null;
+
+  const inline = (t) => esc(t)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+
+  const closeList = () => { if (listType) { out += `</${listType}>`; listType = null; } };
+  const closeTable = () => { if (inTable) { out += '</tbody></table>'; inTable = false; } };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (line.trim().startsWith('```')) {
+      inCode = !inCode;
+      out += inCode ? '<pre><code>' : '</code></pre>';
+      continue;
+    }
+    if (inCode) { out += esc(line) + '\n'; continue; }
+
+    // table: a header row followed by a |---| separator
+    if (line.trim().startsWith('|') && !inTable &&
+        (lines[i + 1] || '').trim().match(/^\|[\s:|-]+\|$/)) {
+      const cells = line.split('|').slice(1, -1);
+      out += '<table><thead><tr>' + cells.map(c => `<th>${inline(c.trim())}</th>`).join('') + '</tr></thead><tbody>';
+      inTable = true; i++;                       // skip the separator row
+      continue;
+    }
+    if (inTable) {
+      if (line.trim().startsWith('|')) {
+        const cells = line.split('|').slice(1, -1);
+        out += '<tr>' + cells.map(c => `<td>${inline(c.trim())}</td>`).join('') + '</tr>';
+        continue;
+      }
+      closeTable();
+    }
+
+    const heading = line.match(/^(#{1,4})\s+(.*)$/);
+    if (heading) { closeList(); out += `<h${heading[1].length}>${inline(heading[2])}</h${heading[1].length}>`; continue; }
+    if (line.trim() === '---') { closeList(); out += '<hr>'; continue; }
+    if (line.startsWith('> ')) { closeList(); out += `<blockquote>${inline(line.slice(2))}</blockquote>`; continue; }
+
+    const ol = line.match(/^\s*(\d+)\.\s+(.*)$/);
+    const ul = line.match(/^\s*[-*]\s+(.*)$/);
+    if (ol) { if (listType !== 'ol') { closeList(); out += '<ol>'; listType = 'ol'; } out += `<li>${inline(ol[2])}</li>`; continue; }
+    if (ul) { if (listType !== 'ul') { closeList(); out += '<ul>'; listType = 'ul'; } out += `<li>${inline(ul[1])}</li>`; continue; }
+
+    if (!line.trim()) { closeList(); continue; }
+    out += `<p>${inline(line)}</p>`;
+  }
+  closeList(); closeTable();
+  return `<div class="md">${out}</div>`;
+}
+
+async function loadWeek5() {
+  if (week5) { renderWeek5(); return; }
+  try {
+    week5 = await api('/api/week5');
+    $('navW5Count').textContent = week5.sample?.n || '';
+    renderWeek5();
+  } catch (err) {
+    $('w5Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+$('w5Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]'); if (!b) return;
+  w5Tab = b.dataset.tab;
+  document.querySelectorAll('#w5Tabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderWeek5();
+});
+
+function renderWeek5() {
+  const d = week5;
+  const card = (inner) => `<div class="card">${inner}</div>`;
+
+  if (w5Tab === 'traces') {
+    const s = d.sample || {};
+    $('w5Body').innerHTML = card(`
+      <div class="eyebrow" style="margin-bottom:.5rem;">Seeded random sample</div>
+      <p class="help" style="margin-bottom:.8rem;">
+        seed <code>${esc(s.seed)}</code> · ${esc(s.n)} of ${esc(d.trace_count)} traces ·
+        <code>${esc(s.selection_rule || '')}</code><br>
+        Re-running with the same seed selects the same 20. Click a row for the full trace.
+      </p>
+      <div id="w5List">${d.traces.map((t, i) => `
+        <div class="w5-trace" data-tid="${esc(t.trace_id)}">
+          <span class="tid">${i + 1}. ${esc(t.trace_id)}</span>
+          <span>${esc(t.query)}</span>
+          <span>${t.refused
+            ? `<span class="pill bad">${esc((t.refusal_reason || 'refused').split(' (')[0])}</span>`
+            : '<span class="pill ok">answered</span>'}</span>
+        </div>`).join('')}</div>`);
+    return;
+  }
+
+  const source = {
+    taxonomy: d.taxonomy_md, notes: d.notes_md,
+    replay: d.replay_md, prediction: d.prediction_md, benchmark: d.benchmark_md,
+  }[w5Tab];
+
+  $('w5Body').innerHTML = card(source ? md(source)
+    : '<div class="muted">Not written yet.</div>');
+}
+
+// Expand one trace in place — the raw model output is the thing you read.
+$('w5Body').addEventListener('click', async e => {
+  const row = e.target.closest('[data-tid]'); if (!row) return;
+  const open = row.nextElementSibling;
+  if (open && open.classList.contains('w5-detail')) { open.remove(); return; }
+
+  const box = document.createElement('div');
+  box.className = 'w5-detail';
+  box.innerHTML = '<span class="spinner"></span> loading…';
+  row.after(box);
+
+  try {
+    const { trace } = await api('/api/trace', { trace_id: row.dataset.tid });
+    const o = trace.outcome;
+    box.innerHTML = `
+      <div class="w5-k">Question</div><pre>${esc(trace.query)}</pre>
+      <div class="w5-k">Raw model output (before any gate)</div>
+      <pre>${esc(String(trace.generation.raw_output))}</pre>
+      <div class="w5-k">Shown to the user</div><pre>${esc(String(o.answer))}</pre>
+      <div class="w5-k">Retrieved</div>
+      <pre>${esc(trace.retrieval.map(c =>
+        `${c.rank}. ${c.chunk_id}${c.distance != null ? ` d=${c.distance}` : ''}`).join('\n'))}</pre>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;">
+        <span class="pill info">${esc(trace.request.retrieval_mode)}</span>
+        <span class="pill">k=${esc(trace.request.top_k)}</span>
+        <span class="pill">prompt ${esc(trace.prompt.version)}</span>
+        <span class="pill">${esc(trace.model.name)}</span>
+        ${o.refusal_reason ? `<span class="pill bad">${esc(o.refusal_reason)}</span>` : ''}
+      </div>`;
+  } catch (err) {
+    box.innerHTML = `<span class="muted">Failed: ${esc(err.message)}</span>`;
+  }
 });
 
 /* ------------------------------------------------------------------ console */

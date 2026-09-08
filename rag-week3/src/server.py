@@ -8,6 +8,8 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/ask               grounded answer + retrieval stages
   POST /api/inspect           retrieval stages + grounded answer
   POST /api/upload            upload ANY file (text or base64) and index it
+  GET  /api/week5             error-analysis artefacts (taxonomy, notes, sample)
+  POST /api/trace             one trace by trace_id
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
@@ -170,6 +172,60 @@ def save_upload(filename: str, data: bytes, product_area: str) -> dict:
         shutil.rmtree(scratch, ignore_errors=True)
 
 
+WEEK5_DIR = Path(SRC_DIR).parent / "week5"
+
+
+def week5_artefacts():
+    """The Week 5 write-up, served from the files that are the deliverable.
+
+    The markdown is the single source of truth — the UI renders it rather
+    than holding a second copy that could drift from what is submitted.
+    """
+    import tracing
+
+    def read(name):
+        path = WEEK5_DIR / name
+        return path.read_text(encoding="utf-8") if path.exists() else None
+
+    sample = {}
+    sample_path = WEEK5_DIR / "sample.json"
+    if sample_path.exists():
+        sample = json.loads(sample_path.read_text(encoding="utf-8"))
+
+    traces = tracing.load_traces()
+    by_id = {t["trace_id"]: t for t in traces}
+
+    # Enough per sampled trace to render a list without shipping all 99.
+    summaries = []
+    for trace_id in sample.get("trace_ids", []):
+        trace = by_id.get(trace_id)
+        if not trace:
+            continue
+        outcome = trace["outcome"]
+        summaries.append({
+            "trace_id": trace_id,
+            "query": trace["query"],
+            "refused": outcome["refused"],
+            "refusal_reason": outcome["refusal_reason"],
+            "answer": outcome["answer"],
+            "raw_output": trace["generation"].get("raw_output"),
+            "best_distance": outcome.get("best_distance"),
+            "mode": trace["request"].get("retrieval_mode"),
+            "top_k": trace["request"].get("top_k"),
+        })
+
+    return {
+        "sample": sample,
+        "traces": summaries,
+        "trace_count": len(traces),
+        "taxonomy_md": read("taxonomy.md"),
+        "notes_md": read("notes.md"),
+        "prediction_md": read("prediction.md"),
+        "benchmark_md": read("benchmark_note.md"),
+        "replay_md": read("replay_evidence.md"),
+    }
+
+
 def run_retrieval(query, active_query, top_k, strategy, where):
     dense = retrieve_chunks(active_query, top_k=top_k, strategy=strategy, where=where)
     bm25 = retrieve_bm25(active_query, top_k=top_k, strategy=strategy, where=where)
@@ -226,6 +282,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(document_list())
             elif parsed.path == "/api/status":
                 self._send_json(index_status())
+            elif parsed.path == "/api/week5":
+                self._send_json(week5_artefacts())
             elif parsed.path == "/api/golden":
                 self._send_json({
                     "questions": golden_eval.load_golden_set(),
@@ -255,6 +313,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/upload":
                 self._handle_upload(payload)
+            elif parsed.path == "/api/trace":
+                self._handle_trace(payload)
             elif parsed.path == "/api/golden/evaluate":
                 self._handle_golden(payload)
             elif parsed.path == "/api/reindex":
@@ -290,6 +350,20 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         info["status"] = "ok"
         info["chunks"] = rebuild_indexes().get(DEFAULT_STRATEGY) if reindex else None
         self._send_json(info)
+
+    def _handle_trace(self, payload):
+        trace_id = (payload.get("trace_id") or "").strip()
+        if not trace_id:
+            raise ValueError("Missing trace_id")
+
+        import tracing
+        trace = tracing.get_trace(trace_id)
+        if trace is None:
+            self._send_json(
+                {"status": "error", "error": f"No trace {trace_id}"}, status=404
+            )
+            return
+        self._send_json({"status": "ok", "trace": trace})
 
     def _handle_golden(self, payload):
         try:
