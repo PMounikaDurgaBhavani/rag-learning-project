@@ -4,6 +4,7 @@
 **Selection rule:** `random.Random(20260907).sample(traces sorted by trace_id, 20)`
 **Read on:** 2026-09-08 · app build `efd07ba` · prompt `v1.0` (sha `21d158d26510e17c`)
 **Code changed during this pass: none.**
+**Committed as:** `c152efb`
 
 One sentence per trace describing what was seen. Not a category, not a
 diagnosis, not a fix.

@@ -1,6 +1,7 @@
 # Dated prediction — committed before any fix
 
 **Date:** 2026-09-08
+**Committed as:** `c152efb` (2026-09-08 13:01:01 +0530)
 **App build at time of prediction:** `efd07ba`, prompt `v1.0` (sha `21d158d26510e17c`)
 **Baseline sample:** seed `20260907`, 20 traces of 99
 

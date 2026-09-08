@@ -3,6 +3,7 @@
 **Sample:** 20 traces · seed `20260907` · drawn from 99
 **Read on:** 2026-09-08 · app build `efd07ba` · prompt `v1.0`
 **Code changed while coding these traces: none.**
+**Committed as:** `c152efb`
 
 | # | Failure mode | Count | % of 20 | Severity | Example trace_id |
 |---|---|---|---|---|---|
