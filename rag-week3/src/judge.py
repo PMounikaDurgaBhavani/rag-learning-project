@@ -6,9 +6,10 @@ cited. A prompt file has a system part and a user part separated by a line
 containing only USER_MARKER; the user part carries {{TICKET}},
 {{REFERENCE}} and {{REPLY}} placeholders.
 
-The judge model is deliberately not the model that drafted the reply.
-Override with RAG_JUDGE_MODEL (any Hugging Face chat model) and
-RAG_JUDGE_DEVICE (cpu / mps).
+The judge is SmolLM2-1.7B-Instruct: a different model family from the
+Qwen2.5-1.5B that drafts the replies, so a model is never grading its own
+family's writing. Override with RAG_JUDGE_MODEL (any Hugging Face chat
+model) and RAG_JUDGE_DEVICE (cpu / mps).
 """
 
 import os
@@ -18,7 +19,7 @@ from pathlib import Path
 import tracing
 from ticket_policy import ticket_block
 
-JUDGE_MODEL = os.environ.get("RAG_JUDGE_MODEL", "Qwen/Qwen2.5-1.5B-Instruct")
+JUDGE_MODEL = os.environ.get("RAG_JUDGE_MODEL", "HuggingFaceTB/SmolLM2-1.7B-Instruct")
 
 JUDGE_PARAMS = {
     "max_new_tokens": 80,

@@ -67,4 +67,6 @@ Diff: `git diff --no-index week6/judge_v0_presplit.txt week6/judge_v1.txt`
 
 ## Judge model
 
-The default judge is `Qwen/Qwen2.5-1.5B-Instruct`, run locally and greedy. It is deliberately a different, larger model than the 0.5B that drafts the replies. Override it with `RAG_JUDGE_MODEL`. Any number reported here is for that judge model and the prompt sha recorded in `judge_results_*.json`.
+The default judge is `HuggingFaceTB/SmolLM2-1.7B-Instruct`, run locally (MPS, fp16) and greedy. It is a different model family from the Qwen2.5-1.5B that drafts the replies, so no model grades its own family's writing. Override it with `RAG_JUDGE_MODEL`. Any number reported here is for that judge model and the prompt sha recorded in `judge_results_*.json`.
+
+Before any labels existed, the judge was smoke-tested on 3 hand-written replies, none of them among the 25. It returned parseable verdicts on all 3: it failed a promised out-of-window refund and a refused answerable question, and passed a correct password answer. That run checked only that the judge loads and follows the format. No verdict on any of the 25 replies existed before the labels were committed.
