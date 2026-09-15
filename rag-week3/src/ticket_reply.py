@@ -2,9 +2,13 @@
 
 Week 6 grades ticket replies, so the app needs a path that produces one.
 It reuses the answer path wherever that path carries a measured decision —
-the same retrievers, distance gate and threshold, model and decoding
-settings — and differs only where a ticket is not a question:
+the same retrievers, distance gate and threshold, and decoding settings —
+and differs only where a ticket is not a question:
 
+    model     Qwen2.5-1.5B-Instruct on its own pipeline. The app's 0.5B
+              could not draft a reply under any of the prompt versions
+              below (it echoed the ticket fields back), so drafts use the
+              larger model while `ask` and every earlier number stay on 0.5B
     input     a ticket (ID, support tier, charge on the account, message)
     prompt    asks for a reply that quotes the ticket ID, tags Priority
               tickets and applies the refund policy from the sources
@@ -22,20 +26,18 @@ attached, so a failed reply can be replayed and turned into a regression
 case.
 """
 
+import os
 import time
 
 import tracing
 from generator import (
     CITATION_MARKER,
     GENERATION_PARAMS,
-    MODEL_NAME,
     RELEVANCE_THRESHOLD,
     TOP_K,
     build_context,
     chunk_distance,
-    count_tokens,
     extract_text,
-    get_pipeline,
     lexical_anchors,
     retrieve_for_mode,
     said_no_answer,
@@ -71,6 +73,35 @@ TICKET_SYSTEM_PROMPT = (
 #         always drafts and its failures show up in the reply text itself
 TICKET_PROMPT_VERSION = "ticket-v1.2"
 
+TICKET_MODEL_NAME = os.environ.get("RAG_TICKET_LLM", "Qwen/Qwen2.5-1.5B-Instruct")
+
+_PIPELINE = None
+
+
+def get_ticket_pipeline():
+    global _PIPELINE
+
+    if _PIPELINE is None:
+        import torch
+        from transformers import pipeline
+
+        # 1.5B in float32 on CPU needs ~6 GB; half precision on MPS fits
+        # beside the embedding model and reranker on an 8 GB machine.
+        device = os.environ.get("RAG_TICKET_DEVICE") or (
+            "mps" if torch.backends.mps.is_available() else "cpu"
+        )
+        dtype = torch.float16 if device == "mps" else torch.float32
+        _PIPELINE = pipeline(
+            "text-generation", model=TICKET_MODEL_NAME, device=device, dtype=dtype
+        )
+
+    return _PIPELINE
+
+
+def release_ticket_pipeline():
+    global _PIPELINE
+    _PIPELINE = None
+
 
 def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
     query = ticket["message"]
@@ -89,7 +120,7 @@ def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
         "prompt_version": TICKET_PROMPT_VERSION,
         "prompt_sha": tracing.sha256(TICKET_SYSTEM_PROMPT),
         "prompt_messages": None,
-        "model_name": MODEL_NAME,
+        "model_name": TICKET_MODEL_NAME,
         "model_params": dict(GENERATION_PARAMS),
         "filter": None,
         "retrieved": [
@@ -171,9 +202,14 @@ def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
     ]
     result["prompt_messages"] = messages
 
-    raw_answer = extract_text(get_pipeline()(messages, **GENERATION_PARAMS))
+    generate = get_ticket_pipeline()
+    raw_answer = extract_text(generate(messages, **GENERATION_PARAMS))
     result["raw_answer"] = raw_answer
-    result["output_tokens"] = count_tokens(raw_answer)
+    # Counted with the drafter's own tokenizer; generator.count_tokens would
+    # load the 0.5B model just to count.
+    result["output_tokens"] = len(
+        generate.tokenizer(raw_answer, add_special_tokens=False)["input_ids"]
+    )
     result["model_cited"] = [
         int(marker) for marker in CITATION_MARKER.findall(raw_answer)
     ]

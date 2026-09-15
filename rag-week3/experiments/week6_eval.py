@@ -234,7 +234,9 @@ def draft_replies(cases, source, session_id):
 def release_generator():
     """Free the drafting model before loading the judge; 8 GB will not hold both."""
     import generator
+    import ticket_reply
     generator._PIPELINE = None
+    ticket_reply.release_ticket_pipeline()
     gc.collect()
     try:
         import torch
@@ -254,8 +256,12 @@ def cmd_draft(args):
               "those labels. (--force if you really are starting over.)")
         return 1
 
-    from generator import MODEL_NAME
-    from ticket_reply import DEFAULT_RETRIEVAL_MODE, TICKET_PROMPT_VERSION, TICKET_SYSTEM_PROMPT
+    from ticket_reply import (
+        DEFAULT_RETRIEVAL_MODE,
+        TICKET_MODEL_NAME,
+        TICKET_PROMPT_VERSION,
+        TICKET_SYSTEM_PROMPT,
+    )
 
     cases = labelled_cases(load_cases())
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -266,7 +272,7 @@ def cmd_draft(args):
         "generated_at": now_iso(),
         "app_version": tracing.app_version(),
         "cases_sha": file_sha(CASES),
-        "model": MODEL_NAME,
+        "model": TICKET_MODEL_NAME,
         "retrieval_mode": DEFAULT_RETRIEVAL_MODE,
         "ticket_prompt_version": TICKET_PROMPT_VERSION,
         "ticket_prompt_sha": tracing.sha256(TICKET_SYSTEM_PROMPT),
