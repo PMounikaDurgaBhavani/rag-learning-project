@@ -21,6 +21,13 @@ Usage
     python experiments/error_analysis.py sample --seed 20260907 --n 20
     python experiments/error_analysis.py replay --trace-id <id>
     python experiments/error_analysis.py replay --seed 20260907   # pick one at random
+    python experiments/error_analysis.py rerun                    # re-ask the 20 on today's build
+    python experiments/error_analysis.py langfuse                 # push the 20 originals to Langfuse
+
+`replay` re-runs the recorded prompt (is the model deterministic?);
+`rerun` re-asks the recorded question through the live pipeline (what does
+the build do with it now?). Rerun traces are tagged and excluded from
+`sample`, so re-asking never changes the population a sample is drawn from.
 """
 
 import argparse
@@ -41,6 +48,14 @@ import tracing
 
 OUT_DIR = Path("week5")
 
+# Traffic produced by evaluation tooling, not by users. Sampling it would
+# measure the eval sets, not the product.
+EVAL_SOURCE_PREFIXES = ("week5-rerun", "week6-")
+
+
+def is_eval_traffic(trace):
+    return str(trace.get("source") or "").startswith(EVAL_SOURCE_PREFIXES)
+
 
 # ---------------------------------------------------------------------------
 # sample
@@ -48,6 +63,8 @@ OUT_DIR = Path("week5")
 
 def cmd_sample(args):
     traces = tracing.load_traces(args.trace_file)
+    if not args.include_eval:
+        traces = [trace for trace in traces if not is_eval_traffic(trace)]
 
     if not traces:
         print("No traces found. Generate traffic first — see "
@@ -282,6 +299,55 @@ def cmd_replay(args):
 
 
 # ---------------------------------------------------------------------------
+# rerun / langfuse
+# ---------------------------------------------------------------------------
+
+def cmd_rerun(args):
+    from week5_rerun import rerun_sample
+
+    print("=" * 78)
+    print("RERUN — the 20 sampled questions through today's pipeline")
+    print("=" * 78)
+    report = rerun_sample(retrieval_mode=args.mode)
+
+    print("\n" + "-" * 78)
+    for row in report["rows"]:
+        if row.get("error"):
+            print(f"  {row['index']:>2}. {row['original_trace_id']}  {row['error']}")
+            continue
+        then, now = row["original"], row["rerun"]
+        state = lambda o: "answered" if not o["refused"] else f"refused:{o['refusal_family']}"
+        print(f"  {row['index']:>2}. {row['query'][:58]}")
+        print(f"      then ({row['original_app_version']}): {state(then):<36} "
+              f"now: {state(now)}{'   <-- CHANGED' if row['changed'] else ''}")
+        if row["changed"] and not now["refused"]:
+            print(f"      answer now: {(now['answer'] or '')[:150]}")
+
+    print("\n" + "=" * 78)
+    print(f"{report['changed']} of {len(report['rows'])} outcomes changed "
+          f"(build {report['app_version']})")
+    if report["langfuse"]:
+        print(f"Langfuse session: {report['session_id']}")
+    print(f"Saved: {report['saved_to']}")
+    return 0
+
+
+def cmd_langfuse(args):
+    ids = None
+    if not args.all:
+        ids = json.loads((OUT_DIR / "sample.json").read_text(encoding="utf-8"))["trace_ids"]
+    sent = tracing.backfill_langfuse(
+        trace_ids=ids,
+        jsonl_path=args.trace_file,
+        session_id=None if args.all else "week5-sample-original",
+        tags=["week5-backfill"],
+    )
+    print(f"Sent {sent} trace(s) to Langfuse"
+          + ("" if args.all else " (session week5-sample-original)"))
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # stats
 # ---------------------------------------------------------------------------
 
@@ -336,7 +402,20 @@ def main():
     sample.add_argument("--n", type=int, default=20)
     sample.add_argument("--force", action="store_true",
                         help="overwrite an existing notes template")
+    sample.add_argument("--include-eval", action="store_true",
+                        help="also sample rerun/eval traffic (excluded by default)")
     sample.set_defaults(func=cmd_sample)
+
+    rerun = subparsers.add_parser("rerun", help="re-ask the 20 sampled questions on today's build")
+    rerun.add_argument("--mode", default=None,
+                       choices=["dense", "bm25", "hybrid", "hybrid_rerank"],
+                       help="override every retrieval mode (default: each trace's own)")
+    rerun.set_defaults(func=cmd_rerun)
+
+    langfuse = subparsers.add_parser("langfuse", help="push traces from the JSONL log to Langfuse")
+    langfuse.add_argument("--all", action="store_true",
+                          help="every trace in the log, not just the 20 sampled")
+    langfuse.set_defaults(func=cmd_langfuse)
 
     replay = subparsers.add_parser("replay", help="replay one trace")
     replay.add_argument("--trace-id", default=None)

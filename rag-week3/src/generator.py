@@ -268,6 +268,19 @@ def extract_text(response):
     return str(generated).strip()
 
 
+def count_tokens(text):
+    """Token length of a generated string.
+
+    Re-tokenising the decoded text can differ from the generated count by a
+    token or two, so callers comparing against max_new_tokens need a margin.
+    """
+    try:
+        tokenizer = get_pipeline().tokenizer
+        return len(tokenizer(text or "", add_special_tokens=False)["input_ids"])
+    except Exception:
+        return None
+
+
 def said_no_answer(answer):
     normalized = answer.lower().replace(" ", "_")
 
@@ -475,6 +488,7 @@ def _generate_answer(
     )
 
     result["raw_answer"] = raw_answer
+    result["output_tokens"] = count_tokens(raw_answer)
 
     result["model_cited"] = [
         int(marker)
@@ -526,7 +540,8 @@ def _generate_answer(
     return result
 
 
-def generate_answer(*args, source="cli", trace_id=None, **kwargs):
+def generate_answer(*args, source="cli", trace_id=None, session_id=None,
+                    tags=None, **kwargs):
     """Answer a question and write a trace of how it was answered.
 
     Tracing wraps the pipeline rather than living inside it: every early
@@ -545,9 +560,12 @@ def generate_answer(*args, source="cli", trace_id=None, **kwargs):
                 latency_ms={"total": elapsed_ms},
                 source=source,
                 trace_id=trace_id,
-            )
+            ),
+            session_id=session_id,
+            tags=tags,
         )
         result["trace_id"] = trace["trace_id"]
+        result["langfuse_trace_id"] = trace.get("langfuse_trace_id")
     except Exception as error:            # answering must survive tracing
         print(f"  [tracing] trace not recorded: {error}")
 

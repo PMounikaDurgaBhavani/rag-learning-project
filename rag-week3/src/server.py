@@ -10,6 +10,7 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/upload            upload ANY file (text or base64) and index it
   GET  /api/week5             error-analysis artefacts (taxonomy, notes, sample)
   POST /api/trace             one trace by trace_id
+  POST /api/week5/rerun       re-ask the 20 sampled questions on the current build
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
@@ -315,6 +316,10 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._handle_upload(payload)
             elif parsed.path == "/api/trace":
                 self._handle_trace(payload)
+            elif parsed.path == "/api/week5/rerun":
+                from week5_rerun import rerun_sample
+                self._send_json({"status": "ok",
+                                 **rerun_sample(retrieval_mode=payload.get("mode") or None)})
             elif parsed.path == "/api/golden/evaluate":
                 self._handle_golden(payload)
             elif parsed.path == "/api/reindex":

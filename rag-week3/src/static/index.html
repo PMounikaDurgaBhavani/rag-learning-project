@@ -1403,6 +1403,10 @@ function renderWeek5() {
         <code>${esc(s.selection_rule || '')}</code><br>
         Re-running with the same seed selects the same 20. Click a row for the full trace.
       </p>
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;">
+        <button class="btn sm" id="w5Rerun">↻ Rerun these 20 on the current build</button>
+        <span class="help">Re-asks each question with its original retrieval settings; traced to Langfuse.</span>
+      </div>
       <div id="w5List">${d.traces.map((t, i) => `
         <div class="w5-trace" data-tid="${esc(t.trace_id)}">
           <span class="tid">${i + 1}. ${esc(t.trace_id)}</span>
@@ -1410,7 +1414,8 @@ function renderWeek5() {
           <span>${t.refused
             ? `<span class="pill bad">${esc((t.refusal_reason || 'refused').split(' (')[0])}</span>`
             : '<span class="pill ok">answered</span>'}</span>
-        </div>`).join('')}</div>`);
+        </div>`).join('')}</div>
+      <div id="w5RerunOut">${week5.lastRerun ? renderRerun(week5.lastRerun) : ''}</div>`);
     return;
   }
 
@@ -1423,8 +1428,46 @@ function renderWeek5() {
     : '<div class="muted">Not written yet.</div>');
 }
 
+const outcomePill = (o) => o.refused
+  ? `<span class="pill bad">${esc(o.refusal_family || 'refused')}</span>`
+  : '<span class="pill ok">answered</span>';
+
+function renderRerun(r) {
+  return `
+    <div class="eyebrow" style="margin:1.2rem 0 .4rem;">Rerun on build ${esc(r.app_version)} · ${r.changed} of ${r.rows.length} outcomes changed</div>
+    <p class="help" style="margin-bottom:.6rem;">
+      ${r.langfuse ? `Langfuse session <code>${esc(r.session_id)}</code> · ` : ''}saved to <code>${esc(r.saved_to)}</code>
+    </p>
+    <div style="overflow-x:auto;"><table>
+      <thead><tr><th>#</th><th>Question</th><th>Then</th><th>Now</th><th>Answer now</th></tr></thead>
+      <tbody>${r.rows.filter(x => !x.error).map(x => `
+        <tr${x.changed ? ' style="background:var(--warn-soft)"' : ''}>
+          <td>${x.index}</td><td>${esc(x.query)}</td>
+          <td>${outcomePill(x.original)}</td><td>${outcomePill(x.rerun)}</td>
+          <td>${esc((x.rerun.answer || '').slice(0, 160))}</td>
+        </tr>`).join('')}</tbody>
+    </table></div>`;
+}
+
+async function runWeek5Rerun(btn) {
+  const out = $('w5RerunOut');
+  btn.disabled = true;
+  out.innerHTML = '<p class="help" style="margin-top:1rem;"><span class="spinner"></span> Re-asking all 20 questions — 20 model calls, allow a few minutes…</p>';
+  try {
+    week5.lastRerun = await api('/api/week5/rerun', {});
+    out.innerHTML = renderRerun(week5.lastRerun);
+    toast(`Rerun done: ${week5.lastRerun.changed} of ${week5.lastRerun.rows.length} outcomes changed`);
+  } catch (err) {
+    out.innerHTML = `<p class="muted">Rerun failed: ${esc(err.message)}</p>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // Expand one trace in place — the raw model output is the thing you read.
 $('w5Body').addEventListener('click', async e => {
+  const rerunBtn = e.target.closest('#w5Rerun');
+  if (rerunBtn) { runWeek5Rerun(rerunBtn); return; }
   const row = e.target.closest('[data-tid]'); if (!row) return;
   const open = row.nextElementSibling;
   if (open && open.classList.contains('w5-detail')) { open.remove(); return; }
