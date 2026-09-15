@@ -655,9 +655,10 @@ def print_table(cases, results, judge_version):
     for case in cases:
         if case.get("regression"):
             row = results[case["id"]]
+            now = "PASS" if row["pass"] else "FAIL"
             print(f"  {case['id']} <- {case['regression']['source_trace_id']}  {case['mode']}  "
                   f"was: {case['regression']['original_outcome']:<42} now: "
-                  f"{'PASS' if row['pass'] else 'FAIL'}")
+                  f"{now if judged else f'assertions {now} (resolution not judged)'}")
 
     print(f"\nCRITERIA SPLIT: {len(ASSERTIONS)} deterministic assertions · "
           f"{len(JUDGED_CRITERIA)} judged criterion ({', '.join(JUDGED_CRITERIA)})")

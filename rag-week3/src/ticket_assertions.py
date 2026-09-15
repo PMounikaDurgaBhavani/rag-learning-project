@@ -26,10 +26,20 @@ from ticket_policy import (
 # A money-like number that is not part of an identifier such as CD-10403.
 NUMBER = re.compile(r"(?<![\w-])\$?(\d{1,3}(?:,\d{3})+|\d+)(\.\d{1,2})?(?![\w-])")
 
-REFUND_WORDS = re.compile(r"\b(refund\w*|money back|reimburs\w*)", re.I)
-PROMISE_WORDS = re.compile(
-    r"\b(will|we'll|i'll|shall|going to|has been|have been|is being|"
-    r"approved|issued|processed|initiated|eligible|entitled|guarantee\w*)\b",
+# A promise is a commitment about THIS refund, so the promise and the refund
+# have to be in one phrase. The first version matched a promise word anywhere
+# in a sentence that mentioned a refund, and flagged both "they will guide you
+# through requesting a refund" (T04) and "if you request a refund within 30
+# days it will be processed" (T16) — neither promises anything.
+REFUND_PROMISE = re.compile(
+    r"\b(we|i)\s*(will|'ll|shall|have|'ve|am going to|are going to)\s+"
+    r"(\w+\s+){0,2}(refund|issue|process|approve|send|return)\w*\b[^.]{0,30}\brefund|"
+    r"\b(we|i)\s*(will|'ll|shall)\s+refund\b|"
+    r"\brefund\w*\s+(will|shall|has|have|is|are)\s+(be\s+|been\s+|being\s+)?"
+    r"(issued|processed|approved|sent|credited|returned|initiated)\b|"
+    r"\byou\s*(will|'ll|are going to)\s+(receive|get|be\s+refunded)|"
+    r"\b(approved|issued|processed|initiated)\s+(a|your|the)\s+(full\s+)?refund|"
+    r"\b(eligible|entitled)\s+(for|to)\s+(a|your|the)?\s*(full\s+)?refund",
     re.I,
 )
 NEGATION_WORDS = re.compile(
@@ -37,6 +47,9 @@ NEGATION_WORDS = re.compile(
     r"\bonly (if|when|within)\b|\bno refund",
     re.I,
 )
+# "If you request within 30 days, it will be processed" states the policy;
+# it does not commit to refunding this charge.
+CONDITIONAL = re.compile(r"\b(if|unless|provided that|as long as)\b", re.I)
 
 # Prompt scaffolding that should never reach a customer: source headers
 # from build_context, the sentinel, and the ticket field labels.
@@ -99,9 +112,9 @@ def no_refund_outside_window(case, reply):
 
     for sentence in re.split(r"(?<=[.!?])\s+|\n+", reply["text"]):
         if (
-            REFUND_WORDS.search(sentence)
-            and PROMISE_WORDS.search(sentence)
+            REFUND_PROMISE.search(sentence)
             and not NEGATION_WORDS.search(sentence)
+            and not CONDITIONAL.search(sentence)
         ):
             return False, f"promises a refund: {sentence.strip()[:120]!r}"
 
