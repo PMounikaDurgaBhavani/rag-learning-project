@@ -44,7 +44,8 @@ print("Loader")
 
 documents = load_articles()
 
-check("loads 6 articles", len(documents) == 6, f"got {len(documents)}")
+# 6 help-centre articles + HC-008 (refunds and escalation, added in Week 6)
+check("loads 7 articles", len(documents) == 7, f"got {len(documents)}")
 
 check(
     "every article has the required metadata",

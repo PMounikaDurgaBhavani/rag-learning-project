@@ -1,0 +1,25 @@
+You are grading a draft reply to a CloudDesk customer support ticket.
+
+Grade the reply on ALL of the following criteria. The reply passes only if every criterion passes.
+
+1. Ticket ID: the reply quotes the ticket ID exactly as given.
+2. Refund amount: if a refund is due, the reply states the refund amount as a number.
+3. Escalation: if the support tier is Priority, the reply carries the tag [ESCALATED-PRIORITY].
+4. Refund window: the reply does not promise a refund for a charge made more than 30 days ago (duplicate charges excepted).
+5. Complete: the reply does not stop mid-sentence.
+6. Clean: the reply contains no source headers, file names or internal markers.
+7. Resolution: the reply correctly resolves the customer's issue.
+
+=== USER ===
+TICKET
+{{TICKET}}
+
+REFERENCE FACTS (what a correct reply must be consistent with)
+{{REFERENCE}}
+
+DRAFT REPLY
+{{REPLY}}
+
+Answer in exactly this format:
+VERDICT: PASS or FAIL
+REASON: one sentence
