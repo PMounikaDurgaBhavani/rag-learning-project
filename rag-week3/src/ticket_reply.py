@@ -2,12 +2,15 @@
 
 Week 6 grades ticket replies, so the app needs a path that produces one.
 It reuses the answer path wherever that path carries a measured decision —
-the same retrievers, distance gate and threshold, model, decoding settings
-and sentinel — and differs only where a ticket is not a question:
+the same retrievers, distance gate and threshold, model and decoding
+settings — and differs only where a ticket is not a question:
 
     input     a ticket (ID, support tier, charge on the account, message)
     prompt    asks for a reply that quotes the ticket ID, tags Priority
               tickets and applies the refund policy from the sources
+    sentinel  none: with a ticket in the prompt the 0.5B model took the
+              NOT_IN_SOURCES exit on nearly every ticket (see the version
+              notes below), so refusal is left to the distance gate
     refusal   a routed hand-off (ticket_policy.routed_reply) instead of the
               bare refusal sentence
     grounding gate 3 is not applied: a reply is largely greeting and routing
@@ -26,7 +29,6 @@ from generator import (
     CITATION_MARKER,
     GENERATION_PARAMS,
     MODEL_NAME,
-    NO_ANSWER_SENTINEL,
     RELEVANCE_THRESHOLD,
     TOP_K,
     build_context,
@@ -46,22 +48,28 @@ from vector_store import DEFAULT_STRATEGY
 DEFAULT_RETRIEVAL_MODE = "hybrid_rerank"
 
 TICKET_SYSTEM_PROMPT = (
-    "You are a CloudDesk support agent writing a reply to a customer ticket.\n"
-    "Use only the numbered sources for facts, steps and policy. "
-    "Cite the source number in square brackets, e.g. [1].\n"
+    "You are a CloudDesk support agent. Write the reply that will be sent "
+    "to the customer.\n"
+    "Use the numbered sources for facts, steps and policy, and cite the "
+    "source number in square brackets, e.g. [1].\n"
     "Begin the reply with the ticket ID, e.g. \"CD-10000: ...\".\n"
     f"If the support tier is Priority, put the tag {ESCALATION_TAG} "
     "on the first line.\n"
     "If the customer wants a refund, apply the refund policy in the sources "
     "and state the charge amount as a number.\n"
-    "If the sources do not contain what the customer needs, "
-    f"reply with exactly: {NO_ANSWER_SENTINEL}\n"
-    "Never invent numbers, prices, limits or policies.\n"
-    "Answer in under 80 words."
+    "Never invent numbers, prices, limits or policies. If the sources do "
+    "not cover something the customer asked, say so plainly.\n"
+    "Keep the reply under 80 words."
 )
 
-# Bump whenever TICKET_SYSTEM_PROMPT changes.
-TICKET_PROMPT_VERSION = "ticket-v1.0"
+# Bump whenever TICKET_SYSTEM_PROMPT or the user turn changes.
+#   v1.0  ended on the ticket fields: the 0.5B model echoed them back or
+#         emitted the sentinel on 20 of 25 tickets whose answer was retrieved
+#   v1.1  instruction last, "do not repeat the fields", narrower sentinel:
+#         sentinel on 5 of 5 trial tickets — any escape hatch wins
+#   v1.2  no sentinel. Refusal is left to the distance gate, so the model
+#         always drafts and its failures show up in the reply text itself
+TICKET_PROMPT_VERSION = "ticket-v1.2"
 
 
 def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
@@ -150,8 +158,14 @@ def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
         {"role": "system", "content": TICKET_SYSTEM_PROMPT},
         {
             "role": "user",
+            # The instruction goes last: ending on the ticket fields made
+            # the small model continue the pattern and echo them back.
             "content": (
-                f"Sources:\n{build_context(chunks)}\n\n{ticket_block(ticket)}"
+                f"Sources:\n{build_context(chunks)}\n\n"
+                f"Ticket (do not repeat these fields in the reply):\n"
+                f"{ticket_block(ticket)}\n\n"
+                f"Write the reply to the customer now, starting with "
+                f"{ticket['ticket_id']}."
             ),
         },
     ]
