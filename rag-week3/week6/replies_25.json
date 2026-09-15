@@ -1,0 +1,461 @@
+{
+  "generated_at": "2026-09-15T10:33:46+00:00",
+  "app_version": "9caa257",
+  "cases_sha": "4d76d0a69b8e6711",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "retrieval_mode": "hybrid_rerank",
+  "ticket_prompt_version": "ticket-v1.2",
+  "ticket_prompt_sha": "bc89f36500aaa9d5",
+  "replies": [
+    {
+      "id": "T01",
+      "mode": "M1",
+      "trace_id": "968100db18724b00",
+      "langfuse_trace_id": "1672c0cd5994b9dd175ae6d7ea6a6e00",
+      "text": "CD-10401: Hello,\n\nThank you for reaching out regarding your password issue. To help you resolve this quickly, please ensure your new password meets the following requirements:\n\n1. Contains at least 8 characters.\n2. Includes at least one uppercase letter.\n3. Has at least one lowercase letter.\n4. Features at least one number.\n5. Is different from your previous password.\n\nIf you're still experiencing issues after checking these requirements, consider using a password manager to update your stored password securely. If you continue to face difficulties, please contact our support team for further assistance.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 131,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-1",
+        "HC-001-markdown-14",
+        "HC-002-markdown-17",
+        "HC-002-markdown-9"
+      ]
+    },
+    {
+      "id": "T02",
+      "mode": "M1",
+      "trace_id": "552e6ed0873c4aac",
+      "langfuse_trace_id": "b563b396aa579d48770df5202d01657f",
+      "text": "CD-10402: Customer inquiry about password reset link validity\n\nThank you for reaching out. The password reset link you received earlier today is still valid until 30 minutes from when it was generated. Please try using it again within this timeframe. If it's still not working, please ensure your internet connection is stable and retry. If issues persist, we recommend checking your email settings or contacting our support team directly for further assistance.",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 90,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-15",
+        "HC-001-markdown-5",
+        "HC-001-markdown-11",
+        "HC-001-markdown-7",
+        "HC-001-markdown-9"
+      ]
+    },
+    {
+      "id": "T03",
+      "mode": "M1",
+      "trace_id": "efb3ed134cf745fb",
+      "langfuse_trace_id": "b0e3d1d77e717b1a40da5358de5faf69",
+      "text": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-2",
+        "HC-008-markdown-5",
+        "HC-008-markdown-13",
+        "HC-008-markdown-1",
+        "HC-008-markdown-6"
+      ]
+    },
+    {
+      "id": "T04",
+      "mode": "M1",
+      "trace_id": "5758ba4dbbb24108",
+      "langfuse_trace_id": "91bb6bc9d0b9ae6e40ce24619f5636ef",
+      "text": "CD-10404: Thank you for reaching out regarding your billing issue. According to our policy, we cannot provide a discount or credit in lieu of a full refund. The charge of $1,200 was placed 45 days ago, and since then, there has been no activity related to CloudDesk usage by anyone on your team. \n\nPlease note that this is an escalation case due to the high charge amount and the fact that it's a Priority support ticket. Our system escalates such cases automatically. For further assistance, please contact our Customer Success Manager at [insert email/contact details]. They will guide you through the process of requesting a refund based on our refund policy.",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 142,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-7",
+        "HC-008-markdown-1",
+        "HC-008-markdown-15",
+        "HC-008-markdown-10",
+        "HC-003-markdown-11"
+      ]
+    },
+    {
+      "id": "T05",
+      "mode": "M1",
+      "trace_id": "e3afcf961c994496",
+      "langfuse_trace_id": "0d4636726c4c0581429a2ddd45fb8675",
+      "text": "CD-10405: Hi there,\n\nThank you for reaching out. According to our policy, your account will remain locked for 15 minutes after repeated failed login attempts. You can try logging in again once this time has passed.\n\nBest regards,\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 57,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-002-markdown-6",
+        "HC-002-markdown-20",
+        "HC-002-markdown-8",
+        "HC-002-markdown-21",
+        "HC-002-markdown-3"
+      ]
+    },
+    {
+      "id": "R01",
+      "mode": "M1",
+      "trace_id": "f733d25dd5d347b6",
+      "langfuse_trace_id": "433e9ba768b91f789ee50c92bc2d41f2",
+      "text": "CD-90001: Hello,\n\nThank you for reaching out about the password requirements for your CloudDesk account. According to the article HC-001, a new password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number. It cannot be the same as the previous password.\n\nPlease ensure your new password meets these criteria before attempting to log in again. If you need further assistance, feel free to ask.\n\nBest regards,\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 104,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-12",
+        "HC-002-markdown-21",
+        "HC-001-markdown-13",
+        "HC-001-markdown-18"
+      ]
+    },
+    {
+      "id": "T06",
+      "mode": "M1",
+      "trace_id": "4b6d7be55d3e4b34",
+      "langfuse_trace_id": "3e70c2ef1cce6ff1d4d9728913af3953",
+      "text": "CD-10406: Hi there,\n\nThank you for reaching out. The reason why you're unable to see the Upload File button on a ticket could be due to insufficient file upload permissions assigned to your user role. To resolve this, please check if your colleague has been granted the necessary permissions by contacting the organization administrator.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 78,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-006-markdown-24",
+        "HC-006-markdown-6",
+        "HC-006-markdown-1",
+        "HC-006-markdown-20",
+        "HC-006-markdown-11"
+      ]
+    },
+    {
+      "id": "R02",
+      "mode": "M2",
+      "trace_id": "2ab5d3e574474db3",
+      "langfuse_trace_id": "2450c0b8e8767591ef707f34f629ef66",
+      "text": "CD-90002: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+      "refused": true,
+      "refusal_reason": "distance_gate (0.8849 > 0.75)",
+      "output_tokens": null,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-3",
+        "HC-003-markdown-1",
+        "HC-003-markdown-2",
+        "HC-003-markdown-9",
+        "HC-003-markdown-5"
+      ]
+    },
+    {
+      "id": "T07",
+      "mode": "M2",
+      "trace_id": "3a64ae2c99574024",
+      "langfuse_trace_id": "260ab09c3194afef056f8c6956046cf3",
+      "text": "CD-10407: Hi there,\n\nThank you for reaching out about your duplicate charges. We understand that you've experienced a situation where the same invoice was charged multiple times, resulting in a total of $89.00 being charged twice.\n\nAccording to our policy, any duplicate charges are fully refunded in full, regardless of the 30-day window. Therefore, we will refund you the entire amount of $89.00.\n\nThe refund will be processed within 5 to 10 business days via the original payment method used at the time of purchase.\n\nPlease note that this refund is based on the exact amount that was charged, and it cannot be adjusted due to any other factors.\n\nWe apologize for any inconvenience caused by this issue. If you have any further",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-5",
+        "HC-008-markdown-6",
+        "HC-008-markdown-2",
+        "HC-008-markdown-3",
+        "HC-008-markdown-4"
+      ]
+    },
+    {
+      "id": "T08",
+      "mode": "M2",
+      "trace_id": "467bb0c951794307",
+      "langfuse_trace_id": "b136cb208efe8e5fe85d7fc4fb79ec7a",
+      "text": "CD-10408: Hi there,\n\nThank you for your inquiry regarding the file upload limitations on CloudDesk. The maximum file size allowed per individual file is set at 5MB. Additionally, we currently support the following file formats: .docx, .pdf, .jpg, .png, and .mp4.\n\nRegarding your request to upload a ZIP file, it's important to note that ZIP files are compressed archives and might exceed our file size limit of 5MB. To resolve this issue, consider splitting the contents of the ZIP file into separate files before uploading them individually.\n\nPlease let me know if you have any further questions or need assistance with other aspects of using CloudDesk.\n\nBest regards,\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 149,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-006-markdown-3",
+        "HC-006-markdown-4",
+        "HC-006-markdown-22",
+        "HC-006-markdown-17",
+        "HC-006-markdown-25"
+      ]
+    },
+    {
+      "id": "T09",
+      "mode": "M2",
+      "trace_id": "393baabba7a74377",
+      "langfuse_trace_id": "a9cca1ee6338a46e2ae979468ba96bb2",
+      "text": "CD-10409: Hello,\n\nThank you for reaching out. I understand your frustration regarding the recent charge on your account. Let me address this issue step by step:\n\n1. **Incorrect Billing Information**: We have reviewed your billing details and found they do not match the payment information associated with your account. Please provide us with your new billing details so we can proceed with updating them.\n\n2. Once we receive your updated billing information, we will review it against your payment history to ensure accuracy. This should resolve any discrepancies.\n\nPlease confirm if you would like to proceed with providing your new billing details immediately or if there's anything else we need from your end to expedite this process.\n\nBest regards,\n[Your Name]\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 151,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-13",
+        "HC-008-markdown-3",
+        "HC-008-markdown-2",
+        "HC-008-markdown-6",
+        "HC-003-markdown-14"
+      ]
+    },
+    {
+      "id": "T10",
+      "mode": "M2",
+      "trace_id": "900a1c6e63d846f5",
+      "langfuse_trace_id": "9d408ead9f19640785f4d5b01e3d23f0",
+      "text": "CD-10410: Customer locked out due to expired reset link and failed payment\n\nDear Customer,\n\nThank you for reaching out. You have encountered an issue where your account is locked due to an expired reset link and a failed payment attempt today.\n\nTo resolve this:\n\n1. **Reset Your Password**: Since your reset link has expired, please request a new one by clicking on the 'Forgot Password' option on the login page.\n   \n2. **Resolve Payment Issue**: For the failed payment, check your billing history in the CloudDesk portal. Ensure there were no errors during the transaction. If everything seems correct but the payment still failed, contact our support team at [support@clouddesk.com](mailto:support@clouddesk.com) for further assistance.\n\nWe apologize for any inconvenience",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 164,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-11",
+        "HC-002-markdown-15",
+        "HC-001-markdown-17",
+        "HC-002-markdown-12",
+        "HC-003-markdown-11"
+      ]
+    },
+    {
+      "id": "R03",
+      "mode": "M3",
+      "trace_id": "8a483525c40044c3",
+      "langfuse_trace_id": "1a93d691254290f3fd4d73a3d34ddca5",
+      "text": "CD-90003: Customer inquiry regarding a failed payment due to a card expiration\n\nDear Customer,\n\nThank you for reaching out. We understand that your card has expired, which could have caused the failed payment attempt. To resolve this issue, please follow these steps:\n\n1. Contact our support team via phone or email using the provided contact information.\n2. Provide us with your CloudDesk username or registered email address.\n3. Share the approximate time when the problem occurred and any error messages displayed by CloudDesk.\n4. Do not share your password with us; only provide necessary details for assistance.\n\nWe appreciate your patience while we assist you further. Please let us know if you need any additional help.\n\nBest regards,\n[Your Name]\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 154,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-11",
+        "HC-002-markdown-23",
+        "HC-002-markdown-9",
+        "HC-002-markdown-19",
+        "HC-003-markdown-13"
+      ]
+    },
+    {
+      "id": "T11",
+      "mode": "M3",
+      "trace_id": "edd33bd670a6460e",
+      "langfuse_trace_id": "3237ed7941a4d83883d17352d116b6ee",
+      "text": "CD-10411: Hello,\n\nThank you for reaching out. To help you reset your password, please follow these steps:\n\n1. Go to the CloudDesk login page.\n2. Click on the 'Forgot Password' option.\n3. Enter your current username or email address.\n4. Follow the instructions provided to generate a new password.\n\nOnce you have completed these steps, you will need to log back into CloudDesk using your new password. Please note that this process does not involve any direct interaction with our support team; it's designed to be self-service.\n\nIf you encounter any issues during the process, feel free to reach out again. We're here to assist you.\n\nBest regards,\n[Your Name]\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 150,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-2",
+        "HC-001-markdown-7",
+        "HC-001-markdown-5",
+        "HC-001-markdown-1",
+        "HC-001-markdown-16"
+      ]
+    },
+    {
+      "id": "T12",
+      "mode": "M3",
+      "trace_id": "c4fc6a8a0dc44e5f",
+      "langfuse_trace_id": "1a8ec82e9e6fdc40313d566915f9fa7b",
+      "text": "CD-10412: Customer inquiry about troubleshooting failed uploads despite small file size\n\nDear Customer,\n\nThank you for reaching out regarding your issue with failed uploads of a small PDF file. Based on our troubleshooting steps provided in the article, here are some additional checks we recommend:\n\n1. **Verify Internet Connection**: Ensure there are no network issues preventing the upload from completing successfully.\n2. **Refresh CloudDesk Page**: Sometimes clearing the cache can resolve temporary connectivity issues.\n3. **Try Uploading Again**: This step ensures that the problem isn't related to a specific session.\n4. **Check File Size**: Confirm that the file size does not exceed the organization’s configured upload limit.\n5. **Compress or Split Content**: If the file exceeds the limit, consider compressing the file",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-006-markdown-17",
+        "HC-006-markdown-14",
+        "HC-006-markdown-18",
+        "HC-006-markdown-15",
+        "HC-006-markdown-16"
+      ]
+    },
+    {
+      "id": "T13",
+      "mode": "M3",
+      "trace_id": "8b516134445b4d47",
+      "langfuse_trace_id": "7c45e4f78352226f69ec0f7b41dad601",
+      "text": "CD-10413: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be fully refunded.\n\nFor your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.\n\nThe entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.\n\nPlease note that duplicate charges are handled differently; if you have any further questions about duplicate charges, feel free",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-6",
+        "HC-008-markdown-3",
+        "HC-008-markdown-2",
+        "HC-008-markdown-5",
+        "HC-008-markdown-13"
+      ]
+    },
+    {
+      "id": "T14",
+      "mode": "M3",
+      "trace_id": "7368b4eca2424507",
+      "langfuse_trace_id": "b7e69642f0c0f9b869f222656f5b3500",
+      "text": "CD-10414: Customer inquiry about adding a new payment method\n\nHello,\n\nThank you for reaching out. To add a new payment method, follow these steps:\n\n1. Log into CloudDesk.\n2. Go to Organization Settings.\n3. Select \"Billing\" from the left-hand menu.\n4. Click on \"Payment Methods.\"\n5. Choose \"Add Payment Method.\"\n6. Provide the necessary details such as card type, expiration date, CVV code, etc.\n7. Confirm the payment method settings and save them.\n\nOnce added, this payment method will be ready for use during future billing transactions.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 136,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-6",
+        "HC-003-markdown-8",
+        "HC-003-markdown-7",
+        "HC-003-markdown-4",
+        "HC-003-markdown-9"
+      ]
+    },
+    {
+      "id": "R04",
+      "mode": "M4",
+      "trace_id": "31037baed8264ee3",
+      "langfuse_trace_id": "309d579f6f083e40a4b01e4734eccefb",
+      "text": "CD-90004: Account Locked\n\nDear Customer,\n\nThank you for reaching out regarding your account being locked. As per our guidelines, we recommend following these steps to recover your account:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** to allow any potential lockout periods to expire.\n3. Ensure you are using the correct email address and verify that you are using the latest password.\n4. If you still cannot access your account, please try logging in again once the 15-minute window has passed.\n\nIf you continue to experience issues, it's recommended to contact our administrator assistance team at [insert contact information]. They can help resolve the issue more effectively.\n\nBest regards,\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 153,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-002-markdown-18",
+        "HC-002-markdown-8",
+        "HC-002-markdown-9",
+        "HC-002-markdown-5",
+        "HC-002-markdown-4"
+      ]
+    },
+    {
+      "id": "T15",
+      "mode": "M4",
+      "trace_id": "f61301b5c5f44fc4",
+      "langfuse_trace_id": "36d9da026208ff6cae211281c011dce0",
+      "text": "CD-10415: Your payment has failed due to insufficient available funds. Please check your bank statement or contact your credit card issuer to verify the balance. If you have additional questions, feel free to reach out to our Customer Support team. [1]",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 54,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-10",
+        "HC-002-markdown-7",
+        "HC-002-markdown-21",
+        "HC-002-markdown-18",
+        "HC-003-markdown-12"
+      ]
+    },
+    {
+      "id": "T16",
+      "mode": "M4",
+      "trace_id": "f9c333ffed8b4101",
+      "langfuse_trace_id": "d95e17895b33098a96626edd7b6673e5",
+      "text": "CD-10416: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, CloudDesk does not offer discounts, credits, or partial refunds in lieu of a refund. Therefore, we cannot provide a discount or credit for the inconvenience caused by this charge.\n\nWe apologize for any frustration this may have caused. We understand that you were charged $75 on July 1st, 76 days ago, and would like your money back. Under our refund process, if you request a refund within 30 days of the charge date, it will be processed accordingly.\n\nPlease note that refunds are typically returned to the original payment method within 5 to 10 business days. However, due to the nature of the charge,",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-6",
+        "HC-008-markdown-5",
+        "HC-008-markdown-2",
+        "HC-008-markdown-7",
+        "HC-008-markdown-15"
+      ]
+    },
+    {
+      "id": "T17",
+      "mode": "M4",
+      "trace_id": "3fecfea11f3c4022",
+      "langfuse_trace_id": "9d862945909ac08a5c8495fbd6ac23de",
+      "text": "CD-10417: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+      "refused": true,
+      "refusal_reason": "distance_gate (1.5028 > 0.75)",
+      "output_tokens": null,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-003-markdown-3",
+        "HC-008-markdown-14",
+        "HC-005-markdown-7",
+        "HC-001-markdown-15",
+        "HC-003-markdown-2"
+      ]
+    },
+    {
+      "id": "T18",
+      "mode": "M5",
+      "trace_id": "2fcdebdd99494c9e",
+      "langfuse_trace_id": "8099a372383c65bb35f475241f42b50a",
+      "text": "CD-10418: Your account is currently locked due to multiple failed login attempts. Please follow these steps:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct email address and verify your password.\n4. If you still cannot access your account, try logging in again within the next 15 minutes.\n\nIf you need further assistance, please contact our CloudDesk administrator at [clouddesk@company.com].",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 108,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-002-markdown-8",
+        "HC-002-markdown-9",
+        "HC-002-markdown-21",
+        "HC-002-markdown-4",
+        "HC-002-markdown-6"
+      ]
+    },
+    {
+      "id": "T19",
+      "mode": "M5",
+      "trace_id": "ff8f63ffc3ae4d15",
+      "langfuse_trace_id": "a737ec2ebc4b49cc240e61ce307447cd",
+      "text": "CD-10419: Notifications stopped working for our whole team yesterday\n\nThank you for reaching out. Based on the information provided, it seems like your notifications have stopped working due to changes in organization settings. To resolve this issue, please contact the CloudDesk administrator immediately. They can help reset the notification settings to their default values, ensuring that everyone receives the necessary alerts again. \n\nWe apologize for any inconvenience caused. Please let us know if you need further assistance.",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 96,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-005-markdown-16",
+        "HC-005-markdown-26",
+        "HC-005-markdown-17",
+        "HC-005-markdown-21",
+        "HC-005-markdown-3"
+      ]
+    },
+    {
+      "id": "T20",
+      "mode": "M5",
+      "trace_id": "a650863e27564a28",
+      "langfuse_trace_id": "12ee0b8319dd02755b02cebf309e982d",
+      "text": "CD-10420: Password Reset Email Not Received\n\nDear Customer,\n\nThank you for reaching out regarding the password reset issue. We understand that waiting for a few minutes might help resolve this temporarily. However, let’s ensure we follow all necessary steps to troubleshoot further.\n\nPlease verify the following:\n\n1. **Check Your Email**: Ensure that the email was delivered to your primary email account. Sometimes, emails can get caught in spam or junk folders.\n   \n2. **Email Filters**: Check if there are any filters set up by your organization that could be blocking CloudDesk emails.\n\n3. **Correct Email Address**: Confirm that the email address used during the reset process matches exactly with the one registered with us.\n\n4. **Multiple Attempts**: Requesting multiple reset links may invalidate previous ones",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-001-markdown-7",
+        "HC-001-markdown-8",
+        "HC-001-markdown-9",
+        "HC-001-markdown-10",
+        "HC-001-markdown-17"
+      ]
+    },
+    {
+      "id": "T21",
+      "mode": "M5",
+      "trace_id": "bed8cab3958b4cd7",
+      "langfuse_trace_id": "e7c372a288d83bbfd3442787b45c382b",
+      "text": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+      "refused": false,
+      "refusal_reason": null,
+      "output_tokens": 160,
+      "max_new_tokens": 160,
+      "retrieved": [
+        "HC-008-markdown-13",
+        "HC-008-markdown-3",
+        "HC-008-markdown-5",
+        "HC-008-markdown-2",
+        "HC-008-markdown-6"
+      ]
+    }
+  ]
+}
