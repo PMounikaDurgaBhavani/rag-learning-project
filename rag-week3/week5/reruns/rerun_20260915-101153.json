@@ -1,0 +1,432 @@
+{
+  "sample_seed": 20260907,
+  "app_version": "d75cacb",
+  "session_id": "week5-rerun-20260915-101153",
+  "langfuse": true,
+  "started_at": "2026-09-15T10:11:53+00:00",
+  "finished_at": "2026-09-15T10:12:50+00:00",
+  "retrieval_mode_override": null,
+  "changed": 1,
+  "rows": [
+    {
+      "index": 1,
+      "original_trace_id": "52df90703dac44be",
+      "query": "What should I do if an account is locked due to incorrect password attempts in HC-002?",
+      "retrieval_mode": "hybrid",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "Incorrect password attempts should be avoided until the temporary lock period expires. [1]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "Incorrect password attempts should be avoided until the temporary lock period expires. [1]",
+        "trace_id": "e042bda18b904657"
+      },
+      "changed": false
+    },
+    {
+      "index": 2,
+      "original_trace_id": "4feb2225e1a746b4",
+      "query": "How do I filter CloudDesk tickets by Priority in HC-004?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "d4f27b7aca5f4d07"
+      },
+      "changed": false
+    },
+    {
+      "index": 3,
+      "original_trace_id": "9178a5b4424d4833",
+      "query": "why cant i see the upload button",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "Your user role may not have the required upload permission. [1] [2] [3]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "Your user role may not have the required upload permission. [1] [2] [3]",
+        "trace_id": "f437d94d5f8f459e"
+      },
+      "changed": false
+    },
+    {
+      "index": 4,
+      "original_trace_id": "50e50263fa0d42dd",
+      "query": "Does CloudDesk integrate with Salesforce?",
+      "retrieval_mode": "hybrid",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7744 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7744 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "575e060ee6c64aa9"
+      },
+      "changed": false
+    },
+    {
+      "index": 5,
+      "original_trace_id": "f1423117df0949ac",
+      "query": "notifications stopped working yesterday for the whole team",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "3cd33b5fb8ea4501"
+      },
+      "changed": false
+    },
+    {
+      "index": 6,
+      "original_trace_id": "ca06d21aa6fc4204",
+      "query": "How long is a CloudDesk password reset link valid?",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "30 minutes [1]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "30 minutes [1]",
+        "trace_id": "95d4a150ad8a4815"
+      },
+      "changed": false
+    },
+    {
+      "index": 7,
+      "original_trace_id": "5a50d54f665441d4",
+      "query": "What are the minimum character requirements for a new password under HC-001?",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7659 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7659 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "64caf92bb7654cf7"
+      },
+      "changed": false
+    },
+    {
+      "index": 8,
+      "original_trace_id": "99bd69c5501749e4",
+      "query": "How long does a CloudDesk account stay locked after too many failed login attempts?",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "A temporary CloudDesk account lock lasts 15 minutes. [1]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "A temporary CloudDesk account lock lasts 15 minutes. [1]",
+        "trace_id": "e4d9e56531194f0e"
+      },
+      "changed": false
+    },
+    {
+      "index": 9,
+      "original_trace_id": "5b4a156d4b2a412e",
+      "query": "How many failed login attempts lock a CloudDesk account?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "02a13c5b0b384697"
+      },
+      "changed": false
+    },
+    {
+      "index": 10,
+      "original_trace_id": "a7051c474be5456e",
+      "query": "billing",
+      "retrieval_mode": "hybrid",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.8849 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.8849 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "4f809eece96e4819"
+      },
+      "changed": false
+    },
+    {
+      "index": 11,
+      "original_trace_id": "2d540dfaff77426b",
+      "query": "why cant i see the upload button",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "The Upload File button is unavailable because your user role may not have the required permission. [1] [2] [3]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "The Upload File button is unavailable because your user role may not have the required permission. [1] [2] [3]",
+        "trace_id": "a82257f80f0d4ade"
+      },
+      "changed": false
+    },
+    {
+      "index": 12,
+      "original_trace_id": "55dc68f2276e4924",
+      "query": "Why is the Upload File button unavailable according to HC-006 troubleshooting?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "da5c20748f2f48b2"
+      },
+      "changed": false
+    },
+    {
+      "index": 13,
+      "original_trace_id": "481c82d2b24a4c26",
+      "query": "Does CloudDesk integrate with Salesforce?",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7744 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "distance_gate (0.7744 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "b13696502a584e58"
+      },
+      "changed": false
+    },
+    {
+      "index": 14,
+      "original_trace_id": "7fe81eaa6cdf466a",
+      "query": "Account locked. Help.",
+      "retrieval_mode": "dense",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "a6394a1c071f491a"
+      },
+      "changed": false
+    },
+    {
+      "index": 15,
+      "original_trace_id": "b11ac98da8764b29",
+      "query": "Can you tell me the storage limit and also how to increase it?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "The storage limit is not specified in the given sources. However, based on the information provided:\n\n1. The organization can reach its available storage capacity.\n2. Administrators may need to review existing files or increase available storage according to the organization's CloudDesk configuration.\n3. Users should reduce the file size or divide large content into multiple supported files when appropriate.\n4. Storage limits may be configured at the organization level.\n5. Individual files must not exceed the maximum file size configured for the CloudDesk organization.\n\nTo increase the storage limit, users should check the file size, compare it with the organization's configured upload limit, compress the file if appropriate, remove unnecessary content, and split the content into multiple files if necessary. [1]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "The storage limit is not specified in the given sources. However, based on the information provided:\n\n1. The organization can reach its available storage capacity.\n2. Administrators may need to review existing files or increase available storage according to the organization's CloudDesk configuration.\n3. Users should reduce the file size or divide large content into multiple supported files when appropriate.\n4. Storage limits may be configured at the organization level.\n5. Individual files must not exceed the maximum file size configured for the CloudDesk organization.\n\nTo increase the storage limit, users should check the file size, compare it with the organization's configured upload limit, compress the file if appropriate, remove unnecessary content, and split the content into multiple files if necessary. [1]",
+        "trace_id": "cc693b52c5c24a45"
+      },
+      "changed": false
+    },
+    {
+      "index": 16,
+      "original_trace_id": "66c2277862c449d4",
+      "query": "How long is a CloudDesk password reset link valid?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "30 minutes [1] [2] [3]"
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "30 minutes [1] [2] [3]",
+        "trace_id": "520cc49867f9495b"
+      },
+      "changed": false
+    },
+    {
+      "index": 17,
+      "original_trace_id": "c0579a1772764098",
+      "query": "How long do I have to wait after too many login attempts?",
+      "retrieval_mode": "hybrid",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": false,
+        "refusal_reason": null,
+        "refusal_family": null,
+        "answer": "Temporary Lock Period: 15 minutes [1]",
+        "trace_id": "894a4bf6ed59484a"
+      },
+      "changed": true
+    },
+    {
+      "index": 18,
+      "original_trace_id": "8d306c74d9c1499c",
+      "query": "whats the max file size and which formats are allowed?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "model_reported_not_in_sources",
+        "refusal_family": "model_reported_not_in_sources",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "998b3762c12d45fd"
+      },
+      "changed": false
+    },
+    {
+      "index": 19,
+      "original_trace_id": "0397331973e145a3",
+      "query": "How much does the CloudDesk Enterprise plan cost per user?",
+      "retrieval_mode": "hybrid",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "distance_gate (1.2601 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "distance_gate (1.0468 > 0.75)",
+        "refusal_family": "distance_gate",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "f1f55a6ffc914a3d"
+      },
+      "changed": false
+    },
+    {
+      "index": 20,
+      "original_trace_id": "59b27d3b9fdd4225",
+      "query": "My card expired and the CloudDesk payment failed. What should I do?",
+      "retrieval_mode": "hybrid_rerank",
+      "original_app_version": "efd07ba",
+      "original": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that."
+      },
+      "rerun": {
+        "refused": true,
+        "refusal_reason": "ungrounded_answer",
+        "refusal_family": "ungrounded_answer",
+        "answer": "I don't have enough information to answer that.",
+        "trace_id": "ddbd099885ec4c27"
+      },
+      "changed": false
+    }
+  ]
+}
