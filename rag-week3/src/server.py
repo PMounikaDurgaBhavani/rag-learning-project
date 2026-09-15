@@ -11,6 +11,8 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   GET  /api/week5             error-analysis artefacts (taxonomy, notes, sample)
   POST /api/trace             one trace by trace_id
   POST /api/week5/rerun       re-ask the 20 sampled questions on the current build
+  GET  /api/week6             judge-validation artefacts (cases, runs, agreement, protocol)
+  POST /api/week6/run         the one eval command over the frozen replies
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
@@ -227,6 +229,15 @@ def week5_artefacts():
     }
 
 
+def week6_module():
+    """experiments/week6_eval.py holds the Week 6 logic; the UI calls it, never copies it."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week6_eval
+    return week6_eval
+
+
 def run_retrieval(query, active_query, top_k, strategy, where):
     dense = retrieve_chunks(active_query, top_k=top_k, strategy=strategy, where=where)
     bm25 = retrieve_bm25(active_query, top_k=top_k, strategy=strategy, where=where)
@@ -285,6 +296,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(index_status())
             elif parsed.path == "/api/week5":
                 self._send_json(week5_artefacts())
+            elif parsed.path == "/api/week6":
+                self._send_json(week6_module().ui_artefacts())
             elif parsed.path == "/api/golden":
                 self._send_json({
                     "questions": golden_eval.load_golden_set(),
@@ -316,6 +329,9 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._handle_upload(payload)
             elif parsed.path == "/api/trace":
                 self._handle_trace(payload)
+            elif parsed.path == "/api/week6/run":
+                judge = "auto" if payload.get("judge") == "auto" else "none"
+                self._send_json({"status": "ok", **week6_module().ui_run(judge)})
             elif parsed.path == "/api/week5/rerun":
                 from week5_rerun import rerun_sample
                 self._send_json({"status": "ok",

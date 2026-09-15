@@ -781,52 +781,178 @@ EVIDENCE_FILES = [
 ]
 
 
-def cmd_status(args):
-    lines = ["# Week 6 — protocol evidence", "",
-             f"Generated {now_iso()} by `python experiments/week6_eval.py status`.", "",
-             "| file | what | first commit | committed at | commits | on disk matches HEAD |",
-             "|---|---|---|---|---|---|"]
-    first = {}
+def protocol_evidence():
+    """Commit-order evidence for every deliverable, as data for `status` and the UI."""
+    rows, first = [], {}
     for name, what in EVIDENCE_FILES:
         path = W6 / name
         history = commits_of(path) if path.exists() else []
-        clean = bool(committed_clean(path))
         if history:
             first[name] = history[0]
-        lines.append(
-            f"| `{name}` | {what} | "
-            f"{('`' + history[0]['commit'] + '`') if history else '—'} | "
-            f"{history[0]['committed_at'] if history else '—'} | {len(history)} | "
-            f"{'yes' if clean else ('not on disk' if not path.exists() else 'NO')} |"
-        )
+        rows.append({
+            "file": name,
+            "what": what,
+            "first_commit": history[0]["commit"] if history else None,
+            "committed_at": history[0]["committed_at"] if history else None,
+            "commits": len(history),
+            "on_disk": path.exists(),
+            "clean": bool(committed_clean(path)),
+        })
+
+    # Commit times carry the local offset (+05:30) and run times are UTC, so
+    # compare parsed instants: comparing the strings orders them wrongly.
+    def instant(value):
+        return datetime.fromisoformat(value)
 
     checks = []
 
     def order(a, b, claim):
         if a in first and b in first:
-            ok = first[a]["committed_at"] <= first[b]["committed_at"]
-            checks.append(f"- {'OK  ' if ok else 'FAIL'} {claim}: `{first[a]['commit']}` "
-                          f"({first[a]['committed_at']}) before `{first[b]['commit']}` "
-                          f"({first[b]['committed_at']})")
+            ok = instant(first[a]["committed_at"]) <= instant(first[b]["committed_at"])
+            checks.append({"status": "OK" if ok else "FAIL",
+                           "text": f"{claim}: {first[a]['commit']} ({first[a]['committed_at']}) "
+                                   f"before {first[b]['commit']} ({first[b]['committed_at']})"})
         else:
-            checks.append(f"- n/a  {claim}: not both committed yet")
+            checks.append({"status": "n/a", "text": f"{claim}: not both committed yet"})
 
     order("labels_25.json", "judge_results_v1.json", "labels committed before the judge v1 result")
     order("prediction.txt", "judge_v2.txt", "prediction committed before judge v2 exists")
     order("judge_v0_presplit.txt", "judge_v1.txt", "pre-split judge before the split judge")
 
     results_v1 = judge_results_path("v1")
-    if LABELS.exists() and results_v1.exists() and "labels_25.json" in first:
+    if results_v1.exists() and "labels_25.json" in first:
         run_at = read_json(results_v1)["run_started_at"]
-        ok = first["labels_25.json"]["committed_at"] <= run_at
-        checks.append(f"- {'OK  ' if ok else 'FAIL'} labels commit time "
-                      f"({first['labels_25.json']['committed_at']}) before judge v1 run start "
-                      f"({run_at}, recorded inside judge_results_v1.json)")
+        ok = instant(first["labels_25.json"]["committed_at"]) <= instant(run_at)
+        checks.append({"status": "OK" if ok else "FAIL",
+                       "text": f"labels commit time ({first['labels_25.json']['committed_at']}) "
+                               f"before judge v1 run start ({run_at}, recorded inside "
+                               f"judge_results_v1.json)"})
     if LABELS.exists():
         count = len(commits_of(LABELS))
-        checks.append(f"- {'OK  ' if count <= 1 else 'WARN'} labels_25.json committed {count} time(s)"
-                      f"{'' if count <= 1 else ' — labels changed after first commit; inspect git log'}")
+        checks.append({"status": "OK" if count <= 1 else "WARN",
+                       "text": f"labels_25.json committed {count} time(s)"
+                               + ("" if count <= 1 else
+                                  " — labels changed after their first commit; inspect git log")})
 
+    return {"rows": rows, "checks": checks}
+
+
+def protocol_steps():
+    """The protocol as an ordered checklist, with the command for the next step."""
+    labels = read_json(LABELS) if LABELS.exists() else {}
+    labelled = len(labels.get("labels", {}))
+    writeup = W6 / "disagreements.md"
+
+    steps = [
+        {"title": "Cases and assertion split committed",
+         "detail": "eval_cases.jsonl · judge_v0_presplit.txt -> judge_v1.txt",
+         "done": bool(committed_clean(judge_prompt_path("v1"))), "command": None},
+        {"title": "25 replies frozen and committed",
+         "detail": "week6/replies_25.json",
+         "done": bool(committed_clean(REPLIES)),
+         "command": "python experiments/week6_eval.py draft"},
+        {"title": "Blind hand labels committed",
+         "detail": f"{labelled}/{LABELLED_N} labelled · must be committed before any judge run",
+         "done": bool(committed_clean(LABELS)) and bool(labels.get("complete")),
+         "command": ("git add week6/labels_25.json && "
+                     "git commit -m \"week6: 25 blind hand labels (before judge run)\""
+                     if labels.get("complete") else "python experiments/week6_eval.py label")},
+        {"title": "Judge v1 run -> agreement_before",
+         "detail": "week6/judge_results_v1.json",
+         "done": judge_results_path("v1").exists(),
+         "command": "python experiments/week6_eval.py judge --version v1"},
+        {"title": "Prediction committed before iterating",
+         "detail": "one sentence in week6/prediction.txt",
+         "done": bool(committed_clean(PREDICTION)),
+         "command": ("# write week6/prediction.txt, then:\n"
+                     "git add week6/judge_results_v1.json week6/agreement.json week6/prediction.txt && "
+                     "git commit -m \"week6: judge v1 agreement + prediction\"")},
+        {"title": "Judge v2 built from two of v1's disagreements",
+         "detail": "week6/judge_v2.txt · judge_v2_examples.json",
+         "done": judge_prompt_path("v2").exists(),
+         "command": "python experiments/week6_eval.py make-judge-v2 --examples ID,ID"},
+        {"title": "Judge v2 run -> agreement_after",
+         "detail": "week6/judge_results_v2.json",
+         "done": judge_results_path("v2").exists(),
+         "command": ("git add week6/judge_v2.txt week6/judge_v2_examples.json && "
+                     "git commit -m \"week6: judge v2\"\n"
+                     "python experiments/week6_eval.py judge --version v2")},
+        {"title": "Disagreement write-up",
+         "detail": "2 disagreements, who was right, prediction scored against the outcome",
+         "done": writeup.exists() and "__" not in writeup.read_text(encoding="utf-8"),
+         "command": "edit week6/disagreements.md"},
+    ]
+    return steps, next((step for step in steps if not step["done"]), None)
+
+
+def ui_artefacts():
+    """Everything the UI's Judge validation view renders, read from week6/."""
+    from judge import JUDGE_MODEL
+
+    def text(path):
+        return path.read_text(encoding="utf-8") if path.exists() else None
+
+    runs = sorted(RUNS.glob("run_*.json")) if RUNS.exists() else []
+    steps, next_step = protocol_steps()
+
+    return {
+        "cases": [json.loads(line) for line in CASES.read_text(encoding="utf-8").splitlines()
+                  if line.strip()],
+        "modes": MODES,
+        "mode_short": MODE_SHORT,
+        "assertions": [{"name": name, "replaces": replaces} for name, _check, replaces in ASSERTIONS],
+        "judged_criteria": JUDGED_CRITERIA,
+        "replies": read_json(REPLIES) if REPLIES.exists() else None,
+        "latest_run": read_json(runs[-1]) if runs else None,
+        "latest_run_file": runs[-1].name if runs else None,
+        "labels": read_json(LABELS) if LABELS.exists() else None,
+        "labels_commit": committed_clean(LABELS),
+        "judge": {version: (read_json(judge_results_path(version))
+                            if judge_results_path(version).exists() else None)
+                  for version in JUDGE_VERSIONS},
+        "judge_model": JUDGE_MODEL,
+        "judge_allowed": best_available_judge(),
+        "agreement": read_json(AGREEMENT) if AGREEMENT.exists() else None,
+        "few_shot": few_shot_ids("v2"),
+        "prompts": {"v0": text(W6 / "judge_v0_presplit.txt"),
+                    "v1": text(judge_prompt_path("v1")),
+                    "v2": text(judge_prompt_path("v2"))},
+        "prediction": text(PREDICTION),
+        "disagreements_md": text(W6 / "disagreements.md"),
+        "readme_md": text(W6 / "README.md"),
+        "protocol": protocol_evidence(),
+        "steps": steps,
+        "next_step": next_step,
+    }
+
+
+def ui_run(judge="none"):
+    """The UI's Run eval button: the one command over the frozen replies.
+
+    judge="auto" runs the newest judge the protocol allows — so the UI can
+    never run a judge before the labels are committed, same as the CLI.
+    """
+    code = cmd_run(argparse.Namespace(frozen=True, judge=None if judge == "auto" else "none"))
+    data = ui_artefacts()
+    data["run_exit_code"] = code
+    return data
+
+
+def cmd_status(args):
+    evidence = protocol_evidence()
+    lines = ["# Week 6 — protocol evidence", "",
+             f"Generated {now_iso()} by `python experiments/week6_eval.py status`.", "",
+             "| file | what | first commit | committed at | commits | on disk matches HEAD |",
+             "|---|---|---|---|---|---|"]
+    for row in evidence["rows"]:
+        lines.append(
+            f"| `{row['file']}` | {row['what']} | "
+            f"{('`' + row['first_commit'] + '`') if row['first_commit'] else '—'} | "
+            f"{row['committed_at'] or '—'} | {row['commits']} | "
+            f"{'yes' if row['clean'] else ('not on disk' if not row['on_disk'] else 'NO')} |"
+        )
+
+    checks = [f"- {check['status']:<4} {check['text']}" for check in evidence["checks"]]
     lines += ["", "## Ordering checks", ""] + checks
     text = "\n".join(lines) + "\n"
     (W6 / "protocol_evidence.md").write_text(text, encoding="utf-8")

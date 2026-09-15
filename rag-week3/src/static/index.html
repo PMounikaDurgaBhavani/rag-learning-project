@@ -521,6 +521,32 @@
   .w5-detail pre { font-family: var(--mono); font-size: .74rem; white-space: pre-wrap; word-break: break-word; margin: .2rem 0 .6rem; }
   .w5-k { font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 
+  /* ---- week 6 ---- */
+  .w6-steps { display: grid; }
+  .w6-step { display: grid; grid-template-columns: 1.7rem 1fr; gap: .6rem; align-items: start; padding: .5rem .4rem; border-bottom: 1px solid var(--line); font-size: .82rem; }
+  .w6-step:last-child { border-bottom: 0; }
+  .w6-step .n { width: 1.5rem; height: 1.5rem; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; background: var(--surface-2); color: var(--ink-3); }
+  .w6-step.done .n { background: var(--ok-soft); color: var(--ok); }
+  .w6-step.current { background: var(--accent-soft); border-radius: var(--radius-sm); }
+  .w6-step.current .n { background: var(--accent); color: var(--accent-ink); }
+  pre.w6-cmd { font-family: var(--mono); font-size: .76rem; background: var(--surface); padding: .5rem .7rem; border-radius: var(--radius-sm); margin: .5rem 0 0; white-space: pre-wrap; word-break: break-word; }
+  .w6-bar { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; min-width: 60px; }
+  .w6-bar i { display: block; height: 100%; }
+  .w6-case { display: grid; grid-template-columns: 44px 38px 1fr auto; gap: .6rem; align-items: center; padding: .5rem .4rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: .82rem; }
+  .w6-case:hover { background: var(--surface); }
+  .w6-case .cid { font-family: var(--mono); font-size: .72rem; font-weight: 600; }
+  .w6-case .pills { display: flex; gap: .3rem; flex-wrap: wrap; justify-content: flex-end; }
+  .w6-sub { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .7rem; }
+  .w6-diff { font-family: var(--mono); font-size: .74rem; line-height: 1.5; background: var(--surface); border-radius: var(--radius-sm); padding: .6rem 0; overflow-x: auto; margin: 0; }
+  .w6-diff span { display: block; min-height: 1.5em; padding: 0 .7rem; white-space: pre-wrap; word-break: break-word; }
+  .w6-diff .add { background: var(--ok-soft); color: var(--ok); }
+  .w6-diff .del { background: var(--danger-soft); color: var(--danger); text-decoration: line-through; }
+  table.gs.w6-confusion td, table.gs.w6-confusion th { text-align: center; }
+  @media (max-width: 640px) {
+    .w6-case { grid-template-columns: 44px 1fr; }
+    .w6-case .pills { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
   pre.console {
     font-family: var(--mono); font-size: .76rem; line-height: 1.55;
     background: var(--surface); border-radius: var(--radius-sm); padding: .9rem;
@@ -567,6 +593,7 @@
         <button class="side-link" data-view="inspect"><span class="ic">◎</span> Retrieval inspector</button>
         <button class="side-link" data-view="golden"><span class="ic">▤</span> Golden set <span class="tail" id="navGoldenCount"></span></button>
         <button class="side-link" data-view="week5"><span class="ic">◈</span> Error analysis <span class="tail" id="navW5Count"></span></button>
+        <button class="side-link" data-view="week6"><span class="ic">◇</span> Judge validation <span class="tail" id="navW6Count"></span></button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
 
@@ -804,6 +831,44 @@
       </div>
     </section>
 
+    <!-- ---------------- WEEK 6 ---------------- -->
+    <section class="view" id="view-week6">
+      <div class="scroll">
+        <div class="measure wide">
+          <div style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;">
+            <div>
+              <h1>Judge validation — ticket replies</h1>
+              <p class="lede" style="margin:0;">
+                25 tickets tagged with Week 5 failure modes, 6 deterministic assertions and one
+                LLM-judged criterion. The judge's number is trusted only after it is measured
+                against blind hand labels committed before it ran. Rendered from <code>week6/</code>.
+              </p>
+            </div>
+            <div style="display:flex;gap:.5rem;align-items:end;">
+              <div class="field" style="min-width:220px;">
+                <label>Run</label>
+                <select id="w6Judge">
+                  <option value="none">Assertions only</option>
+                  <option value="auto">Assertions + judge</option>
+                </select>
+              </div>
+              <button class="btn primary" id="w6Run"><span class="spinner hidden" id="w6Spinner"></span>Run eval</button>
+            </div>
+          </div>
+          <div class="w5-tabs" id="w6Tabs" style="margin-top:1rem;">
+            <button data-tab="overview" class="active">Overview</button>
+            <button data-tab="bymode">Pass rate by mode</button>
+            <button data-tab="cases">The 25 cases</button>
+            <button data-tab="prompts">Judge prompts</button>
+            <button data-tab="agreement">Agreement</button>
+            <button data-tab="protocol">Protocol evidence</button>
+            <button data-tab="writeup">Write-up</button>
+          </div>
+          <div id="w6Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ---------------- CONSOLE ---------------- -->
     <section class="view" id="view-console">
       <div class="scroll">
@@ -912,7 +977,7 @@ async function api(path, body) {
 })();
 
 /* ------------------------------------------------------------------ shell */
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', console: 'Console' };
 
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
@@ -924,6 +989,7 @@ function show(view) {
   if (view === 'library') loadDocuments();
   if (view === 'golden') loadGolden();
   if (view === 'week5') loadWeek5();
+  if (view === 'week6') loadWeek6();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
 document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
@@ -1463,6 +1529,376 @@ async function runWeek5Rerun(btn) {
     btn.disabled = false;
   }
 }
+
+/* ------------------------------------------------------------------ week 6 */
+// Every number here is read from week6/ (and git) by /api/week6, so the demo
+// shows exactly what is submitted. The UI never runs a judge the protocol
+// has not unlocked: "Assertions + judge" asks the server for the newest
+// judge it allows.
+let week6 = null;
+let w6Tab = 'overview';
+let w6Prompt = 'v0v1';
+
+const fmtPct = (v) => v == null ? '—' : `${v}%`;
+const ratio = (a, n) => `${a}/${n}`;
+const rateOf = (a, n) => n ? 100 * a / n : 0;
+const rateColor = (r) => r >= 75 ? 'var(--ok)' : r >= 50 ? 'var(--warn)' : 'var(--danger)';
+const verdictPill = (v, prefix = '') => v == null ? ''
+  : `<span class="pill ${v === 'PASS' ? 'ok' : 'bad'}">${esc(prefix)}${esc(v)}</span>`;
+const w6Card = (inner) => `<div class="card" style="margin-bottom:1rem;">${inner}</div>`;
+const w6Eyebrow = (t) => `<div class="eyebrow" style="margin-bottom:.5rem;">${t}</div>`;
+const w6Metric = (k, v, d = '') => `<div class="card metric"><div class="k">${k}</div><div class="v">${v}</div>${d ? `<div class="help" style="margin-top:.25rem;">${d}</div>` : ''}</div>`;
+
+async function loadWeek6(force = false) {
+  if (week6 && !force) { renderWeek6(); return; }
+  try {
+    week6 = await api('/api/week6');
+    $('navW6Count').textContent = week6.cases.length;
+    renderWeek6();
+  } catch (err) {
+    $('w6Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+function setW6Tab(tab) {
+  w6Tab = tab;
+  document.querySelectorAll('#w6Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  renderWeek6();
+}
+$('w6Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (b) setW6Tab(b.dataset.tab);
+});
+
+$('w6Run').onclick = async () => {
+  const judge = $('w6Judge').value;
+  $('w6Run').disabled = true;
+  $('w6Spinner').classList.remove('hidden');
+  toast(judge === 'none' ? 'Checking the 25 frozen replies…' : 'Running assertions and the judge — allow a few minutes…');
+  try {
+    week6 = await api('/api/week6/run', { judge });
+    setW6Tab('bymode');
+    const results = Object.values(week6.latest_run.results);
+    toast(`Eval done: ${results.filter(r => r.pass).length}/${results.length} pass · judge ${week6.latest_run.judge}`);
+  } catch (err) {
+    toast(err.message, true);
+  } finally {
+    $('w6Run').disabled = false;
+    $('w6Spinner').classList.add('hidden');
+  }
+};
+
+function renderWeek6() {
+  const d = week6;
+  const judgeOption = $('w6Judge').options[1];
+  judgeOption.disabled = d.judge_allowed === 'none';
+  judgeOption.textContent = judgeOption.disabled
+    ? 'Assertions + judge (locked until labels are committed)'
+    : `Assertions + judge ${d.judge_allowed}`;
+  if (judgeOption.disabled) $('w6Judge').value = 'none';
+
+  const view = {
+    overview: w6Overview, bymode: w6ByMode, cases: w6Cases, prompts: w6Prompts,
+    agreement: w6Agreement, protocol: w6Protocol, writeup: w6Writeup,
+  }[w6Tab];
+  $('w6Body').innerHTML = view(d);
+}
+
+function w6Overview(d) {
+  const run = d.latest_run, ag = d.agreement || {};
+  const results = run ? Object.values(run.results) : [];
+  const passed = results.filter(r => r.pass).length;
+  const regressions = d.cases.filter(c => c.regression).length;
+  const labelled = d.labels ? Object.keys(d.labels.labels || {}).length : 0;
+  const next = d.next_step;
+
+  return `
+    <div class="metric-row">
+      ${w6Metric('Eval cases', d.cases.length, `${regressions} regression · ${Object.keys(d.modes).length} Week 5 modes`)}
+      ${w6Metric('Assertions vs judged', `${d.assertions.length} <span class="arrow">vs</span> ${d.judged_criteria.length}`, 'deterministic checks · LLM-judged criteria')}
+      ${w6Metric('Latest pass rate', run ? `${passed}/${results.length} <span class="arrow">${rateOf(passed, results.length).toFixed(1)}%</span>` : '—', run ? `judge ${esc(run.judge)} · ${esc(run.ran_at)}` : 'press Run eval')}
+      ${w6Metric('Agreement before → after', ag.agreement_before == null ? '—' : `${fmtPct(ag.agreement_before)} <span class="arrow">→</span> ${fmtPct(ag.agreement_after)}`, ag.agreement_before == null ? `labels ${labelled}/25 · judge not run yet` : `judge vs blind hand labels`)}
+    </div>
+    <div class="decision" style="margin-bottom:1rem;">
+      ${next ? `<b>Next step:</b> ${esc(next.title)}${next.command ? `<pre class="w6-cmd">${esc(next.command)}</pre>` : ''}` : '<b>All protocol steps complete.</b>'}
+    </div>
+    ${w6Card(w6Eyebrow('Protocol — each step is enforced by the tooling') + `<div class="w6-steps">${d.steps.map((s, i) => `
+      <div class="w6-step ${s.done ? 'done' : ''} ${next && s.title === next.title ? 'current' : ''}">
+        <span class="n">${s.done ? '✓' : i + 1}</span>
+        <div><b>${esc(s.title)}</b><div class="help">${esc(s.detail)}</div></div>
+      </div>`).join('')}</div>`)}
+    ${w6Card(w6Eyebrow('Models') + `<p class="help" style="font-size:.8rem;margin:0;">
+      Drafter <code>${esc(d.replies?.model || '—')}</code> · ticket prompt <code>${esc(d.replies?.ticket_prompt_version || '—')}</code> ·
+      judge <code>${esc(d.judge_model)}</code>. Different model families, so the judge never grades its own family's writing.</p>`)}`;
+}
+
+function w6ModeRows(d, run) {
+  return Object.keys(d.modes).map(mode => {
+    const rows = d.cases.filter(c => c.mode === mode).map(c => run.results[c.id]).filter(Boolean);
+    return {
+      mode, name: d.mode_short[mode], n: rows.length,
+      a: rows.filter(r => r.assertions_pass).length,
+      j: rows.filter(r => r.judge === 'PASS').length,
+      p: rows.filter(r => r.pass).length,
+    };
+  });
+}
+
+function w6ByMode(d) {
+  const run = d.latest_run;
+  if (!run) return w6Card('<div class="muted">No eval run yet — press <b>Run eval</b>.</div>');
+  const judged = run.judge !== 'none';
+  const modes = w6ModeRows(d, run);
+  const all = modes.reduce((t, m) => ({ n: t.n + m.n, a: t.a + m.a, j: t.j + m.j, p: t.p + m.p }), { n: 0, a: 0, j: 0, p: 0 });
+  const overall = rateOf(all.p, all.n);
+  const worst = modes.filter(m => m.n).sort((x, y) => rateOf(x.p, x.n) - rateOf(y.p, y.n))[0];
+
+  const row = (label, name, m, strong = false) => {
+    const r = rateOf(m.p, m.n);
+    return `<tr${strong ? ' style="font-weight:700;"' : ''}>
+      <td class="qid">${esc(label)}</td><td>${esc(name)}</td><td>${m.n}</td>
+      <td>${ratio(m.a, m.n)}</td>
+      <td>${judged ? ratio(m.j, m.n) : '<span class="muted">not run</span>'}</td>
+      <td>${ratio(m.p, m.n)}</td>
+      <td style="min-width:140px;"><div style="display:flex;gap:.5rem;align-items:center;">
+        <div class="w6-bar" style="flex:1;"><i style="width:${r}%;background:${rateColor(r)};"></i></div>
+        <span class="rank">${r.toFixed(1)}%</span></div></td>
+    </tr>`;
+  };
+
+  const assertionRows = d.assertions.map(a => {
+    const applied = d.cases
+      .map(c => [c.id, (run.results[c.id]?.assertions || []).find(x => x.name === a.name)])
+      .filter(([, x]) => x && x.applicable);
+    const failed = applied.filter(([, x]) => !x.passed).map(([id]) => id);
+    return `<tr><td class="qid">${esc(a.name)}</td><td class="cid">${esc(a.replaces)}</td>
+      <td>${applied.length}</td><td>${applied.length - failed.length}</td><td>${failed.length}</td>
+      <td class="cid">${esc(failed.join(', ') || '—')}</td></tr>`;
+  }).join('');
+
+  const regressions = d.cases.filter(c => c.regression).map(c => {
+    const r = run.results[c.id];
+    return `<tr><td class="qid">${esc(c.id)}</td><td class="cid">${esc(c.regression.source_trace_id)}</td>
+      <td>${esc(c.mode)}</td><td>${esc(c.ticket.message)}</td><td>${esc(c.regression.original_outcome)}</td>
+      <td>${verdictPill(r?.pass ? 'PASS' : 'FAIL')}${judged ? '' : '<div class="help">assertions only</div>'}</td></tr>`;
+  }).join('');
+
+  const hidden = worst && rateOf(worst.p, worst.n) < overall - 10;
+
+  return `
+    <p class="help" style="margin-bottom:.8rem;">Run <code>${esc(d.latest_run_file)}</code> · ${esc(run.ran_at)} ·
+      replies ${esc(run.replies)} · judge <b>${esc(run.judge)}</b>. A case passes when every applicable assertion passes${judged ? ' <b>and</b> the judge says PASS' : ' (judge not run)'}.</p>
+    ${hidden ? `<div class="decision" style="margin-bottom:1rem;border-left-color:var(--warn);background:var(--warn-soft);">
+      <b>The average hides ${esc(worst.mode)}:</b> ${ratio(worst.p, worst.n)} (${rateOf(worst.p, worst.n).toFixed(1)}%)
+      against ${overall.toFixed(1)}% overall — ${esc(d.mode_short[worst.mode])}.</div>` : ''}
+    ${w6Card(w6Eyebrow('Pass rate by Week 5 failure mode') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Mode</th><th>Failure mode</th><th>n</th><th>Assertions</th><th>Judge</th><th>Pass</th><th>Rate</th></tr></thead>
+      <tbody>${modes.map(m => row(m.mode, m.name, m)).join('')}${row('ALL', '', all, true)}</tbody></table></div>`)}
+    ${w6Card(w6Eyebrow(`Deterministic assertions · ${d.assertions.length} checks vs ${d.judged_criteria.length} judged criterion`) + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Assertion</th><th>Replaced judge criterion</th><th>Applies</th><th>Pass</th><th>Fail</th><th>Failing cases</th></tr></thead>
+      <tbody>${assertionRows}</tbody></table></div>`)}
+    ${w6Card(w6Eyebrow('Regression cases — replayed verbatim from failed Week 5 traces') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Case</th><th>Source trace</th><th>Mode</th><th>Message (verbatim)</th><th>Week 5 outcome</th><th>Now</th></tr></thead>
+      <tbody>${regressions}</tbody></table></div>`)}`;
+}
+
+function w6CaseData(d, id) {
+  return {
+    run: d.latest_run?.results?.[id],
+    v1: d.judge.v1?.rows?.find(r => r.id === id),
+    v2: d.judge.v2?.rows?.find(r => r.id === id),
+    label: d.labels?.labels?.[id],
+    reply: d.replies?.replies?.find(r => r.id === id),
+  };
+}
+
+function w6Cases(d) {
+  return w6Card(w6Eyebrow('25 tickets · click a row for the ticket, reference facts, reply, assertions and verdicts') + d.cases.map(c => {
+    const v = w6CaseData(d, c.id);
+    const applied = (v.run?.assertions || []).filter(a => a.applicable);
+    const passedA = applied.filter(a => a.passed).length;
+    return `<div class="w6-case" data-case="${esc(c.id)}">
+      <span class="cid">${esc(c.id)}</span>
+      <span class="pill info">${esc(c.mode)}</span>
+      <span>${esc(c.ticket.message)}
+        ${c.ticket.tier === 'Priority' ? '<span class="pill warn">Priority</span>' : ''}
+        ${c.regression ? '<span class="pill violet">regression</span>' : ''}</span>
+      <span class="pills">
+        ${v.run ? `<span class="pill ${passedA === applied.length ? 'ok' : 'bad'}">asserts ${passedA}/${applied.length}</span>` : ''}
+        ${v.label ? verdictPill(v.label.label, 'human ') : ''}
+        ${v.v1 ? verdictPill(v.v1.judge, 'v1 ') : ''}
+        ${v.v2 ? verdictPill(v.v2.judge, 'v2 ') : ''}
+      </span>
+    </div>`;
+  }).join(''));
+}
+
+function w6CaseDetail(d, id) {
+  const c = d.cases.find(x => x.id === id), v = w6CaseData(d, id), t = c.ticket;
+  const charge = t.charge_amount != null
+    ? `$${t.charge_amount.toFixed(2)}, ${t.days_since_charge} days ago${t.duplicate_charge ? ' (duplicate charge)' : ''}`
+    : 'none';
+  const judgeBlock = (name, r) => r
+    ? `<div class="w5-k">Judge ${name}</div><pre>${esc(r.judge)} — ${esc(r.judge_reason)}</pre>` : '';
+  return `
+    <div class="w5-k">Ticket</div>
+    <pre>${esc(t.ticket_id)} · ${esc(t.tier)} · charge: ${esc(charge)}\n${esc(t.message)}</pre>
+    <div class="w5-k">Reference facts — what a correct reply must be consistent with</div>
+    <pre>${esc(c.reference.map(f => '• ' + f).join('\n'))}</pre>
+    <div class="w5-k">Draft reply (frozen)</div>
+    <pre>${esc(v.reply?.text ?? '—')}</pre>
+    ${v.reply ? `<div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.6rem;">
+      <span class="pill">${esc(v.reply.output_tokens ?? '–')} tokens</span>
+      ${v.reply.refused ? `<span class="pill bad">${esc((v.reply.refusal_reason || '').split(' (')[0])}</span>` : ''}
+      <span class="pill">${esc((v.reply.retrieved || []).slice(0, 3).join(', '))}</span></div>` : ''}
+    <div class="w5-k">Assertions</div>
+    <pre>${esc((v.run?.assertions || []).map(a => `${a.applicable ? (a.passed ? '✓' : '✗') : '·'} ${a.name.padEnd(30)} ${a.detail}`).join('\n') || 'not run')}</pre>
+    ${v.label ? `<div class="w5-k">Human label</div><pre>${esc(v.label.label)}${v.label.note ? ' — ' + esc(v.label.note) : ''}</pre>` : ''}
+    ${judgeBlock('v1', v.v1)}${judgeBlock('v2', v.v2)}
+    ${c.regression ? `<div class="w5-k">Regression source</div>
+      <pre>trace ${esc(c.regression.source_trace_id)} · ${esc(c.regression.original_outcome)}\n${esc(c.regression.why_it_failed)}</pre>` : ''}`;
+}
+
+// Line diff by longest common subsequence — the prompts are a few dozen lines.
+function lineDiff(a, b) {
+  const A = a.split('\n'), B = b.split('\n'), n = A.length, m = B.length;
+  const L = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--)
+    for (let j = m - 1; j >= 0; j--)
+      L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const out = [];
+  let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (A[i] === B[j]) { out.push([' ', A[i]]); i++; j++; }
+    else if (L[i + 1][j] >= L[i][j + 1]) out.push(['-', A[i++]]);
+    else out.push(['+', B[j++]]);
+  }
+  while (i < n) out.push(['-', A[i++]]);
+  while (j < m) out.push(['+', B[j++]]);
+  return out;
+}
+
+function w6Prompts(d) {
+  const p = d.prompts;
+  const views = [
+    ['v0v1', 'v0 → v1 · assertion split'],
+    ['v1v2', 'v1 → v2 · few-shot from disagreements'],
+    ['v0', 'judge_v0_presplit.txt'], ['v1', 'judge_v1.txt'], ['v2', 'judge_v2.txt'],
+  ];
+  const tabs = `<div class="w6-sub">${views.map(([k, label]) =>
+    `<button class="btn sm ${w6Prompt === k ? 'primary' : ''}" data-prompt="${k}">${esc(label)}</button>`).join('')}</div>`;
+
+  if (w6Prompt.length === 4) {
+    const from = w6Prompt.slice(0, 2), to = w6Prompt.slice(2);
+    if (!p[to]) {
+      return w6Card(tabs + `<div class="muted">judge_${to}.txt does not exist yet — it is built from two of judge v1's own disagreements, after the prediction is committed.</div>`);
+    }
+    const diff = lineDiff(p[from], p[to]);
+    const added = diff.filter(x => x[0] === '+').length, removed = diff.filter(x => x[0] === '-').length;
+    return w6Card(tabs + `
+      <p class="help" style="margin-bottom:.5rem;"><span style="color:var(--danger);">−${removed}</span> /
+        <span style="color:var(--ok);">+${added}</span> lines ·
+        ${from === 'v0' ? 'the deleted criteria are now deterministic assertions' : "the added block is two of v1's own disagreements with the human verdict"}</p>
+      <pre class="w6-diff">${diff.map(([op, line]) =>
+        `<span class="${op === '+' ? 'add' : op === '-' ? 'del' : ''}">${esc(op === ' ' ? '  ' : op + ' ')}${esc(line)}</span>`).join('')}</pre>`);
+  }
+  return w6Card(tabs + (p[w6Prompt]
+    ? `<pre class="w6-diff">${p[w6Prompt].split('\n').map(l => `<span>${esc(l)}</span>`).join('')}</pre>`
+    : `<div class="muted">judge_${w6Prompt}.txt does not exist yet.</div>`));
+}
+
+function w6Confusion(stats) {
+  const c = stats.confusion || {};
+  const cell = (h, j) => c[`human_${h}__judge_${j}`] || 0;
+  const miss = 'style="color:var(--danger);font-weight:700;"';
+  return `<table class="gs w6-confusion"><thead><tr><th></th><th>judge PASS</th><th>judge FAIL</th></tr></thead><tbody>
+    <tr><th>human PASS</th><td>${cell('PASS', 'PASS')}</td><td ${miss}>${cell('PASS', 'FAIL')}</td></tr>
+    <tr><th>human FAIL</th><td ${miss}>${cell('FAIL', 'PASS')}</td><td>${cell('FAIL', 'FAIL')}</td></tr>
+  </tbody></table>`;
+}
+
+function w6Agreement(d) {
+  const v1 = d.judge.v1, v2 = d.judge.v2;
+  const labelled = d.labels ? Object.keys(d.labels.labels || {}).length : 0;
+  if (!v1) {
+    return w6Card(w6Eyebrow('Not measured yet') + `
+      <p style="font-size:.85rem;margin:0;">Agreement is measured only after 25 blind hand labels are committed
+        and judge v1 runs over the frozen replies. Nothing is shown before that — that ordering is the point.</p>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem;">
+        <span class="pill ${labelled === 25 ? 'ok' : 'warn'}">labels ${labelled}/25</span>
+        <span class="pill ${d.labels_commit ? 'ok' : 'bad'}">${d.labels_commit ? 'labels committed ' + esc(d.labels_commit.commit) : 'labels not committed'}</span>
+        <span class="pill">judge ${esc(d.judge_model)}</span>
+      </div>`);
+  }
+
+  const s1 = v1.agreement, s2 = v2?.agreement;
+  const v2rows = Object.fromEntries((v2?.rows || []).map(r => [r.id, r]));
+  const v1rows = Object.fromEntries(v1.rows.map(r => [r.id, r]));
+
+  const list = (rows, showV2) => rows.map(r => `
+    <div class="ev" style="flex-direction:column;gap:.25rem;">
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;">
+        <span class="rank">${esc(r.id)}</span><span class="pill info">${esc(r.mode)}</span>
+        ${verdictPill(r.human, 'human ')} ${verdictPill(r.judge, 'judge ')}
+        ${d.few_shot.includes(r.id) ? '<span class="pill violet">few-shot example in v2</span>' : ''}
+        ${showV2 && v2rows[r.id] ? `<span class="pill ${v2rows[r.id].agree ? 'ok' : 'bad'}">v2 ${v2rows[r.id].agree ? 'now agrees' : 'still disagrees'}</span>` : ''}
+      </div>
+      <div class="help" style="font-size:.78rem;"><b>Judge:</b> ${esc(r.judge_reason)}</div>
+      <div class="help" style="font-size:.78rem;"><b>Human:</b> ${esc(r.human_note || '—')}</div>
+    </div>`).join('') || '<div class="muted">None.</div>';
+
+  const v1Disagree = v1.rows.filter(r => !r.agree);
+  const broken = v2 ? v2.rows.filter(r => !r.agree && v1rows[r.id]?.agree) : [];
+
+  return `
+    <div class="metric-row">
+      ${w6Metric('agreement_before · v1', fmtPct(s1.all.pct), `${s1.all.agree}/${s1.all.n} · kappa ${s1.cohen_kappa ?? '—'}`)}
+      ${w6Metric('agreement_after · v2', s2 ? fmtPct(s2.all.pct) : '—', s2 ? `${s2.all.agree}/${s2.all.n} · kappa ${s2.cohen_kappa ?? '—'}` : 'judge v2 not run yet')}
+      ${w6Metric('after · held out', s2?.held_out ? fmtPct(s2.held_out.pct) : '—', s2?.held_out ? `${s2.held_out.agree}/${s2.held_out.n} · excludes ${esc(s2.excluded_few_shot.join(', '))}` : 'excludes the 2 few-shot cases')}
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 1rem;">
+      ${w6Card(w6Eyebrow('Confusion · judge v1') + w6Confusion(s1))}
+      ${s2 ? w6Card(w6Eyebrow('Confusion · judge v2') + w6Confusion(s2)) : ''}
+    </div>
+    ${w6Card(w6Eyebrow(`Judge v1 disagreements (${v1Disagree.length})`) + list(v1Disagree, !!v2))}
+    ${v2 ? w6Card(w6Eyebrow(`Cases v1 got right that v2 now gets wrong (${broken.length})`) + list(broken, false)) : ''}`;
+}
+
+function w6Protocol(d) {
+  const statusPill = (s) => `<span class="pill ${s === 'OK' ? 'ok' : s === 'FAIL' ? 'bad' : s === 'WARN' ? 'warn' : ''}">${esc(s)}</span>`;
+  return w6Card(w6Eyebrow('Ordering checks — computed live from git') +
+      d.protocol.checks.map(c => `<div class="ev">${statusPill(c.status)}<span>${esc(c.text)}</span></div>`).join(''))
+    + w6Card(w6Eyebrow('Evidence files — the first commit that added each one') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>File</th><th>What</th><th>First commit</th><th>Committed at</th><th>Commits</th><th>Disk = HEAD</th></tr></thead>
+      <tbody>${d.protocol.rows.map(r => `<tr>
+        <td class="qid">${esc(r.file)}</td><td>${esc(r.what)}</td>
+        <td class="cid">${esc(r.first_commit || '—')}</td><td class="cid">${esc(r.committed_at || '—')}</td>
+        <td>${r.commits}</td>
+        <td>${!r.on_disk ? '<span class="muted">not yet</span>' : r.clean ? '<span class="pill ok">yes</span>' : '<span class="pill bad">modified</span>'}</td>
+      </tr>`).join('')}</tbody></table></div>`)
+    + `<p class="help">Same evidence as <code>python experiments/week6_eval.py status</code>. A labels file changed after its first commit shows more than one commit.</p>`;
+}
+
+function w6Writeup(d) {
+  return w6Card(w6Eyebrow('prediction.txt — committed before iterating') + (d.prediction
+      ? `<blockquote style="margin:0;padding:.6rem .8rem;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.88rem;">${esc(d.prediction)}</blockquote>`
+      : '<div class="muted">Not written yet — it comes after judge v1 and before judge v2.</div>'))
+    + w6Card(w6Eyebrow('disagreements.md') + (d.disagreements_md ? md(d.disagreements_md) : '<div class="muted">Not written yet.</div>'))
+    + w6Card(w6Eyebrow('README — how the eval works') + md(d.readme_md || ''));
+}
+
+$('w6Body').addEventListener('click', e => {
+  const sub = e.target.closest('[data-prompt]');
+  if (sub) { w6Prompt = sub.dataset.prompt; renderWeek6(); return; }
+  const row = e.target.closest('[data-case]');
+  if (!row) return;
+  const open = row.nextElementSibling;
+  if (open && open.classList.contains('w5-detail')) { open.remove(); return; }
+  const box = document.createElement('div');
+  box.className = 'w5-detail';
+  box.innerHTML = w6CaseDetail(week6, row.dataset.case);
+  row.after(box);
+});
 
 // Expand one trace in place — the raw model output is the thing you read.
 $('w5Body').addEventListener('click', async e => {

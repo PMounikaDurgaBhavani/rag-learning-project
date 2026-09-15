@@ -10,6 +10,11 @@ python main.py eval --frozen   # same, but reuses week6/replies_25.json (faster)
 The judge only runs once the labelling protocol below is satisfied. Before
 that, `eval` prints assertions only and says why the judge was skipped.
 
+**In the UI:** run `python main.py ui` and open **Judge validation** in the sidebar. Its tabs are
+the overview and protocol checklist, pass rate by mode, the 25 cases, the judge prompt diffs,
+agreement, git ordering evidence, and the write-up. All of it is read from this folder.
+`week6/DEMO.md` walks through it in rubric order.
+
 ## The protocol (order matters, and the code enforces it)
 
 | # | Step | Command | Commit |
