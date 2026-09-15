@@ -10,6 +10,7 @@ Usage
     python main.py hyde "How long is a reset link valid?"
     python main.py failure-report
     python main.py evaluate-hybrid
+    python main.py eval                 # Week 6: pass rate by mode
 """
 
 import argparse
@@ -294,6 +295,12 @@ def command_evaluate_hybrid(args):
     run_benchmark()
 
 
+def command_eval(args):
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments"))
+    import week6_eval
+    return week6_eval.cmd_run(args)
+
+
 def command_demo(args):
     from generator import generate_answer, print_answer
     from retriever import retrieve_chunks, build_where, print_results
@@ -520,6 +527,17 @@ def build_parser():
     eval_cmd = subparsers.add_parser("evaluate-hybrid", help="benchmark Dense vs BM25 vs Hybrid vs Reranker")
     eval_cmd.set_defaults(func=command_evaluate_hybrid)
 
+    # eval (Week 6: ticket replies, pass rate by mode)
+    week6 = subparsers.add_parser(
+        "eval",
+        help="Week 6: draft replies for every case, run assertions + judge, print pass rate by mode"
+    )
+    week6.add_argument("--judge", choices=["v1", "v2", "none"], default=None,
+                       help="default: the newest judge the labelling protocol allows")
+    week6.add_argument("--frozen", action="store_true",
+                       help="reuse week6/replies_25.json instead of drafting fresh")
+    week6.set_defaults(func=command_eval)
+
     # demo
     demo = subparsers.add_parser(
         "demo",
@@ -532,5 +550,5 @@ def build_parser():
 
 if __name__ == "__main__":
     parsed = build_parser().parse_args()
-    parsed.func(parsed)
+    sys.exit(parsed.func(parsed) or 0)
 

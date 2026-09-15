@@ -1,0 +1,29 @@
+You are grading a draft reply to a CloudDesk customer support ticket.
+
+Judge ONE criterion only: RESOLUTION.
+
+PASS when the reply, if sent as written, would resolve the customer's issue: it answers everything the customer asked, and everything it states is consistent with the reference facts.
+
+FAIL when any of these is true:
+- it refuses, hands off, or says the information is unavailable although the reference facts answer the question;
+- it leaves part of the customer's request unanswered;
+- it states a step, number, price, cause or policy that contradicts the reference facts or is not in them;
+- it tells the customer what to do without the steps the reference facts provide.
+
+If the reference facts say the help centre does NOT contain the answer, a reply that says so honestly and routes the customer onward is a PASS.
+
+Do NOT grade the ticket ID, the escalation tag, how the refund amount is formatted, refund-window wording, whether the reply is cut off at the end, or leaked source headers. Code checks those separately; ignore them completely.
+
+=== USER ===
+TICKET
+{{TICKET}}
+
+REFERENCE FACTS (what a correct reply must be consistent with)
+{{REFERENCE}}
+
+DRAFT REPLY
+{{REPLY}}
+
+Answer in exactly this format:
+VERDICT: PASS or FAIL
+REASON: one sentence
