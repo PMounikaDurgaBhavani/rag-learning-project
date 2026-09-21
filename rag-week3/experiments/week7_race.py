@@ -83,6 +83,20 @@ def grade(expected, result):
 # running
 # ---------------------------------------------------------------------------
 
+def model_calls_of(meter):
+    """Calls that actually went to the model.
+
+    The agent's laps are model calls by definition. The workflow counts its
+    own; an older run that predates that counter made exactly one call per
+    ticket, and made it only if it got as far as generating the sentence.
+    """
+    if "model_calls" in meter:
+        return meter["model_calls"]
+    if "iterations" in meter:
+        return meter["iterations"]
+    return 1 if meter.get("input_tokens", 0) > 0 else 0
+
+
 def run_one(system, ticket_id, budgets):
     if system == "agent":
         import ticket_agent
@@ -173,7 +187,8 @@ def race(args):
                 "latency_ms": run["latency_ms"],
                 "tokens": run["tokens"],
                 "cost_usd": round(run["cost_usd"], 6),
-                "model_calls": meter.get("iterations", meter.get("steps")),
+                "model_calls": model_calls_of(meter),
+                "tool_steps": meter.get("steps", meter.get("tool_calls")),
                 "tool_calls": meter["tool_calls"],
                 "wrong_tool_calls": meter.get("wrong_tool_calls", 0),
                 "tool_errors": meter["tool_errors"],
@@ -330,6 +345,55 @@ def table(args):
     return 0
 
 
+def rebuild(args):
+    """Re-derive race.csv and race_summary.csv from a stored run.
+
+    Used when a reported number was derived wrongly rather than measured
+    wrongly: the workflow's model calls were being read from its tool-step
+    counter, which reported three model calls a ticket where it makes one.
+    Latency, tokens, cost and pass/fail are untouched measurements and are
+    copied through.
+    """
+    stored = sorted(RUNS.glob("race_*.json"))
+    if not stored:
+        print("No race to rebuild from.")
+        return 1
+
+    path = Path(args.run) if args.run else stored[-1]
+    data = json.loads(path.read_text(encoding="utf-8"))
+    by_key = {(run["system"], run["ticket_id"]): run for run in data["runs"]}
+
+    changed = 0
+    for row in data["rows"]:
+        run = by_key.get((row["system"], row["ticket_id"]))
+        if not run:
+            continue
+        corrected = model_calls_of(run["meter"])
+        if row.get("model_calls") != corrected:
+            row["model_calls"] = corrected
+            changed += 1
+        row.setdefault("tool_steps", run["meter"].get("steps", run["meter"]["tool_calls"]))
+
+    data["summary"] = summarise(data["rows"])
+    data["rebuilt_at"] = now_iso()
+    path.write_text(json.dumps(data, indent=2, default=str) + "\n", encoding="utf-8")
+
+    with open(RACE_CSV, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(data["rows"][0]))
+        writer.writeheader()
+        writer.writerows(data["rows"])
+    with open(SUMMARY_CSV, "w", newline="", encoding="utf-8") as handle:
+        fields = ["system"] + list(next(iter(data["summary"].values())))
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for system, values in data["summary"].items():
+            writer.writerow({"system": system, **values})
+
+    print(f"Rebuilt from {path.name}: corrected model_calls on {changed} row(s)")
+    print_table(data["rows"])
+    return 0
+
+
 def build_parser():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
@@ -345,6 +409,11 @@ def build_parser():
 
     table_cmd = sub.add_parser("table", help="reprint the last race table")
     table_cmd.set_defaults(func=table)
+
+    rebuild_cmd = sub.add_parser("rebuild",
+                                 help="re-derive race.csv/race_summary.csv from a stored run")
+    rebuild_cmd.add_argument("--run", default=None, help="path to a week7/runs/race_*.json")
+    rebuild_cmd.set_defaults(func=rebuild)
     return parser
 
 

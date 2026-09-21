@@ -1,0 +1,1396 @@
+{
+  "ran_at": "2026-09-21T09:17:38+00:00",
+  "app_version": "821f409",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "rate_card_usd_per_mtok": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+  },
+  "budgets": {
+    "max_iterations": 8,
+    "max_tokens": 8000,
+    "max_cost_usd": 0.01,
+    "max_wall_seconds": 300.0
+  },
+  "langfuse_session": "week7-race-20260921-134848",
+  "tickets": [
+    "CD-7001",
+    "CD-7002",
+    "CD-7003",
+    "CD-7004",
+    "CD-7005",
+    "CD-7006",
+    "CD-7007",
+    "CD-7008",
+    "CD-7009",
+    "CD-7010"
+  ],
+  "summary": {
+    "agent": {
+      "n": 10,
+      "passes": 0,
+      "pass_rate_pct": 0.0,
+      "p50_latency_ms": 338617.5,
+      "total_tokens": 44748,
+      "mean_tokens_per_ticket": 4474.8,
+      "cost_per_ticket_usd": 0.000746,
+      "total_cost_usd": 0.007458,
+      "model_calls": 49,
+      "tool_calls": 23,
+      "wrong_tool_calls": 7,
+      "budget_terminations": 10
+    },
+    "workflow": {
+      "n": 10,
+      "passes": 10,
+      "pass_rate_pct": 100.0,
+      "p50_latency_ms": 3811.7,
+      "total_tokens": 1793,
+      "mean_tokens_per_ticket": 179.3,
+      "cost_per_ticket_usd": 4.2e-05,
+      "total_cost_usd": 0.000421,
+      "model_calls": 10,
+      "tool_calls": 29,
+      "wrong_tool_calls": 0,
+      "budget_terminations": 0
+    }
+  },
+  "rows": [
+    {
+      "system": "agent",
+      "ticket_id": "CD-7001",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 49.0,
+      "latency_ms": 303046.9,
+      "tokens": 5871,
+      "cost_usd": 0.001007,
+      "model_calls": 6,
+      "tool_calls": 2,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 2
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7002",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_denied",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 331805.7,
+      "tokens": 4555,
+      "cost_usd": 0.000744,
+      "model_calls": 5,
+      "tool_calls": 4,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 4
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7003",
+      "class": "tier_dependent",
+      "branch_after_step2": false,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 480.0,
+      "latency_ms": 359946.0,
+      "tokens": 8309,
+      "cost_usd": 0.001367,
+      "model_calls": 8,
+      "tool_calls": 4,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_iterations",
+      "tool_steps": 4
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7004",
+      "class": "tier_dependent",
+      "branch_after_step2": false,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_denied",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 349361.7,
+      "tokens": 3463,
+      "cost_usd": 0.000579,
+      "model_calls": 4,
+      "tool_calls": 3,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 3
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7005",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "already_refunded",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 338957.8,
+      "tokens": 4432,
+      "cost_usd": 0.000733,
+      "model_calls": 5,
+      "tool_calls": 2,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 2
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7006",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 89.0,
+      "latency_ms": 300727.1,
+      "tokens": 4474,
+      "cost_usd": 0.000748,
+      "model_calls": 5,
+      "tool_calls": 2,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 2
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7007",
+      "class": "missing_order",
+      "branch_after_step2": true,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 349664.2,
+      "tokens": 4485,
+      "cost_usd": 0.00075,
+      "model_calls": 5,
+      "tool_calls": 2,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 2
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7008",
+      "class": "missing_order",
+      "branch_after_step2": true,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 300388.4,
+      "tokens": 2375,
+      "cost_usd": 0.000395,
+      "model_calls": 3,
+      "tool_calls": 1,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 1
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7009",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 338277.2,
+      "tokens": 3367,
+      "cost_usd": 0.000556,
+      "model_calls": 4,
+      "tool_calls": 2,
+      "wrong_tool_calls": 1,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 2
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7010",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 19.99,
+      "latency_ms": 344672.8,
+      "tokens": 3417,
+      "cost_usd": 0.000579,
+      "model_calls": 4,
+      "tool_calls": 1,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "max_wall_seconds",
+      "tool_steps": 1
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7001",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 49.0,
+      "expected_amount": 49.0,
+      "latency_ms": 5805.7,
+      "tokens": 195,
+      "cost_usd": 5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7002",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_denied",
+      "expected_decision": "refund_denied",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 3809.7,
+      "tokens": 185,
+      "cost_usd": 4.5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7003",
+      "class": "tier_dependent",
+      "branch_after_step2": false,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 480.0,
+      "expected_amount": 480.0,
+      "latency_ms": 3813.7,
+      "tokens": 188,
+      "cost_usd": 4.5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7004",
+      "class": "tier_dependent",
+      "branch_after_step2": false,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_denied",
+      "expected_decision": "refund_denied",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 3887.0,
+      "tokens": 185,
+      "cost_usd": 4.5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7005",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "already_refunded",
+      "expected_decision": "already_refunded",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 2817.1,
+      "tokens": 167,
+      "cost_usd": 3.5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7006",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 89.0,
+      "expected_amount": 89.0,
+      "latency_ms": 4028.9,
+      "tokens": 185,
+      "cost_usd": 4.6e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7007",
+      "class": "missing_order",
+      "branch_after_step2": true,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "escalated",
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 2514.4,
+      "tokens": 164,
+      "cost_usd": 3.5e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 1,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7008",
+      "class": "missing_order",
+      "branch_after_step2": true,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "escalated",
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 1828.7,
+      "tokens": 159,
+      "cost_usd": 3.2e-05,
+      "model_calls": 1,
+      "tool_calls": 2,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 2
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7009",
+      "class": "status_branch",
+      "branch_after_step2": true,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "escalated",
+      "expected_decision": "escalated",
+      "refund_amount": null,
+      "expected_amount": null,
+      "latency_ms": 3420.9,
+      "tokens": 176,
+      "cost_usd": 4.2e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7010",
+      "class": "straight_line",
+      "branch_after_step2": false,
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 19.99,
+      "expected_amount": 19.99,
+      "latency_ms": 4012.0,
+      "tokens": 189,
+      "cost_usd": 4.6e-05,
+      "model_calls": 1,
+      "tool_calls": 3,
+      "wrong_tool_calls": 0,
+      "tool_errors": 0,
+      "terminated_by": "",
+      "tool_steps": 3
+    }
+  ],
+  "runs": [
+    {
+      "system": "agent",
+      "ticket_id": "CD-7001",
+      "result": {
+        "ticket_id": "CD-7001",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 303046.9,
+      "tokens": 5871,
+      "cost_usd": 0.00100665,
+      "meter": {
+        "iterations": 6,
+        "input_tokens": 5591,
+        "output_tokens": 280,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "wrong_tool_calls": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7001 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 5034ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7001\"}) -> {\"ticket_id\": \"CD-7001\", \"customer_id\": \"CUS-201\", \"order_id\": \"ORD-5001\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I cancelled in the first week and s",
+        "[agent] lap 2: in=777 out=71 8815ms",
+        "[agent] unparseable reply: 'The ticket CD-7001 relates to an order ID ORD-5001 under standard tier CUS-201. The order has been open since last Monda'",
+        "[agent] lap 3: in=880 out=67 8902ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5001 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 4: in=980 out=26 148063ms",
+        "[agent]   tool get_order({\"order_id\": \"ORD-5001\"}) -> {\"order_id\": \"ORD-5001\", \"customer_id\": \"CUS-201\", \"amount\": 49.0, \"charge_date\": \"2026-09-09\", \"days_since_charge\": 12, \"order_status\": \"charged\"}",
+        "[agent] lap 5: in=1087 out=85 45934ms",
+        "[agent] unparseable reply: 'The order ID ORD-5001 was charged on September 9th, 2026, for $49. It has been 12 days since the charge. Since the order'",
+        "[agent] lap 6 cut short by the wall-clock budget",
+        "[agent] lap 6: in=1204 out=5 85380ms",
+        "[agent] unparseable reply: '{\"ticket_id\": \"'",
+        "[agent] BUDGET max_wall_seconds hit (303.0s >= 300.0s) after 6 iterations, 5871 tokens, $0.001007, 303.0s \u2014 terminating cleanly"
+      ],
+      "class": "straight_line",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7002",
+      "result": {
+        "ticket_id": "CD-7002",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 331805.7,
+      "tokens": 4555,
+      "cost_usd": 0.0007435499999999999,
+      "meter": {
+        "iterations": 5,
+        "input_tokens": 4421,
+        "output_tokens": 134,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "lookup_refund_policy": 2,
+          "get_order": 1
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7002 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 12226ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7002\"}) -> {\"ticket_id\": \"CD-7002\", \"customer_id\": \"CUS-202\", \"order_id\": \"ORD-5002\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Chasing the refund for the $120 cha",
+        "[agent] lap 2: in=777 out=53 8082ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[agent] lap 3: in=893 out=25 69934ms",
+        "[agent]   tool get_order({\"order_id\": \"ORD-5002\"}) -> {\"order_id\": \"ORD-5002\", \"customer_id\": \"CUS-202\", \"amount\": 120.0, \"charge_date\": \"2026-08-07\", \"days_since_charge\": 45, \"order_status\": \"charged\"}",
+        "[agent] lap 4: in=999 out=28 181792ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[agent] lap 5 cut short by the wall-clock budget",
+        "[agent] lap 5: in=1089 out=2 58868ms",
+        "[agent] unparseable reply: '{\"name'",
+        "[agent] BUDGET max_wall_seconds hit (331.8s >= 300.0s) after 5 iterations, 4555 tokens, $0.000744, 331.8s \u2014 terminating cleanly"
+      ],
+      "class": "straight_line",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7003",
+      "result": {
+        "ticket_id": "CD-7003",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_iterations",
+      "latency_ms": 359946.0,
+      "tokens": 8309,
+      "cost_usd": 0.0013665,
+      "meter": {
+        "iterations": 8,
+        "input_tokens": 8042,
+        "output_tokens": 267,
+        "tool_calls": 4,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 2,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        },
+        "evidence_rejections": 2
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7003 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 6334ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7003\"}) -> {\"ticket_id\": \"CD-7003\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5003\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"Following up again on the refund fo",
+        "[agent] lap 2: in=772 out=51 7990ms",
+        "[agent] unparseable reply: 'The ticket CD-7003 is related to an order ID of ORD-5003 under the priority tier. The current status is open, and there '",
+        "[agent] lap 3: in=855 out=26 4441ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7003\"}) -> {\"ticket_id\": \"CD-7003\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5003\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"Following up again on the refund fo",
+        "[agent] lap 4: in=964 out=52 65781ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5003 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 5: in=1049 out=26 49669ms",
+        "[agent]   tool get_order({\"order_id\": \"ORD-5003\"}) -> {\"order_id\": \"ORD-5003\", \"customer_id\": \"CUS-203\", \"amount\": 480.0, \"charge_date\": \"2026-08-07\", \"days_since_charge\": 45, \"order_status\": \"charged\"}",
+        "[agent] lap 6: in=1157 out=54 78122ms",
+        "[agent] rejected: answer not supported by tool results (You have not checked the policy yet. Call lookup_refund_policy with tier=priority and order_status=charged before answering.)",
+        "[agent] lap 7: in=1245 out=29 29140ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[agent] lap 8 cut short by the wall-clock budget",
+        "[agent] lap 8: in=1337 out=3 117020ms",
+        "[agent] unparseable reply: '{\"ticket_id'",
+        "[agent] BUDGET max_iterations hit (8 >= 8) after 8 iterations, 8309 tokens, $0.001367, 359.9s \u2014 terminating cleanly"
+      ],
+      "class": "tier_dependent",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7004",
+      "result": {
+        "ticket_id": "CD-7004",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 349361.7,
+      "tokens": 3463,
+      "cost_usd": 0.0005792999999999999,
+      "meter": {
+        "iterations": 4,
+        "input_tokens": 3330,
+        "output_tokens": 133,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "lookup_refund_policy": 2
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7004 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 11137ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7004\"}) -> {\"ticket_id\": \"CD-7004\", \"customer_id\": \"CUS-204\", \"order_id\": \"ORD-5004\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"We want the $960 annual charge back",
+        "[agent] lap 2: in=775 out=51 7911ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[agent] lap 3: in=889 out=51 188051ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[agent] lap 4 cut short by the wall-clock budget",
+        "[agent] lap 4: in=1003 out=5 141721ms",
+        "[agent] unparseable reply: '{\"name\": \"get'",
+        "[agent] BUDGET max_wall_seconds hit (349.4s >= 300.0s) after 4 iterations, 3463 tokens, $0.000579, 349.4s \u2014 terminating cleanly"
+      ],
+      "class": "tier_dependent",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7005",
+      "result": {
+        "ticket_id": "CD-7005",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 338957.8,
+      "tokens": 4432,
+      "cost_usd": 0.0007332,
+      "meter": {
+        "iterations": 5,
+        "input_tokens": 4280,
+        "output_tokens": 152,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 2
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7005 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 14062ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7005\"}) -> {\"ticket_id\": \"CD-7005\", \"customer_id\": \"CUS-205\", \"order_id\": \"ORD-5005\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Still waiting on my refund for orde",
+        "[agent] lap 2: in=772 out=42 7260ms",
+        "[agent] unparseable reply: 'The ticket CD-7005 is related to an open order ORD-5005 under standard tier CUS-205. The customer is still awaiting thei'",
+        "[agent] lap 3: in=846 out=26 4634ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7005\"}) -> {\"ticket_id\": \"CD-7005\", \"customer_id\": \"CUS-205\", \"order_id\": \"ORD-5005\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Still waiting on my refund for orde",
+        "[agent] lap 4: in=955 out=56 248036ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5005 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 5 cut short by the wall-clock budget",
+        "[agent] lap 5: in=1044 out=2 64161ms",
+        "[agent] unparseable reply: '<tool_call>'",
+        "[agent] BUDGET max_wall_seconds hit (339.0s >= 300.0s) after 5 iterations, 4432 tokens, $0.000733, 339.0s \u2014 terminating cleanly"
+      ],
+      "class": "status_branch",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7006",
+      "result": {
+        "ticket_id": "CD-7006",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 300727.1,
+      "tokens": 4474,
+      "cost_usd": 0.0007476000000000001,
+      "meter": {
+        "iterations": 5,
+        "input_tokens": 4304,
+        "output_tokens": 170,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 2
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7006 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 8356ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7006\"}) -> {\"ticket_id\": \"CD-7006\", \"customer_id\": \"CUS-206\", \"order_id\": \"ORD-5006\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"You charged me twice for the same i",
+        "[agent] lap 2: in=773 out=43 7315ms",
+        "[agent] unparseable reply: 'The ticket CD-7006 is related to an open issue where you were charged twice for the same invoice. The refund will cover '",
+        "[agent] lap 3: in=848 out=26 4173ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7006\"}) -> {\"ticket_id\": \"CD-7006\", \"customer_id\": \"CUS-206\", \"order_id\": \"ORD-5006\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"You charged me twice for the same i",
+        "[agent] lap 4: in=958 out=71 226391ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5006 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 5 cut short by the wall-clock budget",
+        "[agent] lap 5: in=1062 out=4 53717ms",
+        "[agent] unparseable reply: '<tool_call>\\n{\"name'",
+        "[agent] BUDGET max_wall_seconds hit (300.7s >= 300.0s) after 5 iterations, 4474 tokens, $0.000748, 300.7s \u2014 terminating cleanly"
+      ],
+      "class": "status_branch",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7007",
+      "result": {
+        "ticket_id": "CD-7007",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 349664.2,
+      "tokens": 4485,
+      "cost_usd": 0.0007497000000000001,
+      "meter": {
+        "iterations": 5,
+        "input_tokens": 4314,
+        "output_tokens": 171,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 2
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7007 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 5982ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7007\"}) -> {\"ticket_id\": \"CD-7007\", \"customer_id\": \"CUS-207\", \"order_id\": \"ORD-5099\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for order ORD-5099 please, i",
+        "[agent] lap 2: in=774 out=44 8304ms",
+        "[agent] unparseable reply: 'The ticket CD-7007 is related to an open order ORD-5099 under standard tier. The message indicates there has been a refu'",
+        "[agent] lap 3: in=850 out=26 4297ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7007\"}) -> {\"ticket_id\": \"CD-7007\", \"customer_id\": \"CUS-207\", \"order_id\": \"ORD-5099\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for order ORD-5099 please, i",
+        "[agent] lap 4: in=961 out=72 201854ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5099 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 5 cut short by the wall-clock budget",
+        "[agent] lap 5: in=1066 out=3 128396ms",
+        "[agent] unparseable reply: '<tool_call>\\n{\"'",
+        "[agent] BUDGET max_wall_seconds hit (349.7s >= 300.0s) after 5 iterations, 4485 tokens, $0.000750, 349.7s \u2014 terminating cleanly"
+      ],
+      "class": "missing_order",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7008",
+      "result": {
+        "ticket_id": "CD-7008",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 300388.4,
+      "tokens": 2375,
+      "cost_usd": 0.00039539999999999996,
+      "meter": {
+        "iterations": 3,
+        "input_tokens": 2288,
+        "output_tokens": 87,
+        "tool_calls": 1,
+        "tool_errors": 0,
+        "wrong_tool_calls": 0,
+        "calls_by_tool": {
+          "find_ticket": 1
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7008 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 198342ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7008\"}) -> {\"ticket_id\": \"CD-7008\", \"customer_id\": \"CUS-208\", \"order_id\": null, \"tier\": \"priority\", \"status\": \"open\", \"message\": \"Where is my refund? I do not have the ord",
+        "[agent] lap 2: in=767 out=59 98784ms",
+        "[agent] unparseable reply: \"I found your ticket, CD-7008. The customer is CUS-208 and they are on priority tier. It's currently open and you don't h\"",
+        "[agent] lap 3 cut short by the wall-clock budget",
+        "[agent] lap 3: in=858 out=2 2711ms",
+        "[agent] unparseable reply: '{\"ticket'",
+        "[agent] BUDGET max_wall_seconds hit (300.4s >= 300.0s) after 3 iterations, 2375 tokens, $0.000395, 300.4s \u2014 terminating cleanly"
+      ],
+      "class": "missing_order",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7009",
+      "result": {
+        "ticket_id": "CD-7009",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 338277.2,
+      "tokens": 3367,
+      "cost_usd": 0.0005559,
+      "meter": {
+        "iterations": 4,
+        "input_tokens": 3254,
+        "output_tokens": 113,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "wrong_tool_calls": 1,
+        "calls_by_tool": {
+          "find_ticket": 2
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7009 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 8544ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7009\"}) -> {\"ticket_id\": \"CD-7009\", \"customer_id\": \"CUS-209\", \"order_id\": \"ORD-5009\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"The order was cancelled mid-term an",
+        "[agent] lap 2: in=772 out=51 10324ms",
+        "[agent] unparseable reply: 'The ticket CD-7009 refers to an order ID ORD-5009 under a priority tier CUS-209. The current status is open because the '",
+        "[agent] lap 3: in=855 out=26 5617ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7009\"}) -> {\"ticket_id\": \"CD-7009\", \"customer_id\": \"CUS-209\", \"order_id\": \"ORD-5009\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"The order was cancelled mid-term an",
+        "[agent] lap 4 cut short by the wall-clock budget",
+        "[agent] lap 4: in=964 out=10 312833ms",
+        "[agent] unparseable reply: '{\"ticket_id\": \"CD-700'",
+        "[agent] BUDGET max_wall_seconds hit (338.3s >= 300.0s) after 4 iterations, 3367 tokens, $0.000556, 338.3s \u2014 terminating cleanly"
+      ],
+      "class": "status_branch",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7010",
+      "result": {
+        "ticket_id": "CD-7010",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 344672.8,
+      "tokens": 3417,
+      "cost_usd": 0.00057915,
+      "meter": {
+        "iterations": 4,
+        "input_tokens": 3269,
+        "output_tokens": 148,
+        "tool_calls": 1,
+        "tool_errors": 0,
+        "wrong_tool_calls": 0,
+        "calls_by_tool": {
+          "find_ticket": 1
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7010 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=663 out=26 11758ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7010\"}) -> {\"ticket_id\": \"CD-7010\", \"customer_id\": \"CUS-210\", \"order_id\": \"ORD-5010\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for the $19.99 charge from l",
+        "[agent] lap 2: in=775 out=70 10444ms",
+        "[agent] unparseable reply: 'The ticket CD-7010 is related to an open order for CUS-210 with the order ID ORD-5010 under standard tier. The current s'",
+        "[agent] lap 3: in=877 out=44 6743ms",
+        "[agent] rejected: answer not supported by tool results (You have not looked up order ORD-5010 yet. Call get_order before deciding anything about the refund.)",
+        "[agent] lap 4 cut short by the wall-clock budget",
+        "[agent] lap 4: in=954 out=8 315041ms",
+        "[agent] unparseable reply: '<tool_call>\\n{\"name\": \"get_order'",
+        "[agent] BUDGET max_wall_seconds hit (344.7s >= 300.0s) after 4 iterations, 3417 tokens, $0.000579, 344.7s \u2014 terminating cleanly"
+      ],
+      "class": "straight_line",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7001",
+      "result": {
+        "ticket_id": "CD-7001",
+        "decision": "refund_approved",
+        "refund_amount": 49.0,
+        "tier": "standard",
+        "reply": "The ticket with ID CD-7001, which was charged on day 12 and falls under the standard tier, has had its order status updated to refunded, amounting to $49.00."
+      },
+      "terminated_by": null,
+      "latency_ms": 5805.7,
+      "tokens": 195,
+      "cost_usd": 4.9949999999999994e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 149,
+        "output_tokens": 46,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7001\"}) -> {\"ticket_id\": \"CD-7001\", \"customer_id\": \"CUS-201\", \"order_id\": \"ORD-5001\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I cancelled in the first week and s",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5001\"}) -> {\"order_id\": \"ORD-5001\", \"customer_id\": \"CUS-201\", \"amount\": 49.0, \"charge_date\": \"2026-09-09\", \"days_since_charge\": 12, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=49.0 (12d <= 30d window)",
+        "[workflow] reply call: in=149 out=46 5690ms"
+      ],
+      "class": "straight_line",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7002",
+      "result": {
+        "ticket_id": "CD-7002",
+        "decision": "refund_denied",
+        "refund_amount": null,
+        "tier": "standard",
+        "reply": "The ticket ID CD-7002 was denied for a refund due to it being a standard tier charge which is non-refundable beyond 30 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 3809.7,
+      "tokens": 185,
+      "cost_usd": 4.5299999999999997e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 146,
+        "output_tokens": 39,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7002\"}) -> {\"ticket_id\": \"CD-7002\", \"customer_id\": \"CUS-202\", \"order_id\": \"ORD-5002\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Chasing the refund for the $120 cha",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5002\"}) -> {\"order_id\": \"ORD-5002\", \"customer_id\": \"CUS-202\", \"amount\": 120.0, \"charge_date\": \"2026-08-07\", \"days_since_charge\": 45, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_denied amount=None (45d > 30d window)",
+        "[workflow] reply call: in=146 out=39 3778ms"
+      ],
+      "class": "straight_line",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7003",
+      "result": {
+        "ticket_id": "CD-7003",
+        "decision": "refund_approved",
+        "refund_amount": 480.0,
+        "tier": "priority",
+        "reply": "The ticket with ID CD-7003, which was previously charged and falls under the priority tier, has been approved for a full refund amounting to $480."
+      },
+      "terminated_by": null,
+      "latency_ms": 3813.7,
+      "tokens": 188,
+      "cost_usd": 4.5299999999999997e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 150,
+        "output_tokens": 38,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7003\"}) -> {\"ticket_id\": \"CD-7003\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5003\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"Following up again on the refund fo",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5003\"}) -> {\"order_id\": \"ORD-5003\", \"customer_id\": \"CUS-203\", \"amount\": 480.0, \"charge_date\": \"2026-08-07\", \"days_since_charge\": 45, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[workflow] decision=refund_approved amount=480.0 (45d <= 60d window)",
+        "[workflow] reply call: in=150 out=38 3783ms"
+      ],
+      "class": "tier_dependent",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7004",
+      "result": {
+        "ticket_id": "CD-7004",
+        "decision": "refund_denied",
+        "refund_amount": null,
+        "tier": "priority",
+        "reply": "The ticket ID CD-7004 was denied for a refund due to it being a priority tier charge which is non-refundable beyond 60 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 3887.0,
+      "tokens": 185,
+      "cost_usd": 4.5299999999999997e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 146,
+        "output_tokens": 39,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7004\"}) -> {\"ticket_id\": \"CD-7004\", \"customer_id\": \"CUS-204\", \"order_id\": \"ORD-5004\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"We want the $960 annual charge back",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5004\"}) -> {\"order_id\": \"ORD-5004\", \"customer_id\": \"CUS-204\", \"amount\": 960.0, \"charge_date\": \"2026-06-23\", \"days_since_charge\": 90, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[workflow] decision=refund_denied amount=None (90d > 60d window)",
+        "[workflow] reply call: in=146 out=39 3854ms"
+      ],
+      "class": "tier_dependent",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7005",
+      "result": {
+        "ticket_id": "CD-7005",
+        "decision": "already_refunded",
+        "refund_amount": null,
+        "tier": "standard",
+        "reply": "Your order on ticket ID CD-7005 was already refunded and issued 20 days ago."
+      },
+      "terminated_by": null,
+      "latency_ms": 2817.1,
+      "tokens": 167,
+      "cost_usd": 3.54e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 144,
+        "output_tokens": 23,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7005\"}) -> {\"ticket_id\": \"CD-7005\", \"customer_id\": \"CUS-205\", \"order_id\": \"ORD-5005\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Still waiting on my refund for orde",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5005\"}) -> {\"order_id\": \"ORD-5005\", \"customer_id\": \"CUS-205\", \"amount\": 75.0, \"charge_date\": \"2026-09-01\", \"days_since_charge\": 20, \"order_status\": \"refunded\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"refunded\"}) -> {\"rule\": \"already_refunded\", \"window_days\": null, \"escalate\": false, \"explanation\": \"The order was already refunded; tell the customer when it was issued.\"}",
+        "[workflow] decision=already_refunded amount=None (already_refunded)",
+        "[workflow] reply call: in=144 out=23 2771ms"
+      ],
+      "class": "status_branch",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7006",
+      "result": {
+        "ticket_id": "CD-7006",
+        "decision": "refund_approved",
+        "refund_amount": 89.0,
+        "tier": "standard",
+        "reply": "The refund for your order on ticket ID CD-7006, which was charged twice and now has an order status of duplicate, will be fully approved at $89.00."
+      },
+      "terminated_by": null,
+      "latency_ms": 4028.9,
+      "tokens": 185,
+      "cost_usd": 4.62e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 144,
+        "output_tokens": 41,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7006\"}) -> {\"ticket_id\": \"CD-7006\", \"customer_id\": \"CUS-206\", \"order_id\": \"ORD-5006\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"You charged me twice for the same i",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5006\"}) -> {\"order_id\": \"ORD-5006\", \"customer_id\": \"CUS-206\", \"amount\": 89.0, \"charge_date\": \"2026-03-05\", \"days_since_charge\": 200, \"order_status\": \"duplicate\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"duplicate\"}) -> {\"rule\": \"refund_full_any_age\", \"window_days\": null, \"escalate\": false, \"explanation\": \"A duplicate charge is refunded in full regardless of age.\"}",
+        "[workflow] decision=refund_approved amount=89.0 (refund_full_any_age)",
+        "[workflow] reply call: in=144 out=41 3995ms"
+      ],
+      "class": "status_branch",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7007",
+      "result": {
+        "ticket_id": "CD-7007",
+        "decision": "escalated",
+        "refund_amount": null,
+        "tier": "standard",
+        "reply": "The ticket CD-7007 is being escalated due to missing order information and no policy details provided."
+      },
+      "terminated_by": null,
+      "latency_ms": 2514.4,
+      "tokens": 164,
+      "cost_usd": 3.4949999999999996e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 141,
+        "output_tokens": 23,
+        "tool_calls": 3,
+        "tool_errors": 1,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7007\"}) -> {\"ticket_id\": \"CD-7007\", \"customer_id\": \"CUS-207\", \"order_id\": \"ORD-5099\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for order ORD-5099 please, i",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5099\"}) -> {\"error\": \"order_not_found\", \"order_id\": \"ORD-5099\", \"order_status\": \"missing\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"missing\"}) -> {\"rule\": \"escalate_order_not_found\", \"window_days\": null, \"escalate\": true, \"explanation\": \"Without an order the refund cannot be assessed; escalate to a human ",
+        "[workflow] decision=escalated amount=None (escalate_order_not_found)",
+        "[workflow] reply call: in=141 out=23 2473ms"
+      ],
+      "class": "missing_order",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7008",
+      "result": {
+        "ticket_id": "CD-7008",
+        "decision": "escalated",
+        "refund_amount": null,
+        "tier": "priority",
+        "reply": "The ticket CD-7008 is being escalated due to missing order status."
+      },
+      "terminated_by": null,
+      "latency_ms": 1828.7,
+      "tokens": 159,
+      "cost_usd": 3.195e-05,
+      "meter": {
+        "steps": 2,
+        "input_tokens": 141,
+        "output_tokens": 18,
+        "tool_calls": 2,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7008\"}) -> {\"ticket_id\": \"CD-7008\", \"customer_id\": \"CUS-208\", \"order_id\": null, \"tier\": \"priority\", \"status\": \"open\", \"message\": \"Where is my refund? I do not have the ord",
+        "[workflow] step 2 skipped: ticket carries no order id -> order_status=missing",
+        "[workflow] step 2: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"missing\"}) -> {\"rule\": \"escalate_order_not_found\", \"window_days\": null, \"escalate\": true, \"explanation\": \"Without an order the refund cannot be assessed; escalate to a human ",
+        "[workflow] decision=escalated amount=None (escalate_order_not_found)",
+        "[workflow] reply call: in=141 out=18 1803ms"
+      ],
+      "class": "missing_order",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7009",
+      "result": {
+        "ticket_id": "CD-7009",
+        "decision": "escalated",
+        "refund_amount": null,
+        "tier": "priority",
+        "reply": "Your order on ticket ID CD-7009 was escalated due to it being cancelled and settled by billing rather than through the refund window as per our policy."
+      },
+      "terminated_by": null,
+      "latency_ms": 3420.9,
+      "tokens": 176,
+      "cost_usd": 4.1700000000000004e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 142,
+        "output_tokens": 34,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7009\"}) -> {\"ticket_id\": \"CD-7009\", \"customer_id\": \"CUS-209\", \"order_id\": \"ORD-5009\", \"tier\": \"priority\", \"status\": \"open\", \"message\": \"The order was cancelled mid-term an",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5009\"}) -> {\"order_id\": \"ORD-5009\", \"customer_id\": \"CUS-209\", \"amount\": 310.0, \"charge_date\": \"2026-09-04\", \"days_since_charge\": 17, \"order_status\": \"cancelled\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"cancelled\"}) -> {\"rule\": \"escalate_to_billing\", \"window_days\": null, \"escalate\": true, \"explanation\": \"A cancelled order is settled by billing, not by the refund window.\"}",
+        "[workflow] decision=escalated amount=None (escalate_to_billing)",
+        "[workflow] reply call: in=142 out=34 3372ms"
+      ],
+      "class": "status_branch",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7010",
+      "result": {
+        "ticket_id": "CD-7010",
+        "decision": "refund_approved",
+        "refund_amount": 19.99,
+        "tier": "standard",
+        "reply": "The ticket ID for your refund request is CD-7010 and it has been approved as a standard tier charge which can be refunded within 30 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 4012.0,
+      "tokens": 189,
+      "cost_usd": 4.59e-05,
+      "meter": {
+        "steps": 3,
+        "input_tokens": 150,
+        "output_tokens": 39,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7010\"}) -> {\"ticket_id\": \"CD-7010\", \"customer_id\": \"CUS-210\", \"order_id\": \"ORD-5010\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for the $19.99 charge from l",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5010\"}) -> {\"order_id\": \"ORD-5010\", \"customer_id\": \"CUS-210\", \"amount\": 19.99, \"charge_date\": \"2026-08-23\", \"days_since_charge\": 29, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=19.99 (29d <= 30d window)",
+        "[workflow] reply call: in=150 out=39 3987ms"
+      ],
+      "class": "straight_line",
+      "pass": true,
+      "reason": "ok"
+    }
+  ],
+  "rebuilt_at": "2026-09-21T09:19:44+00:00"
+}

@@ -48,6 +48,12 @@ PROMPT_VERSION = "agent-v1.0"
 # budgets exist to stop.
 MAX_EVIDENCE_REJECTIONS = 2
 
+# A tool call is about 30 tokens and the final JSON about 80. The 220-token
+# default bought nothing and cost 10+ seconds of generation per lap on this
+# machine, which is what pushed every ticket in race 2 into the wall-clock
+# budget before it could finish the sequence.
+AGENT_MAX_NEW_TOKENS = 128
+
 
 def _user_prompt(ticket_id):
     return f"Resolve ticket {ticket_id}."
@@ -129,6 +135,7 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
         # The lap may not outlive the wall-clock budget: checking only between
         # laps let one generation run for 893 seconds under a 120-second limit.
         response = chat(messages, tools=TOOL_SCHEMAS,
+                        max_new_tokens=AGENT_MAX_NEW_TOKENS,
                         deadline_seconds=budgets.max_wall_seconds - elapsed)
         if response.get("stopped_on_deadline"):
             record(f"[agent] lap {meter['iterations']} cut short by the wall-clock budget")

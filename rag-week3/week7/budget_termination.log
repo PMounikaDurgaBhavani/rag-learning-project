@@ -1,0 +1,15 @@
+# Week 7 — budget termination, captured 2026-09-21T07:46:36+00:00
+# command: python experiments/week7_race.py budget-demo --ticket CD-7008 --max-iterations 2 --max-tokens 4000 --max-cost 0.01 --max-seconds 60.0
+# model: Qwen/Qwen2.5-1.5B-Instruct
+# budgets: {"max_iterations": 2, "max_tokens": 4000, "max_cost_usd": 0.01, "max_wall_seconds": 60.0}
+# terminated_by: max_iterations
+# spent: 2 iterations, 1500 tokens, $0.000257, 60318ms
+# result at termination: {"ticket_id": "CD-7008", "decision": null, "refund_amount": null, "tier": null, "reply": ""}
+
+[agent] ticket=CD-7008 budgets={'max_iterations': 2, 'max_tokens': 4000, 'max_cost_usd': 0.01, 'max_wall_seconds': 60.0}
+[agent] lap 1: in=663 out=26 19761ms
+[agent]   tool find_ticket({"ticket_id": "CD-7008"}) -> {"ticket_id": "CD-7008", "customer_id": "CUS-208", "order_id": null, "tier": "priority", "status": "open", "message": "Where is my refund? I do not have the ord
+[agent] lap 2 cut short by the wall-clock budget
+[agent] lap 2: in=767 out=44 5881ms
+[agent] unparseable reply: "I found your ticket, CD-7008. The customer is CUS-208 and they are on priority tier. It's currently open and you don't h"
+[agent] BUDGET max_iterations hit (2 >= 2) after 2 iterations, 1500 tokens, $0.000257, 60.3s — terminating cleanly

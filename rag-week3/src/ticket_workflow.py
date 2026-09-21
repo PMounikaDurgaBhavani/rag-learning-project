@@ -75,8 +75,11 @@ def resolve_ticket(ticket_id, verbose=False, log=None):
             print(line)
 
     started = time.perf_counter()
-    meter = {"steps": 0, "input_tokens": 0, "output_tokens": 0, "tool_calls": 0,
-             "tool_errors": 0, "calls_by_tool": {}}
+    # model_calls is counted rather than derived: the workflow's steps are tool
+    # steps, and reporting those as model calls would claim three model calls a
+    # ticket where it makes one.
+    meter = {"steps": 0, "model_calls": 0, "input_tokens": 0, "output_tokens": 0,
+             "tool_calls": 0, "tool_errors": 0, "calls_by_tool": {}}
     result = blank_result(ticket_id)
 
     def run_tool(name, arguments):
@@ -132,6 +135,7 @@ def resolve_ticket(ticket_id, verbose=False, log=None):
          {"role": "user", "content": f"Facts:\n{json.dumps(facts, indent=2)}\n\nSentence:"}],
         max_new_tokens=90,
     )
+    meter["model_calls"] += 1
     meter["input_tokens"] += response["input_tokens"]
     meter["output_tokens"] += response["output_tokens"]
     result["reply"] = response["text"].strip().strip('"')
