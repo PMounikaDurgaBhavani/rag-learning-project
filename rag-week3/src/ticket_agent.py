@@ -43,8 +43,45 @@ SYSTEM_PROMPT = (
 PROMPT_VERSION = "agent-v1.0"
 
 
+# How many times the loop will send an unsupported answer back. Past this it
+# accepts what it was given: an agent that argues forever is the spin the
+# budgets exist to stop.
+MAX_EVIDENCE_REJECTIONS = 2
+
+
 def _user_prompt(ticket_id):
     return f"Resolve ticket {ticket_id}."
+
+
+def unsupported_by_evidence(result, evidence):
+    """The instruction to send back, or None when the answer rests on tool results.
+
+    Not a hint about the answer: it names the tool whose result is missing.
+    """
+    ticket = evidence.get("find_ticket")
+    if ticket is None:
+        return ("You have not looked up the ticket yet. Call find_ticket before "
+                "answering.")
+
+    order = evidence.get("get_order")
+    if ticket.get("order_id") and order is None:
+        return (f"You have not looked up order {ticket['order_id']} yet. Call "
+                f"get_order before deciding anything about the refund.")
+
+    if evidence.get("lookup_refund_policy") is None:
+        status = (order or {}).get("order_status", "missing")
+        return (f"You have not checked the policy yet. Call lookup_refund_policy "
+                f"with tier={ticket.get('tier')} and order_status={status} before "
+                f"answering.")
+
+    if result.get("decision") == "refund_approved" and order is not None:
+        amount = order.get("amount")
+        if amount is not None and (result.get("refund_amount") is None
+                                   or abs(result["refund_amount"] - amount) > 0.005):
+            return (f"The refund amount must be the amount get_order returned "
+                    f"({amount}). Re-send the JSON with that amount.")
+
+    return None
 
 
 def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
@@ -65,10 +102,12 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
 
     started = time.perf_counter()
     meter = {"iterations": 0, "input_tokens": 0, "output_tokens": 0, "tool_calls": 0,
-             "tool_errors": 0, "wrong_tool_calls": 0, "calls_by_tool": {}}
+             "tool_errors": 0, "wrong_tool_calls": 0, "calls_by_tool": {},
+             "evidence_rejections": 0}
     result = blank_result(ticket_id)
     terminated_by = None
     seen_tools = set()
+    evidence = {}                       # tool name -> its last successful result
 
     record(f"[agent] ticket={ticket_id} budgets={budgets.as_dict()}")
 
@@ -87,7 +126,12 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
             break
 
         meter["iterations"] += 1
-        response = chat(messages, tools=TOOL_SCHEMAS)
+        # The lap may not outlive the wall-clock budget: checking only between
+        # laps let one generation run for 893 seconds under a 120-second limit.
+        response = chat(messages, tools=TOOL_SCHEMAS,
+                        deadline_seconds=budgets.max_wall_seconds - elapsed)
+        if response.get("stopped_on_deadline"):
+            record(f"[agent] lap {meter['iterations']} cut short by the wall-clock budget")
         meter["input_tokens"] += response["input_tokens"]
         meter["output_tokens"] += response["output_tokens"]
         record(f"[agent] lap {meter['iterations']}: in={response['input_tokens']} "
@@ -98,7 +142,23 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
         if not calls:
             payload = extract_json(response["text"])
             if isinstance(payload, dict) and "decision" in payload:
-                result = normalise_result(payload, ticket_id)
+                candidate = normalise_result(payload, ticket_id)
+
+                # An answer has to rest on tool results. The first race showed
+                # the model reading an amount out of the customer's own
+                # sentence and calling it a decision, so the loop checks that
+                # the facts behind the answer were actually fetched, names
+                # what is missing, and makes it go and get it.
+                missing = unsupported_by_evidence(candidate, evidence)
+                if missing and meter["evidence_rejections"] < MAX_EVIDENCE_REJECTIONS:
+                    meter["evidence_rejections"] += 1
+                    record(f"[agent] rejected: answer not supported by tool results "
+                           f"({missing})")
+                    messages.append({"role": "assistant", "content": response["text"]})
+                    messages.append({"role": "user", "content": missing})
+                    continue
+
+                result = candidate
                 record(f"[agent] final: decision={result['decision']} "
                        f"amount={result['refund_amount']}")
                 break
@@ -122,6 +182,11 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
             meter["calls_by_tool"][name] = meter["calls_by_tool"].get(name, 0) + 1
             if isinstance(outcome, dict) and outcome.get("error"):
                 meter["tool_errors"] += 1
+            if isinstance(outcome, dict) and name in TOOL_NAMES:
+                # get_order recording order_status "missing" is still evidence:
+                # it is what opens the escalation path.
+                if not outcome.get("error") or outcome.get("order_status") == "missing":
+                    evidence[name] = outcome
             # A tool called a second time with no new information, or a tool
             # that does not exist, is the thrash that sharpening a description
             # is supposed to remove.

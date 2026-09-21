@@ -67,8 +67,28 @@ def release_model():
     _TOKENIZER = None
 
 
-def chat(messages, tools=None, max_new_tokens=None):
-    """One model call. Returns the text and exactly what it cost to produce."""
+def warm_up():
+    """Load the weights and run one token through them.
+
+    The first generation of a process pays for loading ~3 GB onto the GPU.
+    Charging that to the first ticket would put a 290-second cold start in the
+    latency column and, worse, spend the agent's wall-clock budget before it
+    has done any work.
+    """
+    model, tokenizer = load_model()
+    encoded = tokenizer("ok", return_tensors="pt").to(model.device)
+    model.generate(**encoded, max_new_tokens=1, do_sample=False,
+                   pad_token_id=tokenizer.eos_token_id)
+
+
+def chat(messages, tools=None, max_new_tokens=None, deadline_seconds=None):
+    """One model call. Returns the text and exactly what it cost to produce.
+
+    deadline_seconds stops generation mid-answer once that much time has
+    passed. Without it the wall-clock budget can only be checked between
+    laps, so one slow lap overruns it by minutes — which is what the first
+    race run did: 893 seconds spent under a 120-second budget.
+    """
 
     model, tokenizer = load_model()
 
@@ -78,12 +98,18 @@ def chat(messages, tools=None, max_new_tokens=None):
     encoded = tokenizer(prompt, return_tensors="pt").to(model.device)
     input_tokens = int(encoded["input_ids"].shape[-1])
 
+    stopping = None
+    if deadline_seconds and deadline_seconds > 0:
+        from transformers import MaxTimeCriteria, StoppingCriteriaList
+        stopping = StoppingCriteriaList([MaxTimeCriteria(max_time=float(deadline_seconds))])
+
     started = time.perf_counter()
     generated = model.generate(
         **encoded,
         **{**GENERATION_PARAMS,
            **({"max_new_tokens": max_new_tokens} if max_new_tokens else {})},
         pad_token_id=tokenizer.eos_token_id,
+        stopping_criteria=stopping,
     )
     elapsed_ms = round((time.perf_counter() - started) * 1000.0, 1)
 
@@ -95,6 +121,9 @@ def chat(messages, tools=None, max_new_tokens=None):
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "latency_ms": elapsed_ms,
+        "stopped_on_deadline": bool(
+            deadline_seconds and elapsed_ms / 1000.0 >= deadline_seconds * 0.98
+        ),
     }
 
 

@@ -150,6 +150,11 @@ def race(args):
 
     rows, runs = [], []
     for system in SYSTEMS:
+        # Both systems start warm, so neither pays the ~290 s cold start on
+        # its first ticket and the agent's wall budget measures only work.
+        import agent_runtime
+        agent_runtime.warm_up()
+
         for index, case in enumerate(cases, start=1):
             run = run_one(system, case["ticket_id"], budgets)
             passed, reason = grade(case["expected"], run["result"])
