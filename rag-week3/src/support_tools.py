@@ -150,9 +150,11 @@ TOOL_SCHEMAS = [
         "function": {
             "name": "lookup_refund_policy",
             "description": (
-                "Get the refund information for a customer's order, including the "
-                "refund window, whether the charge can be refunded and whether it "
-                "needs to be escalated."
+                "Return the refund rule for a (tier, order_status) pair: the refund "
+                "window in days, whether the charge must be escalated, and the rule "
+                "name. Reads no ticket and no order — call find_ticket for the tier "
+                "and get_order for the order_status first, then pass those two "
+                "values here."
             ),
             "parameters": {
                 "type": "object",

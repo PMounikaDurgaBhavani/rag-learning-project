@@ -1,0 +1,240 @@
+{
+  "variant": "v2",
+  "description": "Return the refund rule for a (tier, order_status) pair: the refund window in days, whether the charge must be escalated, and the rule name. Reads no ticket and no order \u2014 call find_ticket for the tier and get_order for the order_status first, then pass those two values here.",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "ran_at": "2026-09-21T07:43:46+00:00",
+  "decision_points": 20,
+  "correct_tool_choices": 7,
+  "correct_pct": 35.0,
+  "no_tool_call": 11,
+  "wrong_tool": 2,
+  "rows": [
+    {
+      "ticket_id": "CD-7001",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7001 relates to an order ID ORD-5001 under standard tier CUS-201. The order has been open since last Monday and you were charged $49. You're asking about your refund, but there isn't any"
+    },
+    {
+      "ticket_id": "CD-7001",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "standard",
+        "order_status": "charged"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"standard\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7002",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": false,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "standard",
+        "order_status": "charged"
+      },
+      "raw": "{\"name\": \"get_order\", \"arguments\": {\"order_id\": \"ORD-5002\"}}\n<tool_call>\n<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"standard\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7002",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "standard",
+        "order_status": "charged"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"standard\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7003",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7003 is related to an order ID of ORD-5003 under the priority tier. The current status is open, and there has been a follow-up about the refund for the $480 renewal."
+    },
+    {
+      "ticket_id": "CD-7003",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "priority",
+        "order_status": "charged"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"priority\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7004",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": false,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "priority",
+        "order_status": "charged"
+      },
+      "raw": "{\"name\": \"get_order\", \"arguments\": {\"order_id\": \"ORD-5004\"}}\n<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"priority\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7004",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "priority",
+        "order_status": "charged"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"priority\", \"order_status\": \"charged\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7005",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7005 is related to an open order ORD-5005 under standard tier CUS-205. The customer is still awaiting their refund for this order."
+    },
+    {
+      "ticket_id": "CD-7005",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "I found your ticket, CD-7005, which is open under standard tier. The order it refers to, ORD-5005, has been refunded since September 1st, 2026, with a total amount of $75. Since the order has already "
+    },
+    {
+      "ticket_id": "CD-7006",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7006 is related to an open issue where you were charged twice for the same invoice. The refund will cover the second charge. Please check your account details for the refund amount."
+    },
+    {
+      "ticket_id": "CD-7006",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "standard",
+        "order_status": "duplicate"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"standard\", \"order_status\": \"duplicate\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7007",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7007 is related to an open order ORD-5099 under standard tier. The message indicates there has been a refund request for this order but it hasn't arrived yet."
+    },
+    {
+      "ticket_id": "CD-7007",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "I'm sorry, but we couldn't find the order ID you provided. Could you please confirm the correct order ID?"
+    },
+    {
+      "ticket_id": "CD-7008",
+      "point": "after_ticket",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "I found your ticket, CD-7008. The customer is CUS-208 and they are on priority tier. It's currently open and you don't have the order number to hand. Could you please provide me with the order ID so w"
+    },
+    {
+      "ticket_id": "CD-7008",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "I'm sorry, but we couldn't find your order ID. Could you please provide it so I can help you with your refund request?"
+    },
+    {
+      "ticket_id": "CD-7009",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7009 refers to an order ID ORD-5009 under a priority tier CUS-209. The current status is open because the order was cancelled mid-term and we are still out of pocket."
+    },
+    {
+      "ticket_id": "CD-7009",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "priority",
+        "order_status": "cancelled"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"priority\", \"order_status\": \"cancelled\"}}\n</tool_call>"
+    },
+    {
+      "ticket_id": "CD-7010",
+      "point": "after_ticket",
+      "correct_tool": "get_order",
+      "chosen_tool": null,
+      "correct": false,
+      "no_tool_call": true,
+      "arguments": null,
+      "raw": "The ticket CD-7010 is related to an open order for CUS-210 with the order ID ORD-5010 under standard tier. The current status is \"open\" and there is a message about a refund for the $19.99 charge from"
+    },
+    {
+      "ticket_id": "CD-7010",
+      "point": "after_order",
+      "correct_tool": "lookup_refund_policy",
+      "chosen_tool": "lookup_refund_policy",
+      "correct": true,
+      "no_tool_call": false,
+      "arguments": {
+        "tier": "standard",
+        "order_status": "charged"
+      },
+      "raw": "<tool_call>\n{\"name\": \"lookup_refund_policy\", \"arguments\": {\"tier\": \"standard\", \"order_status\": \"charged\"}}\n</tool_call>"
+    }
+  ]
+}
