@@ -11,6 +11,7 @@ Usage
     python main.py failure-report
     python main.py evaluate-hybrid
     python main.py eval                 # Week 6: pass rate by mode
+    python main.py race                 # Week 7: agent vs fixed workflow
 """
 
 import argparse
@@ -301,6 +302,12 @@ def command_eval(args):
     return week6_eval.cmd_run(args)
 
 
+def command_race(args):
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments"))
+    import week7_race
+    return week7_race.race(args)
+
+
 def command_demo(args):
     from generator import generate_answer, print_answer
     from retriever import retrieve_chunks, build_where, print_results
@@ -537,6 +544,17 @@ def build_parser():
     week6.add_argument("--frozen", action="store_true",
                        help="reuse week6/replies_25.json instead of drafting fresh")
     week6.set_defaults(func=command_eval)
+
+    # race (Week 7: agent vs fixed workflow over the same 10 tickets)
+    race = subparsers.add_parser(
+        "race",
+        help="Week 7: race the refund-chase agent against the fixed workflow"
+    )
+    race.add_argument("--max-iterations", type=int, default=6)
+    race.add_argument("--max-tokens", type=int, default=8000)
+    race.add_argument("--max-cost", type=float, default=0.01)
+    race.add_argument("--max-seconds", type=float, default=120.0)
+    race.set_defaults(func=command_race)
 
     # demo
     demo = subparsers.add_parser(

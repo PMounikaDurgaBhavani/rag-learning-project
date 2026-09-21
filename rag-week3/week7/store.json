@@ -1,0 +1,25 @@
+{
+  "_note": "Frozen fixture for the Week 7 race. days_since_charge is stored rather than computed from charge_date, so the same ticket produces the same decision on any day the race is re-run. The tools read this file; expected outcomes live in week7/race_set.jsonl and are never visible to a tool.",
+  "tickets": {
+    "CD-7001": {"ticket_id": "CD-7001", "customer_id": "CUS-201", "order_id": "ORD-5001", "tier": "standard", "status": "open", "message": "I cancelled in the first week and still got charged $49. Where is my refund?"},
+    "CD-7002": {"ticket_id": "CD-7002", "customer_id": "CUS-202", "order_id": "ORD-5002", "tier": "standard", "status": "open", "message": "Chasing the refund for the $120 charge from a month and a half ago."},
+    "CD-7003": {"ticket_id": "CD-7003", "customer_id": "CUS-203", "order_id": "ORD-5003", "tier": "priority", "status": "open", "message": "Following up again on the refund for our $480 renewal."},
+    "CD-7004": {"ticket_id": "CD-7004", "customer_id": "CUS-204", "order_id": "ORD-5004", "tier": "priority", "status": "open", "message": "We want the $960 annual charge back. Nobody has used the seats."},
+    "CD-7005": {"ticket_id": "CD-7005", "customer_id": "CUS-205", "order_id": "ORD-5005", "tier": "standard", "status": "open", "message": "Still waiting on my refund for order ORD-5005."},
+    "CD-7006": {"ticket_id": "CD-7006", "customer_id": "CUS-206", "order_id": "ORD-5006", "tier": "standard", "status": "open", "message": "You charged me twice for the same invoice. Refund the second one."},
+    "CD-7007": {"ticket_id": "CD-7007", "customer_id": "CUS-207", "order_id": "ORD-5099", "tier": "standard", "status": "open", "message": "Refund for order ORD-5099 please, it never arrived."},
+    "CD-7008": {"ticket_id": "CD-7008", "customer_id": "CUS-208", "order_id": null, "tier": "priority", "status": "open", "message": "Where is my refund? I do not have the order number to hand."},
+    "CD-7009": {"ticket_id": "CD-7009", "customer_id": "CUS-209", "order_id": "ORD-5009", "tier": "priority", "status": "open", "message": "The order was cancelled mid-term and we are still out of pocket."},
+    "CD-7010": {"ticket_id": "CD-7010", "customer_id": "CUS-210", "order_id": "ORD-5010", "tier": "standard", "status": "open", "message": "Refund for the $19.99 charge from last month, please."}
+  },
+  "orders": {
+    "ORD-5001": {"order_id": "ORD-5001", "customer_id": "CUS-201", "amount": 49.0, "charge_date": "2026-09-09", "days_since_charge": 12, "order_status": "charged"},
+    "ORD-5002": {"order_id": "ORD-5002", "customer_id": "CUS-202", "amount": 120.0, "charge_date": "2026-08-07", "days_since_charge": 45, "order_status": "charged"},
+    "ORD-5003": {"order_id": "ORD-5003", "customer_id": "CUS-203", "amount": 480.0, "charge_date": "2026-08-07", "days_since_charge": 45, "order_status": "charged"},
+    "ORD-5004": {"order_id": "ORD-5004", "customer_id": "CUS-204", "amount": 960.0, "charge_date": "2026-06-23", "days_since_charge": 90, "order_status": "charged"},
+    "ORD-5005": {"order_id": "ORD-5005", "customer_id": "CUS-205", "amount": 75.0, "charge_date": "2026-09-01", "days_since_charge": 20, "order_status": "refunded"},
+    "ORD-5006": {"order_id": "ORD-5006", "customer_id": "CUS-206", "amount": 89.0, "charge_date": "2026-03-05", "days_since_charge": 200, "order_status": "duplicate"},
+    "ORD-5009": {"order_id": "ORD-5009", "customer_id": "CUS-209", "amount": 310.0, "charge_date": "2026-09-04", "days_since_charge": 17, "order_status": "cancelled"},
+    "ORD-5010": {"order_id": "ORD-5010", "customer_id": "CUS-210", "amount": 19.99, "charge_date": "2026-08-23", "days_since_charge": 29, "order_status": "charged"}
+  }
+}
