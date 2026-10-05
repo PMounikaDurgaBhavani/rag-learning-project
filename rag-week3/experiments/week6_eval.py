@@ -765,6 +765,307 @@ def cmd_run(args):
 
 
 # ---------------------------------------------------------------------------
+# delta — before/after pass rate per mode between two eval runs
+# ---------------------------------------------------------------------------
+
+def pass_rates(results):
+    by_mode = defaultdict(list)
+    for row in results.values():
+        by_mode[row["mode"]].append(row["pass"])
+        by_mode["ALL"].append(row["pass"])
+    return {mode: (sum(rows), len(rows)) for mode, rows in by_mode.items()}
+
+
+def cmd_delta(args):
+    runs = sorted(RUNS.glob("run_*.json"))
+    before_path = Path(args.before) if args.before else (runs[-2] if len(runs) >= 2 else None)
+    after_path = Path(args.after) if args.after else (runs[-1] if runs else None)
+    if not before_path or not after_path:
+        print("Need two runs in week6/runs/ (run `python main.py eval` twice) or --before/--after.")
+        return 1
+    before, after = read_json(before_path), read_json(after_path)
+
+    print(f"BEFORE {before_path.name}  judge {before['judge']:<4} replies {before['replies']:<6} app {before.get('app_version')}")
+    print(f"AFTER  {after_path.name}  judge {after['judge']:<4} replies {after['replies']:<6} app {after.get('app_version')}")
+    if before["judge"] != after["judge"]:
+        print("  WARNING: different judges, so part of any delta is the ruler changing, not the app.")
+
+    rb, ra = pass_rates(before["results"]), pass_rates(after["results"])
+    print(f"\n{'mode':<4}  {'Week 5 failure mode':<40} {'before':>12} {'after':>12} {'delta':>8}")
+    print("-" * 82)
+    deltas = {}
+    for mode in list(MODES) + ["ALL"]:
+        if mode not in rb and mode not in ra:
+            continue
+        pb, nb = rb.get(mode, (0, 0))
+        pa, na = ra.get(mode, (0, 0))
+        rate_b = 100.0 * pb / nb if nb else 0.0
+        rate_a = 100.0 * pa / na if na else 0.0
+        deltas[mode] = rate_a - rate_b
+        if mode == "ALL":
+            print("-" * 82)
+        print(f"{mode:<4}  {MODE_SHORT.get(mode, ''):<40} {f'{pb}/{nb} {rate_b:5.1f}%':>12} "
+              f"{f'{pa}/{na} {rate_a:5.1f}%':>12} {deltas[mode]:>+7.1f}")
+
+    hidden = [m for m in MODES if deltas.get(m, 0) < 0]
+    if hidden and deltas["ALL"] >= 0:
+        print(f"\nThe overall rate did not drop, but {', '.join(hidden)} regressed — the average hides it.")
+    elif hidden:
+        print(f"\nRegressed modes: {', '.join(hidden)}")
+
+    flips = [(cid, before["results"][cid]["pass"], after["results"][cid]["pass"])
+             for cid in after["results"] if cid in before["results"]
+             and before["results"][cid]["pass"] != after["results"][cid]["pass"]]
+    print(f"\nCASES THAT CHANGED ({len(flips)})")
+    for cid, was, now in flips:
+        print(f"  {cid:<4} {after['results'][cid]['mode']}  {'PASS' if was else 'FAIL'} -> {'PASS' if now else 'FAIL'}")
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# ragas / geval — gated like the judge: nothing grades the 25 before the labels
+# ---------------------------------------------------------------------------
+
+RAGAS_RESULTS = W6 / "ragas_results.json"
+GEVAL_RESULTS = W6 / "geval_results.json"
+GEVAL_STEPS = W6 / "geval_steps.txt"
+RAGAS_SMOKE = W6 / "ragas_smoke.json"
+GEVAL_SMOKE = W6 / "geval_smoke.json"
+POLICY_SECTIONS = W6 / "policy_sections.json"
+
+# Pre-registered: a G-Eval score >= this counts as PASS. Fixed before any
+# G-Eval score existed, so it cannot be tuned to the labels.
+GEVAL_PASS_THRESHOLD = 6.0
+FAITHFULLY_WRONG_FAITHFULNESS = 0.9
+
+# Hand-written, not among the 25: used by --smoke to show the code works
+# without any model output on the labelled replies being seen.
+SMOKE_CASES = [
+    {"id": "S01", "mode": "-", "policy_backed": True,
+     "note": "faithful to its context, but the context is the wrong section",
+     "ticket": {"ticket_id": "CD-99001", "tier": "Standard",
+                "message": "You charged me twice for the same invoice 45 days ago, $60 each time. Refund the extra one please.",
+                "charge_amount": 60.0, "days_since_charge": 45, "duplicate_charge": True, "refund_requested": True},
+     "reference": ["This is a duplicate charge on the same invoice; duplicate charges are refunded in full regardless of the 30-day window (HC-008)",
+                   "The refund is for $60.00"],
+     "expected_sections": ["Duplicate Charges", "Refund Amount and Timing", "Frequently Asked Questions"],
+     "retrieved": ["HC-008-markdown-2", "HC-008-markdown-3", "HC-008-markdown-4"],
+     "reply": "CD-99001: Hello,\nA subscription charge can be refunded only when the refund is requested within 30 days of the charge date. "
+              "A charge made more than 30 days before the refund request is not eligible for a refund. "
+              "You can turn off automatic renewal from Organization Settings > Billing so that the next charge does not occur.\nBest regards"},
+    {"id": "S02", "mode": "-", "policy_backed": True, "note": "correct",
+     "ticket": {"ticket_id": "CD-99002", "tier": "Standard",
+                "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+                "charge_amount": 49.0, "days_since_charge": 12, "duplicate_charge": False, "refund_requested": True},
+     "reference": ["The charge is 12 days old, inside the 30-day refund window, so it is eligible for a full refund (HC-008)",
+                   "The refund is for the exact amount charged: $49.00",
+                   "Refunds return to the original payment method within 5 to 10 business days"],
+     "expected_sections": ["Refund Eligibility Window", "Refund Amount and Timing", "Frequently Asked Questions"],
+     "retrieved": ["HC-008-markdown-2", "HC-008-markdown-6", "HC-008-markdown-7", "HC-001-markdown-1"],
+     "reply": "CD-99002: Hello,\nYour charge was made 12 days ago, which is within the 30-day refund window, so it can be refunded in full. "
+              "The refund will be for $49.00. It will be returned to your original payment method within 5 to 10 business days.\nBest regards"},
+    {"id": "S03", "mode": "-", "policy_backed": True, "note": "invents a discount",
+     "ticket": {"ticket_id": "CD-99003", "tier": "Standard",
+                "message": "I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.",
+                "charge_amount": 75.0, "days_since_charge": 76, "duplicate_charge": False, "refund_requested": True},
+     "reference": ["76 days is outside the 30-day window: not eligible for a refund (HC-008)",
+                   "CloudDesk does not offer discounts, credits or partial refunds in place of a refund"],
+     "expected_sections": ["Refund Eligibility Window", "Refund Amount and Timing", "Frequently Asked Questions"],
+     "retrieved": ["HC-008-markdown-3", "HC-008-markdown-7"],
+     "reply": "CD-99003: Hello,\nAs a gesture of goodwill we have applied a 20% discount to your next invoice. "
+              "We have also processed a refund of $75.00 for your charge.\nBest regards"},
+]
+
+
+def evaluation_inputs(smoke):
+    """[(case, reply_text, refused, retrieved_ids, expected_sections)] or None if gated."""
+    if smoke:
+        print("SMOKE: 3 hand-written replies (S01-S03), none of them among the 25.\n")
+        return [(c, c["reply"], False, c["retrieved"], c["expected_sections"]) for c in SMOKE_CASES]
+
+    ok, problems, _ = protocol_check("v1")
+    if not ok:
+        print("NOT RUN — this grades the 25 frozen replies with a model, so it waits for the "
+              "blind labels like the judge does:")
+        for problem in problems:
+            print(f"  - {problem}")
+        print("Use --smoke to check the code on 3 hand-written replies instead.")
+        return None
+
+    replies = {reply["id"]: reply for reply in read_json(REPLIES)["replies"]}
+    sections = read_json(POLICY_SECTIONS)
+    return [(case, replies[case["id"]]["text"] or "", replies[case["id"]]["refused"],
+             replies[case["id"]]["retrieved"], sections.get(case["id"]))
+            for case in labelled_cases(load_cases())]
+
+
+def mean(values):
+    values = [v for v in values if v is not None]
+    return sum(values) / len(values) if values else None
+
+
+def fmt(value):
+    return "  -  " if value is None else f"{value:5.2f}"
+
+
+def cmd_ragas(args):
+    import db
+    import ragas_local
+
+    inputs = evaluation_inputs(args.smoke)
+    if inputs is None:
+        return 1
+    chunk_by_id = {chunk["chunk_id"]: chunk for chunk in db.all_chunks()}
+
+    rows = []
+    for index, (case, text, refused, retrieved, expected) in enumerate(inputs, start=1):
+        if args.policy_only and not case.get("policy_backed"):
+            continue
+        chunks = [chunk_by_id[cid] for cid in retrieved if cid in chunk_by_id]
+        scores = ragas_local.score_reply(case["ticket"]["message"], case["reference"], text, chunks,
+                                         refused=refused)
+        row = {"id": case["id"], "mode": case["mode"], "policy_backed": case.get("policy_backed", False),
+               "note": case.get("note"),
+               "retrieved_sections": [chunk.get("section") for chunk in chunks], **scores}
+        if case.get("policy_backed") and expected:
+            quoted = sorted({c["best_section"] for c in scores["claims"]
+                             if c["supported"] and c.get("best_section")})
+            row["expected_sections"] = expected
+            row["quoted_sections"] = quoted
+            row["quotes_expected_section"] = bool(set(quoted) & set(expected))
+            row["faithfully_wrong"] = (scores["faithfulness"] is not None
+                                       and scores["faithfulness"] >= FAITHFULLY_WRONG_FAITHFULNESS
+                                       and quoted and not row["quotes_expected_section"])
+        rows.append(row)
+        print(f"  {index:>2}/{len(inputs)} {case['id']:<4} faith {fmt(scores['faithfulness'])}  "
+              f"relev {fmt(scores['answer_relevancy'])}  cprec {fmt(scores['context_precision'])}  "
+              f"crec {fmt(scores['context_recall'])}")
+
+    metrics = ("faithfulness", "answer_relevancy", "context_precision", "context_recall")
+    groups = {"ALL": rows, "policy-backed": [r for r in rows if r["policy_backed"]]}
+    for mode in MODES:
+        groups[mode] = [r for r in rows if r["mode"] == mode]
+
+    print("\n" + "=" * 86)
+    print("RAGAS-STYLE METRICS (local: SmolLM2-1.7B verdicts, MiniLM embeddings)")
+    print("=" * 86)
+    print(f"{'group':<14} {'n':>3}  {'faithful':>8}  {'ans.relev':>9}  {'ctx.prec':>8}  {'ctx.recall':>10}")
+    summary = {}
+    for name, group in groups.items():
+        if not group:
+            continue
+        summary[name] = {m: mean([r[m] for r in group]) for m in metrics}
+        print(f"{name:<14} {len(group):>3}  " + "  ".join(
+            f"{fmt(summary[name][m]):>{w}}" for m, w in zip(metrics, (8, 9, 8, 10))))
+
+    policy = [r for r in rows if r.get("expected_sections")]
+    if policy:
+        print("\nPOLICY-BACKED: which HC-008 section each reply actually quotes")
+        for r in policy:
+            flag = "  <- FAITHFULLY WRONG" if r["faithfully_wrong"] else ""
+            print(f"  {r['id']:<4} faith {fmt(r['faithfulness'])} cprec {fmt(r['context_precision'])}  "
+                  f"quotes {r['quoted_sections'] or '-'}  needs {[s for s in r['expected_sections'] if s != 'Frequently Asked Questions']}{flag}")
+        wrong = [r for r in policy if r["faithfully_wrong"]]
+        if wrong:
+            others = [r["faithfulness"] for r in rows if not r.get("faithfully_wrong")]
+            print(f"\n{len(wrong)} reply(s) score >= {FAITHFULLY_WRONG_FAITHFULNESS} faithfulness while "
+                  f"quoting a section the case does not need.")
+            print(f"  faithfulness mean with them {fmt(summary['ALL']['faithfulness'])}, "
+                  f"without them {fmt(mean(others))}: the average barely moves, or even rises,")
+            print("  because faithfulness checks reply-vs-retrieved-context, never context-vs-question.")
+            print("  Context precision is the metric that sees the wrong section; averaged over all")
+            print("  cases, the correct ones swamp it.")
+        else:
+            print(f"\nNo policy-backed reply scored >= {FAITHFULLY_WRONG_FAITHFULNESS} faithfulness while "
+                  "quoting only the wrong section.")
+
+    out = RAGAS_SMOKE if args.smoke else RAGAS_RESULTS
+    write_json(out, {"ran_at": now_iso(), "app_version": tracing.app_version(), "smoke": args.smoke,
+                     "llm": __import__("judge").JUDGE_MODEL, "embedder": "all-MiniLM-L6-v2",
+                     "summary": summary, "rows": rows})
+    print(f"\nSaved {out.relative_to(ROOT)}")
+    return 0
+
+
+def cmd_geval(args):
+    import geval
+    from ticket_policy import ticket_block as render_ticket
+
+    inputs = evaluation_inputs(args.smoke)
+    if inputs is None:
+        return 1
+
+    criterion = criterion_text()
+    steps_path = W6 / "geval_steps_smoke.txt" if args.smoke else GEVAL_STEPS
+    eval_steps, created = geval.steps(criterion, steps_path)
+    print(f"Evaluation steps ({'generated now' if created else 'frozen'}: {steps_path.relative_to(ROOT)}):\n{eval_steps}\n")
+    if not args.smoke and not committed_clean(GEVAL_STEPS):
+        print("Read these steps before anything is scored: a 1.7B model can invert the criterion "
+              "(in the smoke run it wrote 'tells the customer what to do WITHOUT the steps').\n"
+              "Fix any wrong step by hand, then:\n"
+              "  git add week6/geval_steps.txt && git commit -m 'week6: G-Eval steps, reviewed'\n"
+              "  python experiments/week6_eval.py geval")
+        return 1
+
+    labels = None if args.smoke else read_json(LABELS)["labels"]
+    rows = []
+    for index, (case, text, _refused, _retrieved, _expected) in enumerate(inputs, start=1):
+        weighted, dist = geval.score(criterion, eval_steps, render_ticket(case["ticket"]),
+                                     case["reference"], text)
+        argmax = max(dist, key=dist.get)
+        row = {"id": case["id"], "mode": case["mode"], "geval": round(weighted, 2),
+               "argmax": argmax, "distribution": dist,
+               "geval_verdict": "PASS" if weighted >= GEVAL_PASS_THRESHOLD else "FAIL"}
+        if labels:
+            row["human"] = labels[case["id"]]["label"]
+        rows.append(row)
+        print(f"  {index:>2}/{len(inputs)} {case['id']:<4} G-Eval {weighted:5.2f} (argmax {argmax:>2})"
+              + (f"  human {row['human']}" if labels else ""))
+
+    if labels:
+        print_binary_vs_scale(rows)
+    out = GEVAL_SMOKE if args.smoke else GEVAL_RESULTS
+    write_json(out, {"ran_at": now_iso(), "smoke": args.smoke,
+                     "judge_model": __import__("judge").JUDGE_MODEL,
+                     "criterion_source": "week6/judge_v1.txt", "steps": eval_steps,
+                     "pass_threshold": GEVAL_PASS_THRESHOLD, "rows": rows})
+    print(f"\nSaved {out.relative_to(ROOT)}")
+    return 0
+
+
+def print_binary_vs_scale(rows):
+    n = len(rows)
+    human_pass = [r["geval"] for r in rows if r["human"] == "PASS"]
+    human_fail = [r["geval"] for r in rows if r["human"] == "FAIL"]
+    at_threshold = sum(1 for r in rows if r["geval_verdict"] == r["human"])
+
+    best_t, best_agree = None, -1
+    for t in sorted({r["geval"] for r in rows}):
+        agree = sum(1 for r in rows if (r["geval"] >= t) == (r["human"] == "PASS"))
+        if agree > best_agree:
+            best_t, best_agree = t, agree
+
+    pairs = [(p, f) for p in human_pass for f in human_fail]
+    auc = sum(1.0 if p > f else 0.5 if p == f else 0.0 for p, f in pairs) / len(pairs) if pairs else None
+    band = sum(1 for r in rows if 5.0 <= r["geval"] < 7.0)
+
+    print("\n" + "=" * 78)
+    print("BINARY vs 1-10 (G-Eval) against the same hand labels")
+    print("=" * 78)
+    print(f"  G-Eval mean: human PASS {fmt(mean(human_pass))} (n={len(human_pass)})   "
+          f"human FAIL {fmt(mean(human_fail))} (n={len(human_fail)})")
+    print(f"  P(a PASS-labelled reply outscores a FAIL-labelled one) = {fmt(auc)}")
+    print(f"  pre-registered threshold {GEVAL_PASS_THRESHOLD}: {at_threshold}/{n} = {100.0 * at_threshold / n:.1f}%")
+    print(f"  best threshold in hindsight ({best_t}): {best_agree}/{n} = {100.0 * best_agree / n:.1f}%"
+          "  <- fitted to the labels, not a real result")
+    print(f"  replies scored in the 5-7 band, where 1 point decides the verdict: {band}/{n}")
+    v1 = judge_results_path("v1")
+    if v1.exists():
+        a = read_json(v1)["agreement"]["all"]
+        print(f"  binary judge v1 (same criterion): {a['agree']}/{a['n']} = {a['pct']}%")
+
+
+# ---------------------------------------------------------------------------
 # status — ordering evidence
 # ---------------------------------------------------------------------------
 
@@ -923,7 +1224,58 @@ def ui_artefacts():
         "protocol": protocol_evidence(),
         "steps": steps,
         "next_step": next_step,
+        "runs": [run_summary(path) for path in runs],
+        "ragas": read_json(RAGAS_RESULTS) if RAGAS_RESULTS.exists() else None,
+        "ragas_smoke": read_json(RAGAS_SMOKE) if RAGAS_SMOKE.exists() else None,
+        "geval": read_json(GEVAL_RESULTS) if GEVAL_RESULTS.exists() else None,
+        "geval_smoke": read_json(GEVAL_SMOKE) if GEVAL_SMOKE.exists() else None,
+        "geval_threshold": GEVAL_PASS_THRESHOLD,
+        "policy_sections": read_json(POLICY_SECTIONS) if POLICY_SECTIONS.exists() else None,
+        "gated_ok": protocol_check("v1")[0],
+        "topics": topic_coverage(),
     }
+
+
+def run_summary(path):
+    run = read_json(path)
+    return {"file": path.name, "ran_at": run.get("ran_at"), "judge": run.get("judge"),
+            "replies": run.get("replies"), "app_version": run.get("app_version"),
+            "results": {cid: {"mode": r["mode"], "pass": r["pass"],
+                              "assertions_pass": r["assertions_pass"], "judge": r.get("judge")}
+                        for cid, r in run["results"].items()}}
+
+
+def topic_coverage():
+    """Week 6 syllabus topic -> where it lives -> whether it has a result yet."""
+    def exists(name):
+        return (W6 / name).exists()
+    cases = [json.loads(line) for line in CASES.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        {"topic": "Eval sets", "where": "week6/eval_cases.jsonl",
+         "done": len(cases) >= 25, "detail": f"{len(cases)} cases, each tagged with one Week 5 mode"},
+        {"topic": "Regression tests from failures", "where": "eval_cases.jsonl (R01-R04)",
+         "done": sum(1 for c in cases if c.get("regression")) >= 2,
+         "detail": f"{sum(1 for c in cases if c.get('regression'))} cases replayed verbatim from failed Week 5 traces"},
+        {"topic": "Assertion checks", "where": "src/ticket_assertions.py",
+         "done": True, "detail": f"{len(ASSERTIONS)} deterministic assertions, removed from the judge prompt"},
+        {"topic": "LLM-as-judge", "where": "src/judge.py + week6/judge_v1.txt",
+         "done": exists("judge_results_v1.json"), "detail": "one binary criterion (RESOLUTION)"},
+        {"topic": "Judge validation (human agreement)", "where": "labels_25.json -> judge v1 -> v2",
+         "done": exists("judge_results_v2.json"),
+         "detail": "blocked on the blind hand labels" if not exists("labels_25.json") else "agreement before -> after"},
+        {"topic": "G-Eval", "where": "src/geval.py · `week6_eval.py geval`",
+         "done": exists("geval_results.json"), "detail": "auto-CoT steps + probability-weighted 1-10 score"},
+        {"topic": "Binary vs 1-10 scoring", "where": "`geval` output / G-Eval tab",
+         "done": exists("geval_results.json"), "detail": "same criterion, same labels, binary judge vs G-Eval"},
+        {"topic": "RAGAS: faithfulness", "where": "src/ragas_local.py · `week6_eval.py ragas`",
+         "done": exists("ragas_results.json"), "detail": "supported claims / claims"},
+        {"topic": "RAGAS: answer relevancy", "where": "src/ragas_local.py",
+         "done": exists("ragas_results.json"), "detail": "cosine(question, questions generated from the reply)"},
+        {"topic": "RAGAS: context precision & recall", "where": "src/ragas_local.py",
+         "done": exists("ragas_results.json"), "detail": "ranked usefulness of chunks; reference facts covered"},
+        {"topic": "Before/after deltas", "where": "`week6_eval.py delta` · agreement.json",
+         "done": len(list(RUNS.glob("run_*.json"))) >= 2, "detail": "pass rate by mode between two runs; agreement v1 -> v2"},
+    ]
 
 
 def ui_run(judge="none"):
@@ -985,6 +1337,20 @@ def build_parser():
     make_v2.set_defaults(func=cmd_make_v2)
 
     add_run_arguments(sub.add_parser("run", help="the one command: pass rate by mode"))
+
+    delta = sub.add_parser("delta", help="pass rate by mode, before -> after, between two runs")
+    delta.add_argument("--before", help="run file (default: second newest in week6/runs)")
+    delta.add_argument("--after", help="run file (default: newest in week6/runs)")
+    delta.set_defaults(func=cmd_delta)
+
+    ragas = sub.add_parser("ragas", help="RAGAS-style faithfulness, relevancy, context precision/recall")
+    ragas.add_argument("--smoke", action="store_true", help="3 hand-written replies, not the 25")
+    ragas.add_argument("--policy-only", action="store_true", help="only the policy-backed cases")
+    ragas.set_defaults(func=cmd_ragas)
+
+    geval_cmd = sub.add_parser("geval", help="G-Eval 1-10 score vs the binary judge")
+    geval_cmd.add_argument("--smoke", action="store_true", help="3 hand-written replies, not the 25")
+    geval_cmd.set_defaults(func=cmd_geval)
 
     status = sub.add_parser("status", help="commit-order evidence")
     status.set_defaults(func=cmd_status)

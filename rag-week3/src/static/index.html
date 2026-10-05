@@ -862,7 +862,11 @@
             <button data-tab="prompts">Judge prompts</button>
             <button data-tab="agreement">Agreement</button>
             <button data-tab="protocol">Protocol evidence</button>
+            <button data-tab="delta">Before / after</button>
+            <button data-tab="ragas">RAGAS</button>
+            <button data-tab="geval">G-Eval · binary vs 1–10</button>
             <button data-tab="writeup">Write-up</button>
+            <button data-tab="topics">Topics</button>
           </div>
           <div id="w6Body"><div class="muted">Loading…</div></div>
         </div>
@@ -1537,7 +1541,7 @@ async function runWeek5Rerun(btn) {
 // judge it allows.
 let week6 = null;
 let w6Tab = 'overview';
-let w6Prompt = 'v0v1';
+let w6Prompt = 'side';
 
 const fmtPct = (v) => v == null ? '—' : `${v}%`;
 const ratio = (a, n) => `${a}/${n}`;
@@ -1600,6 +1604,7 @@ function renderWeek6() {
   const view = {
     overview: w6Overview, bymode: w6ByMode, cases: w6Cases, prompts: w6Prompts,
     agreement: w6Agreement, protocol: w6Protocol, writeup: w6Writeup,
+    delta: w6Delta, ragas: w6Ragas, geval: w6Geval, topics: w6Topics,
   }[w6Tab];
   $('w6Body').innerHTML = view(d);
 }
@@ -1783,10 +1788,25 @@ function w6Prompts(d) {
   const views = [
     ['v0v1', 'v0 → v1 · assertion split'],
     ['v1v2', 'v1 → v2 · few-shot from disagreements'],
+    ['side', 'v1 | v2 side by side'],
     ['v0', 'judge_v0_presplit.txt'], ['v1', 'judge_v1.txt'], ['v2', 'judge_v2.txt'],
   ];
   const tabs = `<div class="w6-sub">${views.map(([k, label]) =>
     `<button class="btn sm ${w6Prompt === k ? 'primary' : ''}" data-prompt="${k}">${esc(label)}</button>`).join('')}</div>`;
+
+  if (w6Prompt === 'side') {
+    const col = (name, text, empty) => `<div style="min-width:0;"><div class="w5-k">${esc(name)}</div>${text
+      ? `<pre class="w6-diff">${text.split('\n').map(l => `<span>${esc(l)}</span>`).join('')}</pre>`
+      : `<div class="muted" style="padding:.6rem;border:1px dashed var(--line);border-radius:var(--radius-sm);">${empty}</div>`}</div>`;
+    const v1 = d.judge.v1?.agreement?.all, v2 = d.judge.v2?.agreement?.all;
+    return w6Card(tabs + `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;">
+      ${col(`judge_v1.txt${v1 ? ` · agreement ${v1.pct}%` : ''}`, p.v1, '')}
+      ${col(`judge_v2.txt${v2 ? ` · agreement ${v2.pct}%` : ''}`, p.v2,
+        `Not built yet. v2 = v1 + two of v1's <b>own</b> disagreements as worked examples. The tooling builds it with
+         <code>make-judge-v2 --examples ID,ID</code> and refuses until labels, the v1 run and <code>prediction.txt</code> are all committed.
+         <br><br>Next step: <b>${esc(d.next_step?.title || '')}</b>`)}
+    </div>`);
+  }
 
   if (w6Prompt.length === 4) {
     const from = w6Prompt.slice(0, 2), to = w6Prompt.slice(2);
@@ -1886,6 +1906,137 @@ function w6Writeup(d) {
     + w6Card(w6Eyebrow('disagreements.md') + (d.disagreements_md ? md(d.disagreements_md) : '<div class="muted">Not written yet.</div>'))
     + w6Card(w6Eyebrow('README — how the eval works') + md(d.readme_md || ''));
 }
+
+let w6DeltaBefore = null, w6DeltaAfter = null;
+
+function w6Topics(d) {
+  const done = d.topics.filter(t => t.done).length;
+  return w6Card(w6Eyebrow(`Week 6 topics · ${done}/${d.topics.length} have a result`) + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Topic</th><th>Where</th><th>What</th><th>Status</th></tr></thead>
+      <tbody>${d.topics.map(t => `<tr>
+        <td><b>${esc(t.topic)}</b></td><td class="cid">${esc(t.where)}</td><td>${esc(t.detail)}</td>
+        <td>${t.done ? '<span class="pill ok">has a result</span>' : '<span class="pill warn">waiting on labels</span>'}</td>
+      </tr>`).join('')}</tbody></table></div>
+      <p class="help" style="margin:.6rem 0 0;">Every model-graded topic (judge, G-Eval, RAGAS) is gated on
+        <code>labels_25.json</code> being committed, so no model verdict on the 25 replies exists before the blind labels.</p>`);
+}
+
+function w6RunRates(run, modes) {
+  const out = {};
+  for (const key of [...Object.keys(modes), 'ALL']) {
+    const rows = Object.values(run.results).filter(r => key === 'ALL' || r.mode === key);
+    out[key] = { p: rows.filter(r => r.pass).length, n: rows.length };
+  }
+  return out;
+}
+
+function w6Delta(d) {
+  if (d.runs.length < 2) return w6Card('<div class="muted">Needs two eval runs — press <b>Run eval</b> twice (e.g. before and after a change).</div>');
+  const names = d.runs.map(r => r.file);
+  if (!names.includes(w6DeltaBefore)) w6DeltaBefore = names[names.length - 2];
+  if (!names.includes(w6DeltaAfter)) w6DeltaAfter = names[names.length - 1];
+  const B = d.runs.find(r => r.file === w6DeltaBefore), A = d.runs.find(r => r.file === w6DeltaAfter);
+  const rb = w6RunRates(B, d.modes), ra = w6RunRates(A, d.modes);
+  const pick = (id, val) => `<select id="${id}" class="w6-run-pick">${d.runs.map(r =>
+    `<option value="${esc(r.file)}" ${r.file === val ? 'selected' : ''}>${esc(r.file)} · judge ${esc(r.judge)} · ${esc(r.replies)}</option>`).join('')}</select>`;
+  const rows = [...Object.keys(d.modes), 'ALL'].map(m => {
+    const b = rateOf(rb[m].p, rb[m].n), a = rateOf(ra[m].p, ra[m].n), delta = a - b;
+    return `<tr ${m === 'ALL' ? 'style="font-weight:700;border-top:2px solid var(--line);"' : ''}>
+      <td>${esc(m)}</td><td>${esc(d.mode_short[m] || 'overall')}</td>
+      <td>${rb[m].p}/${rb[m].n} · ${b.toFixed(1)}%</td><td>${ra[m].p}/${ra[m].n} · ${a.toFixed(1)}%</td>
+      <td style="color:${delta > 0 ? 'var(--ok)' : delta < 0 ? 'var(--danger)' : 'inherit'};">${delta > 0 ? '+' : ''}${delta.toFixed(1)}</td></tr>`;
+  }).join('');
+  const hidden = Object.keys(d.modes).filter(m => rateOf(ra[m].p, ra[m].n) < rateOf(rb[m].p, rb[m].n));
+  const allDelta = rateOf(ra.ALL.p, ra.ALL.n) - rateOf(rb.ALL.p, rb.ALL.n);
+  const flips = Object.keys(A.results).filter(id => B.results[id] && B.results[id].pass !== A.results[id].pass);
+  const ag = d.agreement || {};
+  return w6Card(w6Eyebrow('Pass rate by mode · before → after') + `
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.7rem;">
+        <div class="field"><label>Before</label>${pick('w6DeltaBefore', w6DeltaBefore)}</div>
+        <div class="field"><label>After</label>${pick('w6DeltaAfter', w6DeltaAfter)}</div></div>
+      ${B.judge !== A.judge ? '<p class="help" style="color:var(--warn);">Different judges: part of this delta is the ruler changing, not the app.</p>' : ''}
+      <div class="gs-wrap"><table class="gs"><thead><tr><th>Mode</th><th>Week 5 failure mode</th><th>Before</th><th>After</th><th>Δ pts</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+      ${hidden.length && allDelta >= 0 ? `<p class="help" style="color:var(--danger);">The overall rate did not drop, but ${esc(hidden.join(', '))} regressed — the average hides it.</p>` : ''}
+      <p class="help">Cases that flipped: ${flips.length ? flips.map(id => `${esc(id)} ${B.results[id].pass ? 'PASS→FAIL' : 'FAIL→PASS'}`).join(' · ') : 'none'}</p>
+      <p class="help" style="margin:0;">CLI: <code>python experiments/week6_eval.py delta --before … --after …</code></p>`)
+    + w6Card(w6Eyebrow('Judge agreement · before → after') + `<div class="metric-row">
+      ${w6Metric('agreement_before · v1', fmtPct(ag.agreement_before), 'judge v1 vs blind labels')}
+      ${w6Metric('agreement_after · v2', fmtPct(ag.agreement_after), 'judge v2 vs the same labels')}
+      ${w6Metric('Δ', ag.agreement_before != null && ag.agreement_after != null ? `${(ag.agreement_after - ag.agreement_before).toFixed(1)} pts` : '—', 'not measured until labels + both judges')}
+    </div>`);
+}
+
+function w6RagasTable(data, smoke) {
+  const f = (v) => v == null ? '—' : v.toFixed(2);
+  const groups = Object.entries(data.summary || {});
+  return `<div class="gs-wrap"><table class="gs"><thead><tr><th>Group</th><th>Faithfulness</th><th>Answer relevancy</th><th>Context precision</th><th>Context recall</th></tr></thead>
+      <tbody>${groups.map(([g, m]) => `<tr><td>${esc(g)}</td><td>${f(m.faithfulness)}</td><td>${f(m.answer_relevancy)}</td><td>${f(m.context_precision)}</td><td>${f(m.context_recall)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="w5-k" style="margin-top:.8rem;">Per reply${smoke ? ' (hand-written, not among the 25)' : ''}</div>
+    ${data.rows.map(r => `<div class="ev" style="flex-direction:column;gap:.25rem;">
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;">
+        <span class="rank">${esc(r.id)}</span>${r.mode !== '-' ? `<span class="pill info">${esc(r.mode)}</span>` : ''}
+        ${r.policy_backed ? '<span class="pill">policy-backed</span>' : ''}
+        <span class="pill">faith ${f(r.faithfulness)}</span><span class="pill">relev ${f(r.answer_relevancy)}</span>
+        <span class="pill">ctx prec ${f(r.context_precision)}</span><span class="pill">ctx recall ${f(r.context_recall)}</span>
+        ${r.faithfully_wrong ? '<span class="pill bad">faithfully wrong</span>' : ''}
+        ${r.note ? `<span class="help">${esc(r.note)}</span>` : ''}</div>
+      ${r.quoted_sections ? `<div class="help" style="font-size:.78rem;"><b>Quotes:</b> ${esc(r.quoted_sections.join(', ') || '—')} · <b>needs:</b> ${esc(r.expected_sections.filter(s => s !== 'Frequently Asked Questions').join(', '))}</div>` : ''}
+      <div class="help" style="font-size:.78rem;">${r.claims.map(c => `${c.supported ? '✓' : '✗'} ${esc(c.claim)} <span class="muted">(p=${c.p_supported}${c.best_section ? ', ' + esc(c.best_section) : ''})</span>`).join('<br>')}</div>
+    </div>`).join('')}`;
+}
+
+function w6Ragas(d) {
+  const head = w6Card(w6Eyebrow('RAGAS-style metrics · local') + `<p class="help" style="margin:0;">
+      Faithfulness = supported claims / claims · answer relevancy = cosine(question, questions generated back from the reply) ·
+      context precision = average precision of the retrieved ranking against the reference facts · context recall = reference facts covered by the context.
+      Verdicts are next-token P(Yes) from ${esc(d.judge_model)}; embeddings from all-MiniLM-L6-v2. The <code>ragas</code> package needs a hosted LLM, so these are re-implemented from its definitions.</p>`);
+  if (d.ragas) return head + w6Card(w6Eyebrow(`The 25 replies · ${esc(d.ragas.ran_at)}`) + w6RagasTable(d.ragas, false));
+  return head + w6Card(w6Eyebrow('The 25 replies') + `<div class="muted">Not run — waits for the committed blind labels, like the judge.</div>
+      <pre class="w6-cmd">python experiments/week6_eval.py ragas</pre>`)
+    + (d.ragas_smoke ? w6Card(w6Eyebrow(`Smoke test · 3 hand-written replies · ${esc(d.ragas_smoke.ran_at)}`) + w6RagasTable(d.ragas_smoke, true)) : '');
+}
+
+function w6GevalRows(data) {
+  return data.rows.map(r => {
+    const bars = Object.entries(r.distribution).map(([s, p]) =>
+      `<i title="${s}: ${(p * 100).toFixed(1)}%" style="display:inline-block;width:10%;height:${Math.max(2, p * 40)}px;background:var(--accent);vertical-align:bottom;"></i>`).join('');
+    return `<div class="ev" style="gap:.6rem;align-items:end;flex-wrap:wrap;">
+      <span class="rank">${esc(r.id)}</span>
+      <span class="pill">${r.geval.toFixed(2)} / 10</span>${verdictPill(r.geval_verdict, 'G-Eval ')}
+      ${r.human ? verdictPill(r.human, 'human ') : ''}
+      <span style="display:inline-block;width:160px;height:40px;border-bottom:1px solid var(--line);">${bars}</span>
+      <span class="help">P(score) for 1…10 · argmax ${r.argmax}</span></div>`;
+  }).join('');
+}
+
+function w6Geval(d) {
+  const head = w6Card(w6Eyebrow('G-Eval · binary vs 1–10') + `<p class="help" style="margin:0;">
+      G-Eval writes evaluation steps from the criterion once (auto chain-of-thought, frozen to <code>geval_steps.txt</code>), then scores each reply
+      as Σ s·P(s) over the model's next-token probabilities for 1…10. It grades the same RESOLUTION criterion as judge v1, so the two can be set
+      against the same hand labels. PASS threshold pre-registered at ${d.geval_threshold} — fixed before any score existed.</p>`);
+  if (d.geval) {
+    const rows = d.geval.rows, labelled = rows.filter(r => r.human);
+    const agree = labelled.filter(r => r.geval_verdict === r.human).length;
+    const band = rows.filter(r => r.geval >= 5 && r.geval < 7).length;
+    const v1 = d.judge.v1?.agreement?.all;
+    return head + `<div class="metric-row">
+        ${w6Metric('Binary judge v1', v1 ? fmtPct(v1.pct) : '—', 'agreement with labels')}
+        ${w6Metric(`G-Eval ≥ ${d.geval_threshold}`, labelled.length ? `${(100 * agree / labelled.length).toFixed(1)}%` : '—', 'agreement with the same labels')}
+        ${w6Metric('In the 5–7 band', `${band}/${rows.length}`, 'one point flips the verdict')}</div>`
+      + w6Card(w6Eyebrow('Evaluation steps') + `<pre class="w6-cmd">${esc(d.geval.steps)}</pre>`)
+      + w6Card(w6Eyebrow('Scores') + w6GevalRows(d.geval));
+  }
+  return head + w6Card(w6Eyebrow('The 25 replies') + `<div class="muted">Not run — waits for the committed blind labels, like the judge.</div>
+      <pre class="w6-cmd">python experiments/week6_eval.py geval</pre>`)
+    + (d.geval_smoke ? w6Card(w6Eyebrow(`Smoke test · 3 hand-written replies · ${esc(d.geval_smoke.ran_at)}`)
+        + `<pre class="w6-cmd">${esc(d.geval_smoke.steps)}</pre>` + w6GevalRows(d.geval_smoke)) : '');
+}
+
+$('w6Body').addEventListener('change', e => {
+  if (e.target.id === 'w6DeltaBefore') { w6DeltaBefore = e.target.value; renderWeek6(); }
+  if (e.target.id === 'w6DeltaAfter') { w6DeltaAfter = e.target.value; renderWeek6(); }
+});
 
 $('w6Body').addEventListener('click', e => {
   const sub = e.target.closest('[data-prompt]');

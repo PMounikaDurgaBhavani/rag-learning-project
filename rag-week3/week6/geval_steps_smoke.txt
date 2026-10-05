@@ -1,0 +1,5 @@
+1. Check if the reply answers all parts of the customer's question and if the information provided is consistent with the reference facts.
+2. Verify if the reply leaves any part of the customer's request unanswered.
+3. Confirm if the reply states a step, number, price, cause, or policy that contradicts the reference facts or is not in them.
+4. Ensure the reply tells the customer what to do without the steps provided by the reference facts.
+5. If the reference facts indicate that the help center does not contain the answer, a reply that honestly states this and routes the customer onward is a PASS.

@@ -1,0 +1,290 @@
+{
+  "ran_at": "2026-09-22T13:30:01+00:00",
+  "app_version": "unknown",
+  "smoke": true,
+  "llm": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "embedder": "all-MiniLM-L6-v2",
+  "summary": {
+    "ALL": {
+      "faithfulness": 0.6666666666666666,
+      "answer_relevancy": 0.508,
+      "context_precision": 0.3056666666666667,
+      "context_recall": 0.3333333333333333
+    },
+    "policy-backed": {
+      "faithfulness": 0.6666666666666666,
+      "answer_relevancy": 0.508,
+      "context_precision": 0.3056666666666667,
+      "context_recall": 0.3333333333333333
+    }
+  },
+  "rows": [
+    {
+      "id": "S01",
+      "mode": "-",
+      "policy_backed": true,
+      "note": "faithful to its context, but the context is the wrong section",
+      "retrieved_sections": [
+        "Refund Eligibility Window",
+        "Refund Eligibility Window",
+        "Refund Eligibility Window"
+      ],
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.391,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "claims": [
+        {
+          "claim": "A subscription charge can be refunded only when the refund is requested within 30 days of the charge date.",
+          "p_full_context": 0.637,
+          "best_chunk": "HC-008-markdown-2",
+          "best_section": "Refund Eligibility Window",
+          "best_chunk_p": 0.644,
+          "p_supported": 0.644,
+          "supported": true
+        },
+        {
+          "claim": "A charge made more than 30 days before the refund request is not eligible for a refund.",
+          "p_full_context": 0.442,
+          "best_chunk": "HC-008-markdown-3",
+          "best_section": "Refund Eligibility Window",
+          "best_chunk_p": 0.743,
+          "p_supported": 0.743,
+          "supported": true
+        },
+        {
+          "claim": "You can turn off automatic renewal from Organization Settings > Billing so that the next charge does not occur.",
+          "p_full_context": 0.335,
+          "best_chunk": "HC-008-markdown-4",
+          "best_section": "Refund Eligibility Window",
+          "best_chunk_p": 0.761,
+          "p_supported": 0.761,
+          "supported": true
+        }
+      ],
+      "generated_questions": [
+        "Can I request a refund for a subscription charge more than 30 days after it was charged?",
+        "How can I stop automatic renewal for my subscription?",
+        "Is there a specific time frame within which I can request a refund for a subscription charge?"
+      ],
+      "chunks": [
+        {
+          "chunk_id": "HC-008-markdown-2",
+          "section": "Refund Eligibility Window",
+          "p_useful": 0.317,
+          "relevant": false
+        },
+        {
+          "chunk_id": "HC-008-markdown-3",
+          "section": "Refund Eligibility Window",
+          "p_useful": 0.297,
+          "relevant": false
+        },
+        {
+          "chunk_id": "HC-008-markdown-4",
+          "section": "Refund Eligibility Window",
+          "p_useful": 0.4,
+          "relevant": false
+        }
+      ],
+      "reference_facts": [
+        {
+          "fact": "This is a duplicate charge on the same invoice; duplicate charges are refunded in full regardless of the 30-day window (HC-008)",
+          "p_attributable": 0.282,
+          "attributable": false
+        },
+        {
+          "fact": "The refund is for $60.00",
+          "p_attributable": 0.245,
+          "attributable": false
+        }
+      ],
+      "expected_sections": [
+        "Duplicate Charges",
+        "Refund Amount and Timing",
+        "Frequently Asked Questions"
+      ],
+      "quoted_sections": [
+        "Refund Eligibility Window"
+      ],
+      "quotes_expected_section": false,
+      "faithfully_wrong": true
+    },
+    {
+      "id": "S02",
+      "mode": "-",
+      "policy_backed": true,
+      "note": "correct",
+      "retrieved_sections": [
+        "Refund Eligibility Window",
+        "Refund Amount and Timing",
+        "Refund Amount and Timing",
+        "Overview"
+      ],
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.577,
+      "context_precision": 0.917,
+      "context_recall": 1.0,
+      "claims": [
+        {
+          "claim": "Your charge was made 12 days ago, which is within the 30-day refund window, so it can be refunded in full.",
+          "p_full_context": 0.874,
+          "best_chunk": "HC-008-markdown-6",
+          "best_section": "Refund Amount and Timing",
+          "best_chunk_p": 0.689,
+          "p_supported": 0.874,
+          "supported": true
+        },
+        {
+          "claim": "The refund will be for $49.00.",
+          "p_full_context": 0.5,
+          "best_chunk": "HC-008-markdown-6",
+          "best_section": "Refund Amount and Timing",
+          "best_chunk_p": 0.693,
+          "p_supported": 0.693,
+          "supported": true
+        },
+        {
+          "claim": "It will be returned to your original payment method within 5 to 10 business days.",
+          "p_full_context": 0.562,
+          "best_chunk": "HC-008-markdown-6",
+          "best_section": "Refund Amount and Timing",
+          "best_chunk_p": 0.682,
+          "p_supported": 0.682,
+          "supported": true
+        }
+      ],
+      "generated_questions": [
+        "Can I request a refund for the CD-99002 I purchased 12 days ago?",
+        "How long does it take to process a refund for a purchase made 12 days ago?",
+        "Will the refund be credited to the original payment method I used?"
+      ],
+      "chunks": [
+        {
+          "chunk_id": "HC-008-markdown-2",
+          "section": "Refund Eligibility Window",
+          "p_useful": 0.585,
+          "relevant": true
+        },
+        {
+          "chunk_id": "HC-008-markdown-6",
+          "section": "Refund Amount and Timing",
+          "p_useful": 0.629,
+          "relevant": true
+        },
+        {
+          "chunk_id": "HC-008-markdown-7",
+          "section": "Refund Amount and Timing",
+          "p_useful": 0.291,
+          "relevant": false
+        },
+        {
+          "chunk_id": "HC-001-markdown-1",
+          "section": "Overview",
+          "p_useful": 0.539,
+          "relevant": true
+        }
+      ],
+      "reference_facts": [
+        {
+          "fact": "The charge is 12 days old, inside the 30-day refund window, so it is eligible for a full refund (HC-008)",
+          "p_attributable": 0.577,
+          "attributable": true
+        },
+        {
+          "fact": "The refund is for the exact amount charged: $49.00",
+          "p_attributable": 0.665,
+          "attributable": true
+        },
+        {
+          "fact": "Refunds return to the original payment method within 5 to 10 business days",
+          "p_attributable": 0.63,
+          "attributable": true
+        }
+      ],
+      "expected_sections": [
+        "Refund Eligibility Window",
+        "Refund Amount and Timing",
+        "Frequently Asked Questions"
+      ],
+      "quoted_sections": [
+        "Refund Amount and Timing"
+      ],
+      "quotes_expected_section": true,
+      "faithfully_wrong": false
+    },
+    {
+      "id": "S03",
+      "mode": "-",
+      "policy_backed": true,
+      "note": "invents a discount",
+      "retrieved_sections": [
+        "Refund Eligibility Window",
+        "Refund Amount and Timing"
+      ],
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.556,
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "claims": [
+        {
+          "claim": "As a gesture of goodwill we have applied a 20% discount to your next invoice.",
+          "p_full_context": 0.118,
+          "best_chunk": "HC-008-markdown-3",
+          "best_section": "Refund Eligibility Window",
+          "best_chunk_p": 0.217,
+          "p_supported": 0.217,
+          "supported": false
+        },
+        {
+          "claim": "We have also processed a refund of $75.00 for your charge.",
+          "p_full_context": 0.415,
+          "best_chunk": "HC-008-markdown-3",
+          "best_section": "Refund Eligibility Window",
+          "best_chunk_p": 0.449,
+          "p_supported": 0.449,
+          "supported": false
+        }
+      ],
+      "generated_questions": [
+        "Can you explain the reason for the 20% discount on my next invoice?",
+        "Why was a refund of $75.00 issued for my charge?",
+        "How can I apply the discount and refund to my next invoice?"
+      ],
+      "chunks": [
+        {
+          "chunk_id": "HC-008-markdown-3",
+          "section": "Refund Eligibility Window",
+          "p_useful": 0.278,
+          "relevant": false
+        },
+        {
+          "chunk_id": "HC-008-markdown-7",
+          "section": "Refund Amount and Timing",
+          "p_useful": 0.144,
+          "relevant": false
+        }
+      ],
+      "reference_facts": [
+        {
+          "fact": "76 days is outside the 30-day window: not eligible for a refund (HC-008)",
+          "p_attributable": 0.385,
+          "attributable": false
+        },
+        {
+          "fact": "CloudDesk does not offer discounts, credits or partial refunds in place of a refund",
+          "p_attributable": 0.167,
+          "attributable": false
+        }
+      ],
+      "expected_sections": [
+        "Refund Eligibility Window",
+        "Refund Amount and Timing",
+        "Frequently Asked Questions"
+      ],
+      "quoted_sections": [],
+      "quotes_expected_section": false,
+      "faithfully_wrong": false
+    }
+  ]
+}

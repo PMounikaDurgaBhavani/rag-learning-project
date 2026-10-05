@@ -1,0 +1,67 @@
+{
+  "ran_at": "2026-09-22T12:09:55+00:00",
+  "smoke": true,
+  "judge_model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "criterion_source": "week6/judge_v1.txt",
+  "steps": "1. Check if the reply answers all parts of the customer's question and if the information provided is consistent with the reference facts.\n2. Verify if the reply leaves any part of the customer's request unanswered.\n3. Confirm if the reply states a step, number, price, cause, or policy that contradicts the reference facts or is not in them.\n4. Ensure the reply tells the customer what to do without the steps provided by the reference facts.\n5. If the reference facts indicate that the help center does not contain the answer, a reply that honestly states this and routes the customer onward is a PASS.",
+  "pass_threshold": 6.0,
+  "rows": [
+    {
+      "id": "S01",
+      "mode": "-",
+      "geval": 4.57,
+      "argmax": 5,
+      "distribution": {
+        "1": 0.1137,
+        "2": 0.124,
+        "3": 0.1164,
+        "4": 0.1383,
+        "5": 0.1617,
+        "6": 0.1279,
+        "7": 0.0996,
+        "8": 0.0663,
+        "9": 0.0209,
+        "10": 0.0312
+      },
+      "geval_verdict": "FAIL"
+    },
+    {
+      "id": "S02",
+      "mode": "-",
+      "geval": 8.02,
+      "argmax": 8,
+      "distribution": {
+        "1": 0.0149,
+        "2": 0.0059,
+        "3": 0.0086,
+        "4": 0.0187,
+        "5": 0.0471,
+        "6": 0.073,
+        "7": 0.1113,
+        "8": 0.2711,
+        "9": 0.2213,
+        "10": 0.2281
+      },
+      "geval_verdict": "PASS"
+    },
+    {
+      "id": "S03",
+      "mode": "-",
+      "geval": 4.35,
+      "argmax": 1,
+      "distribution": {
+        "1": 0.1457,
+        "2": 0.1363,
+        "3": 0.1184,
+        "4": 0.1321,
+        "5": 0.1451,
+        "6": 0.1203,
+        "7": 0.0922,
+        "8": 0.0624,
+        "9": 0.0209,
+        "10": 0.0266
+      },
+      "geval_verdict": "FAIL"
+    }
+  ]
+}

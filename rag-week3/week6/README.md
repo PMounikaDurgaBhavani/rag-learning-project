@@ -12,7 +12,7 @@ that, `eval` prints assertions only and says why the judge was skipped.
 
 **In the UI:** run `python main.py ui` and open **Judge validation** in the sidebar. Its tabs are
 the overview and protocol checklist, pass rate by mode, the 25 cases, the judge prompt diffs,
-agreement, git ordering evidence, and the write-up. All of it is read from this folder.
+agreement, git ordering evidence, before/after deltas, RAGAS, G-Eval, the write-up, and a topic coverage map. All of it is read from this folder.
 `week6/DEMO.md` walks through it in rubric order.
 
 ## The protocol (order matters, and the code enforces it)
@@ -69,6 +69,30 @@ Diff: `git diff --no-index week6/judge_v0_presplit.txt week6/judge_v1.txt`
 - **Ticket replies.** `src/ticket_reply.py` drafts a reply using the same retrievers, distance gate, and decoding settings as `ask`. The model is **Qwen2.5-1.5B-Instruct**, not the app's 0.5B. Under ticket prompts v1.0–v1.2 the 0.5B either emitted `NOT_IN_SOURCES` (20 of 25 tickets whose answering chunk was retrieved first) or echoed the ticket fields back, so nearly all 25 labels would have been FAIL and agreement would have meant nothing. `ask` and every Week 3–5 number still use the 0.5B. Override with `RAG_TICKET_LLM`. The policy the replies need (refund window, duplicate charges, Priority escalation) is a new article, `samples/article_08_refunds_escalation.md` (HC-008). It is imported into the corpus.
 - **Langfuse.** Every answer, ticket draft, and rerun is sent to Langfuse as well as `traces/traces.jsonl`: retrieval and the LLM call become child observations. Eval runs attach scores to each reply trace: `assert:*`, `judge_v1`/`judge_v2`, `human_label`, `eval_pass`. Keys live in `.env`; `RAG_LANGFUSE=0` turns this off.
 - **Week 5 rerun.** `python experiments/error_analysis.py rerun` re-asks the 20 sampled questions on today's build and prints then/now outcomes. The UI's *Error analysis → The 20 traces* tab has the same action as a button. `... error_analysis.py langfuse` pushes the 20 original traces to Langfuse so then and now can be compared there.
+
+## Beyond the judge: RAGAS, G-Eval, before/after deltas
+
+| Command | What it measures | Output |
+|---|---|---|
+| `python experiments/week6_eval.py delta [--before RUN --after RUN]` | pass rate by mode between two eval runs (default: the newest two), cases that flipped, and a warning when a mode regresses while the overall rate does not | terminal |
+| `python experiments/week6_eval.py ragas [--policy-only]` | RAGAS-style faithfulness, answer relevancy, context precision, context recall; for the 7 policy-backed cases, which HC-008 section each reply actually quotes vs the sections it needs (`policy_sections.json`), and any reply that is **faithfully wrong** (faithfulness ≥ 0.9 while quoting only the wrong section) | `ragas_results.json` |
+| `python experiments/week6_eval.py geval` | G-Eval on the same RESOLUTION criterion: auto-CoT steps frozen to `geval_steps.txt`, score = Σ s·P(s) over 1–10; set against the same hand labels as the binary judge. The first run only generates the steps and stops: review them (the model can invert a criterion), commit, then run again to score | `geval_steps.txt`, `geval_results.json` |
+
+`ragas` and `geval` grade the 25 replies with a model, so they are **gated exactly like the judge**:
+they refuse until `labels_25.json` is committed. `--smoke` runs them on 3 hand-written replies
+(S01–S03, not among the 25) to check the code; that output goes to `*_smoke.json`.
+
+- **RAGAS is re-implemented locally** (`src/ragas_local.py`) from the metric definitions, because the
+  `ragas` package calls a hosted LLM. Verdicts are next-token P(Yes) from the judge model; claims are the
+  reply's sentences rather than LLM-decomposed statements. The numbers are "RAGAS-style", not comparable
+  to the hosted library's.
+- **Why faithfulness can hide a wrong answer:** it checks reply-vs-retrieved-context, never
+  context-vs-question. A reply that faithfully restates the refund-window section to a duplicate-charge
+  ticket scores ~1.0. Context precision is the metric that drops, and averaged over 25 cases the correct
+  replies swamp it.
+- **Binary vs 1–10:** the G-Eval PASS threshold (6.0) was fixed in code before any score existed. The
+  `geval` output also prints the best threshold in hindsight, which is fitted to the labels and so is not
+  a result, and how many replies land in the 5–7 band where one point decides the verdict.
 
 ## Judge model
 
