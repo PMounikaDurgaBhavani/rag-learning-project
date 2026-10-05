@@ -9,10 +9,16 @@ same output contract, same grader. Four numbers each decide it.
 ```bash
 python src/ticket_agent.py CD-7001          # the agent, one ticket, verbose
 python src/ticket_workflow.py CD-7007       # the workflow, one ticket, verbose
-python main.py race                         # both over all 10 -> week7/race.csv
-python experiments/week7_race.py budget-demo --ticket CD-7008 --max-iterations 2
+python main.py race --max-iterations 8 --max-seconds 300   # both over all 10 -> week7/race.csv
+python experiments/week7_race.py budget-demo --ticket CD-7001 --max-iterations 2 \
+    --max-tokens 100000 --max-cost 1 --max-seconds 600 --out week7/budget_logs/max_iterations.log
 python experiments/week7_tool_probe.py --compare
+python experiments/week7_memory.py restart-demo            # bonus: tier survives a restart
+python experiments/week7_memory.py long-race               # bonus: 3 x 30-turn threads
 ```
+
+`main.py race` defaults to 6 laps / 120 s; the table below was run at 8 / 300,
+so pass those flags to reproduce it.
 
 ## The result
 
@@ -85,6 +91,28 @@ generation mid-answer. `week7/budget_termination.log` is a full run:
 
 It terminates with a recorded reason and the facts it had, rather than spinning.
 
+That log has a flaw: at 60.3 s it had also reached its 60 s wall clock, so it
+does not show *which* budget fired on its own. `week7/budget_logs/` has one
+run per budget, each on CD-7001 with the other three set far out of reach, so
+exactly one can fire:
+
+| log | budgets (iters / tokens / $ / s) | fired | spent at termination |
+|---|---|---|---|
+| `max_iterations.log` | **2** / 100k / 1 / 600 | max_iterations | 2 laps, 1,537 tok, 285.9 s |
+| `max_tokens.log` | 50 / **1,200** / 1 / 600 | max_tokens | 1,537 tok after lap 2 |
+| `max_cost_usd.log` | 50 / 100k / **0.0002** / 600 | max_cost_usd | $0.000274 after lap 2 |
+| `max_wall_seconds.log` | 50 / 100k / 1 / **15** | max_wall_seconds | 15.3 s, lap 2 cut mid-generation |
+
+Two things these runs found:
+
+- **The first wall-clock capture overran 15 s by 63 s, and it was not the loop.**
+  `budget-demo` did not warm the model up, so the ~50 s weight load landed
+  inside lap 1 and was charged to the agent. With `warm_up()` first, as the race
+  already did, it stops at 15.3 s.
+- **Tokens and cost are checked between laps, so they overshoot by at most one
+  lap** (1,537 against 1,200). Stopping mid-lap would need a pre-call estimate of
+  the next prompt's size; the overshoot is bounded and logged rather than hidden.
+
 ## The third tool
 
 `lookup_refund_policy(tier, order_status)` — one job, enum parameters, and a
@@ -109,6 +137,76 @@ A frontier model would likely finish the loop and pass most of these tickets.
 It would not change the shape of the result: the loop still costs 25× the tokens
 for a task whose steps are known in advance.
 
+## Bonus — memory over 30-turn threads
+
+`src/agent_memory.py` adds both kinds of memory, and the same memory goes to
+both systems:
+
+- **Short term:** a 6-turn sliding window plus a rolling summary. When the
+  window overflows, the oldest turns are folded into the summary by the same
+  model. Every summary call is metered and charged to the system that reads it.
+- **Long term:** `week7/memory/long_term.json`, keyed by customer. It is written
+  only from a `find_ticket` result, never from what the customer says.
+
+**The tier survives a full restart** (`week7/memory/restart_demo.log`).
+Process A (pid 17320) resolves CD-7003 and writes `CUS-203 → priority`, then
+exits. Process B (pid 18408), a fresh interpreter, reads it back from the file.
+
+**The race on 3 × 30-turn threads** (`week7/long_race.csv`,
+`runs/long_race_20261005-145612.json`). The budgets were the same as the main
+race. The deciding detail sits in turns 2–9 of each thread, and the window
+evicts all of those turns.
+
+| system | pass | p50 latency | tokens | cost/ticket |
+|---|---|---|---|---|
+| agent (window + summary + LTM) | 1/3 | 70.6 s | 20,357 | $0.001276 |
+| workflow (window + summary + LTM) | 2/3 | 6.5 s | 5,541 | $0.000470 |
+| *control: workflow, full thread* | 3/3 | 7.1 s | 1,637 | $0.000102 |
+| *control: workflow, no long-term memory* | 1/3 | 5.5 s | 5,507 | $0.000467 |
+
+**The detail summarisation destroyed: order id `ORD-5101`. The ticket it broke:
+CD-7101 (LT-1).** The customer gives the id once, in turn 3. After six
+summarisation passes, the summary contains billing-email changes and a dashboard
+slowdown, and no order id. The workflow's fixed extraction step then answered
+`ORD-5001`, a real order belonging to a *different customer* (CUS-201), and
+approved a $49 refund on it. Given the uncompressed thread, the same workflow
+reads `ORD-5101` and passes. This is the worst kind of failure, because the
+lost detail was replaced by a plausible wrong one. `get_order` does not check
+that the order belongs to the ticket's customer. That ownership check is the
+fix this run points to.
+
+Two more failures the audit found:
+
+- **The LT-3 summary kept `ORD-5113` but invented that its refund "has been
+  processed successfully".** Both systems passed anyway, because they act on
+  `get_order`, not on the summary.
+- **Long-term memory is what passed LT-2.** The ticket record has no tier.
+  Without the remembered `priority`, `lookup_refund_policy(null, …)` returns
+  `bad_tier` and the workflow escalates. With it, the workflow approves $300 on
+  the 60-day window.
+
+**Memory cost.** Compression cost about 1,100 tokens per thread (6 summary
+calls) to save about 320 tokens of context. The workflow reads the thread once,
+so for the workflow compression costs more than it saves: 1,755 vs 711 tokens
+on LT-1. Only the loop, which re-sends the context every lap, earns it back.
+
+**Wall clock, again.** The agent on LT-2 ran for 801.9 s under a 300 s budget.
+Lap 5 had about 6 s left, and its first forward pass took 507 s to produce
+2 tokens. The workflow's 439 s reply call on the same thread shows the machine
+stalled. The in-lap deadline stops generation between tokens. It cannot cut a
+single forward pass short, so the wall clock is enforced only at token
+granularity. A hard limit would need generation in a separate process that can
+be killed.
+
+**Code changed after the 10-ticket race.** The memory hooks are off unless a
+thread or memory is passed, so the main race path is unchanged except for one
+added evidence rule in `ticket_agent.unsupported_by_evidence`: refuse
+`refund_approved` when `get_order` was never called. It can only reject an
+answer the grader already fails, so the race table stands. It was not re-run.
+
+No long-thread class forces an agent either. All three losses come from what
+the memory kept, not from a path the code could not have known in advance.
+
 ## Files
 
 | file | what |
@@ -123,3 +221,7 @@ for a task whose steps are known in advance.
 | `tool_probe_v1.json` / `_v2.json` | 20 decision points per description variant |
 | `verdict.md` | the verdict, under 150 words |
 | `DEMO.md` | what to show, in rubric order |
+| `budget_logs/*.log` | one clean termination per budget |
+| `long_threads.jsonl` | bonus: three 30-turn threads, expected outcomes, deciding details |
+| `long_race.csv` / `long_race_summary.csv` | bonus: the long-thread race and its controls |
+| `memory/long_term.json` / `memory/restart_demo.log` | bonus: the persisted tier and the two-process proof |

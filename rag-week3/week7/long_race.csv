@@ -1,0 +1,13 @@
+system,thread_id,ticket_id,class,pass,fail_reason,decision,expected_decision,refund_amount,expected_amount,latency_ms,resolve_tokens,memory_tokens,tokens,cost_usd,terminated_by
+agent,LT-1,CD-7101,order_id_in_thread,False,no_decision,,refund_approved,,64.0,70583.1,8099,1361,9460,0.001653,max_tokens
+workflow,LT-1,CD-7101,order_id_in_thread,False,amount 49.0 != 64.0,refund_approved,refund_approved,49.0,64.0,6484.1,394,1361,1755,0.000423,
+workflow_full_thread,LT-1,CD-7101,order_id_in_thread,True,,refund_approved,refund_approved,64.0,64.0,7108.1,711,0,711,0.000129,
+workflow_no_long_term,LT-1,CD-7101,order_id_in_thread,False,amount 49.0 != 64.0,refund_approved,refund_approved,49.0,64.0,5092.7,394,1361,1755,0.000423,
+agent,LT-2,CD-7102,tier_from_long_term_memory,False,no_decision,,refund_approved,,300.0,801929.7,5606,1687,7293,0.001389,max_wall_seconds
+workflow,LT-2,CD-7102,tier_from_long_term_memory,True,,refund_approved,refund_approved,300.0,300.0,97641.0,188,1687,1875,0.000513,
+workflow_full_thread,LT-2,CD-7102,tier_from_long_term_memory,True,,refund_approved,refund_approved,300.0,300.0,7963.4,188,0,188,4.5e-05,
+workflow_no_long_term,LT-2,CD-7102,tier_from_long_term_memory,False,decision escalated != refund_approved,escalated,refund_approved,,300.0,439526.1,154,1687,1841,0.000503,
+agent,LT-3,CD-7103,corrected_order_id,True,,refund_approved,refund_approved,45.0,45.0,67887.0,2113,1491,3604,0.000787,
+workflow,LT-3,CD-7103,corrected_order_id,True,,refund_approved,refund_approved,45.0,45.0,5625.0,420,1491,1911,0.000474,
+workflow_full_thread,LT-3,CD-7103,corrected_order_id,True,,refund_approved,refund_approved,45.0,45.0,6205.8,738,0,738,0.000132,
+workflow_no_long_term,LT-3,CD-7103,corrected_order_id,True,,refund_approved,refund_approved,45.0,45.0,5507.6,420,1491,1911,0.000474,

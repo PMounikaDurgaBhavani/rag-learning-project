@@ -1,0 +1,14 @@
+# Week 7 — budget termination, captured 2026-10-05T09:05:25+00:00
+# command: python experiments/week7_race.py budget-demo --ticket CD-7001 --max-iterations 50 --max-tokens 1200 --max-cost 1.0 --max-seconds 600.0
+# model: Qwen/Qwen2.5-1.5B-Instruct
+# budgets: {"max_iterations": 50, "max_tokens": 1200, "max_cost_usd": 1.0, "max_wall_seconds": 600.0}
+# terminated_by: max_tokens
+# spent: 2 iterations, 1537 tokens, $0.000274, 58230ms
+# result at termination: {"ticket_id": "CD-7001", "decision": null, "refund_amount": null, "tier": null, "reply": ""}
+
+[agent] ticket=CD-7001 budgets={'max_iterations': 50, 'max_tokens': 1200, 'max_cost_usd': 1.0, 'max_wall_seconds': 600.0}
+[agent] lap 1: in=663 out=26 14028ms
+[agent]   tool find_ticket({"ticket_id": "CD-7001"}) -> {"ticket_id": "CD-7001", "customer_id": "CUS-201", "order_id": "ORD-5001", "tier": "standard", "status": "open", "message": "I cancelled in the first week and s
+[agent] lap 2: in=777 out=71 10279ms
+[agent] unparseable reply: 'The ticket CD-7001 relates to an order ID ORD-5001 under standard tier CUS-201. The order has been open since last Monda'
+[agent] BUDGET max_tokens hit (1537 >= 1200) after 2 iterations, 1537 tokens, $0.000274, 58.2s — terminating cleanly

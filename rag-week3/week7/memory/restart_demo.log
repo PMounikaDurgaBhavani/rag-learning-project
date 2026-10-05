@@ -1,0 +1,12 @@
+# Week 7 bonus — long-term memory across a process restart, 2026-10-05T09:20:33+00:00
+# command: python experiments/week7_memory.py restart-demo
+# demo pid 17317 starts two child interpreters in turn
+
+[A pid=17320] memory file before: absent
+[A pid=17320] resolved CD-7003: decision=refund_approved
+[A pid=17320] wrote {"tier": {"value": "priority", "source": "find_ticket(CD-7003)", "written_at": "2026-10-05T09:22:07+00:00", "written_by_pid": 17320}}
+[A pid=17320] exiting
+[demo] process A exited with code 0
+[B pid=18408] read week7/memory/long_term.json
+[B pid=18408] recall(CUS-203).tier = 'priority' (written by pid 17320 at 2026-10-05T09:22:07+00:00, source find_ticket(CD-7003))
+[demo] process B exited with code 0

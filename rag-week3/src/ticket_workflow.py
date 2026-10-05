@@ -20,6 +20,7 @@ itself an argument for a loop, only for a branch.
 
 import json
 import os
+import re
 import sys
 import time
 
@@ -34,6 +35,14 @@ REPLY_SYSTEM_PROMPT = (
 )
 
 PROMPT_VERSION = "workflow-v1.0"
+
+ORDER_ID_PROMPT = (
+    "You read a customer support thread. Which order id does the customer want "
+    "refunded now? If they corrected themselves, use the corrected one. Reply with "
+    "the order id only (like ORD-5001), or NONE if no order id was given."
+)
+
+ORDER_ID = re.compile(r"\bORD-\d+\b", re.I)
 
 # Same contract as the agent, decided here in code from the policy rule.
 DECISION_BY_RULE = {
@@ -64,8 +73,14 @@ def decide(ticket, order, policy):
     return "refund_denied", None, f"{days}d > {window}d window"
 
 
-def resolve_ticket(ticket_id, verbose=False, log=None):
-    """Three fixed steps, one reply call. Always returns the same shape as the agent."""
+def resolve_ticket(ticket_id, verbose=False, log=None, thread_context=None, memory=None):
+    """Three fixed steps, one reply call. Always returns the same shape as the agent.
+
+    thread_context and memory are the same inputs the agent gets on a long
+    thread (agent_memory). They add two fixed branches, not a loop: a tier the
+    ticket lacks comes from long-term memory, and an order id the ticket lacks
+    is read out of the thread by one model call.
+    """
 
     lines = [] if log is None else log
 
@@ -100,12 +115,33 @@ def resolve_ticket(ticket_id, verbose=False, log=None):
         return _finish(result, meter, started, lines, ticket_id)
 
     tier = ticket.get("tier")
+    if memory is not None:
+        memory.remember_from_ticket(ticket)
+        if not tier and memory.tier_for(ticket.get("customer_id")):
+            tier = memory.tier_for(ticket["customer_id"])
+            record(f"[workflow] tier from long-term memory: {ticket['customer_id']} -> {tier} "
+                   f"({memory.recall(ticket['customer_id'])['tier']['source']})")
     result["tier"] = tier
+
+    order_id = ticket.get("order_id")
+    if not order_id and thread_context:
+        response = chat(
+            [{"role": "system", "content": ORDER_ID_PROMPT},
+             {"role": "user", "content": f"{thread_context}\n\nOrder id:"}],
+            max_new_tokens=16,
+        )
+        meter["model_calls"] += 1
+        meter["input_tokens"] += response["input_tokens"]
+        meter["output_tokens"] += response["output_tokens"]
+        found = ORDER_ID.search(response["text"])
+        order_id = found.group(0).upper() if found else None
+        record(f"[workflow] order id read from thread: {order_id} "
+               f"(model said {response['text'][:40]!r})")
 
     # ---- step 2 -----------------------------------------------------------
     # No order id is not an error state to retry, it is the other branch.
-    if ticket.get("order_id"):
-        order = run_tool("get_order", {"order_id": ticket["order_id"]})
+    if order_id:
+        order = run_tool("get_order", {"order_id": order_id})
     else:
         order = {"order_status": "missing", "error": "order_id_missing"}
         record("[workflow] step 2 skipped: ticket carries no order id -> order_status=missing")

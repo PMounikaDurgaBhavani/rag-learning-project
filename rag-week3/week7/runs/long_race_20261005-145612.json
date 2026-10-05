@@ -1,0 +1,946 @@
+{
+  "ran_at": "2026-10-05T09:53:45+00:00",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "budgets": {
+    "max_iterations": 8,
+    "max_tokens": 8000,
+    "max_cost_usd": 0.01,
+    "max_wall_seconds": 300.0
+  },
+  "summary": [
+    {
+      "system": "agent",
+      "n": 3,
+      "passes": 1,
+      "pass_rate_pct": 33.3,
+      "p50_latency_ms": 70583.1,
+      "total_tokens": 20357,
+      "cost_per_ticket_usd": 0.001276,
+      "budget_terminations": 2
+    },
+    {
+      "system": "workflow",
+      "n": 3,
+      "passes": 2,
+      "pass_rate_pct": 66.7,
+      "p50_latency_ms": 6484.1,
+      "total_tokens": 5541,
+      "cost_per_ticket_usd": 0.00047,
+      "budget_terminations": 0
+    },
+    {
+      "system": "workflow_full_thread",
+      "n": 3,
+      "passes": 3,
+      "pass_rate_pct": 100.0,
+      "p50_latency_ms": 7108.1,
+      "total_tokens": 1637,
+      "cost_per_ticket_usd": 0.000102,
+      "budget_terminations": 0
+    },
+    {
+      "system": "workflow_no_long_term",
+      "n": 3,
+      "passes": 1,
+      "pass_rate_pct": 33.3,
+      "p50_latency_ms": 5507.6,
+      "total_tokens": 5507,
+      "cost_per_ticket_usd": 0.000467,
+      "budget_terminations": 0
+    }
+  ],
+  "audits": [
+    {
+      "thread_id": "LT-1",
+      "ticket_id": "CD-7101",
+      "full_context_tokens": 445,
+      "compressed_context_tokens": 125,
+      "summary_calls": 6,
+      "summary_tokens": 1361,
+      "final_summary": "The customer's colleague requested to change the billing email address; it was handled by updating the settings under \"Settings\" > \"Billing.\" The refund process is ongoing, with the customer awaiting further instructions on how to proceed.",
+      "summaries": [
+        {
+          "after_turn": 7,
+          "summary": "The customer has contacted support regarding an unexpected charge from their previous subscription cancellation. The agent is currently verifying the order number provided by the customer (ORD-5101) against the billing records."
+        },
+        {
+          "after_turn": 11,
+          "summary": "The customer's previous subscription cancellation unexpectedly resulted in an additional charge. Support is investigating using the provided order number (ORD-5101). Billing has acknowledged the issue but is experiencing a backlog due to other requests. The agent suggests updating the email settings for invoices to ensure they do not end up in spam."
+        },
+        {
+          "after_turn": 15,
+          "summary": "The customer confirms receipt of the update regarding chasing billing. The agent informs that once approved, refunds typically take 5 to 10 business days to reach the card."
+        },
+        {
+          "after_turn": 19,
+          "summary": "The customer will receive an email confirming the refund issuance within 5-10 business days after approval. An automatic confirmation email is sent upon issuing the refund. Yesterday's dashboard slowdown was due to a short technical issue; it has been resolved."
+        },
+        {
+          "after_turn": 23,
+          "summary": "The customer will receive an email confirming the refund issuance within 5-10 business days after approval. An automatic confirmation email is sent upon issuing the refund. The dashboard slowdown from yesterday has been resolved internally. The customer is now fine and still awaiting the refund. A reference number for the conversation can be found in their ticket number."
+        },
+        {
+          "after_turn": 27,
+          "summary": "The customer's colleague requested to change the billing email address; it was handled by updating the settings under \"Settings\" > \"Billing.\" The refund process is ongoing, with the customer awaiting further instructions on how to proceed."
+        }
+      ],
+      "window": [
+        "Thanks. Please confirm once it's done.",
+        "I'll update this ticket as soon as there's a decision.",
+        "Hello? Following up again.",
+        "Apologies for the delay, it's with the refunds desk now.",
+        "Ok.",
+        "Is there anything else I can help with while you wait?"
+      ],
+      "details": {
+        "ORD-5101": {
+          "in_summary": false,
+          "in_window": false
+        }
+      }
+    },
+    {
+      "thread_id": "LT-2",
+      "ticket_id": "CD-7102",
+      "full_context_tokens": 446,
+      "compressed_context_tokens": 150,
+      "summary_calls": 6,
+      "summary_tokens": 1687,
+      "final_summary": "The customer's refund request is currently being processed within 5-10 business days via an automated email. A reference number is provided for tracking purposes. The customer inquires about changing the billing email address; this can be done through Settings > Billing. The agent will escalate the matter to the refunds queue for a final decision on the refund.",
+      "summaries": [
+        {
+          "after_turn": 7,
+          "summary": "The customer has raised a refund request for an add-on charge on ORDER-5102, which occurred approximately seven weeks prior. The agent informs the customer that the standard refund period is 30 days from the charge date. The customer requests verification regarding their account specifics. The agent confirms they are in communication with the billing team to address these concerns promptly."
+        },
+        {
+          "after_turn": 11,
+          "summary": "The customer requested an update on their refund process, noting it was initiated for an add-on charge on ORDER-5102, which occurred about seven weeks ago. The agent informed them that the standard refund period is 30 days from the charge date and confirmed ongoing communication with the billing team. The customer also asked if there had been any changes to their email notifications, specifically mentioning that their invoices were frequently landing in spam. The agent advised the customer to add billing@clouddesk.example to their contacts to resolve the issue."
+        },
+        {
+          "after_turn": 15,
+          "summary": "The customer has completed their request for an update on the refund process, confirming they are awaiting approval. The agent informs the customer that refunds typically take 30 days after approval and adds a note to follow up with billing. The customer asks for an estimate on the time frame for receiving the refund once approved; the agent responds that refunds usually arrive within 5 to 10 business days."
+        },
+        {
+          "after_turn": 19,
+          "summary": "The customer inquires about an estimated timeframe for receiving the refund upon approval, which typically takes 5-10 business days. An automatic confirmation will be sent upon issuing the refund. The agent confirms that an automated email will notify the customer once the refund is processed. Additionally, the customer mentions experiencing a slow dashboard on the 18th, which was due to a brief technical issue that was resolved later that day."
+        },
+        {
+          "after_turn": 23,
+          "summary": "The customer has been informed that their refund request is being processed within 5-10 business days via an automated email. A reference number for the conversation is provided as part of the ticket details. The agent acknowledges the ongoing wait by escalating the matter internally and offers assistance if needed."
+        },
+        {
+          "after_turn": 27,
+          "summary": "The customer's refund request is currently being processed within 5-10 business days via an automated email. A reference number is provided for tracking purposes. The customer inquires about changing the billing email address; this can be done through Settings > Billing. The agent will escalate the matter to the refunds queue for a final decision on the refund."
+        }
+      ],
+      "window": [
+        "Thanks. Please confirm once it's done.",
+        "I'll update this ticket as soon as there's a decision.",
+        "Hello? Following up again.",
+        "Apologies for the delay, it's with the refunds desk now.",
+        "Ok.",
+        "Is there anything else I can help with while you wait?"
+      ],
+      "details": {}
+    },
+    {
+      "thread_id": "LT-3",
+      "ticket_id": "CD-7103",
+      "full_context_tokens": 474,
+      "compressed_context_tokens": 156,
+      "summary_calls": 6,
+      "summary_tokens": 1491,
+      "final_summary": "Refunds for ORD-5113 have been processed successfully, with billing following up on spam email issues. The customer's dashboard was reported as slow yesterday without an outage. Billing has escalated the issue internally. A reference number (ticket ID) is required for future inquiries. The customer inquires about changing their billing email address.",
+      "summaries": [
+        {
+          "after_turn": 7,
+          "summary": "The customer requested a refund for an unspecified charge on their card. The agent learned that the order number is ORD-5131 and will investigate this transaction further."
+        },
+        {
+          "after_turn": 11,
+          "summary": "The customer has clarified that they are requesting a refund for ORD-5113, which was charged $45 on 11 September, instead of the previous order number mentioned. The agent acknowledges the correction and is currently investigating the refund request using ORD-5113."
+        },
+        {
+          "after_turn": 15,
+          "summary": "Billing has processed the refund for ORD-5113, which was previously charged $45 on 11 September. The agent is now investigating another refund request under the same order number. Customer reports their invoice emails are being flagged as spam and asks if the issue can be resolved by adding billing@clouddesk.example to their contact list."
+        },
+        {
+          "after_turn": 19,
+          "summary": "The refund for ORD-5113 has been processed successfully, and billing will follow up to ensure the issue with spam emails is resolved. Billing has noted the additional contact information. Refunds typically take 5 to 10 business days to reach the card. The customer requests an update on the status of the refund once it's processed."
+        },
+        {
+          "after_turn": 23,
+          "summary": "Refund for ORD-5113 has been processed successfully; billing will follow up regarding spam email issues. Additional contact info noted by billing. Refunds typically take 5 to 10 business days. Customer reports dashboard was slow yesterday but no outage occurred. Waiting for refund status update after processing."
+        },
+        {
+          "after_turn": 27,
+          "summary": "Refunds for ORD-5113 have been processed successfully, with billing following up on spam email issues. The customer's dashboard was reported as slow yesterday without an outage. Billing has escalated the issue internally. A reference number (ticket ID) is required for future inquiries. The customer inquires about changing their billing email address."
+        }
+      ],
+      "window": [
+        "Yes, any admin can change it under Settings > Billing.",
+        "Great. Please just sort the refund.",
+        "Will do. I'm handing this to the refunds queue for a final decision.",
+        "Thanks. Please confirm once it's done.",
+        "I'll update this ticket as soon as there's a decision.",
+        "Hello? Following up again."
+      ],
+      "details": {
+        "ORD-5113": {
+          "in_summary": true,
+          "in_window": false
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "system": "agent",
+      "thread_id": "LT-1",
+      "ticket_id": "CD-7101",
+      "class": "order_id_in_thread",
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 64.0,
+      "latency_ms": 70583.1,
+      "resolve_tokens": 8099,
+      "memory_tokens": 1361,
+      "tokens": 9460,
+      "cost_usd": 0.001653,
+      "terminated_by": "max_tokens"
+    },
+    {
+      "system": "workflow",
+      "thread_id": "LT-1",
+      "ticket_id": "CD-7101",
+      "class": "order_id_in_thread",
+      "pass": false,
+      "fail_reason": "amount 49.0 != 64.0",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 49.0,
+      "expected_amount": 64.0,
+      "latency_ms": 6484.1,
+      "resolve_tokens": 394,
+      "memory_tokens": 1361,
+      "tokens": 1755,
+      "cost_usd": 0.000423,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_full_thread",
+      "thread_id": "LT-1",
+      "ticket_id": "CD-7101",
+      "class": "order_id_in_thread",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 64.0,
+      "expected_amount": 64.0,
+      "latency_ms": 7108.1,
+      "resolve_tokens": 711,
+      "memory_tokens": 0,
+      "tokens": 711,
+      "cost_usd": 0.000129,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_no_long_term",
+      "thread_id": "LT-1",
+      "ticket_id": "CD-7101",
+      "class": "order_id_in_thread",
+      "pass": false,
+      "fail_reason": "amount 49.0 != 64.0",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 49.0,
+      "expected_amount": 64.0,
+      "latency_ms": 5092.7,
+      "resolve_tokens": 394,
+      "memory_tokens": 1361,
+      "tokens": 1755,
+      "cost_usd": 0.000423,
+      "terminated_by": ""
+    },
+    {
+      "system": "agent",
+      "thread_id": "LT-2",
+      "ticket_id": "CD-7102",
+      "class": "tier_from_long_term_memory",
+      "pass": false,
+      "fail_reason": "no_decision",
+      "decision": null,
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 300.0,
+      "latency_ms": 801929.7,
+      "resolve_tokens": 5606,
+      "memory_tokens": 1687,
+      "tokens": 7293,
+      "cost_usd": 0.001389,
+      "terminated_by": "max_wall_seconds"
+    },
+    {
+      "system": "workflow",
+      "thread_id": "LT-2",
+      "ticket_id": "CD-7102",
+      "class": "tier_from_long_term_memory",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 300.0,
+      "expected_amount": 300.0,
+      "latency_ms": 97641.0,
+      "resolve_tokens": 188,
+      "memory_tokens": 1687,
+      "tokens": 1875,
+      "cost_usd": 0.000513,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_full_thread",
+      "thread_id": "LT-2",
+      "ticket_id": "CD-7102",
+      "class": "tier_from_long_term_memory",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 300.0,
+      "expected_amount": 300.0,
+      "latency_ms": 7963.4,
+      "resolve_tokens": 188,
+      "memory_tokens": 0,
+      "tokens": 188,
+      "cost_usd": 4.5e-05,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_no_long_term",
+      "thread_id": "LT-2",
+      "ticket_id": "CD-7102",
+      "class": "tier_from_long_term_memory",
+      "pass": false,
+      "fail_reason": "decision escalated != refund_approved",
+      "decision": "escalated",
+      "expected_decision": "refund_approved",
+      "refund_amount": null,
+      "expected_amount": 300.0,
+      "latency_ms": 439526.1,
+      "resolve_tokens": 154,
+      "memory_tokens": 1687,
+      "tokens": 1841,
+      "cost_usd": 0.000503,
+      "terminated_by": ""
+    },
+    {
+      "system": "agent",
+      "thread_id": "LT-3",
+      "ticket_id": "CD-7103",
+      "class": "corrected_order_id",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 45.0,
+      "expected_amount": 45.0,
+      "latency_ms": 67887.0,
+      "resolve_tokens": 2113,
+      "memory_tokens": 1491,
+      "tokens": 3604,
+      "cost_usd": 0.000787,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow",
+      "thread_id": "LT-3",
+      "ticket_id": "CD-7103",
+      "class": "corrected_order_id",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 45.0,
+      "expected_amount": 45.0,
+      "latency_ms": 5625.0,
+      "resolve_tokens": 420,
+      "memory_tokens": 1491,
+      "tokens": 1911,
+      "cost_usd": 0.000474,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_full_thread",
+      "thread_id": "LT-3",
+      "ticket_id": "CD-7103",
+      "class": "corrected_order_id",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 45.0,
+      "expected_amount": 45.0,
+      "latency_ms": 6205.8,
+      "resolve_tokens": 738,
+      "memory_tokens": 0,
+      "tokens": 738,
+      "cost_usd": 0.000132,
+      "terminated_by": ""
+    },
+    {
+      "system": "workflow_no_long_term",
+      "thread_id": "LT-3",
+      "ticket_id": "CD-7103",
+      "class": "corrected_order_id",
+      "pass": true,
+      "fail_reason": "",
+      "decision": "refund_approved",
+      "expected_decision": "refund_approved",
+      "refund_amount": 45.0,
+      "expected_amount": 45.0,
+      "latency_ms": 5507.6,
+      "resolve_tokens": 420,
+      "memory_tokens": 1491,
+      "tokens": 1911,
+      "cost_usd": 0.000474,
+      "terminated_by": ""
+    }
+  ],
+  "runs": [
+    {
+      "system": "agent",
+      "ticket_id": "CD-7101",
+      "result": {
+        "ticket_id": "CD-7101",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_tokens",
+      "latency_ms": 70583.1,
+      "tokens": 8099,
+      "cost_usd": 0.0013125,
+      "meter": {
+        "iterations": 7,
+        "input_tokens": 7882,
+        "output_tokens": 217,
+        "tool_calls": 8,
+        "tool_errors": 1,
+        "wrong_tool_calls": 5,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 6
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7101 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=796 out=52 6947ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7101\"}) -> {\"ticket_id\": \"CD-7101\", \"customer_id\": \"CUS-211\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Hi, I was charged for a plan I cancelled.",
+        "[agent]   tool get_order({\"order_id\": \"ORD-7101\"}) -> {\"error\": \"order_not_found\", \"order_id\": \"ORD-7101\", \"order_status\": \"missing\"}",
+        "[agent] lap 2: in=961 out=27 4220ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[agent] lap 3: in=1051 out=28 8600ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[agent] lap 4: in=1141 out=28 15456ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"refunded\"}) -> {\"rule\": \"already_refunded\", \"window_days\": null, \"escalate\": false, \"explanation\": \"The order was already refunded; tell the customer when it was issued.\"}",
+        "[agent] lap 5: in=1226 out=28 6071ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"refunded\"}) -> {\"rule\": \"already_refunded\", \"window_days\": null, \"escalate\": false, \"explanation\": \"The order was already refunded; tell the customer when it was issued.\"}",
+        "[agent] lap 6: in=1311 out=27 8207ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"cancelled\"}) -> {\"rule\": \"escalate_to_billing\", \"window_days\": null, \"escalate\": true, \"explanation\": \"A cancelled order is settled by billing, not by the refund window.\"}",
+        "[agent] lap 7: in=1396 out=27 20308ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"cancelled\"}) -> {\"rule\": \"escalate_to_billing\", \"window_days\": null, \"escalate\": true, \"explanation\": \"A cancelled order is settled by billing, not by the refund window.\"}",
+        "[agent] BUDGET max_tokens hit (8099 >= 8000) after 7 iterations, 8099 tokens, $0.001313, 70.6s \u2014 terminating cleanly"
+      ],
+      "variant": "agent",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7101",
+      "result": {
+        "ticket_id": "CD-7101",
+        "decision": "refund_approved",
+        "refund_amount": 49.0,
+        "tier": "standard",
+        "reply": "The ticket with ID CD-7101, which was charged on day 12 and falls under the standard tier, has had its order status updated to refunded, amounting to $49.00."
+      },
+      "terminated_by": null,
+      "latency_ms": 6484.1,
+      "tokens": 394,
+      "cost_usd": 8.294999999999998e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 341,
+        "output_tokens": 53,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7101\"}) -> {\"ticket_id\": \"CD-7101\", \"customer_id\": \"CUS-211\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Hi, I was charged for a plan I cancelled.",
+        "[workflow] order id read from thread: ORD-5001 (model said 'ORD-5001')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5001\"}) -> {\"order_id\": \"ORD-5001\", \"customer_id\": \"CUS-201\", \"amount\": 49.0, \"charge_date\": \"2026-09-09\", \"days_since_charge\": 12, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=49.0 (12d <= 30d window)",
+        "[workflow] reply call: in=149 out=46 4926ms"
+      ],
+      "variant": "workflow",
+      "pass": false,
+      "reason": "amount 49.0 != 64.0"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7101",
+      "result": {
+        "ticket_id": "CD-7101",
+        "decision": "refund_approved",
+        "refund_amount": 64.0,
+        "tier": "standard",
+        "reply": "The ticket with ID CD-7101, which was charged on day 20 and falls under the standard tier, has had its order status updated to refunded, amounting to $64."
+      },
+      "terminated_by": null,
+      "latency_ms": 7108.1,
+      "tokens": 711,
+      "cost_usd": 0.00012914999999999997,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 661,
+        "output_tokens": 50,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7101\"}) -> {\"ticket_id\": \"CD-7101\", \"customer_id\": \"CUS-211\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Hi, I was charged for a plan I cancelled.",
+        "[workflow] order id read from thread: ORD-5101 (model said 'ORD-5101')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5101\"}) -> {\"order_id\": \"ORD-5101\", \"customer_id\": \"CUS-211\", \"amount\": 64.0, \"charge_date\": \"2026-09-01\", \"days_since_charge\": 20, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=64.0 (20d <= 30d window)",
+        "[workflow] reply call: in=149 out=43 4048ms"
+      ],
+      "variant": "workflow_full_thread",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7101",
+      "result": {
+        "ticket_id": "CD-7101",
+        "decision": "refund_approved",
+        "refund_amount": 49.0,
+        "tier": "standard",
+        "reply": "The ticket with ID CD-7101, which was charged on day 12 and falls under the standard tier, has had its order status updated to refunded, amounting to $49.00."
+      },
+      "terminated_by": null,
+      "latency_ms": 5092.7,
+      "tokens": 394,
+      "cost_usd": 8.294999999999998e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 341,
+        "output_tokens": 53,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7101\"}) -> {\"ticket_id\": \"CD-7101\", \"customer_id\": \"CUS-211\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Hi, I was charged for a plan I cancelled.",
+        "[workflow] order id read from thread: ORD-5001 (model said 'ORD-5001')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5001\"}) -> {\"order_id\": \"ORD-5001\", \"customer_id\": \"CUS-201\", \"amount\": 49.0, \"charge_date\": \"2026-09-09\", \"days_since_charge\": 12, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=49.0 (12d <= 30d window)",
+        "[workflow] reply call: in=149 out=46 4194ms"
+      ],
+      "variant": "workflow_no_long_term",
+      "pass": false,
+      "reason": "amount 49.0 != 64.0"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7102",
+      "result": {
+        "ticket_id": "CD-7102",
+        "decision": null,
+        "refund_amount": null,
+        "tier": null,
+        "reply": ""
+      },
+      "terminated_by": "max_wall_seconds",
+      "latency_ms": 801929.7,
+      "tokens": 5606,
+      "cost_usd": 0.0009209999999999998,
+      "meter": {
+        "iterations": 5,
+        "input_tokens": 5428,
+        "output_tokens": 178,
+        "tool_calls": 3,
+        "tool_errors": 1,
+        "wrong_tool_calls": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        },
+        "evidence_rejections": 1
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7102 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=821 out=52 11610ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7102\"}) -> {\"ticket_id\": \"CD-7102\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5102\", \"tier\": null, \"status\": \"open\", \"message\": \"Raising a refund for our add-on charge, o",
+        "[agent]   memory -> Long-term memory: customer CUS-203 is on the priority tier (recorded from find_ticket(CD-7003)).",
+        "[agent]   tool get_order({\"order_id\": \"ORD-7102\"}) -> {\"error\": \"order_not_found\", \"order_id\": \"ORD-7102\", \"order_status\": \"missing\"}",
+        "[agent] lap 2: in=1034 out=28 63193ms",
+        "[agent] unparseable reply: \"I'm sorry, but we couldn't find the order associated with your ticket. Could you please provide me with the correct orde\"",
+        "[agent] lap 3: in=1094 out=67 69823ms",
+        "[agent] rejected: answer not supported by tool results (You have not checked the policy yet. Call lookup_refund_policy with tier=priority and order_status=missing before answering.)",
+        "[agent] lap 4: in=1195 out=29 148261ms",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"missing\"}) -> {\"rule\": \"escalate_order_not_found\", \"window_days\": null, \"escalate\": true, \"explanation\": \"Without an order the refund cannot be assessed; escalate to a human ",
+        "[agent] lap 5 cut short by the wall-clock budget",
+        "[agent] lap 5: in=1284 out=2 507484ms",
+        "[agent] unparseable reply: 'Based on'",
+        "[agent] BUDGET max_wall_seconds hit (801.9s >= 300.0s) after 5 iterations, 5606 tokens, $0.000921, 801.9s \u2014 terminating cleanly"
+      ],
+      "variant": "agent",
+      "pass": false,
+      "reason": "no_decision"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7102",
+      "result": {
+        "ticket_id": "CD-7102",
+        "decision": "refund_approved",
+        "refund_amount": 300.0,
+        "tier": "priority",
+        "reply": "The ticket with ID CD-7102, which was previously charged and falls under the priority tier, has been approved for a full refund amounting to $300."
+      },
+      "terminated_by": null,
+      "latency_ms": 97641.0,
+      "tokens": 188,
+      "cost_usd": 4.5299999999999997e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 1,
+        "input_tokens": 150,
+        "output_tokens": 38,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7102\"}) -> {\"ticket_id\": \"CD-7102\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5102\", \"tier\": null, \"status\": \"open\", \"message\": \"Raising a refund for our add-on charge, o",
+        "[workflow] tier from long-term memory: CUS-203 -> priority (find_ticket(CD-7003))",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5102\"}) -> {\"order_id\": \"ORD-5102\", \"customer_id\": \"CUS-203\", \"amount\": 300.0, \"charge_date\": \"2026-08-02\", \"days_since_charge\": 50, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[workflow] decision=refund_approved amount=300.0 (50d <= 60d window)",
+        "[workflow] reply call: in=150 out=38 97420ms"
+      ],
+      "variant": "workflow",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7102",
+      "result": {
+        "ticket_id": "CD-7102",
+        "decision": "refund_approved",
+        "refund_amount": 300.0,
+        "tier": "priority",
+        "reply": "The ticket with ID CD-7102, which was previously charged and falls under the priority tier, has been approved for a full refund amounting to $300."
+      },
+      "terminated_by": null,
+      "latency_ms": 7963.4,
+      "tokens": 188,
+      "cost_usd": 4.5299999999999997e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 1,
+        "input_tokens": 150,
+        "output_tokens": 38,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7102\"}) -> {\"ticket_id\": \"CD-7102\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5102\", \"tier\": null, \"status\": \"open\", \"message\": \"Raising a refund for our add-on charge, o",
+        "[workflow] tier from long-term memory: CUS-203 -> priority (find_ticket(CD-7003))",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5102\"}) -> {\"order_id\": \"ORD-5102\", \"customer_id\": \"CUS-203\", \"amount\": 300.0, \"charge_date\": \"2026-08-02\", \"days_since_charge\": 50, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"priority\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 60, \"escalate\": false, \"explanation\": \"A priority tier charge is refundable within 60 days of the charge date",
+        "[workflow] decision=refund_approved amount=300.0 (50d <= 60d window)",
+        "[workflow] reply call: in=150 out=38 7842ms"
+      ],
+      "variant": "workflow_full_thread",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7102",
+      "result": {
+        "ticket_id": "CD-7102",
+        "decision": "escalated",
+        "refund_amount": null,
+        "tier": null,
+        "reply": "The ticket CD-7102 was escalated due to the high number of days since the charge (50 days)."
+      },
+      "terminated_by": null,
+      "latency_ms": 439526.1,
+      "tokens": 154,
+      "cost_usd": 3.48e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 1,
+        "input_tokens": 128,
+        "output_tokens": 26,
+        "tool_calls": 3,
+        "tool_errors": 1,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7102\"}) -> {\"ticket_id\": \"CD-7102\", \"customer_id\": \"CUS-203\", \"order_id\": \"ORD-5102\", \"tier\": null, \"status\": \"open\", \"message\": \"Raising a refund for our add-on charge, o",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5102\"}) -> {\"order_id\": \"ORD-5102\", \"customer_id\": \"CUS-203\", \"amount\": 300.0, \"charge_date\": \"2026-08-02\", \"days_since_charge\": 50, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": null, \"order_status\": \"charged\"}) -> {\"error\": \"bad_tier\", \"allowed\": [\"standard\", \"priority\"]}",
+        "[workflow] decision=escalated amount=None (missing_days_or_window)",
+        "[workflow] reply call: in=128 out=26 439340ms"
+      ],
+      "variant": "workflow_no_long_term",
+      "pass": false,
+      "reason": "decision escalated != refund_approved"
+    },
+    {
+      "system": "agent",
+      "ticket_id": "CD-7103",
+      "result": {
+        "ticket_id": "CD-7103",
+        "decision": "refund_approved",
+        "refund_amount": 45.0,
+        "tier": "standard",
+        "reply": "Your refund request for the charge on your card will be processed within the standard refund window of 30 days from the charge date. Your original order amount was $45.00, which should cover the full refund. We will notify you once the process is complete."
+      },
+      "terminated_by": null,
+      "latency_ms": 67887.0,
+      "tokens": 2113,
+      "cost_usd": 0.00039705000000000003,
+      "meter": {
+        "iterations": 2,
+        "input_tokens": 1935,
+        "output_tokens": 178,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "wrong_tool_calls": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        },
+        "evidence_rejections": 0
+      },
+      "budgets": {
+        "max_iterations": 8,
+        "max_tokens": 8000,
+        "max_cost_usd": 0.01,
+        "max_wall_seconds": 300.0
+      },
+      "prompt_version": "agent-v1.0",
+      "log": [
+        "[agent] ticket=CD-7103 budgets={'max_iterations': 8, 'max_tokens': 8000, 'max_cost_usd': 0.01, 'max_wall_seconds': 300.0}",
+        "[agent] lap 1: in=827 out=81 10335ms",
+        "[agent]   tool find_ticket({\"ticket_id\": \"CD-7103\"}) -> {\"ticket_id\": \"CD-7103\", \"customer_id\": \"CUS-213\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I need a refund for a charge on my card.\"",
+        "[agent]   tool get_order({\"order_id\": \"ORD-5113\"}) -> {\"order_id\": \"ORD-5113\", \"customer_id\": \"CUS-213\", \"amount\": 45.0, \"charge_date\": \"2026-09-11\", \"days_since_charge\": 10, \"order_status\": \"charged\"}",
+        "[agent]   tool lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[agent] lap 2: in=1108 out=97 57051ms",
+        "[agent] final: decision=refund_approved amount=45.0"
+      ],
+      "variant": "agent",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7103",
+      "result": {
+        "ticket_id": "CD-7103",
+        "decision": "refund_approved",
+        "refund_amount": 45.0,
+        "tier": "standard",
+        "reply": "The ticket ID for your refund request is CD-7103, and it has been approved as a standard tier charge, which is refundable within 30 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 5625.0,
+      "tokens": 420,
+      "cost_usd": 8.46e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 372,
+        "output_tokens": 48,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7103\"}) -> {\"ticket_id\": \"CD-7103\", \"customer_id\": \"CUS-213\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I need a refund for a charge on my card.\"",
+        "[workflow] order id read from thread: ORD-5113 (model said 'ORD-5113')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5113\"}) -> {\"order_id\": \"ORD-5113\", \"customer_id\": \"CUS-213\", \"amount\": 45.0, \"charge_date\": \"2026-09-11\", \"days_since_charge\": 10, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=45.0 (10d <= 30d window)",
+        "[workflow] reply call: in=149 out=41 4151ms"
+      ],
+      "variant": "workflow",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7103",
+      "result": {
+        "ticket_id": "CD-7103",
+        "decision": "refund_approved",
+        "refund_amount": 45.0,
+        "tier": "standard",
+        "reply": "The ticket ID for your refund request is CD-7103, and it has been approved as a standard tier charge, which is refundable within 30 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 6205.8,
+      "tokens": 738,
+      "cost_usd": 0.00013230000000000002,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 690,
+        "output_tokens": 48,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7103\"}) -> {\"ticket_id\": \"CD-7103\", \"customer_id\": \"CUS-213\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I need a refund for a charge on my card.\"",
+        "[workflow] order id read from thread: ORD-5113 (model said 'ORD-5113')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5113\"}) -> {\"order_id\": \"ORD-5113\", \"customer_id\": \"CUS-213\", \"amount\": 45.0, \"charge_date\": \"2026-09-11\", \"days_since_charge\": 10, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=45.0 (10d <= 30d window)",
+        "[workflow] reply call: in=149 out=41 4263ms"
+      ],
+      "variant": "workflow_full_thread",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "system": "workflow",
+      "ticket_id": "CD-7103",
+      "result": {
+        "ticket_id": "CD-7103",
+        "decision": "refund_approved",
+        "refund_amount": 45.0,
+        "tier": "standard",
+        "reply": "The ticket ID for your refund request is CD-7103, and it has been approved as a standard tier charge, which is refundable within 30 days from the charge date."
+      },
+      "terminated_by": null,
+      "latency_ms": 5507.6,
+      "tokens": 420,
+      "cost_usd": 8.46e-05,
+      "meter": {
+        "steps": 3,
+        "model_calls": 2,
+        "input_tokens": 372,
+        "output_tokens": 48,
+        "tool_calls": 3,
+        "tool_errors": 0,
+        "calls_by_tool": {
+          "find_ticket": 1,
+          "get_order": 1,
+          "lookup_refund_policy": 1
+        }
+      },
+      "budgets": null,
+      "prompt_version": "workflow-v1.0",
+      "log": [
+        "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7103\"}) -> {\"ticket_id\": \"CD-7103\", \"customer_id\": \"CUS-213\", \"order_id\": null, \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I need a refund for a charge on my card.\"",
+        "[workflow] order id read from thread: ORD-5113 (model said 'ORD-5113')",
+        "[workflow] step 2: get_order({\"order_id\": \"ORD-5113\"}) -> {\"order_id\": \"ORD-5113\", \"customer_id\": \"CUS-213\", \"amount\": 45.0, \"charge_date\": \"2026-09-11\", \"days_since_charge\": 10, \"order_status\": \"charged\"}",
+        "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"charged\"}) -> {\"rule\": \"refund_if_within_window\", \"window_days\": 30, \"escalate\": false, \"explanation\": \"A standard tier charge is refundable within 30 days of the charge date",
+        "[workflow] decision=refund_approved amount=45.0 (10d <= 30d window)",
+        "[workflow] reply call: in=149 out=41 4178ms"
+      ],
+      "variant": "workflow_no_long_term",
+      "pass": true,
+      "reason": "ok"
+    }
+  ]
+}

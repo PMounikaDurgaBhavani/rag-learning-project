@@ -55,8 +55,14 @@ MAX_EVIDENCE_REJECTIONS = 2
 AGENT_MAX_NEW_TOKENS = 128
 
 
-def _user_prompt(ticket_id):
-    return f"Resolve ticket {ticket_id}."
+def _user_prompt(ticket_id, thread_context=None):
+    if not thread_context:
+        return f"Resolve ticket {ticket_id}."
+    # A long thread arrives already compressed by agent_memory.ThreadMemory:
+    # summary of the old turns + the last few verbatim. The loop re-sends this
+    # every lap, which is why it has to be bounded.
+    return (f"Resolve ticket {ticket_id}. The conversation so far on this ticket:\n\n"
+            f"{thread_context}")
 
 
 def unsupported_by_evidence(result, evidence):
@@ -80,6 +86,10 @@ def unsupported_by_evidence(result, evidence):
                 f"with tier={ticket.get('tier')} and order_status={status} before "
                 f"answering.")
 
+    if result.get("decision") == "refund_approved" and order is None:
+        return ("You are approving a refund without having looked up the order. "
+                "Call get_order with the order id the customer gave before answering.")
+
     if result.get("decision") == "refund_approved" and order is not None:
         amount = order.get("amount")
         if amount is not None and (result.get("refund_amount") is None
@@ -90,8 +100,14 @@ def unsupported_by_evidence(result, evidence):
     return None
 
 
-def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
-    """Run the loop for one ticket. Always returns a result and a full meter."""
+def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
+                   thread_context=None, memory=None):
+    """Run the loop for one ticket. Always returns a result and a full meter.
+
+    thread_context is the compressed ticket thread (agent_memory.ThreadMemory);
+    memory is an agent_memory.LongTermMemory. Both default to off, which is the
+    10-ticket race exactly as it was run.
+    """
 
     budgets = budgets or Budgets()
     lines = [] if log is None else log
@@ -103,7 +119,7 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
 
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": _user_prompt(ticket_id)},
+        {"role": "user", "content": _user_prompt(ticket_id, thread_context)},
     ]
 
     started = time.perf_counter()
@@ -205,6 +221,19 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None):
                    f"{json.dumps(outcome)[:160]}")
             messages.append({"role": "tool", "name": name,
                              "content": json.dumps(outcome)})
+
+            if memory is not None and name == "find_ticket" and isinstance(outcome, dict):
+                memory.remember_from_ticket(outcome)
+                # The ticket record lacks the tier: long-term memory may have
+                # it from an earlier session, possibly an earlier process.
+                remembered = memory.tier_for(outcome.get("customer_id"))
+                if not outcome.get("tier") and remembered:
+                    source = memory.recall(outcome["customer_id"])["tier"]["source"]
+                    note = (f"Long-term memory: customer {outcome['customer_id']} is on "
+                            f"the {remembered} tier (recorded from {source}).")
+                    evidence["find_ticket"] = {**outcome, "tier": remembered}
+                    record(f"[agent]   memory -> {note}")
+                    messages.append({"role": "user", "content": note})
 
     elapsed_ms = round((time.perf_counter() - started) * 1000.0, 1)
     tokens = meter["input_tokens"] + meter["output_tokens"]

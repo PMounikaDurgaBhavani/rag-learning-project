@@ -1,0 +1,15 @@
+# Week 7 — budget termination, captured 2026-10-05T09:19:25+00:00
+# command: python experiments/week7_race.py budget-demo --ticket CD-7001 --max-iterations 50 --max-tokens 100000 --max-cost 1.0 --max-seconds 15.0
+# model: Qwen/Qwen2.5-1.5B-Instruct
+# budgets: {"max_iterations": 50, "max_tokens": 100000, "max_cost_usd": 1.0, "max_wall_seconds": 15.0}
+# terminated_by: max_wall_seconds
+# spent: 2 iterations, 1470 tokens, $0.000234, 15299ms
+# result at termination: {"ticket_id": "CD-7001", "decision": null, "refund_amount": null, "tier": null, "reply": ""}
+
+[agent] ticket=CD-7001 budgets={'max_iterations': 50, 'max_tokens': 100000, 'max_cost_usd': 1.0, 'max_wall_seconds': 15.0}
+[agent] lap 1: in=663 out=26 12299ms
+[agent]   tool find_ticket({"ticket_id": "CD-7001"}) -> {"ticket_id": "CD-7001", "customer_id": "CUS-201", "order_id": "ORD-5001", "tier": "standard", "status": "open", "message": "I cancelled in the first week and s
+[agent] lap 2 cut short by the wall-clock budget
+[agent] lap 2: in=777 out=4 2284ms
+[agent] unparseable reply: 'The ticket CD-'
+[agent] BUDGET max_wall_seconds hit (15.3s >= 15.0s) after 2 iterations, 1470 tokens, $0.000234, 15.3s — terminating cleanly

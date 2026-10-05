@@ -10,7 +10,10 @@
     "CD-7007": {"ticket_id": "CD-7007", "customer_id": "CUS-207", "order_id": "ORD-5099", "tier": "standard", "status": "open", "message": "Refund for order ORD-5099 please, it never arrived."},
     "CD-7008": {"ticket_id": "CD-7008", "customer_id": "CUS-208", "order_id": null, "tier": "priority", "status": "open", "message": "Where is my refund? I do not have the order number to hand."},
     "CD-7009": {"ticket_id": "CD-7009", "customer_id": "CUS-209", "order_id": "ORD-5009", "tier": "priority", "status": "open", "message": "The order was cancelled mid-term and we are still out of pocket."},
-    "CD-7010": {"ticket_id": "CD-7010", "customer_id": "CUS-210", "order_id": "ORD-5010", "tier": "standard", "status": "open", "message": "Refund for the $19.99 charge from last month, please."}
+    "CD-7010": {"ticket_id": "CD-7010", "customer_id": "CUS-210", "order_id": "ORD-5010", "tier": "standard", "status": "open", "message": "Refund for the $19.99 charge from last month, please."},
+    "CD-7101": {"ticket_id": "CD-7101", "customer_id": "CUS-211", "order_id": null, "tier": "standard", "status": "open", "message": "Hi, I was charged for a plan I cancelled. Can you help?"},
+    "CD-7102": {"ticket_id": "CD-7102", "customer_id": "CUS-203", "order_id": "ORD-5102", "tier": null, "status": "open", "message": "Raising a refund for our add-on charge, order ORD-5102."},
+    "CD-7103": {"ticket_id": "CD-7103", "customer_id": "CUS-213", "order_id": null, "tier": "standard", "status": "open", "message": "I need a refund for a charge on my card."}
   },
   "orders": {
     "ORD-5001": {"order_id": "ORD-5001", "customer_id": "CUS-201", "amount": 49.0, "charge_date": "2026-09-09", "days_since_charge": 12, "order_status": "charged"},
@@ -20,6 +23,10 @@
     "ORD-5005": {"order_id": "ORD-5005", "customer_id": "CUS-205", "amount": 75.0, "charge_date": "2026-09-01", "days_since_charge": 20, "order_status": "refunded"},
     "ORD-5006": {"order_id": "ORD-5006", "customer_id": "CUS-206", "amount": 89.0, "charge_date": "2026-03-05", "days_since_charge": 200, "order_status": "duplicate"},
     "ORD-5009": {"order_id": "ORD-5009", "customer_id": "CUS-209", "amount": 310.0, "charge_date": "2026-09-04", "days_since_charge": 17, "order_status": "cancelled"},
-    "ORD-5010": {"order_id": "ORD-5010", "customer_id": "CUS-210", "amount": 19.99, "charge_date": "2026-08-23", "days_since_charge": 29, "order_status": "charged"}
+    "ORD-5010": {"order_id": "ORD-5010", "customer_id": "CUS-210", "amount": 19.99, "charge_date": "2026-08-23", "days_since_charge": 29, "order_status": "charged"},
+    "ORD-5101": {"order_id": "ORD-5101", "customer_id": "CUS-211", "amount": 64.0, "charge_date": "2026-09-01", "days_since_charge": 20, "order_status": "charged"},
+    "ORD-5102": {"order_id": "ORD-5102", "customer_id": "CUS-203", "amount": 300.0, "charge_date": "2026-08-02", "days_since_charge": 50, "order_status": "charged"},
+    "ORD-5113": {"order_id": "ORD-5113", "customer_id": "CUS-213", "amount": 45.0, "charge_date": "2026-09-11", "days_since_charge": 10, "order_status": "charged"},
+    "ORD-5131": {"order_id": "ORD-5131", "customer_id": "CUS-213", "amount": 45.0, "charge_date": "2026-04-02", "days_since_charge": 172, "order_status": "cancelled"}
   }
 }

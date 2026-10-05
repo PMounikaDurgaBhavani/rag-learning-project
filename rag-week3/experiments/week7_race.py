@@ -314,6 +314,11 @@ def budget_demo(args):
     budgets = Budgets(max_iterations=args.max_iterations, max_tokens=args.max_tokens,
                       max_cost_usd=args.max_cost, max_wall_seconds=args.max_seconds)
     print(f"Budget demo · ticket {args.ticket} · {budgets.as_dict()}\n")
+    # Same as the race: load the weights first. Without this the ~50 s model
+    # load lands inside lap 1 and a 15 s wall budget is reported as spent at
+    # 78 s — the overrun was the load, not the loop.
+    import agent_runtime
+    agent_runtime.warm_up()
     run = ticket_agent.resolve_ticket(args.ticket, budgets=budgets, verbose=True)
 
     header = [
@@ -329,8 +334,10 @@ def budget_demo(args):
         f"# result at termination: {json.dumps(run['result'])}",
         "",
     ]
-    BUDGET_LOG.write_text("\n".join(header + run["log"]) + "\n", encoding="utf-8")
-    print(f"\nterminated_by={run['terminated_by']} -> {BUDGET_LOG.relative_to(ROOT)}")
+    out = ROOT / args.out if args.out else BUDGET_LOG
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(header + run["log"]) + "\n", encoding="utf-8")
+    print(f"\nterminated_by={run['terminated_by']} -> {out.relative_to(ROOT)}")
     return 0 if run["terminated_by"] else 1
 
 
@@ -404,6 +411,8 @@ def build_parser():
 
     demo = sub.add_parser("budget-demo", help="agent against a small budget, log the termination")
     demo.add_argument("--ticket", default="CD-7008")
+    demo.add_argument("--out", default=None,
+                      help="log path relative to the repo (default week7/budget_termination.log)")
     add_budget_arguments(demo, iterations=2, tokens=4000, cost=0.01, seconds=60.0)
     demo.set_defaults(func=budget_demo)
 

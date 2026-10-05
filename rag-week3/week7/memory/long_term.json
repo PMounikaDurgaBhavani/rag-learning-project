@@ -1,0 +1,26 @@
+{
+  "CUS-203": {
+    "tier": {
+      "value": "priority",
+      "source": "find_ticket(CD-7003)",
+      "written_at": "2026-10-05T09:22:07+00:00",
+      "written_by_pid": 17320
+    }
+  },
+  "CUS-211": {
+    "tier": {
+      "value": "standard",
+      "source": "find_ticket(CD-7101)",
+      "written_at": "2026-10-05T09:28:01+00:00",
+      "written_by_pid": 20032
+    }
+  },
+  "CUS-213": {
+    "tier": {
+      "value": "standard",
+      "source": "find_ticket(CD-7103)",
+      "written_at": "2026-10-05T09:53:33+00:00",
+      "written_by_pid": 20032
+    }
+  }
+}
