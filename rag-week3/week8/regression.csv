@@ -1,0 +1,11 @@
+mode,tickets_before,tickets_after,events_before,events_after,verdict
+skipped_evidence,7,0,7,0,better
+skipped_evidence_caught,0,7,0,12,new
+fabricated_argument,0,0,0,0,same
+ungrounded_argument,2,2,4,4,same
+out_of_order,2,2,4,4,same
+redundant_call,7,7,14,16,worse
+unknown_tool,0,0,0,0,same
+prose_instead_of_action,8,8,8,15,worse
+budget_exhausted,2,6,2,6,worse
+wrong_decision,7,0,7,0,better

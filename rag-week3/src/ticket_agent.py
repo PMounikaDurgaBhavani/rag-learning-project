@@ -27,7 +27,8 @@ from agent_runtime import (
     normalise_result,
     parse_tool_calls,
 )
-from support_tools import TOOL_NAMES, TOOL_SCHEMAS, call_tool
+from agent_guardrails import check_output, sanitize_tool_result
+from support_tools import REFUND_TOOL_SCHEMA, TOOL_NAMES, TOOL_SCHEMAS, call_tool
 
 SYSTEM_PROMPT = (
     "You are a CloudDesk support agent resolving a refund-chase ticket.\n"
@@ -101,12 +102,26 @@ def unsupported_by_evidence(result, evidence):
 
 
 def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
-                   thread_context=None, memory=None):
+                   thread_context=None, memory=None, evidence_guard=True,
+                   allow_write=False, sanitize=False, output_guardrail=False):
     """Run the loop for one ticket. Always returns a result and a full meter.
 
     thread_context is the compressed ticket thread (agent_memory.ThreadMemory);
     memory is an agent_memory.LongTermMemory. Both default to off, which is the
     10-ticket race exactly as it was run.
+
+    evidence_guard=False turns off unsupported_by_evidence, which is the agent
+    as first built (2bb14d9): it accepts any well-formed answer, fetched or
+    not. Week 8 measures that agent's trajectory and adds the guard back as its
+    one mitigation.
+
+    Every lap is also recorded as a structured trajectory step, so a run can
+    be scored on its path and not only on its answer.
+
+    Week 8 bonus switches, all off by default: allow_write hands the model
+    issue_refund (sandbox ledger only); sanitize passes tool output through
+    agent_guardrails.sanitize_tool_result; output_guardrail replaces an answer
+    the fetched records do not allow with an escalation.
     """
 
     budgets = budgets or Budgets()
@@ -125,11 +140,12 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
     started = time.perf_counter()
     meter = {"iterations": 0, "input_tokens": 0, "output_tokens": 0, "tool_calls": 0,
              "tool_errors": 0, "wrong_tool_calls": 0, "calls_by_tool": {},
-             "evidence_rejections": 0}
+             "evidence_rejections": 0, "redactions": 0, "guardrail_blocks": 0}
     result = blank_result(ticket_id)
     terminated_by = None
     seen_tools = set()
     evidence = {}                       # tool name -> its last successful result
+    trajectory = []                     # one entry per tool call / answer / dead lap
 
     record(f"[agent] ticket={ticket_id} budgets={budgets.as_dict()}")
 
@@ -142,6 +158,7 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
         limit, detail = budgets.exceeded(meter["iterations"], tokens, spent, elapsed)
         if limit:
             terminated_by = limit
+            trajectory.append({"lap": meter["iterations"], "type": "budget", "limit": limit})
             record(f"[agent] BUDGET {limit} hit ({detail}) after {meter['iterations']} "
                    f"iterations, {tokens} tokens, ${spent:.6f}, {elapsed:.1f}s "
                    f"— terminating cleanly")
@@ -150,7 +167,8 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
         meter["iterations"] += 1
         # The lap may not outlive the wall-clock budget: checking only between
         # laps let one generation run for 893 seconds under a 120-second limit.
-        response = chat(messages, tools=TOOL_SCHEMAS,
+        response = chat(messages,
+                        tools=TOOL_SCHEMAS + ([REFUND_TOOL_SCHEMA] if allow_write else []),
                         max_new_tokens=AGENT_MAX_NEW_TOKENS,
                         deadline_seconds=budgets.max_wall_seconds - elapsed)
         if response.get("stopped_on_deadline"):
@@ -172,8 +190,10 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
                 # sentence and calling it a decision, so the loop checks that
                 # the facts behind the answer were actually fetched, names
                 # what is missing, and makes it go and get it.
-                missing = unsupported_by_evidence(candidate, evidence)
+                missing = unsupported_by_evidence(candidate, evidence) if evidence_guard else None
                 if missing and meter["evidence_rejections"] < MAX_EVIDENCE_REJECTIONS:
+                    trajectory.append({"lap": meter["iterations"], "type": "answer_rejected",
+                                       "decision": candidate["decision"], "reason": missing})
                     meter["evidence_rejections"] += 1
                     record(f"[agent] rejected: answer not supported by tool results "
                            f"({missing})")
@@ -181,13 +201,30 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
                     messages.append({"role": "user", "content": missing})
                     continue
 
+                if output_guardrail:
+                    allowed, why = check_output(candidate, evidence)
+                    if not allowed:
+                        meter["guardrail_blocks"] += 1
+                        trajectory.append({"lap": meter["iterations"], "type": "guardrail_blocked",
+                                           "decision": candidate["decision"], "reason": why})
+                        record(f"[agent] GUARDRAIL blocked {candidate['decision']} "
+                               f"amount={candidate['refund_amount']}: {why} -> escalated")
+                        candidate = {**candidate, "decision": "escalated", "refund_amount": None,
+                                     "reply": "Your request has been passed to a specialist "
+                                              "for review."}
+
                 result = candidate
+                trajectory.append({"lap": meter["iterations"], "type": "answer",
+                                   "decision": result["decision"],
+                                   "refund_amount": result["refund_amount"]})
                 record(f"[agent] final: decision={result['decision']} "
                        f"amount={result['refund_amount']}")
                 break
 
             # No tool call and no answer: say so once and let it try again
             # rather than accepting an empty result.
+            trajectory.append({"lap": meter["iterations"], "type": "prose",
+                               "text": response["text"][:200]})
             record(f"[agent] unparseable reply: {response['text'][:120]!r}")
             messages.append({"role": "assistant", "content": response["text"]})
             messages.append({"role": "user", "content":
@@ -199,7 +236,13 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
 
         for call in calls:
             name, arguments = call["name"], call["arguments"]
-            outcome = call_tool(name, arguments)
+            outcome = call_tool(name, arguments, allow_write=allow_write)
+            shown = outcome
+            if sanitize:
+                shown, redacted = sanitize_tool_result(name, outcome)
+                meter["redactions"] += redacted
+                if redacted:
+                    record(f"[agent]   sanitized {name}: {redacted} sentence(s) redacted")
 
             meter["tool_calls"] += 1
             meter["calls_by_tool"][name] = meter["calls_by_tool"].get(name, 0) + 1
@@ -216,11 +259,13 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
             if name not in TOOL_NAMES or name in seen_tools:
                 meter["wrong_tool_calls"] += 1
             seen_tools.add(name)
+            trajectory.append({"lap": meter["iterations"], "type": "tool", "name": name,
+                               "arguments": arguments, "result": outcome})
 
             record(f"[agent]   tool {name}({json.dumps(arguments)}) -> "
                    f"{json.dumps(outcome)[:160]}")
             messages.append({"role": "tool", "name": name,
-                             "content": json.dumps(outcome)})
+                             "content": json.dumps(shown)})
 
             if memory is not None and name == "find_ticket" and isinstance(outcome, dict):
                 memory.remember_from_ticket(outcome)
@@ -249,6 +294,8 @@ def resolve_ticket(ticket_id, budgets=None, verbose=False, log=None,
         "meter": meter,
         "budgets": budgets.as_dict(),
         "prompt_version": PROMPT_VERSION,
+        "evidence_guard": evidence_guard,
+        "trajectory": trajectory,
         "log": lines,
     }
 

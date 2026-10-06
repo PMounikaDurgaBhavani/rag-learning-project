@@ -1,0 +1,5 @@
+config,outcome_pass_rate_pct,trajectory_pass_rate_pct,gap_pp,trajectory_pass_rate_strict_pct,gap_strict_pp,right_answer_wrong_path,tool_choice_accuracy_pct,argument_validity_pct,step_efficiency_mean,step_efficiency_max,cost_p50_usd,cost_max_usd,cost_mean_usd,tokens_p50,tokens_max,latency_p50_ms,latency_max_ms,budget_terminations
+baseline,0.0,10.0,-10.0,10.0,-10.0,0,33.3,86.2,1.27,2.0,0.00058,0.001514,0.000711,3406.5,8941,23854.3,519487.3,2
+mitigated,40.0,40.0,0.0,10.0,30.0,0,43.6,90.9,2.23,3.0,0.001409,0.001524,0.001389,8391.0,8941,131768.5,222304.6,6
+guarded,30.0,30.0,0.0,20.0,10.0,0,28.9,38.6,2.17,3.0,0.0014,0.001482,0.001354,8512.0,8759,45513.3,76689.9,7
+week7_race1,40.0,10.0,30.0,10.0,30.0,3,30.6,100.0,1.02,1.5,0.000502,0.000773,0.000518,2849.5,4441,105077.8,893598.2,3

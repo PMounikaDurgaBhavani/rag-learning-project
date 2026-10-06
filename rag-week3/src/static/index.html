@@ -594,6 +594,7 @@
         <button class="side-link" data-view="golden"><span class="ic">▤</span> Golden set <span class="tail" id="navGoldenCount"></span></button>
         <button class="side-link" data-view="week5"><span class="ic">◈</span> Error analysis <span class="tail" id="navW5Count"></span></button>
         <button class="side-link" data-view="week6"><span class="ic">◇</span> Judge validation <span class="tail" id="navW6Count"></span></button>
+        <button class="side-link" data-view="week8"><span class="ic">⇢</span> Trajectory eval <span class="tail" id="navW8Gap"></span></button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
 
@@ -873,6 +874,31 @@
       </div>
     </section>
 
+    <section class="view" id="view-week8">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Trajectory eval — the ticket agent's path</h1>
+          <p class="lede" style="margin:0;">
+            The outcome eval asks whether the refund decision was right. This one asks whether the
+            agent got there by reading the records it needed. Same 10 tickets as the Week 7 race,
+            expected tool sequences asserted in code, alternate paths accepted as a set.
+            Rendered from <code>week8/report.json</code>; a run takes 10–40 min of model time, so this view only reads.
+          </p>
+          <div class="w5-tabs" id="w8Tabs" style="margin-top:1rem;">
+            <button data-tab="overview" class="active">Overview</button>
+            <button data-tab="sequences">The 10 sequences</button>
+            <button data-tab="tickets">Per ticket</button>
+            <button data-tab="gap">Right answer, wrong path</button>
+            <button data-tab="mitigation">Mitigation</button>
+            <button data-tab="regression">Regression</button>
+            <button data-tab="injection">Injection (bonus)</button>
+            <button data-tab="writeup">Write-up</button>
+          </div>
+          <div id="w8Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ---------------- CONSOLE ---------------- -->
     <section class="view" id="view-console">
       <div class="scroll">
@@ -981,7 +1007,7 @@ async function api(path, body) {
 })();
 
 /* ------------------------------------------------------------------ shell */
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week8: 'Trajectory eval — Week 8', console: 'Console' };
 
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
@@ -994,6 +1020,7 @@ function show(view) {
   if (view === 'golden') loadGolden();
   if (view === 'week5') loadWeek5();
   if (view === 'week6') loadWeek6();
+  if (view === 'week8') loadWeek8();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
 document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
@@ -2114,6 +2141,187 @@ async function loadDocuments() {
   }
 }
 
+/* ------------------------------------------------------------- week 8 */
+// Every number is read from week8/report.json via /api/week8, which the CLI
+// (experiments/week8_trajectory_eval.py report) writes. The view computes
+// nothing of its own, so the demo cannot disagree with the submission.
+let week8 = null;
+let w8Tab = 'overview';
+let w8Config = 'baseline';
+
+const w8Usd = (v) => v == null ? '—' : `$${Number(v).toFixed(6)}`;
+const w8Pass = (ok) => `<span class="pill ${ok ? 'ok' : 'bad'}">${ok ? 'PASS' : 'FAIL'}</span>`;
+const w8Configs = (d) => Object.keys(d.configs || {});
+
+async function loadWeek8(force = false) {
+  if (week8 && !force) { renderWeek8(); return; }
+  try {
+    week8 = await api('/api/week8');
+    const base = week8.configs?.baseline?.summary;
+    $('navW8Gap').textContent = base ? `${base.gap_pp}pp` : '';
+    renderWeek8();
+  } catch (err) {
+    $('w8Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+$('w8Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (!b) return;
+  w8Tab = b.dataset.tab;
+  document.querySelectorAll('#w8Tabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderWeek8();
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'w8Config') { w8Config = e.target.value; renderWeek8(); }
+});
+
+function renderWeek8() {
+  const d = week8;
+  if (!d || !w8Configs(d).length) {
+    $('w8Body').innerHTML = w6Card(`<div class="muted">No trajectory run yet.</div>
+      <pre class="w6-cmd">python experiments/week8_trajectory_eval.py run --config baseline</pre>`);
+    return;
+  }
+  if (!d.configs[w8Config]) w8Config = w8Configs(d)[0];
+  const view = { overview: w8Overview, sequences: w8Sequences, tickets: w8Tickets, gap: w8Gap,
+                 mitigation: w8Mitigation, regression: w8Regression, injection: w8Injection,
+                 writeup: w8Writeup }[w8Tab];
+  $('w8Body').innerHTML = view(d);
+}
+
+function w8ConfigPicker(d) {
+  return `<div class="field" style="max-width:260px;margin-bottom:.8rem;"><label>Config</label>
+    <select id="w8Config">${w8Configs(d).map(c =>
+      `<option value="${esc(c)}" ${c === w8Config ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>`;
+}
+
+function w8Overview(d) {
+  const rows = w8Configs(d).map(c => {
+    const s = d.configs[c].summary;
+    return `<tr><td class="qid">${esc(c)}</td>
+      <td>${s.outcome_pass_rate_pct}%</td><td>${s.trajectory_pass_rate_pct}%</td>
+      <td><b>${s.gap_pp} pp</b></td>
+      <td>${s.tool_choice_accuracy_pct}%</td><td>${s.argument_validity_pct}%</td>
+      <td>${s.step_efficiency_mean} <span class="muted">(max ${s.step_efficiency_max})</span></td>
+      <td>${w8Usd(s.cost_p50_usd)}</td><td>${w8Usd(s.cost_max_usd)}</td>
+      <td class="muted">${w8Usd(s.cost_mean_usd)}</td></tr>`;
+  }).join('');
+  const base = d.configs.baseline?.summary;
+  const hist = d.configs[d.gap_config]?.summary;
+  return `
+    ${base ? `<div class="metric-row">
+      ${w6Metric('Outcome pass', `${base.outcome_pass_rate_pct}%`, 'baseline · Week 7 grade()')}
+      ${w6Metric('Trajectory pass', `${base.trajectory_pass_rate_pct}%`, 'right path, grounded arguments')}
+      ${w6Metric('Gap', `${base.gap_pp} pp${hist ? ` <span class="arrow">·</span> ${hist.gap_pp} pp` : ''}`, `baseline${hist ? ` · ${esc(d.gap_config)}: ${hist.right_answer_wrong_path} right answer, wrong path` : ''}`)}
+      ${w6Metric('Cost / ticket', `${w8Usd(base.cost_p50_usd)} <span class="arrow">p50</span>`, `max ${w8Usd(base.cost_max_usd)} · mean ${w8Usd(base.cost_mean_usd)}`)}
+    </div>` : ''}
+    ${w6Card(w6Eyebrow('Results — the four trajectory numbers, per config') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Config</th><th>Outcome</th><th>Trajectory</th><th>Gap</th><th>Tool choice</th>
+        <th>Arg validity</th><th>Step efficiency</th><th>Cost p50</th><th>Cost max</th><th>Cost mean</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+      <p class="help" style="margin:.6rem 0 0;">Gap = outcome pass rate − trajectory pass rate. Step efficiency = laps taken ÷ laps
+      needed (shortest accepted path + the answer lap); below 1.0 means steps were skipped, not saved.
+      Cost uses the Week 7 rate card on tokens summed over every lap.</p>`)}`;
+}
+
+function w8Sequences(d) {
+  return w6Card(w6Eyebrow('Expected tool sequences — asserted in code (CASES in week8_trajectory_eval.py)') +
+    `<div class="gs-wrap"><table class="gs"><thead><tr><th>Ticket</th><th>Accepted paths</th><th>Why more than one</th></tr></thead><tbody>
+    ${d.cases.map(c => `<tr><td class="qid">${esc(c.ticket_id)}</td>
+      <td>${c.accepted.map(seq => `<code>${esc(seq.join(' → '))}</code>`).join('<br>')}</td>
+      <td>${c.alternate ? `<span class="pill info">alternate</span> ${esc(c.alternate)}` : '<span class="muted">single path</span>'}</td></tr>`).join('')}
+    </tbody></table></div>`) +
+    w6Card(w6Eyebrow('Failure-mode taxonomy (multi-label per ticket)') + `<div class="gs-wrap"><table class="gs"><tbody>
+    ${Object.entries(d.modes).map(([m, t]) => `<tr><td class="qid">${esc(m)}</td><td>${esc(t)}</td></tr>`).join('')}
+    </tbody></table></div>`);
+}
+
+function w8Tickets(d) {
+  const block = d.configs[w8Config];
+  return w8ConfigPicker(d) + w6Card(w6Eyebrow(`Per ticket · ${esc(block.run)}`) + `<div class="gs-wrap"><table class="gs">
+    <thead><tr><th>Ticket</th><th>Outcome</th><th>Trajectory</th><th>Path taken</th><th>Choice</th><th>Args</th>
+      <th>Eff.</th><th>Tokens</th><th>Cost</th><th>Modes</th></tr></thead><tbody>
+    ${block.tickets.map(t => `<tr><td class="qid">${esc(t.ticket_id)}${t.alternate_paths ? ' <span class="pill info">alt</span>' : ''}</td>
+      <td>${w8Pass(t.outcome_pass)}</td><td>${w8Pass(t.trajectory_pass)}</td>
+      <td class="cid">${esc(t.path)}</td>
+      <td>${t.correct_tool_choices}/${t.tool_choices}</td><td>${t.valid_argument_calls}/${t.tool_calls}</td>
+      <td>${t.step_efficiency}</td><td>${t.tokens}</td><td>${w8Usd(t.cost_usd)}</td>
+      <td class="cid">${esc(Object.entries(t.modes).filter(([, c]) => c).map(([m, c]) => `${m}×${c}`).join(', ') || '—')}</td></tr>`).join('')}
+    </tbody></table></div>`);
+}
+
+function w8Trace(t) {
+  return `<pre class="w6-cmd" style="white-space:pre-wrap;max-height:420px;overflow:auto;">${esc((t.log || []).join('\n'))}</pre>`;
+}
+
+function w8Gap(d) {
+  const block = d.configs[d.gap_config] || d.configs.baseline;
+  if (!block) return w6Card('<div class="muted">No baseline run yet.</div>');
+  const s = block.summary;
+  const cases = block.tickets.filter(t => t.outcome_pass && !t.trajectory_pass);
+  const named = d.gap_case ? block.tickets.find(t => t.ticket_id === d.gap_case) : cases[0];
+  const others = w8Configs(d).map(c => `${esc(c)} ${d.configs[c].summary.gap_pp} pp`).join(' · ');
+  return `<p class="help" style="margin-bottom:.6rem;">Run <code>${esc(block.run)}</code>. Gap by config: ${others}.</p>
+    <div class="decision" style="margin-bottom:1rem;"><b>Gap = ${s.outcome_pass_rate_pct}% − ${s.trajectory_pass_rate_pct}% = ${s.gap_pp} pp.</b>
+      ${cases.length} ticket(s) pass the outcome eval while failing the trajectory eval: ${esc(cases.map(t => t.ticket_id).join(', ') || 'none')}.</div>`
+    + (named ? w6Card(w6Eyebrow(`${esc(named.ticket_id)} — right answer, wrong path`) + `
+      <p style="margin:.2rem 0;">Accepted: ${d.cases.find(c => c.ticket_id === named.ticket_id).accepted.map(seq => `<code>${esc(seq.join(' → '))}</code>`).join(' or ')}</p>
+      <p style="margin:.2rem 0;">Taken: <code>${esc(named.path)}</code> · decision <b>${esc(named.decision)}</b> · outcome ${w8Pass(named.outcome_pass)} trajectory ${w8Pass(named.trajectory_pass)}</p>
+      <ul style="margin:.4rem 0 .6rem 1.1rem;">${named.events.map(e => `<li>${esc(e)}</li>`).join('')}</ul>
+      ${w8Trace(named)}`) : '');
+}
+
+function w8Mitigation(d) {
+  const m = d.mitigation;
+  if (!m) return w6Card(`<div class="muted">Mitigated run not recorded yet.</div>
+    <pre class="w6-cmd">python experiments/week8_trajectory_eval.py run --config mitigated</pre>`);
+  const p = m.price;
+  return `<div class="metric-row">
+      ${w6Metric('Top mode', esc(m.top_mode), esc(d.modes[m.top_mode]))}
+      ${w6Metric('Tickets with it', `${m.before_tickets} <span class="arrow">→</span> ${m.after_tickets}`, `events ${m.before_events} → ${m.after_events}`)}
+      ${w6Metric('Price · cost p50', `${w8Usd(p.cost_p50_before)} <span class="arrow">→</span> ${w8Usd(p.cost_p50_after)}`, `max ${w8Usd(p.cost_max_before)} → ${w8Usd(p.cost_max_after)}`)}
+      ${w6Metric('Price · latency p50', `${(p.latency_p50_before / 1000).toFixed(1)}s <span class="arrow">→</span> ${(p.latency_p50_after / 1000).toFixed(1)}s`, `tokens p50 ${p.tokens_p50_before} → ${p.tokens_p50_after}`)}
+    </div>`
+    + w6Card(w6Eyebrow('The one mitigation') + md(m.description || ''))
+    + w6Card(w6Eyebrow('Why this mode — both rankings, baseline') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>By harm (outcomes it cost)</th><th></th><th>By frequency (tickets touched)</th><th></th></tr></thead><tbody>
+      ${m.ranking_by_harm.slice(0, 5).map(([h, hn], i) => { const [f, fn] = m.ranking_by_frequency[i];
+        return `<tr><td class="qid">${esc(h)}</td><td>${hn}</td><td class="qid">${esc(f)}</td><td>${fn}</td></tr>`; }).join('')}
+      </tbody></table></div><p class="help" style="margin:.6rem 0 0;">The target is the harm ranking's top. Prose laps are the most common mode, but the loop already re-prompts after one, so they cost a lap rather than an answer.</p>`)
+    + w6Card(w6Eyebrow('What else moved') + `<div class="gs-wrap"><table class="gs"><thead><tr><th></th><th>baseline</th><th>mitigated</th></tr></thead><tbody>
+      ${[['Outcome pass', 'outcome_pass_rate_pct', '%'], ['Trajectory pass', 'trajectory_pass_rate_pct', '%'], ['Gap', 'gap_pp', ' pp'],
+         ['Tool-choice accuracy', 'tool_choice_accuracy_pct', '%'], ['Argument validity', 'argument_validity_pct', '%'],
+         ['Step efficiency (mean)', 'step_efficiency_mean', ''], ['Budget terminations', 'budget_terminations', '']].map(([l, k, u]) =>
+        `<tr><td>${l}</td><td>${d.configs.baseline.summary[k]}${u}</td><td>${d.configs.mitigated.summary[k]}${u}</td></tr>`).join('')}
+      </tbody></table></div>`);
+}
+
+function w8Regression(d) {
+  if (!d.regression) return w6Card('<div class="muted">Needs both a baseline and a mitigated run.</div>');
+  const tone = { better: 'ok', worse: 'bad', new: 'bad', same: 'info' };
+  return w6Card(w6Eyebrow('Per-mode counts — tickets affected (events), baseline → mitigated') + `<div class="gs-wrap"><table class="gs">
+    <thead><tr><th>Mode</th><th>Tickets before</th><th>Tickets after</th><th>Events before</th><th>Events after</th><th>Verdict</th></tr></thead><tbody>
+    ${d.regression.map(r => `<tr><td class="qid">${esc(r.mode)}</td><td>${r.tickets_before}</td><td>${r.tickets_after}</td>
+      <td>${r.events_before}</td><td>${r.events_after}</td><td><span class="pill ${tone[r.verdict]}">${esc(r.verdict)}</span></td></tr>`).join('')}
+    </tbody></table></div>`);
+}
+
+function w8Injection(d) {
+  const inj = d.injection;
+  if (!inj) return w6Card(`<div class="muted">Bonus not run yet.</div>`);
+  const cols = Object.keys(inj.rows[0] || {});
+  return w6Card(w6Eyebrow('Indirect prompt injection — attack, defend, re-attack') + md(inj.summary_md || ''))
+    + w6Card(`<div class="gs-wrap"><table class="gs"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>
+      ${inj.rows.map(r => `<tr>${cols.map(c => `<td class="cid">${esc(typeof r[c] === 'object' ? JSON.stringify(r[c]) : String(r[c]))}</td>`).join('')}</tr>`).join('')}
+      </tbody></table></div>`)
+    + (inj.traces || []).map(t => w6Card(w6Eyebrow(esc(t.title)) + w8Trace(t))).join('');
+}
+
+function w8Writeup(d) {
+  return w6Card(d.writeup ? md(d.writeup) : '<div class="muted">week8/README.md not written yet.</div>');
+}
+
 function renderSideDocs() {
   if (!docs.length) {
     $('sideDocs').innerHTML = '<div class="muted" style="padding:.4rem .6rem;font-size:.8rem;">No documents yet.</div>';
@@ -2271,7 +2479,19 @@ $('pasteBtn').onclick = async () => {
 };
 
 /* ------------------------------------------------------------------ boot */
-show('ask');
+// #week8 or #week8/regression opens that view (and tab) directly — for demos.
+function openFromHash() {
+  const [view, tab] = location.hash.slice(1).split('/');
+  if (!VIEW_TITLES[view]) return false;
+  if (view === 'week8' && tab) {
+    w8Tab = tab;
+    document.querySelectorAll('#w8Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  }
+  show(view);
+  return true;
+}
+if (!openFromHash()) show('ask');
+window.addEventListener('hashchange', openFromHash);
 autoGrow();
 loadStatus();
 loadDocuments();

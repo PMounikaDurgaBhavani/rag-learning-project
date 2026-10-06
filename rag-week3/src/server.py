@@ -13,6 +13,7 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/week5/rerun       re-ask the 20 sampled questions on the current build
   GET  /api/week6             judge-validation artefacts (cases, runs, agreement, protocol)
   POST /api/week6/run         the one eval command over the frozen replies
+  GET  /api/week8             trajectory eval: sequences, numbers, gap, mitigation, regression
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
@@ -238,6 +239,15 @@ def week6_module():
     return week6_eval
 
 
+def week8_module():
+    """experiments/week8_trajectory_eval.py holds the Week 8 logic; the UI reads it."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week8_trajectory_eval
+    return week8_trajectory_eval
+
+
 def run_retrieval(query, active_query, top_k, strategy, where):
     dense = retrieve_chunks(active_query, top_k=top_k, strategy=strategy, where=where)
     bm25 = retrieve_bm25(active_query, top_k=top_k, strategy=strategy, where=where)
@@ -298,6 +308,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week5_artefacts())
             elif parsed.path == "/api/week6":
                 self._send_json(week6_module().ui_artefacts())
+            elif parsed.path == "/api/week8":
+                self._send_json(week8_module().ui_artefacts())
             elif parsed.path == "/api/golden":
                 self._send_json({
                     "questions": golden_eval.load_golden_set(),
