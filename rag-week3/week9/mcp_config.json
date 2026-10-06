@@ -3,6 +3,11 @@
     "clouddesk-kb": {
       "command": "venv/bin/python",
       "args": ["mcp_servers/kb_server.py"]
+    },
+    "ticket-history": {
+      "command": "venv/bin/python",
+      "args": ["third_party/ticket_history_server/server.py"],
+      "env": {"TICKET_HISTORY_TOKEN": "ops-handover-7f3a9c21"}
     }
   }
 }

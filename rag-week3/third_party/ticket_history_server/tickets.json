@@ -1,0 +1,112 @@
+{
+  "_note": "Support ops fixture: ticket records and escalation history. Not CloudDesk-owned.",
+  "tickets": {
+    "TCK-4401": {
+      "ticket_id": "TCK-4401",
+      "customer_id": "CUS-301",
+      "subject": "Refund not received after cancellation",
+      "status": "open",
+      "owner": "tier1-anna",
+      "opened_at": "2026-10-01T09:12:00Z",
+      "escalations": []
+    },
+    "TCK-4417": {
+      "ticket_id": "TCK-4417",
+      "customer_id": "CUS-317",
+      "subject": "Charged twice for annual plan",
+      "status": "pending_customer",
+      "owner": "billing-raj",
+      "opened_at": "2026-09-28T14:03:00Z",
+      "escalations": [
+        {
+          "at": "2026-09-29T10:00:00Z",
+          "from": "tier1",
+          "to": "billing",
+          "by": "tier1-anna",
+          "reason": "duplicate charge needs billing ledger access"
+        }
+      ]
+    },
+    "TCK-4433": {
+      "ticket_id": "TCK-4433",
+      "customer_id": "CUS-333",
+      "subject": "SSO login loop after domain change",
+      "status": "open",
+      "owner": "tier2-meera",
+      "opened_at": "2026-09-30T08:40:00Z",
+      "escalations": [
+        {
+          "at": "2026-09-30T11:20:00Z",
+          "from": "tier1",
+          "to": "tier2",
+          "by": "tier1-vik",
+          "reason": "SAML assertion rejected; needs IdP logs"
+        }
+      ]
+    },
+    "TCK-4458": {
+      "ticket_id": "TCK-4458",
+      "customer_id": "CUS-358",
+      "subject": "Refund outside window, customer disputes",
+      "status": "escalated",
+      "owner": "billing-lead-sara",
+      "opened_at": "2026-09-25T16:55:00Z",
+      "escalations": [
+        {
+          "at": "2026-09-26T09:05:00Z",
+          "from": "tier1",
+          "to": "billing",
+          "by": "tier1-anna",
+          "reason": "customer disputes 30-day window"
+        },
+        {
+          "at": "2026-09-27T15:30:00Z",
+          "from": "billing",
+          "to": "billing-lead",
+          "by": "billing-raj",
+          "reason": "chargeback threatened; needs exception approval"
+        }
+      ]
+    },
+    "TCK-4471": {
+      "ticket_id": "TCK-4471",
+      "customer_id": "CUS-371",
+      "subject": "Priority customer: refund promised by previous shift",
+      "status": "escalated",
+      "owner": "tier2-meera",
+      "opened_at": "2026-10-04T18:20:00Z",
+      "escalations": [
+        {
+          "at": "2026-10-04T19:00:00Z",
+          "from": "tier1",
+          "to": "tier2",
+          "by": "tier1-vik",
+          "reason": "previous shift promised refund without approval"
+        },
+        {
+          "at": "2026-10-05T08:15:00Z",
+          "from": "tier2",
+          "to": "billing-lead",
+          "by": "tier2-meera",
+          "reason": "refund of $480 needs billing-lead sign-off before 17:00 handover"
+        },
+        {
+          "at": "2026-10-05T12:40:00Z",
+          "from": "billing-lead",
+          "to": "tier2",
+          "by": "billing-lead-sara",
+          "reason": "approved; tier2 to confirm with customer"
+        }
+      ]
+    },
+    "TCK-4482": {
+      "ticket_id": "TCK-4482",
+      "customer_id": "CUS-382",
+      "subject": "Invoice shows wrong VAT number",
+      "status": "resolved",
+      "owner": "billing-raj",
+      "opened_at": "2026-09-20T10:00:00Z",
+      "escalations": []
+    }
+  }
+}
