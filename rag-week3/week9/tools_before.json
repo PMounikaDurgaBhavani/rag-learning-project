@@ -1,0 +1,29 @@
+{
+  "config": "week9/mcp_config.json",
+  "servers": {
+    "clouddesk-kb": {
+      "transport": "stdio",
+      "server_info": {
+        "name": "clouddesk-kb",
+        "version": ""
+      },
+      "protocol_version": "2025-06-18",
+      "tools": [
+        "search_kb",
+        "get_article"
+      ],
+      "resources": [],
+      "resource_templates": [
+        "kb://articles/{article_id}"
+      ],
+      "prompts": [
+        "answer_from_kb"
+      ]
+    }
+  },
+  "tool_count": 2,
+  "tools": [
+    "get_article",
+    "search_kb"
+  ]
+}

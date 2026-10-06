@@ -114,3 +114,4 @@ zstandard==0.25.0
 # Server side also needs the extension:  brew install pgvector
 psycopg[binary]>=3.1
 pgvector>=0.2.5
+mcp==2.3.0

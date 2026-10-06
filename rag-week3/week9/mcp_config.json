@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "clouddesk-kb": {
+      "command": "venv/bin/python",
+      "args": ["mcp_servers/kb_server.py"]
+    }
+  }
+}
