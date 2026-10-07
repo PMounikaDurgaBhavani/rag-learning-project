@@ -1,0 +1,16 @@
+diff --git a/rag-week3/week9/mcp_config.json b/rag-week3/week9/mcp_config.json
+index 7dcd0d4..d7c5df9 100644
+--- a/rag-week3/week9/mcp_config.json
++++ b/rag-week3/week9/mcp_config.json
+@@ -3,6 +3,11 @@
+     "clouddesk-kb": {
+       "command": "venv/bin/python",
+       "args": ["mcp_servers/kb_server.py"]
++    },
++    "ticket-history": {
++      "command": "venv/bin/python",
++      "args": ["third_party/ticket_history_server/server.py"],
++      "env": {"TICKET_HISTORY_TOKEN": "ops-handover-7f3a9c21"}
+     }
+   }
+ }

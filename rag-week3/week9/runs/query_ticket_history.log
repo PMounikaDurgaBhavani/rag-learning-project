@@ -1,0 +1,10 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[host] clouddesk-kb (stdio) tools/list -> ['search_kb', 'get_article']
+[host] ticket-history (stdio) tools/list -> ['lookup_ticket', 'get_escalation_history']
+[host] discovered 4 tools: ['get_article', 'get_escalation_history', 'lookup_ticket', 'search_kb']
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:03<18:46,  3.34s/it]Loading weights:  51%|█████     | 171/338 [00:03<00:02, 65.46it/s]Loading weights:  62%|██████▏   | 209/338 [00:04<00:02, 64.06it/s]Loading weights:  69%|██████▊   | 232/338 [00:04<00:01, 62.11it/s]Loading weights:  74%|███████▎  | 249/338 [00:04<00:01, 63.54it/s]Loading weights:  79%|███████▉  | 267/338 [00:05<00:01, 65.40it/s]Loading weights:  83%|████████▎ | 279/338 [00:05<00:00, 68.60it/s]Loading weights:  86%|████████▌ | 291/338 [00:05<00:00, 68.93it/s]Loading weights:  89%|████████▉ | 301/338 [00:05<00:00, 69.76it/s]Loading weights:  92%|█████████▏| 310/338 [00:05<00:00, 66.94it/s]Loading weights:  94%|█████████▍| 318/338 [00:05<00:00, 58.64it/s]Loading weights:  97%|█████████▋| 327/338 [00:06<00:00, 60.66it/s]Loading weights: 100%|██████████| 338/338 [00:06<00:00, 55.03it/s]
+[host] query: 'Who owns ticket TCK-4471 and what is its status?'
+[host] lap 1: model in=564 out=27 3243ms
+[host]   tools/call lookup_ticket -> server ticket-history args={"ticket_id": "TCK-4471"} '{\n  "ticket_id": "TCK-4471",\n  "customer_id": "CUS-371",\n  "subject": "Priority customer: refund promised by previous shift",\n  "status": "escalated",\n  "owner": "tier2-meera",\n  "opened_at": "2026-10'
+[host] lap 2: model in=704 out=58 6152ms
+[host] answer: 'The ticket TCK-4471 is owned by tier2-meera and its current status is escalated. It was opened on October 4, 2026, at 18:20 UTC. The ticket has been escalated 3 times so far.'

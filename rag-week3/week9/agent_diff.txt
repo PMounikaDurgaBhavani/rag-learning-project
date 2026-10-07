@@ -1,0 +1,14 @@
+# agent module diff between server one (1715ab5) and server one + two (d4e76e4)
+# command: git diff 1715ab5 d4e76e4 -- src/mcp_agent.py src/mcp_client.py src/agent_runtime.py
+# changed lines in the agent module: 0
+
+# --- (empty above: zero lines changed)
+
+# everything that did change, git diff --stat 1715ab5 d4e76e4:
+ .../third_party/ticket_history_server/server.py    |  96 ++++++++++++++++++
+ .../third_party/ticket_history_server/tickets.json | 112 +++++++++++++++++++++
+ rag-week3/week9/mcp_config.json                    |   5 +
+ 3 files changed, 213 insertions(+)
+
+# git diff --numstat 1715ab5 d4e76e4 -- src/ (agent module rows would appear here):
+# (none)

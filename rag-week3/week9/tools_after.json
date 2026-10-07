@@ -1,0 +1,50 @@
+{
+  "config": "week9/mcp_config.json",
+  "servers": {
+    "clouddesk-kb": {
+      "transport": "stdio",
+      "server_info": {
+        "name": "clouddesk-kb",
+        "version": ""
+      },
+      "protocol_version": "2025-06-18",
+      "tools": [
+        "search_kb",
+        "get_article"
+      ],
+      "resources": [],
+      "resource_templates": [
+        "kb://articles/{article_id}"
+      ],
+      "prompts": [
+        "answer_from_kb"
+      ]
+    },
+    "ticket-history": {
+      "transport": "stdio",
+      "server_info": {
+        "name": "ticket-history",
+        "version": ""
+      },
+      "protocol_version": "2025-06-18",
+      "tools": [
+        "lookup_ticket",
+        "get_escalation_history"
+      ],
+      "resources": [],
+      "resource_templates": [
+        "tickets://{ticket_id}/escalations"
+      ],
+      "prompts": [
+        "shift_handover"
+      ]
+    }
+  },
+  "tool_count": 4,
+  "tools": [
+    "get_article",
+    "get_escalation_history",
+    "lookup_ticket",
+    "search_kb"
+  ]
+}
