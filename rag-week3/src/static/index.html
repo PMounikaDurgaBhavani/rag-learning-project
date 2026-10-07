@@ -595,6 +595,7 @@
         <button class="side-link" data-view="week5"><span class="ic">◈</span> Error analysis <span class="tail" id="navW5Count"></span></button>
         <button class="side-link" data-view="week6"><span class="ic">◇</span> Judge validation <span class="tail" id="navW6Count"></span></button>
         <button class="side-link" data-view="week8"><span class="ic">⇢</span> Trajectory eval <span class="tail" id="navW8Gap"></span></button>
+        <button class="side-link" data-view="week9"><span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span></button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
 
@@ -899,6 +900,31 @@
       </div>
     </section>
 
+    <section class="view" id="view-week9">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>MCP — bolting on the ticket-history server</h1>
+          <p class="lede" style="margin:0;">
+            Support Ops shipped an MCP server for ticket lookup and escalation history. The agent learns its
+            tools from <code>tools/list</code> at runtime, so adding it took config, not code. Everything here is
+            read from <code>week9/</code>; the Discovery tab can also run <code>initialize</code> + <code>tools/list</code> live.
+          </p>
+          <div class="w5-tabs" id="w9Tabs" style="margin-top:1rem;">
+            <button data-tab="overview" class="active">Overview</button>
+            <button data-tab="discovery">Discovery 2 → 4</button>
+            <button data-tab="swap">Config-only swap</button>
+            <button data-tab="wire">JSON-RPC wire</button>
+            <button data-tab="trace">Query trace</button>
+            <button data-tab="error">Error before / after</button>
+            <button data-tab="risk">Risk note</button>
+            <button data-tab="gateway">Gateway (bonus)</button>
+            <button data-tab="writeup">Write-up</button>
+          </div>
+          <div id="w9Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ---------------- CONSOLE ---------------- -->
     <section class="view" id="view-console">
       <div class="scroll">
@@ -1007,7 +1033,7 @@ async function api(path, body) {
 })();
 
 /* ------------------------------------------------------------------ shell */
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week8: 'Trajectory eval — Week 8', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', console: 'Console' };
 
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
@@ -1021,6 +1047,7 @@ function show(view) {
   if (view === 'week5') loadWeek5();
   if (view === 'week6') loadWeek6();
   if (view === 'week8') loadWeek8();
+  if (view === 'week9') loadWeek9();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
 document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
@@ -2322,6 +2349,206 @@ function w8Writeup(d) {
   return w6Card(d.writeup ? md(d.writeup) : '<div class="muted">week8/README.md not written yet.</div>');
 }
 
+/* ------------------------------------------------------------- week 9 */
+// Read from week9/ via /api/week9. The only live action is discovery
+// (POST /api/week9/discover): initialize + tools/list against real servers,
+// no model loaded.
+let week9 = null;
+let w9Tab = 'overview';
+let w9Wire = 'stdio';
+let w9Live = null;
+
+const w9Pre = (t, max = 420) => `<pre class="w6-cmd" style="white-space:pre-wrap;max-height:${max}px;overflow:auto;">${esc(t || '')}</pre>`;
+const w9Json = (o, max = 420) => w9Pre(JSON.stringify(o, null, 2), max);
+const W9_WRAP = 'style="white-space:normal;word-break:break-word;font-family:var(--mono,monospace);font-size:.76rem;"';
+const w9Chips = (names, tone = 'info') => (names || []).map(n => `<span class="pill ${tone}" style="margin:0 .25rem .25rem 0;">${esc(n)}</span>`).join('');
+
+async function loadWeek9(force = false) {
+  if (week9 && !force) { renderWeek9(); return; }
+  try {
+    week9 = await api('/api/week9');
+    const b = week9.tools_before?.tool_count, a = week9.tools_after?.tool_count;
+    $('navW9Tools').textContent = b != null && a != null ? `${b}→${a}` : '';
+    renderWeek9();
+  } catch (err) {
+    $('w9Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+$('w9Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (!b) return;
+  w9Tab = b.dataset.tab;
+  document.querySelectorAll('#w9Tabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderWeek9();
+});
+document.addEventListener('click', async e => {
+  const wb = e.target.closest('[data-w9wire]');
+  if (wb) { w9Wire = wb.dataset.w9wire; renderWeek9(); return; }
+  const db = e.target.closest('#w9Discover');
+  if (!db) return;
+  db.disabled = true;
+  const which = $('w9Which').value;
+  toast('Starting the servers and asking tools/list…');
+  try {
+    w9Live = await api('/api/week9/discover', { which });
+    toast(`${which}: ${w9Live.tool_count} tools discovered`);
+  } catch (err) { toast(err.message, true); }
+  finally { renderWeek9(); }
+});
+
+function renderWeek9() {
+  const view = { overview: w9Overview, discovery: w9Discovery, swap: w9Swap, wire: w9WireTab,
+                 trace: w9Trace, error: w9Error, risk: w9Risk, gateway: w9Gateway, writeup: w9Writeup }[w9Tab];
+  $('w9Body').innerHTML = view(week9);
+}
+
+function w9Box(title, body, tone = 'var(--line)') {
+  return `<div style="border:1px solid ${tone};border-radius:var(--radius);padding:.7rem .8rem;background:var(--surface,transparent);min-width:180px;flex:1;">
+    <div style="font-weight:700;margin-bottom:.3rem;">${title}</div><div class="help" style="font-size:.78rem;">${body}</div></div>`;
+}
+
+function w9Overview(d) {
+  const agentLines = (d.agent_diff || '').match(/changed lines in the agent module: (\d+)/)?.[1];
+  const wireCount = d.wire?.messages?.length;
+  const denials = (d.audit || []).filter(a => a.decision === 'deny').length;
+  const arrow = '<div style="align-self:center;color:var(--ink-3);font-size:1.3rem;">→</div>';
+  return `<div class="metric-row">
+      ${w6Metric('Tools discovered', `${d.tools_before?.tool_count ?? '—'} <span class="arrow">→</span> ${d.tools_after?.tool_count ?? '—'}`, 'from tools/list, server one → one + two')}
+      ${w6Metric('Agent lines changed', agentLines ?? '—', `git diff ${esc(d.commits.server_one)} ${esc(d.commits.server_two)} -- agent module`)}
+      ${w6Metric('Wire messages', wireCount ?? '—', 'initialize → initialized → tools/list → tools/call')}
+      ${w6Metric('Gateway audit lines', (d.audit || []).length, `${denials} denied by token scope`)}
+    </div>
+    ${w6Card(w6Eyebrow('Host, client, server — and where the AI runs') + `
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:stretch;">
+        ${w9Box('Host · src/mcp_agent.py', '<b>The model runs here, and only here</b> (Qwen2.5-1.5B). Builds its tool list from tools/list; names no tool in code.', 'var(--accent)')}
+        ${arrow}
+        ${w9Box('Clients · src/mcp_client.py', 'One connection per server. JSON-RPC 2.0 over stdio (child process) or streamable HTTP. No model.')}
+        ${arrow}
+        <div style="display:flex;flex-direction:column;gap:.5rem;flex:1.3;">
+          ${w9Box('clouddesk-kb (ours)', 'tools: search_kb, get_article · resource kb://articles/{id} · prompt answer_from_kb. BM25 only, no model.')}
+          ${w9Box('ticket-history (Support Ops)', 'tools: lookup_ticket, get_escalation_history · resource tickets://{id}/escalations · prompt shift_handover.')}
+        </div>
+      </div>
+      <p class="help" style="margin:.7rem 0 0;">Bonus: <code>mcp_servers/gateway.py</code> sits between the clients and both servers as one front door, with an audit line per call and token scopes.</p>`)}
+    ${w6Card(w6Eyebrow('Week 9 topics — what each is, and what we did') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Topic</th><th>What it is</th><th>What we did</th><th></th></tr></thead><tbody>
+      ${d.topics.map(t => `<tr><td class="qid">${esc(t.topic)}</td><td>${esc(t.what)}</td><td>${esc(t.did)}</td>
+        <td><a href="#week9/${esc(t.tab)}">show →</a></td></tr>`).join('')}
+      </tbody></table></div>`)}`;
+}
+
+function w9ServerTable(inv) {
+  return `<div class="gs-wrap"><table class="gs"><thead><tr><th>Server</th><th>Transport</th><th>Tools</th><th>Resources</th><th>Prompts</th></tr></thead><tbody>
+    ${Object.entries(inv || {}).map(([name, s]) => `<tr><td class="qid">${esc(name)}</td><td>${esc(s.transport)}</td>
+      <td>${w9Chips(s.tools, 'ok')}</td><td>${w9Chips([...(s.resources || []), ...(s.resource_templates || [])], 'violet')}</td>
+      <td>${w9Chips(s.prompts, 'warn')}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+function w9Discovery(d) {
+  const b = d.tools_before, a = d.tools_after;
+  const added = (a?.tools || []).filter(t => !(b?.tools || []).includes(t));
+  return `<div class="decision" style="margin-bottom:1rem;"><b>${b?.tool_count} → ${a?.tool_count} tools</b>, read from the servers' tools/list answers (not from notes).
+      Before: ${esc((b?.tools || []).join(', '))}. After: ${esc((a?.tools || []).join(', '))}. New from ticket-history: <b>${esc(added.join(', '))}</b>.</div>
+    ${w6Card(w6Eyebrow('Before — week9/tools_before.json (commit ' + esc(d.commits.server_one) + ')') + w9ServerTable(b?.servers))}
+    ${w6Card(w6Eyebrow('After — week9/tools_after.json (commit ' + esc(d.commits.server_two) + ')') + w9ServerTable(a?.servers))}
+    ${w6Card(w6Eyebrow('Run discovery live — initialize + tools/list, no model') + `
+      <div style="display:flex;gap:.5rem;align-items:end;flex-wrap:wrap;margin-bottom:.6rem;">
+        <div class="field" style="min-width:240px;"><label>Config</label><select id="w9Which">
+          <option value="server_one">Server one only (clouddesk-kb)</option>
+          <option value="server_two" selected>Server one + two (week9/mcp_config.json)</option>
+          <option value="gateway">Gateway (week9/mcp_config_gateway.json)</option></select></div>
+        <button class="btn primary" id="w9Discover">Run tools/list now</button></div>
+      ${w9Live ? `<p style="margin:.2rem 0;"><b>${w9Live.tool_count} tools</b> from <code>${esc(w9Live.which)}</code>: ${w9Chips(w9Live.tools, 'ok')}</p>
+        ${w9ServerTable(w9Live.servers)}
+        <details style="margin-top:.5rem;"><summary class="help">Raw wire of this live run (${w9Live.wire.length} messages)</summary>
+        ${w9Pre(w9Live.wire.map(m => `${m.server.padEnd(15)} ${m.direction === 'send' ? '→' : '←'} ${JSON.stringify(m.message)}`).join('\n'), 360)}</details>`
+        : '<p class="help" style="margin:0;">Starts the real servers as child processes, performs the handshake and lists their tools. Takes a few seconds.</p>'}`)}`;
+}
+
+function w9Swap(d) {
+  return `<div class="decision" style="margin-bottom:1rem;"><b>Zero lines changed in the agent module</b> between server one and server one + two, and again for the gateway. Only config changed.</div>
+    ${w6Card(w6Eyebrow('agent_diff.txt — git diff ' + esc(d.commits.server_one) + ' ' + esc(d.commits.server_two) + ' -- src/mcp_agent.py src/mcp_client.py src/agent_runtime.py') + w9Pre(d.agent_diff))}
+    ${w6Card(w6Eyebrow('config_diff.txt — the whole change that added server two') + w9Pre(d.config_diff))}
+    ${w6Card(w6Eyebrow('Gateway swap — agent_diff_gateway.txt and the config it took') + w9Pre(d.agent_diff_gateway, 160) + w9Pre(d.config_diff_gateway, 300))}
+    ${w6Card(w6Eyebrow('Commits') + `<div class="gs-wrap"><table class="gs"><tbody>${(d.git_log || []).map(([h, m]) => `<tr><td class="qid">${esc(h)}</td><td>${esc(m)}</td></tr>`).join('')}</tbody></table></div>`)}`;
+}
+
+function w9WireTab(d) {
+  const w = d.wire;
+  const toggle = `<div style="display:flex;gap:.4rem;margin-bottom:.7rem;">
+    <button class="btn ${w9Wire === 'stdio' ? 'primary' : ''}" data-w9wire="stdio">stdio, annotated (wire.json)</button>
+    <button class="btn ${w9Wire === 'http' ? 'primary' : ''}" data-w9wire="http">streamable HTTP, raw (wire_http.json)</button></div>`;
+  const where = `<div class="decision" style="margin-bottom:1rem;"><b>Where the model call happens:</b> ${esc(w?._model_call || '')}</div>`;
+  if (w9Wire === 'http') {
+    return where + toggle + w6Card(w6Eyebrow('Same handshake over streamable HTTP: each message is a POST to http://127.0.0.1:8931/mcp; the server issues an Mcp-Session-Id') +
+      (d.wire_http || []).map(m => `<div style="margin-bottom:.4rem;"><span class="pill ${m.direction === 'send' ? 'info' : 'ok'}">${m.direction === 'send' ? 'host → server' : 'server → host'}</span>${w9Json(m.message, 220)}</div>`).join(''));
+  }
+  return where + toggle + `<p class="help">${esc(w?._transport || '')}</p>` + (w?.messages || []).map(m => w6Card(
+    `<div style="display:flex;justify-content:space-between;gap:.5rem;align-items:center;margin-bottom:.4rem;">
+       <b>${esc(m.step)}</b><span class="pill ${m.direction === 'send' ? 'info' : 'ok'}">${m.direction === 'send' ? 'host → server' : 'server → host'}</span></div>
+     <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;">
+       <div>${w9Json(m.raw, 340)}</div>
+       <div class="gs-wrap"><table class="gs"><tbody>${Object.entries(m.annotations).map(([k, v]) =>
+         `<tr><td class="qid" style="vertical-align:top;">${esc(k)}</td><td style="font-size:.82rem;">${esc(v)}</td></tr>`).join('')}</tbody></table></div>
+     </div>`)).join('');
+}
+
+function w9Calls(run) {
+  return `<div class="gs-wrap"><table class="gs"><thead><tr><th>Lap</th><th>Tool</th><th>Server</th><th>Arguments</th><th>Result</th></tr></thead><tbody>
+    ${(run?.calls || []).map(c => `<tr><td>${c.lap}</td><td class="qid">${esc(c.tool)}</td><td>${esc(c.server)}</td>
+      <td ${W9_WRAP}>${esc(JSON.stringify(c.arguments))}</td>
+      <td ${W9_WRAP}>${c.is_error ? '<span class="pill bad">isError</span> ' : ''}${esc(c.result.slice(0, 260))}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+function w9Trace(d) {
+  const q = d.query;
+  if (!q) return w6Card('<div class="muted">No query run yet.</div>');
+  const hit = (q.calls || []).find(c => c.server === 'ticket-history');
+  return `<div class="decision" style="margin-bottom:1rem;">${hit ? `<b>Provably called the new server:</b> <code>tools/call ${esc(hit.tool)}</code> → server <code>ticket-history</code>.` : 'No call to ticket-history in this run.'}</div>
+    ${w6Card(w6Eyebrow('Query') + `<p style="margin:0;"><b>${esc(q.query)}</b></p><p class="help">${esc(q.config)} · ${esc(q.model)} · discovered: ${esc(q.discovered_tools.join(', '))}</p>`)}
+    ${w6Card(w6Eyebrow('Tool calls') + w9Calls(q))}
+    ${w6Card(w6Eyebrow('Answer') + `<p style="margin:0;">${esc(q.answer || '—')}</p>`)}
+    ${w6Card(w6Eyebrow('Host trace — runs/query_ticket_history.json') + w9Pre((q.log || []).join('\n')))}`;
+}
+
+function w9Error(d) {
+  const r = d.error_runs || {};
+  const row = (k, label) => r[k] ? `<tr><td class="qid" style="vertical-align:top;white-space:nowrap;">${label}</td><td ${W9_WRAP}>${esc((r[k].calls[0] || {}).result || '')}</td><td style="vertical-align:top;">${esc(r[k].answer || '')}</td></tr>` : '';
+  return `<div class="decision" style="margin-bottom:1rem;">Same failing call in every run: <code>get_article({"article_id": "HC-8"})</code> (real id HC-008), replayed as lap 1. From lap 2 the model handles it alone.</div>
+    ${w6Card(w6Eyebrow('What the model got back → what it did') + `<div class="gs-wrap"><table class="gs"><thead><tr><th>Version</th><th>Error text the model read</th><th>Model's answer</th></tr></thead><tbody>
+      ${row('before', 'before')}${row('after_v1', 'after v1')}${row('after_v2', 'after v2')}${row('after_v3', 'after v3 (kept)')}</tbody></table></div>`)}
+    ${w6Card(md(d.error_md || ''))}`;
+}
+
+function w9Risk(d) {
+  const lines = (d.risk_note || '').split('\n').filter(l => l.trim());
+  return `<div class="decision" style="margin-bottom:1rem;"><b>risk_note.md — ${lines.length} lines.</b> Support Ops' ticket-history server runs inside our trust boundary; this is what it can do there.</div>`
+    + w6Card(lines.map(l => `<p style="margin:.2rem 0 .7rem;">${md(l).replace(/^<p>|<\/p>$/g, '')}</p>`).join(''))
+    + w6Card(w6Eyebrow("What the server actually logged (its own access log, last lines)") + `<div class="gs-wrap"><table class="gs"><thead><tr><th>At</th><th>Tool</th><th>Arguments</th><th>Token prefix</th></tr></thead><tbody>
+      ${(d.server_access_log || []).map(a => `<tr><td class="cid">${esc(a.at)}</td><td class="qid">${esc(a.tool)}</td><td class="cid">${esc(JSON.stringify(a.arguments))}</td><td><span class="pill warn">${esc(a.token_prefix)}</span></td></tr>`).join('')}
+      </tbody></table></div>`);
+}
+
+function w9Gateway(d) {
+  const tone = { allow: 'ok', deny: 'bad' };
+  return `<div class="decision" style="margin-bottom:1rem;">The agent connects to <b>one</b> front door (<code>mcp_servers/gateway.py</code>), which fans out to both servers.
+      Token <code>gw-handover-2b91</code> (caller <b>handover-bot</b>) is scoped to deny <code>get_escalation_history</code>. Switching to the gateway was config-only: 0 agent lines.</div>
+    ${w6Card(w6Eyebrow('Audit — week9/logs/gateway_audit.log, one line per call') + `<div class="gs-wrap"><table class="gs"><thead><tr><th>At</th><th>Caller</th><th>Tool</th><th>Server</th><th>Ticket</th><th>Decision</th></tr></thead><tbody>
+      ${(d.audit || []).map(a => `<tr><td class="cid">${esc(a.at)}</td><td>${esc(a.caller)}</td><td class="qid">${esc(a.tool)}</td><td>${esc(a.server)}</td><td>${esc(a.ticket_id || '')}</td><td><span class="pill ${tone[a.decision] || 'info'}">${esc(a.decision)}</span></td></tr>`).join('')}
+      </tbody></table></div>`)}
+    ${d.gateway_denial ? w6Card(w6Eyebrow('The denial reaching the model — runs/gateway_denial.json') + `<p style="margin:.2rem 0;"><b>${esc(d.gateway_denial.query)}</b></p>` + w9Calls(d.gateway_denial) + `<p style="margin:.6rem 0 0;"><b>Model:</b> ${esc(d.gateway_denial.answer || '')}</p>
+      <p class="help">It did not retry the denied call. It also said "try again later", which the message says will not help, and did not use the offered lookup_ticket.</p>`) : ''}
+    ${d.gateway_resource ? w6Card(w6Eyebrow('Tool vs resource — escalations attached by the app (--attach), runs/gateway_resource_attach.json') + `<p class="help" style="margin:.2rem 0;">Attached: ${esc((d.gateway_resource.attached || []).join(', '))} (resources/read, no model turn)</p>` + w9Calls(d.gateway_resource) + `<p style="margin:.6rem 0 0;"><b>Model:</b> ${esc((d.gateway_resource.answer || '').slice(0, 600))}</p>
+      <p class="help">With the history already in its context, the model still spent a call on the denied tool: a tool it can see, it calls. Stricter fix: hide denied tools from tools/list.</p>`) : ''}`;
+}
+
+function w9Writeup(d) {
+  return w6Card(d.readme ? md(d.readme) : '<div class="muted">week9/README.md not written yet.</div>');
+}
+
 function renderSideDocs() {
   if (!docs.length) {
     $('sideDocs').innerHTML = '<div class="muted" style="padding:.4rem .6rem;font-size:.8rem;">No documents yet.</div>';
@@ -2486,6 +2713,10 @@ function openFromHash() {
   if (view === 'week8' && tab) {
     w8Tab = tab;
     document.querySelectorAll('#w8Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  }
+  if (view === 'week9' && tab) {
+    w9Tab = tab;
+    document.querySelectorAll('#w9Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
   }
   show(view);
   return true;

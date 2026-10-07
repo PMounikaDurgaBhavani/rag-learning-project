@@ -14,6 +14,8 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   GET  /api/week6             judge-validation artefacts (cases, runs, agreement, protocol)
   POST /api/week6/run         the one eval command over the frozen replies
   GET  /api/week8             trajectory eval: sequences, numbers, gap, mitigation, regression
+  GET  /api/week9             MCP: discovery, diffs, annotated wire, transcripts, risk, gateway
+  POST /api/week9/discover    live initialize + tools/list (no model) for one config
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
@@ -248,6 +250,15 @@ def week8_module():
     return week8_trajectory_eval
 
 
+def week9_module():
+    """experiments/week9_ui.py reads week9/ and runs live discovery for the UI."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week9_ui
+    return week9_ui
+
+
 def run_retrieval(query, active_query, top_k, strategy, where):
     dense = retrieve_chunks(active_query, top_k=top_k, strategy=strategy, where=where)
     bm25 = retrieve_bm25(active_query, top_k=top_k, strategy=strategy, where=where)
@@ -310,6 +321,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week6_module().ui_artefacts())
             elif parsed.path == "/api/week8":
                 self._send_json(week8_module().ui_artefacts())
+            elif parsed.path == "/api/week9":
+                self._send_json(week9_module().ui_artefacts())
             elif parsed.path == "/api/golden":
                 self._send_json({
                     "questions": golden_eval.load_golden_set(),
@@ -344,6 +357,10 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
             elif parsed.path == "/api/week6/run":
                 judge = "auto" if payload.get("judge") == "auto" else "none"
                 self._send_json({"status": "ok", **week6_module().ui_run(judge)})
+            elif parsed.path == "/api/week9/discover":
+                which = payload.get("which") if payload.get("which") in (
+                    "server_one", "server_two", "gateway") else "server_two"
+                self._send_json({"status": "ok", **week9_module().discover(which)})
             elif parsed.path == "/api/week5/rerun":
                 from week5_rerun import rerun_sample
                 self._send_json({"status": "ok",

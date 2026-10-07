@@ -1,0 +1,174 @@
+[
+  {
+    "server": "ticket-history",
+    "direction": "send",
+    "transport": "http",
+    "at": 1791351059.773,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-06-18",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "clouddesk-host",
+          "version": "0.9.0"
+        }
+      }
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "recv",
+    "transport": "http",
+    "at": 1791351059.794,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "capabilities": {
+          "prompts": {
+            "listChanged": false
+          },
+          "resources": {
+            "listChanged": false,
+            "subscribe": false
+          },
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "instructions": "Support Ops ticket store. Ticket ids look like TCK-nnnn.",
+        "protocolVersion": "2025-06-18",
+        "serverInfo": {
+          "name": "ticket-history",
+          "version": ""
+        }
+      }
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "send",
+    "transport": "http",
+    "at": 1791351059.794,
+    "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "send",
+    "transport": "http",
+    "at": 1791351059.796,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "recv",
+    "transport": "http",
+    "at": 1791351059.797,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "tools": [
+          {
+            "description": "Look up one support ticket by its id (format TCK-nnnn). Returns status,\n    owner, subject, when it was opened, and how many times it was escalated.\n    Does not return the escalation details; use get_escalation_history.",
+            "inputSchema": {
+              "properties": {
+                "ticket_id": {
+                  "title": "Ticket Id",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ticket_id"
+              ],
+              "type": "object",
+              "title": "lookup_ticketArguments"
+            },
+            "name": "lookup_ticket"
+          },
+          {
+            "description": "Every escalation on one ticket (format TCK-nnnn), oldest first: when, from\n    which team to which, who escalated it and why.",
+            "inputSchema": {
+              "properties": {
+                "ticket_id": {
+                  "title": "Ticket Id",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "ticket_id"
+              ],
+              "type": "object",
+              "title": "get_escalation_historyArguments"
+            },
+            "name": "get_escalation_history",
+            "outputSchema": {
+              "properties": {
+                "result": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Result",
+                  "type": "array"
+                }
+              },
+              "required": [
+                "result"
+              ],
+              "type": "object",
+              "title": "get_escalation_historyOutput"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "send",
+    "transport": "http",
+    "at": 1791351059.797,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "lookup_ticket",
+        "arguments": {
+          "ticket_id": "TCK-4471"
+        }
+      }
+    }
+  },
+  {
+    "server": "ticket-history",
+    "direction": "recv",
+    "transport": "http",
+    "at": 1791351059.801,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"ticket_id\": \"TCK-4471\",\n  \"customer_id\": \"CUS-371\",\n  \"subject\": \"Priority customer: refund promised by previous shift\",\n  \"status\": \"escalated\",\n  \"owner\": \"tier2-meera\",\n  \"opened_at\": \"2026-10-04T18:20:00Z\",\n  \"escalation_count\": 3\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]
