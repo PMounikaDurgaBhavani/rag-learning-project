@@ -23,7 +23,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from mcp.server.mcpserver import MCPServer  # noqa: E402
-from mcp.server.mcpserver.exceptions import ToolError  # noqa: E402
+from mcp.server.mcpserver.exceptions import ToolError  # noqa: E402,F401
+from mcp_types import CallToolResult, TextContent  # noqa: E402
 
 server = MCPServer("clouddesk-kb")
 
@@ -52,14 +53,36 @@ def search_kb(query: str, top_k: int = 3) -> list[dict]:
 
 
 @server.tool()
-def get_article(article_id: str) -> str:
-    """Get article."""
-    document = _documents().get(article_id)
+def get_article(article_id: str) -> CallToolResult:
+    """Fetch the full text of ONE help-centre article by its exact id.
+
+    Use this when you already know the article id. Ids are "HC-" plus three
+    digits, for example HC-008. If you only have a topic, or an id written
+    another way ("HC-8", "article 8"), call search_kb first and use the
+    article_id it returns.
+
+    Returns the article as markdown. If the id does not exist, the error says
+    which ids do, so you can call get_article once more with a correct one.
+    """
+    documents = _documents()
+    document = documents.get(article_id)
     if document is None:
-        # ToolError's message reaches the model verbatim; any other exception
-        # is masked by the SDK as "Error executing tool get_article".
-        raise ToolError("Error 3")
-    return document["content"]
+        # Recoverable: say what was wrong, what valid input looks like, and
+        # what to do next. ToolError's text reaches the model verbatim.
+        # The next action goes first, and the result is returned rather than
+        # raised: a raised ToolError reaches the model as "Error executing tool
+        # get_article: ..." and a small model gives up on that prefix (v1 and
+        # v2 of this message, week9/error_before_after.md). isError stays true.
+        digits = "".join(ch for ch in str(article_id) if ch.isdigit())
+        guess = f"HC-{int(digits):03d}" if digits else None
+        if guess in documents:
+            next_step = f"Retry now: call get_article with article_id \"{guess}\"."
+        else:
+            next_step = "Retry now: call search_kb with the topic, then get_article with its article_id."
+        return CallToolResult(is_error=True, content=[TextContent(type="text", text=(
+            f"{next_step} Reason: article {article_id!r} not found; ids are HC- plus "
+            f"three digits. Known ids: {', '.join(sorted(documents))}."))])
+    return CallToolResult(content=[TextContent(type="text", text=document["content"])])
 
 
 @server.resource("kb://articles/{article_id}", mime_type="text/markdown")
