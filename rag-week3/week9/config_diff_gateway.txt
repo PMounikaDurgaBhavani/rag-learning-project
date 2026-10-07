@@ -1,0 +1,24 @@
+diff --git a/week9/mcp_config.json b/week9/mcp_config_gateway.json
+index d7c5df9..5d6556b 100644
+--- a/week9/mcp_config.json
++++ b/week9/mcp_config_gateway.json
+@@ -1,13 +1,12 @@
+ {
+   "mcpServers": {
+-    "clouddesk-kb": {
++    "gateway": {
+       "command": "venv/bin/python",
+-      "args": ["mcp_servers/kb_server.py"]
+-    },
+-    "ticket-history": {
+-      "command": "venv/bin/python",
+-      "args": ["third_party/ticket_history_server/server.py"],
+-      "env": {"TICKET_HISTORY_TOKEN": "ops-handover-7f3a9c21"}
++      "args": ["mcp_servers/gateway.py"],
++      "env": {
++        "MCP_GATEWAY_TOKEN": "gw-handover-2b91",
++        "GATEWAY_UPSTREAMS": "week9/mcp_config.json"
++      }
+     }
+   }
+ }

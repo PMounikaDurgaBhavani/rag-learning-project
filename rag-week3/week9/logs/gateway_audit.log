@@ -1,0 +1,6 @@
+{"at": "2026-10-07T05:12:59+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
+{"at": "2026-10-07T05:12:59+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "deny", "is_error": true}
+{"at": "2026-10-07T05:15:11+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "deny", "is_error": true}
+{"at": "2026-10-07T05:23:51+00:00", "caller": "handover-bot", "tool": "resources/read tickets://TCK-4471/escalations", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
+{"at": "2026-10-07T05:23:58+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
+{"at": "2026-10-07T05:23:58+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "deny", "is_error": true}

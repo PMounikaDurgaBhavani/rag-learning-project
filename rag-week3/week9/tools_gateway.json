@@ -1,0 +1,32 @@
+{
+  "config": "week9/mcp_config_gateway.json",
+  "servers": {
+    "gateway": {
+      "transport": "stdio",
+      "server_info": {
+        "name": "clouddesk-gateway",
+        "version": "0.1.0"
+      },
+      "protocol_version": "2025-06-18",
+      "tools": [
+        "search_kb",
+        "get_article",
+        "lookup_ticket",
+        "get_escalation_history"
+      ],
+      "resources": [],
+      "resource_templates": [
+        "kb://articles/{article_id}",
+        "tickets://{ticket_id}/escalations"
+      ],
+      "prompts": []
+    }
+  },
+  "tool_count": 4,
+  "tools": [
+    "get_article",
+    "get_escalation_history",
+    "lookup_ticket",
+    "search_kb"
+  ]
+}

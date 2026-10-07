@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gateway": {
+      "command": "venv/bin/python",
+      "args": ["mcp_servers/gateway.py"],
+      "env": {
+        "MCP_GATEWAY_TOKEN": "gw-handover-2b91",
+        "GATEWAY_UPSTREAMS": "week9/mcp_config.json"
+      }
+    }
+  }
+}

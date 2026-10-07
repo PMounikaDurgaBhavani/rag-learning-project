@@ -1,0 +1,3 @@
+# agent module diff from server one (1715ab5) through the gateway swap (working tree)
+# git diff 1715ab5 -- src/mcp_agent.py src/mcp_client.py
+# changed lines: 0

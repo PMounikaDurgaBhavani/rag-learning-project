@@ -1,0 +1,7 @@
+{
+  "_note": "Demo scopes for the gateway. Real tokens belong in a secret store, not in git (see risk_note.md).",
+  "tokens": {
+    "gw-handover-2b91": {"caller": "handover-bot", "deny_tools": ["get_escalation_history"]},
+    "gw-ops-admin-77c0": {"caller": "ops-admin", "deny_tools": []}
+  }
+}
