@@ -223,28 +223,39 @@ twelve contain exact identifiers** (`HC-001`–`HC-006`) against a required
 minimum of four. Declaring the expected chunk ID first is what makes the
 exercise honest — there is no way to move the goalposts after seeing results.
 
+> **Revision (2026-10-11).** An audit found four golden labels pointing at a
+> chunk that does not state the answer (GS-04, GS-06, GS-09, GS-12). They were
+> corrected by one rule — the label moves to the chunk in the same section
+> that does state the answer, chosen without looking at retrieval output — and
+> the identical experiment was re-run. Every number in this section is from
+> the corrected run. Say this up front in the demo; it is a stronger story
+> than the original, because it shows the eval checking itself.
+
 ### Step 2 · Baseline, then classify every miss
 
 All 12 questions through the Week 3 dense retriever at Top-3.
 
 - **Baseline hit-rate@3: 8/12 = 66.7%**
-- **Baseline p50 latency: 17.97 ms**
-- **Failure tally: R = 4 · G = 0 · Not-In-Corpus = 0**
+- **Failure tally: R = 4 · Not-In-Corpus = 0 · G = not assessed** (no
+  generation step runs in this experiment, so no claim is made about it)
 
 | ID | Expected chunk | Evidence — what came back instead |
 |---|---|---|
-| GS-01 | `HC-001-markdown-5` | Retrieved `-15, -6, -18`. Dense search preferred general FAQ and password-complexity prose over the chunk stating the 30-minute validity. |
-| GS-05 | `HC-002-markdown-10` | Retrieved `-7, -4, -3`. Matched high-level lock-explanation paragraphs instead of the row `\| Incorrect password entered \| Wait 15 minutes \|`. |
-| GS-09 | `HC-005-markdown-12` | Retrieved `-22, -16, -10`. Favoured browser-notification troubleshooting over the row `\| Notifications stopped suddenly \| Organization settings changed \|`. |
-| GS-12 | `HC-006-markdown-9` | Retrieved `-24, -11, -20`. Returned general upload-failure prose instead of the row `\| Upload button unavailable \| User lacks required permission \|`. |
+| GS-01 | `HC-001-markdown-5` | Gold ranked #8. Top-3 `-15, -6, -18`: the FAQ chunk `-15` at rank 1 also says "valid for 30 minutes", so this is a strict miss only. |
+| GS-04 | `HC-002-markdown-6` | Gold ranked #9. Top-3 `-20, -5, -1`: the FAQ chunk `-20` at rank 1 also says "lasts 15 minutes"; `-5` is the old, wrong label ("a short period"). |
+| GS-05 | `HC-002-markdown-10` | Gold ranked #7. Top-3 `-7, -4, -3`: a "Follow these steps:" stub and two overview paragraphs. Nothing in the top 3 states the fix. |
+| GS-06 | `HC-003-markdown-8` | Gold ranked #4. Top-3 `-4, -9, -6`: supported methods, the one-line "update it before the next billing attempt" (the old label), and the *add* steps rather than the *update* steps. |
 
-Three of the four misses are troubleshooting-table rows, and half the set
-contains an exact identifier the embedding treats as ordinary text. That points
-at one fix, not two.
+GS-09 and GS-12, counted as failures in the first report, were hits in both
+arms once the label pointed at the row that actually holds the answer.
+
+Three of the four real misses are terse table rows or numbered steps, and half
+the set contains an exact identifier the embedding treats as ordinary text.
+That points at one fix, not two.
 
 ### Step 3 · The one change: BM25 + Reciprocal Rank Fusion
 
-Dense search is asked for 15 candidates. BM25 is asked for 15 candidates over
+Dense search is asked for 25 candidates. BM25 is asked for 25 candidates over
 the same chunks. The two ranked lists are fused **by position, not by score** —
 which is why no normalisation is needed between a cosine distance and a BM25
 score:
@@ -259,74 +270,89 @@ when exact tokens are missed entirely. The failure evidence — identifiers and
 terse table rows — pointed at the second. The cross-encoder was still built and
 benchmarked, but kept out of the comparison so only one variable moved.
 
-#### The entire retrieval diff
+#### The entire retrieval diff — as it exists in code
 
-```diff
-- def retrieve(query, top_k=3):
--     return retrieve_chunks(query, top_k=top_k, strategy="markdown")
-+ def retrieve(query, top_k=3):
-+     return retrieve_hybrid(query, top_k=top_k, strategy="markdown", rerank=False)
+The two arms live in [src/golden_eval.py](src/golden_eval.py) lines 60–68.
+Point at the file rather than a slide:
 
-  unchanged: embedding model, chunking strategy, chunk size, overlap,
-             prompt template, LLM, top_k, golden set
+```python
+if arm == "baseline":
+    return retrieve_chunks(query, top_k=candidate_k, strategy=strategy)
+
+dense  = retrieve_chunks(query, top_k=candidate_k, strategy=strategy)
+sparse = retrieve_bm25(query,   top_k=candidate_k, strategy=strategy)
+return reciprocal_rank_fusion(dense, sparse, k_constant=RRF_K)   # 60
+
+# unchanged: embedding model, chunking strategy, chunk size, overlap,
+#            index, candidate pool (25), k (3), golden set, no reranker
 ```
 
 ### Step 4 · Same 12 questions, per-question result
 
+Ranks are positions in the 25-candidate list.
+
 | ID | Expected chunk | Before | After | Status |
 |---|---|---|---|---|
-| GS-01 | `HC-001-markdown-5` | miss | #2 | **FIXED** |
+| GS-01 | `HC-001-markdown-5` | miss (#8) | **#2** | **FIXED** |
 | GS-02 | `HC-001-markdown-6` | #1 | #2 | held |
 | GS-03 | `HC-001-markdown-11` | #1 | #1 | held |
-| GS-04 | `HC-002-markdown-5` | #2 | #2 | held |
-| GS-05 | `HC-002-markdown-10` | miss | miss | unfixed |
-| GS-06 | `HC-003-markdown-9` | #2 | **#1** | promoted |
+| GS-04 | `HC-002-markdown-6` | miss (#9) | miss (#4) | unfixed |
+| GS-05 | `HC-002-markdown-10` | miss (#7) | miss (#8) | unfixed |
+| GS-06 | `HC-003-markdown-8` | miss (#4) | **#2** | **FIXED** |
 | GS-07 | `HC-003-markdown-13` | #1 | #1 | held |
 | GS-08 | `HC-004-markdown-8` | #3 | **#1** | promoted |
-| GS-09 | `HC-005-markdown-12` | miss | miss | unfixed |
+| GS-09 | `HC-005-markdown-16` | #2 | **#1** | promoted |
 | GS-10 | `HC-005-markdown-23` | #3 | **#1** | promoted |
 | GS-11 | `HC-006-markdown-3` | #1 | #1 | held |
-| GS-12 | `HC-006-markdown-9` | miss | miss | unfixed |
+| GS-12 | `HC-006-markdown-11` | #2 | #2 | held |
 
-**1 of 4 R-failures fixed, 3 unfixed, zero regressions.** The quieter result
-matters more than the headline: three questions were *promoted to rank 1*, so
-rank-1 accuracy on hits went from 4/8 to 6/9 — 50% → 66.7%. The gold chunk now
-sits at the front of the LLM's context window more often, which is where a small
-generator is most likely to actually use it.
+**2 of 4 R-failures fixed, 2 unfixed, zero regressions.** Three questions were
+also *promoted to rank 1*, so rank-1 accuracy on hits went from 4/8 to 6/10.
+Be candid about what the relabelling did: the GS-06 correction *created* a fix
+(the old label was a hit in both arms), and the GS-04 correction *created* a
+miss in both arms. Neither favours the hybrid arm by construction, because the
+rule never looked at retrieval output.
+
+**Sensitivity check.** If any chunk that states the answer verbatim is
+credited (the FAQ sections repeat several answers), baseline is 10/12 and
+hybrid 11/12. GS-05 is the only question that fails under both scorings in
+both arms.
 
 ### Step 5 · The shipping decision
 
 | Metric | Before | After | Delta |
 |---|---|---|---|
-| Hit-rate@3 | 66.7% (8/12) | 75.0% (9/12) | **+8.3 pts** |
-| Rank-1 accuracy on hits | 50.0% (4/8) | 66.7% (6/9) | **+16.7 pts** |
-| p50 latency | 17.97 ms | 11.35 ms | −6.62 ms *(see caveat)* |
+| Hit-rate@3 | 66.7% (8/12) | 83.3% (10/12) | **+16.7 pts** |
+| Rank-1 accuracy on hits | 50.0% (4/8) | 60.0% (6/10) | +10.0 pts |
+| p50 latency — authoritative run, commit `efd07ba` | 12.63 ms | 13.09 ms | +0.46 ms, inside ±0.63 ms noise |
 | Regressions | — | 0 | — |
 
-**Verdict: SHIP.** Recall up, rank-1 precision up, no regressions, latency well
-inside budget.
+**Verdict: SHIP.** Recall up, rank-1 precision up, no regressions, no
+measurable latency cost.
 
-> **Say this before you are asked.** The improved retriever measuring *faster*
-> than the baseline is counter-intuitive — hybrid retrieval does strictly more
-> work, since it runs the same dense query for 15 candidates and then a BM25
-> pass on top. The most likely explanation is warm-up: the baseline loop ran
-> first and paid the one-off cost of loading the embedding model and opening the
-> Chroma collection. Naming this yourself is stronger than being caught by it.
-> The honest claim is **"latency stayed inside budget"**, not "hybrid is faster".
-> A clean re-measurement would discard warm-up iterations and interleave the two
-> retrievers.
+> **Say this before you are asked — the latency numbers.** Three saved runs
+> disagree. The first run (`week4_golden_evaluation.json`, commit `124b9a3`)
+> showed hybrid *faster* at 17.97 → 11.35 ms; that is a warm-up artefact — the
+> baseline ran first and paid model-load and collection-open costs, and hybrid
+> does strictly more work. The authoritative Week 4 measurement is the
+> `efd07ba` commit of `golden_ab_results.json`: full warm-up, five interleaved
+> repeats, 12.63 → 13.09 ms, inside noise. The *current* file shows ~28.5 ms
+> for both arms because Week 5 moved the vector store to PostgreSQL + pgvector
+> and the file was regenerated on that backend; that is not a Week 4 number.
+> Naming this yourself is stronger than being caught by it.
+> The honest claim is **"no measurable latency cost"**, not "hybrid is faster".
 
-### Why the three unfixed questions stayed unfixed
+### Why the two unfixed questions stayed unfixed
 
-All three are troubleshooting-table rows, and all three fail for the reason
-Week 3 already diagnosed on Q3: the question is conversational (*"What should I
-do if…"*, *"Why is… unavailable"*) while the target is a verbless
-pipe-delimited row. BM25 helps when the question and the row share rare tokens;
-it does not help when the shared vocabulary — "failed", "expired", "contact the
-administrator" — is common across all four troubleshooting tables. The two
-levers already identified: route troubleshooting-style questions through the
-`is_table=True` filter, or rewrite the query (which moved Q3 from rank 21 to
-rank 1).
+Both are in HC-002 and both fail for the reason Week 3 already diagnosed on
+Q3: the question is conversational (*"How long does… last"*, *"What should I
+do if…"*) while the target is a one-line fact or a verbless pipe-delimited row.
+BM25 helps when the question and the chunk share rare tokens; it does not help
+when the shared vocabulary — "locked", "failed", "attempts" — is spread across
+every chunk of the article. GS-04 did move, from #9 to #4, so it is one lever
+away; GS-05 did not move at all. The two levers already identified: route
+troubleshooting-style questions through the `is_table=True` filter, or rewrite
+the query (which moved Q3 from rank 21 to rank 1).
 
 ---
 
@@ -444,8 +470,9 @@ cat evaluation/golden_set.jsonl
 ```
 
 Twelve questions with the expected chunk ID declared before any retrieval ran;
-six contain an exact identifier. Baseline: 8/12 = 66.7%, p50 17.97 ms, failure
-tally R 4 · G 0 · Not-In-Corpus 0.
+six contain an exact identifier. Four labels were later found to point at the
+wrong half of a split section and were corrected by rule (see §4). Baseline:
+8/12 = 66.7%, failure tally R 4 · Not-In-Corpus 0 · G not assessed.
 
 ### 12:30 — The one change, run live
 
@@ -467,16 +494,19 @@ python main.py inspect "What should I do if my payment fails in HC-003?"
 ### 14:00 — The numbers and the decision
 
 ```bash
-python experiments/evaluate_week4_improvement.py
+python experiments/evaluate_golden_ab.py
 ```
 
-Hit-rate@3 66.7% → 75.0%. One R-failure fixed, three unfixed, zero regressions,
-three questions promoted to rank 1. **Volunteer the latency caveat here** rather
-than waiting for it.
+Hit-rate@3 66.7% → 83.3%. Two R-failures fixed, two unfixed, zero regressions,
+three questions promoted to rank 1. (`evaluate_week4_improvement.py` is the
+first, single-pass script; keep it for history but demo the A/B version, which
+warms up and interleaves.) **Volunteer the latency caveat here** rather than
+waiting for it.
 
-> "Ship it — recall up, rank-1 precision up, no regressions, latency inside
-> budget. The three that stayed broken are all table rows phrased
-> conversationally, and I already know the two levers that move them."
+> "Ship it — recall up, rank-1 precision up, no regressions, no measurable
+> latency cost. The two that stayed broken are both in HC-002, phrased
+> conversationally against a numbered-step or table-row chunk, and I already
+> know the two levers that move them."
 
 ### 15:00 — Close on what you would do next
 
@@ -489,16 +519,24 @@ Infer `product_area` from the query so filtering stops being manual. Store
 
 ## 7. Questions you should expect
 
-**Why did the hybrid retriever measure faster than dense-only?**
-It almost certainly is not. Hybrid does strictly more work. The baseline loop ran
-first and absorbed model-load and collection-open costs. The defensible claim is
-that latency stayed inside budget; a clean re-measurement would discard warm-up
-iterations and interleave the two.
+**Why did the first run show the hybrid retriever faster than dense-only?**
+It is not. Hybrid does strictly more work. In that first run the baseline loop
+ran first and absorbed model-load and collection-open costs. The clean
+re-measurement (`efd07ba`: warm-up, five interleaved repeats) shows 12.63 →
+13.09 ms, inside the noise band. The defensible claim is "no measurable cost".
 
-**Why only 1 of 4 failures fixed? Was the change worth it?**
-Hit-rate@3 is a blunt instrument at n=12. The fuller picture is +8.3 points of
+**You changed the gold labels. How is that not moving the goalposts?**
+Four labels pointed at a chunk that does not contain the answer — the section
+split at 300 tokens and the label landed on the wrong half. The rule was fixed
+before looking at any retrieval output: move the label to the chunk in the same
+section that states the answer. Applied blind, it helped and hurt the hybrid
+arm equally — it created one fix (GS-06) and one shared miss (GS-04). The
+original labels and numbers are preserved in git (`124b9a3`, `efd07ba`).
+
+**Why only 2 of 4 failures fixed? Was the change worth it?**
+Hit-rate@3 is a blunt instrument at n=12. The fuller picture is +16.7 points of
 recall *and* three questions promoted to rank 1, so rank-1 accuracy went
-50% → 66.7% with zero regressions. On the Week 3 set, hybrid RRF lifts MRR from
+4/8 → 6/10 with zero regressions. On the Week 3 set, hybrid RRF lifts MRR from
 0.650 to 0.875.
 
 **Why BM25 rather than the cross-encoder?**
@@ -559,7 +597,8 @@ Three repo issues found while assembling this document. None affect the results
    `evaluate-hybrid` or `ui`. A short Week 4 section with the before/after
    numbers makes the repo readable without opening a source file.
 
-Also worth re-running: latency, with warm-up iterations discarded and the two
-retrievers interleaved. If hybrid turns out to be slower — as it should be — the
-shipping decision does not change, and the report becomes considerably more
-credible for it.
+Latency *was* re-run this way in commit `efd07ba` (warm-up discarded, arms
+interleaved): hybrid came out 0.46 ms slower, inside noise, and the shipping
+decision did not change. The 2026-10-11 label audit then corrected four gold
+labels and re-ran the same experiment; `results.md` now carries both the
+corrected numbers and the history of the latency measurements.
