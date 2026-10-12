@@ -356,13 +356,18 @@ def cmd_label(args):
         print("\nDRAFT REPLY")
         print("  " + (reply["text"] or "").replace("\n", "\n  "))
 
-        while True:
-            answer = input("\nRESOLUTION — [p]ass / [f]ail / [q]uit (saves progress): ").strip().lower()
-            if answer in ("p", "f", "q"):
+        try:
+            while True:
+                answer = input("\nRESOLUTION — [p]ass / [f]ail / [q]uit (saves progress): ").strip().lower()
+                if answer in ("p", "f", "q"):
+                    break
+            if answer == "q":
                 break
-        if answer == "q":
+            note = input("Why, in one line (reused if this case becomes a few-shot example): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            # Same as [q]: every label already given is on disk; this case stays unlabelled.
+            print("\n(input closed — stopping; progress so far is saved)")
             break
-        note = input("Why, in one line (reused if this case becomes a few-shot example): ").strip()
 
         data["labels"][reply["id"]] = {
             "label": "PASS" if answer == "p" else "FAIL",
