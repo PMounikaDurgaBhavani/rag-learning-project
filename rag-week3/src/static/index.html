@@ -3,73 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CloudDesk Knowledge Studio</title>
+<meta name="description" content="CloudDesk Knowledge Studio — RAG pipeline explorer with MCP server integration, Admin/User roles, and AI-powered customer support.">
+<title>CloudDesk Knowledge Studio · RAG + MCP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     Theme: graphite + amber
+     CloudDesk Knowledge Studio — Premium UI v3.0
+     Dark: Deep Cosmos | Light: Arctic White
+     Accents: Indigo · Violet · Emerald · Amber
      ============================================================ */
   :root {
-    --bg: #ffffff;
-    --surface: #f7f7f8;
-    --surface-2: #ededf0;
-    --surface-3: #e2e2e6;
-    --ink: #17171a;
-    --ink-2: #55555f;
-    --ink-3: #8a8a94;
-    --line: #e3e3e7;
-    --line-strong: #cfcfd6;
-    --accent: #b45309;
+    --bg: #f6f7fb;
+    --bg-glass: rgba(246,247,251,0.85);
+    --surface: #ffffff;
+    --surface-2: #f0f2f8;
+    --surface-3: #e4e8f4;
+    --ink: #0f1120;
+    --ink-2: #4a5278;
+    --ink-3: #8890b0;
+    --line: #e2e6f0;
+    --line-strong: #c8cfe8;
+    --accent: #4f46e5;
+    --accent-2: #7c3aed;
     --accent-ink: #ffffff;
-    --accent-soft: #fdf0e0;
-    --bubble: #f1f1f3;
-    --ok: #15803d;
-    --ok-soft: #e7f5ec;
-    --warn: #a16207;
-    --warn-soft: #fbf3dd;
-    --danger: #b91c1c;
-    --danger-soft: #fbe6e6;
-    --info: #1d4ed8;
-    --info-soft: #e6ecfd;
-    --violet: #6d28d9;
-    --violet-soft: #efe8fd;
-    --radius: 14px;
-    --radius-sm: 9px;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
-    --shadow: 0 4px 6px -2px rgba(0,0,0,.05), 0 12px 28px -12px rgba(0,0,0,.18);
-    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --accent-soft: rgba(79,70,229,0.10);
+    --accent-glow: rgba(79,70,229,0.25);
+    --bubble: #eeeef8;
+    --ok: #059669;
+    --ok-soft: rgba(5,150,105,0.10);
+    --warn: #d97706;
+    --warn-soft: rgba(217,119,6,0.10);
+    --danger: #dc2626;
+    --danger-soft: rgba(220,38,38,0.10);
+    --info: #0ea5e9;
+    --info-soft: rgba(14,165,233,0.10);
+    --violet: #7c3aed;
+    --violet-soft: rgba(124,58,237,0.10);
+    --pink: #db2777;
+    --pink-soft: rgba(219,39,119,0.10);
+    --emerald: #10b981;
+    --emerald-soft: rgba(16,185,129,0.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+    --shadow-xs: 0 1px 2px rgba(15,17,32,.05);
+    --shadow-sm: 0 2px 8px -2px rgba(15,17,32,.08), 0 1px 3px rgba(15,17,32,.04);
+    --shadow: 0 6px 24px -4px rgba(15,17,32,.10), 0 2px 8px -2px rgba(15,17,32,.06);
+    --shadow-lg: 0 16px 48px -8px rgba(15,17,32,.15), 0 4px 16px -4px rgba(15,17,32,.08);
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sidebar-w: 268px;
-    --measure: 760px;
+    --sidebar-w: 274px;
+    --measure: 800px;
+    --header-h: 54px;
+    --transition: .2s cubic-bezier(.4,0,.2,1);
   }
   :root[data-theme="dark"] {
-    --bg: #1a1a1d;
-    --surface: #121214;
-    --surface-2: #26262c;
-    --surface-3: #32323a;
-    --ink: #ececee;
-    --ink-2: #a6a6b0;
-    --ink-3: #74747f;
-    --line: #2e2e35;
-    --line-strong: #40404a;
-    --accent: #f59e0b;
-    --accent-ink: #1c1400;
-    --accent-soft: #2e2410;
-    --bubble: #2a2a31;
-    --ok: #4ade80;
-    --ok-soft: #16301f;
-    --warn: #fbbf24;
-    --warn-soft: #322610;
+    --bg: #090c14;
+    --bg-glass: rgba(9,12,20,0.88);
+    --surface: #101422;
+    --surface-2: #161b2e;
+    --surface-3: #1e2438;
+    --ink: #eef0f8;
+    --ink-2: #8890b8;
+    --ink-3: #4a5278;
+    --line: #1e2438;
+    --line-strong: #2a3150;
+    --accent: #6366f1;
+    --accent-2: #a78bfa;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(99,102,241,0.14);
+    --accent-glow: rgba(99,102,241,0.30);
+    --bubble: #161b2e;
+    --ok: #10b981;
+    --ok-soft: rgba(16,185,129,0.14);
+    --warn: #f59e0b;
+    --warn-soft: rgba(245,158,11,0.14);
     --danger: #f87171;
-    --danger-soft: #351a1a;
-    --info: #93b4fd;
-    --info-soft: #1a2440;
-    --violet: #c4b5fd;
-    --violet-soft: #241d3d;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-    --shadow: 0 4px 10px -4px rgba(0,0,0,.5), 0 16px 36px -18px rgba(0,0,0,.8);
+    --danger-soft: rgba(248,113,113,0.14);
+    --info: #38bdf8;
+    --info-soft: rgba(56,189,248,0.14);
+    --violet: #a78bfa;
+    --violet-soft: rgba(167,139,250,0.14);
+    --pink: #f472b6;
+    --pink-soft: rgba(244,114,182,0.14);
+    --emerald: #34d399;
+    --emerald-soft: rgba(52,211,153,0.14);
+    --shadow-xs: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-sm: 0 2px 8px -2px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.3);
+    --shadow: 0 6px 24px -4px rgba(0,0,0,.55), 0 2px 8px -2px rgba(0,0,0,.35);
+    --shadow-lg: 0 20px 60px -8px rgba(0,0,0,.7), 0 6px 20px -4px rgba(0,0,0,.4);
   }
 
   * { box-sizing: border-box; }
@@ -78,172 +102,215 @@
     font-family: var(--font);
     background: var(--bg);
     color: var(--ink);
-    font-size: 15px;
-    line-height: 1.55;
+    font-size: 14.5px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
   }
   button, input, select, textarea { font: inherit; color: inherit; }
-  a { color: var(--accent); }
-  h1 { font-size: 1.35rem; margin: 0 0 .2rem; letter-spacing: -.02em; }
-  h2 { font-size: 1rem; margin: 0; letter-spacing: -.01em; }
-  h3 { font-size: .9rem; margin: 0; letter-spacing: -.01em; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1 { font-size: 1.4rem; margin: 0 0 .25rem; letter-spacing: -.03em; font-weight: 700; }
+  h2 { font-size: 1rem; margin: 0; letter-spacing: -.015em; font-weight: 600; }
+  h3 { font-size: .9rem; margin: 0; letter-spacing: -.01em; font-weight: 600; }
   .mono { font-family: var(--mono); font-size: .82em; }
   .muted { color: var(--ink-3); }
   .hidden { display: none !important; }
-  .lede { color: var(--ink-2); margin: 0 0 1.1rem; font-size: .92rem; }
+  .lede { color: var(--ink-2); margin: 0 0 1.2rem; font-size: .9rem; line-height: 1.65; }
   .eyebrow {
-    font-size: .68rem; font-weight: 700; letter-spacing: .09em;
+    font-size: .67rem; font-weight: 700; letter-spacing: .10em;
     text-transform: uppercase; color: var(--ink-3);
   }
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
   ::-webkit-scrollbar-thumb:hover { background: var(--line-strong); background-clip: content-box; }
   ::-webkit-scrollbar-track { background: transparent; }
 
   /* ============================================================
-     Shell: sidebar + main column
+     Layout Shell
      ============================================================ */
   .app { display: flex; height: 100%; }
 
+  /* --- Sidebar --- */
   .sidebar {
     width: var(--sidebar-w); flex: 0 0 var(--sidebar-w);
     background: var(--surface);
     border-right: 1px solid var(--line);
     display: flex; flex-direction: column;
-    transition: margin-left .22s ease;
+    transition: margin-left var(--transition);
+    position: relative; z-index: 10;
+  }
+  .sidebar::after {
+    content: ''; position: absolute; top: 0; right: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, transparent, var(--accent-soft) 30%, var(--accent-soft) 70%, transparent);
+    pointer-events: none;
   }
   .sidebar.collapsed { margin-left: calc(var(--sidebar-w) * -1); }
 
-  .side-head { padding: .85rem .8rem .5rem; }
-  .brand { display: flex; align-items: center; gap: .6rem; padding: .25rem .35rem .75rem; }
+  .side-head { padding: 1rem .85rem .6rem; }
+  .brand { display: flex; align-items: center; gap: .65rem; padding: .2rem .35rem .8rem; }
   .brand-mark {
-    width: 30px; height: 30px; border-radius: 9px; flex: 0 0 30px;
-    background: linear-gradient(140deg, var(--accent), #7c2d12);
+    width: 32px; height: 32px; border-radius: 10px; flex: 0 0 32px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 700;
+    box-shadow: 0 4px 12px var(--accent-glow);
   }
-  .brand b { font-size: .93rem; font-weight: 700; letter-spacing: -.01em; display: block; }
-  .brand small { color: var(--ink-3); font-size: .7rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 600; }
+  .brand b { font-size: .95rem; font-weight: 700; letter-spacing: -.02em; display: block; }
+  .brand small { color: var(--ink-3); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
 
   .new-chat {
     width: 100%; display: flex; align-items: center; gap: .55rem;
-    padding: .6rem .7rem; border-radius: var(--radius-sm);
+    padding: .6rem .75rem; border-radius: var(--radius-sm);
     border: 1px solid var(--line-strong); background: var(--bg);
-    font-weight: 600; font-size: .88rem; cursor: pointer; text-align: left;
+    font-weight: 600; font-size: .84rem; cursor: pointer; text-align: left;
     box-shadow: var(--shadow-sm);
+    color: var(--ink-2);
+    transition: all var(--transition);
   }
-  .new-chat:hover { border-color: var(--accent); color: var(--accent); }
+  .new-chat:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
-  .side-scroll { flex: 1; overflow-y: auto; padding: .5rem .5rem 1rem; }
-  .side-group { margin-top: .9rem; }
-  .side-group > .eyebrow { padding: 0 .55rem .35rem; }
+  .side-scroll { flex: 1; overflow-y: auto; padding: .4rem .6rem 1rem; }
+  .side-group { margin-top: 1.1rem; }
+  .side-group > .eyebrow {
+    padding: 0 .5rem .4rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .side-group > .eyebrow::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
 
   .side-link {
     width: 100%; display: flex; align-items: center; gap: .6rem;
-    padding: .5rem .6rem; border-radius: var(--radius-sm);
+    padding: .48rem .6rem; border-radius: var(--radius-sm);
     border: 0; background: transparent; cursor: pointer;
-    color: var(--ink-2); font-size: .875rem; font-weight: 500; text-align: left;
+    color: var(--ink-2); font-size: .855rem; font-weight: 500; text-align: left;
+    transition: all .15s ease;
   }
-  .side-link .ic { width: 17px; text-align: center; flex: 0 0 17px; opacity: .85; }
+  .side-link .ic {
+    width: 20px; height: 20px; text-align: center; flex: 0 0 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; opacity: .75;
+    border-radius: var(--radius-xs); background: transparent;
+    transition: all .15s ease;
+  }
   .side-link:hover { background: var(--surface-2); color: var(--ink); }
-  .side-link.active { background: var(--surface-2); color: var(--ink); font-weight: 600; }
-  .side-link .tail { margin-left: auto; font-size: .72rem; color: var(--ink-3); font-weight: 600; }
+  .side-link:hover .ic { background: var(--surface-3); opacity: 1; }
+  .side-link.active {
+    background: var(--accent-soft); color: var(--accent);
+    font-weight: 600;
+  }
+  .side-link.active .ic {
+    background: var(--accent-soft); color: var(--accent); opacity: 1;
+  }
+  .side-link .tail { margin-left: auto; font-size: .7rem; color: var(--ink-3); font-weight: 600;
+    background: var(--surface-2); padding: .1rem .35rem; border-radius: 999px; }
+  .side-link.active .tail { background: var(--accent-soft); color: var(--accent); }
 
   .side-doc {
     display: flex; align-items: center; gap: .5rem;
     padding: .38rem .6rem; border-radius: var(--radius-sm);
-    font-size: .82rem; color: var(--ink-2); cursor: pointer;
+    font-size: .8rem; color: var(--ink-2); cursor: pointer;
     border: 0; background: transparent; width: 100%; text-align: left;
+    transition: all .12s ease;
   }
   .side-doc:hover { background: var(--surface-2); color: var(--ink); }
-  .side-doc .dt {
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
+  .side-doc .dt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .side-doc .ext {
-    flex: 0 0 auto; font-size: .6rem; font-weight: 700; text-transform: uppercase;
-    padding: .1rem .3rem; border-radius: 4px; background: var(--surface-2); color: var(--ink-3);
+    flex: 0 0 auto; font-size: .58rem; font-weight: 700; text-transform: uppercase;
+    padding: .1rem .28rem; border-radius: 4px; background: var(--surface-2); color: var(--ink-3);
     letter-spacing: .04em;
   }
 
-  .side-foot { border-top: 1px solid var(--line); padding: .6rem; display: flex; flex-direction: column; gap: .5rem; }
+  .side-foot { border-top: 1px solid var(--line); padding: .7rem .6rem; display: flex; flex-direction: column; gap: .5rem; }
   .idx-row { display: flex; gap: .3rem; flex-wrap: wrap; }
   .status-chip {
-    display: inline-flex; align-items: center; gap: .32rem;
-    padding: .22rem .48rem; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .2rem .45rem; border-radius: 999px;
     border: 1px solid var(--line); background: var(--bg);
-    font-size: .68rem; font-weight: 600; color: var(--ink-2);
+    font-size: .67rem; font-weight: 600; color: var(--ink-2);
   }
-  .status-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
-  .status-chip.ready .dot { background: var(--ok); }
+  .status-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .status-chip.ready .dot { background: var(--ok); box-shadow: 0 0 0 2px var(--ok-soft); }
   .status-chip.missing .dot { background: var(--danger); }
 
-  /* ---- main column ---- */
+  /* --- Main Column --- */
   .main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100%; }
   .main-head {
-    display: flex; align-items: center; gap: .7rem;
-    padding: .6rem .95rem; border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(10px); flex: 0 0 auto; min-height: 52px;
+    display: flex; align-items: center; gap: .6rem;
+    padding: 0 1rem; border-bottom: 1px solid var(--line);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px) saturate(1.5);
+    -webkit-backdrop-filter: blur(12px) saturate(1.5);
+    flex: 0 0 auto; height: var(--header-h);
+    position: relative; z-index: 5;
   }
-  .main-head .ttl { font-weight: 650; font-size: .95rem; letter-spacing: -.01em; }
+  .main-head .ttl { font-weight: 650; font-size: .92rem; letter-spacing: -.015em; }
   .main-head .sp { margin-left: auto; display: flex; gap: .4rem; align-items: center; }
 
   .icon-btn {
-    width: 33px; height: 33px; border-radius: var(--radius-sm);
+    width: 32px; height: 32px; border-radius: var(--radius-sm);
     border: 1px solid transparent; background: transparent; cursor: pointer;
-    display: grid; place-items: center; color: var(--ink-2); font-size: 15px;
+    display: grid; place-items: center; color: var(--ink-2); font-size: 14px;
+    transition: all .15s ease;
   }
-  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); border-color: var(--line); }
   .icon-btn.bordered { border-color: var(--line); background: var(--bg); }
 
   .scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
-  .measure { max-width: var(--measure); margin: 0 auto; padding: 1.4rem 1.25rem 2rem; }
-  .measure.wide { max-width: 1100px; }
+  .measure { max-width: var(--measure); margin: 0 auto; padding: 1.5rem 1.35rem 2.5rem; }
+  .measure.wide { max-width: 1140px; }
   .view { display: none; height: 100%; }
   .view.active { display: flex; flex-direction: column; min-height: 0; }
 
   /* ============================================================
-     Chat
+     Chat — Classic Thread
      ============================================================ */
-  #thread { display: flex; flex-direction: column; gap: 1.6rem; }
+  #thread { display: flex; flex-direction: column; gap: 1.8rem; }
 
   .msg { display: flex; gap: .8rem; }
   .msg .avatar {
-    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px;
-    display: grid; place-items: center; font-size: .72rem; font-weight: 700;
+    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px;
+    display: grid; place-items: center; font-size: .7rem; font-weight: 700;
     margin-top: .1rem;
   }
   .msg.user { justify-content: flex-end; }
   .msg.user .bubble {
-    background: var(--bubble); padding: .65rem .95rem;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #fff; padding: .7rem 1rem;
     border-radius: 18px 18px 4px 18px; max-width: 78%;
     white-space: pre-wrap; word-break: break-word;
+    box-shadow: 0 4px 16px var(--accent-glow);
   }
-  .msg.bot .avatar { background: linear-gradient(140deg, var(--accent), #7c2d12); color: #fff; }
+  .msg.bot .avatar { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; box-shadow: 0 2px 8px var(--accent-glow); }
   .msg.bot .body { min-width: 0; flex: 1; }
 
-  .a-meta { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin-bottom: .5rem; }
+  .a-meta { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin-bottom: .6rem; }
   .a-text { white-space: pre-wrap; word-break: break-word; }
   .a-text .cite {
     display: inline-block; font-family: var(--mono); font-size: .72em; font-weight: 600;
     background: var(--accent-soft); color: var(--accent);
-    border-radius: 5px; padding: 0 .28rem; margin: 0 .06rem; vertical-align: .06em;
+    border-radius: 5px; padding: 0 .3rem; margin: 0 .06rem; vertical-align: .06em;
   }
 
   .pill {
     display: inline-flex; align-items: center; gap: .25rem;
-    font-size: .68rem; font-weight: 600; padding: .16rem .46rem;
+    font-size: .67rem; font-weight: 600; padding: .17rem .48rem;
     border-radius: 999px; background: var(--surface-2); color: var(--ink-2);
-    white-space: nowrap;
+    white-space: nowrap; border: 1px solid transparent;
   }
-  .pill.ok { background: var(--ok-soft); color: var(--ok); }
-  .pill.bad { background: var(--danger-soft); color: var(--danger); }
-  .pill.warn { background: var(--warn-soft); color: var(--warn); }
-  .pill.info { background: var(--info-soft); color: var(--info); }
-  .pill.violet { background: var(--violet-soft); color: var(--violet); }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); border-color: rgba(5,150,105,.2); }
+  .pill.bad { background: var(--danger-soft); color: var(--danger); border-color: rgba(220,38,38,.2); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); border-color: rgba(217,119,6,.2); }
+  .pill.info { background: var(--info-soft); color: var(--info); border-color: rgba(14,165,233,.2); }
+  .pill.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(124,58,237,.2); }
+  .pill.pink { background: var(--pink-soft); color: var(--pink); border-color: rgba(219,39,119,.2); }
+  .pill.emerald { background: var(--emerald-soft); color: var(--emerald); border-color: rgba(16,185,129,.2); }
+  .pill.accent { background: var(--accent-soft); color: var(--accent); border-color: rgba(79,70,229,.2); }
+  .pill.mono { font-family: var(--mono); font-size: .64rem; }
 
   .refusal-note {
-    margin-top: .7rem; padding: .65rem .8rem; border-radius: var(--radius-sm);
+    margin-top: .8rem; padding: .7rem .9rem; border-radius: var(--radius-sm);
     background: var(--warn-soft); color: var(--ink-2);
     font-size: .84rem; border-left: 3px solid var(--warn);
   }
@@ -257,155 +324,181 @@
   details.src-peek > summary::before { content: '▸ '; color: var(--ink-3); }
   details.src-peek[open] > summary::before { content: '▾ '; }
   details.src-peek > summary:hover { color: var(--accent); }
-  .peek { border-left: 2px solid var(--line-strong); padding: .35rem 0 .35rem .6rem; margin-top: .4rem; }
+  .peek { border-left: 2px solid var(--line-strong); padding: .35rem 0 .35rem .7rem; margin-top: .4rem; }
   .peek-h { font-size: .7rem; font-weight: 600; }
   .peek-b { font-size: .8rem; color: var(--ink-2); white-space: pre-wrap; margin-top: .15rem; }
 
-  .sources { margin-top: .85rem; border-top: 1px solid var(--line); padding-top: .7rem; }
+  .sources { margin-top: .9rem; border-top: 1px solid var(--line); padding-top: .75rem; }
   .source {
     display: flex; gap: .6rem; align-items: flex-start;
-    padding: .5rem 0; border-bottom: 1px solid var(--line);
+    padding: .55rem 0; border-bottom: 1px solid var(--line);
   }
   .source:last-child { border-bottom: 0; }
   .source .marker {
     font-family: var(--mono); font-size: .7rem; font-weight: 700;
     background: var(--accent-soft); color: var(--accent);
-    border-radius: 5px; padding: .08rem .3rem; flex: 0 0 auto; margin-top: .12rem;
+    border-radius: 5px; padding: .08rem .32rem; flex: 0 0 auto; margin-top: .12rem;
   }
   .source .title { font-size: .82rem; font-weight: 600; }
   .source .meta { font-size: .72rem; color: var(--ink-3); }
   .source .coverage { margin-left: auto; text-align: right; flex: 0 0 96px; }
   .source .coverage span { font-size: .66rem; color: var(--ink-3); }
   .source .bar { height: 4px; border-radius: 3px; background: var(--surface-2); overflow: hidden; margin-bottom: .2rem; }
-  .source .bar i { display: block; height: 100%; background: var(--accent); }
+  .source .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
 
-  .a-foot { display: flex; gap: .35rem; margin-top: .7rem; }
+  .a-foot { display: flex; gap: .35rem; margin-top: .8rem; }
 
-  .thread-empty { text-align: center; padding: 3.5rem 1rem 1rem; color: var(--ink-2); }
+  .thread-empty { text-align: center; padding: 4rem 1rem 1rem; color: var(--ink-2); }
   .thread-empty .big {
-    width: 46px; height: 46px; margin: 0 auto .9rem; border-radius: 13px;
-    background: linear-gradient(140deg, var(--accent), #7c2d12);
-    display: grid; place-items: center; color: #fff; font-size: 21px;
+    width: 52px; height: 52px; margin: 0 auto 1rem; border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    display: grid; place-items: center; color: #fff; font-size: 24px;
+    box-shadow: 0 8px 24px var(--accent-glow);
   }
-  .thread-empty h1 { font-size: 1.5rem; }
+  .thread-empty h1 { font-size: 1.6rem; margin-bottom: .4rem; }
 
-  .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; justify-content: center; margin-top: 1.4rem; }
+  .chip-row { display: flex; gap: .45rem; flex-wrap: wrap; justify-content: center; margin-top: 1.6rem; }
   .chip {
     border: 1px solid var(--line); background: var(--bg); color: var(--ink-2);
-    padding: .45rem .75rem; border-radius: 999px; font-size: .8rem; cursor: pointer;
+    padding: .48rem .82rem; border-radius: 999px; font-size: .8rem; cursor: pointer;
+    transition: all .15s ease;
   }
-  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 
-  /* ---- composer ---- */
+  /* Composer */
   .composer-wrap {
-    flex: 0 0 auto; padding: .3rem 1.25rem 1rem;
-    background: linear-gradient(to bottom, transparent, var(--bg) 28%);
+    flex: 0 0 auto; padding: .3rem 1.35rem 1.1rem;
+    background: linear-gradient(to bottom, transparent, var(--bg) 22%);
   }
   .composer-inner { max-width: var(--measure); margin: 0 auto; }
   .composer {
-    border: 1px solid var(--line-strong); background: var(--bg);
-    border-radius: 24px; padding: .5rem .5rem .5rem .95rem;
+    border: 1.5px solid var(--line-strong); background: var(--surface);
+    border-radius: 26px; padding: .5rem .5rem .5rem 1rem;
     display: flex; align-items: flex-end; gap: .5rem;
     box-shadow: var(--shadow);
+    transition: border-color .18s ease, box-shadow .18s ease;
   }
-  .composer:focus-within { border-color: var(--accent); }
+  .composer:focus-within { border-color: var(--accent); box-shadow: var(--shadow), 0 0 0 3px var(--accent-soft); }
   .composer textarea {
     flex: 1; border: 0; outline: 0; background: transparent; resize: none;
-    padding: .42rem 0; max-height: 210px; min-height: 24px; line-height: 1.5;
+    padding: .45rem 0; max-height: 220px; min-height: 24px; line-height: 1.55;
   }
   .composer textarea::placeholder { color: var(--ink-3); }
   .composer-actions { display: flex; align-items: center; gap: .25rem; }
   .send-btn {
-    width: 34px; height: 34px; border-radius: 50%; border: 0; cursor: pointer;
-    background: var(--accent); color: var(--accent-ink);
-    display: grid; place-items: center; font-size: 15px; flex: 0 0 34px;
+    width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #fff; display: grid; place-items: center; font-size: 15px; flex: 0 0 36px;
+    box-shadow: 0 4px 12px var(--accent-glow);
+    transition: all .15s ease;
   }
-  .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .send-btn:hover { transform: scale(1.06); box-shadow: 0 6px 18px var(--accent-glow); }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
   .composer-hint {
-    text-align: center; font-size: .7rem; color: var(--ink-3); margin-top: .5rem;
+    text-align: center; font-size: .68rem; color: var(--ink-3); margin-top: .5rem;
   }
   .kbd {
-    font-family: var(--mono); font-size: .68rem; border: 1px solid var(--line);
-    border-bottom-width: 2px; border-radius: 4px; padding: 0 .25rem; background: var(--surface);
+    font-family: var(--mono); font-size: .66rem; border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 4px; padding: 0 .26rem; background: var(--surface);
   }
 
-  /* ---- settings drawer ---- */
+  /* Settings Drawer */
   .drawer-back {
-    position: fixed; inset: 0; background: rgba(0,0,0,.32); z-index: 60;
-    opacity: 0; pointer-events: none; transition: opacity .18s ease;
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 60;
+    opacity: 0; pointer-events: none; transition: opacity .2s ease;
+    backdrop-filter: blur(4px);
   }
   .drawer-back.open { opacity: 1; pointer-events: auto; }
   .drawer {
-    position: fixed; top: 0; right: 0; height: 100%; width: 340px; max-width: 92vw;
+    position: fixed; top: 0; right: 0; height: 100%; width: 350px; max-width: 94vw;
     background: var(--bg); border-left: 1px solid var(--line); z-index: 61;
-    transform: translateX(100%); transition: transform .22s ease;
+    transform: translateX(100%); transition: transform .24s cubic-bezier(.4,0,.2,1);
     display: flex; flex-direction: column;
+    box-shadow: var(--shadow-lg);
   }
   .drawer.open { transform: none; }
   .drawer-head {
-    display: flex; align-items: center; padding: .8rem 1rem;
+    display: flex; align-items: center; padding: .9rem 1.1rem;
     border-bottom: 1px solid var(--line);
   }
-  .drawer-body { padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+  .drawer-body { padding: 1.1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.1rem; }
 
   .field { display: flex; flex-direction: column; gap: .3rem; }
-  .field > label { font-size: .74rem; font-weight: 600; color: var(--ink-2); }
+  .field > label { font-size: .73rem; font-weight: 600; color: var(--ink-2); letter-spacing: .01em; }
   .field select, .field input[type="text"] {
-    padding: .5rem .6rem; border-radius: var(--radius-sm);
-    border: 1px solid var(--line); background: var(--bg); outline: 0;
+    padding: .5rem .65rem; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line); background: var(--bg); outline: 0;
+    transition: border-color .15s ease;
   }
   .field select:focus, .field input[type="text"]:focus { border-color: var(--accent); }
   input[type="range"] { accent-color: var(--accent); width: 100%; }
-  .help { font-size: .7rem; line-height: 1.45; color: var(--ink-3); }
+  .help { font-size: .7rem; line-height: 1.5; color: var(--ink-3); }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
-    padding: .48rem .8rem; border-radius: var(--radius-sm);
-    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+    padding: .48rem .85rem; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line); background: var(--bg); color: var(--ink);
     font-size: .84rem; font-weight: 600; cursor: pointer;
+    transition: all .15s ease;
   }
-  .btn:hover { border-color: var(--line-strong); background: var(--surface); }
-  .btn:disabled { opacity: .55; cursor: not-allowed; }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-  .btn.primary:hover { filter: brightness(1.06); }
+  .btn:hover { border-color: var(--line-strong); background: var(--surface); box-shadow: var(--shadow-sm); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    border-color: transparent; color: #fff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+  }
+  .btn.primary:hover { filter: brightness(1.08); box-shadow: 0 6px 18px var(--accent-glow); }
   .btn.ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
   .btn.ghost:hover { background: var(--surface-2); color: var(--ink); }
-  .btn.sm { padding: .32rem .6rem; font-size: .77rem; }
+  .btn.sm { padding: .3rem .62rem; font-size: .77rem; }
   .btn.danger { color: var(--danger); }
+  .btn.danger:hover { border-color: var(--danger); background: var(--danger-soft); }
 
   .spinner {
     width: 13px; height: 13px; border-radius: 50%; flex: 0 0 13px;
     border: 2px solid currentColor; border-top-color: transparent;
-    animation: spin .7s linear infinite; display: inline-block;
+    animation: spin .65s linear infinite; display: inline-block;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ============================================================
-     Cards / library / inspector
+     Cards, Library, Inspector
      ============================================================ */
   .card {
-    background: var(--bg); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 1rem;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1.1rem;
   }
-  .lib-grid { display: grid; grid-template-columns: 340px 1fr; gap: 1rem; align-items: start; }
-  @media (max-width: 900px) { .lib-grid { grid-template-columns: 1fr; } }
+  .card-glass {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .lib-grid { display: grid; grid-template-columns: 360px 1fr; gap: 1.1rem; align-items: start; }
+  @media (max-width: 920px) { .lib-grid { grid-template-columns: 1fr; } }
 
   .dropzone {
-    border: 1.5px dashed var(--line-strong); border-radius: var(--radius);
-    padding: 1.5rem 1rem; text-align: center; cursor: pointer;
-    background: var(--surface); transition: .15s;
+    border: 2px dashed var(--line-strong); border-radius: var(--radius);
+    padding: 1.8rem 1rem; text-align: center; cursor: pointer;
+    background: var(--surface-2); transition: all .18s ease;
   }
-  .dropzone:hover, .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
-  .dropzone .ico { font-size: 22px; margin-bottom: .3rem; }
-  .type-row { display: flex; flex-wrap: wrap; gap: .25rem; justify-content: center; margin-top: .7rem; }
+  .dropzone:hover, .dropzone.over {
+    border-color: var(--accent); background: var(--accent-soft);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .dropzone .ico { font-size: 26px; margin-bottom: .5rem; }
+  .type-row { display: flex; flex-wrap: wrap; gap: .25rem; justify-content: center; margin-top: .8rem; }
   .type-row .t {
-    font-size: .63rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
-    padding: .12rem .34rem; border-radius: 4px; background: var(--surface-2); color: var(--ink-3);
+    font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .12rem .36rem; border-radius: 5px; background: var(--surface-3); color: var(--ink-3);
   }
   details.paste summary { cursor: pointer; font-size: .82rem; font-weight: 600; color: var(--ink-2); }
+  details.paste summary:hover { color: var(--accent); }
   details.paste textarea {
-    width: 100%; min-height: 110px; margin-top: .5rem; padding: .55rem;
-    border-radius: var(--radius-sm); border: 1px solid var(--line);
+    width: 100%; min-height: 110px; margin-top: .5rem; padding: .6rem;
+    border-radius: var(--radius-sm); border: 1.5px solid var(--line);
     background: var(--bg); outline: 0; resize: vertical; font-size: .84rem;
   }
   details.paste textarea:focus { border-color: var(--accent); }
@@ -413,12 +506,12 @@
   .queue { display: flex; flex-direction: column; gap: .4rem; max-height: 260px; overflow-y: auto; }
   .qitem, .doc {
     display: flex; gap: .6rem; align-items: center;
-    padding: .5rem; border-radius: var(--radius-sm); border: 1px solid var(--line);
+    padding: .55rem; border-radius: var(--radius-sm); border: 1px solid var(--line);
   }
   .qitem.done { border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); background: var(--ok-soft); }
   .qitem.fail { border-color: color-mix(in srgb, var(--danger) 40%, var(--line)); background: var(--danger-soft); }
   .ficon {
-    width: 30px; height: 30px; flex: 0 0 30px; border-radius: 7px;
+    width: 32px; height: 32px; flex: 0 0 32px; border-radius: 8px;
     background: var(--surface-2); color: var(--ink-2);
     display: grid; place-items: center; font-size: .6rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: .02em;
@@ -430,14 +523,15 @@
   .doc:last-child { border-bottom: 0; }
   .doc > div:nth-child(2) { min-width: 0; flex: 1; }
   .doc .actions { margin-left: auto; display: flex; gap: .3rem; flex: 0 0 auto; }
-  .doc-toolbar { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-bottom: .5rem; flex-wrap: wrap; }
-  .doc-toolbar input { padding: .38rem .55rem; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--bg); outline: 0; font-size: .82rem; }
+  .doc-toolbar { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-bottom: .6rem; flex-wrap: wrap; }
+  .doc-toolbar input { padding: .38rem .58rem; border-radius: var(--radius-sm); border: 1.5px solid var(--line); background: var(--bg); outline: 0; font-size: .82rem; transition: border-color .15s; }
+  .doc-toolbar input:focus { border-color: var(--accent); }
   .doc-list { max-height: 62vh; overflow-y: auto; }
 
-  .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+  .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem; }
   @media (max-width: 980px) { .stage-grid { grid-template-columns: 1fr; } }
-  .stage .sub { font-size: .72rem; color: var(--ink-3); margin: .1rem 0 .7rem; }
-  .hit { padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  .stage .sub { font-size: .72rem; color: var(--ink-3); margin: .1rem 0 .75rem; }
+  .hit { padding: .55rem 0; border-bottom: 1px solid var(--line); }
   .hit:last-child { border-bottom: 0; }
   .hit.final { background: var(--accent-soft); border-radius: var(--radius-sm); padding: .5rem; margin-bottom: .2rem; }
   .hit .row { display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; }
@@ -449,27 +543,35 @@
   .query-strip { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .8rem; }
   .query-strip .k { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }
 
-  /* ---- golden set ---- */
-  .metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .7rem; margin-bottom: 1rem; }
-  .metric { padding: .8rem .9rem; }
-  .metric .k { font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
-  .metric .v { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; margin-top: .2rem; display: flex; align-items: baseline; gap: .35rem; flex-wrap: wrap; }
+  /* Golden set */
+  .metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: .75rem; margin-bottom: 1rem; }
+  .metric {
+    padding: .9rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: box-shadow .15s ease;
+  }
+  .metric:hover { box-shadow: var(--shadow); }
+  .metric .k { font-size: .67rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+  .metric .v { font-size: 1.3rem; font-weight: 700; letter-spacing: -.025em; margin-top: .25rem; display: flex; align-items: baseline; gap: .35rem; flex-wrap: wrap; }
   .metric .v .arrow { color: var(--ink-3); font-size: .95rem; font-weight: 500; }
   .metric .v .nb { white-space: nowrap; }
-  .metric .d { font-size: .74rem; font-weight: 600; }
+  .metric .d { font-size: .74rem; font-weight: 600; margin-top: .15rem; }
   .metric .d.up { color: var(--ok); }
   .metric .d.down { color: var(--danger); }
   .metric .d.flat { color: var(--ink-3); }
 
   table.gs { width: 100%; border-collapse: collapse; font-size: .8rem; }
   table.gs th {
-    text-align: left; font-size: .66rem; font-weight: 700; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--ink-3); padding: .45rem .5rem;
+    text-align: left; font-size: .65rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ink-3); padding: .48rem .55rem;
     border-bottom: 1px solid var(--line); white-space: nowrap;
+    background: var(--surface-2);
   }
-  table.gs td { padding: .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.gs td { padding: .5rem .55rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   table.gs tr:last-child td { border-bottom: 0; }
-  table.gs tbody tr:hover { background: var(--surface); }
+  table.gs tbody tr:hover { background: var(--surface-2); }
   table.gs .qid { font-family: var(--mono); font-size: .72rem; font-weight: 600; white-space: nowrap; }
   table.gs .qtext { min-width: 220px; }
   table.gs .cid { font-family: var(--mono); font-size: .68rem; color: var(--ink-3); white-space: nowrap; }
@@ -483,62 +585,64 @@
   .st.REGRESSED { background: var(--warn-soft); color: var(--warn); }
   .ev { display: flex; gap: .55rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .8rem; }
   .ev:last-child { border-bottom: 0; }
-  .decision { padding: .9rem 1rem; border-radius: var(--radius); border-left: 3px solid var(--accent); background: var(--accent-soft); }
+  .decision { padding: 1rem 1.1rem; border-radius: var(--radius); border-left: 3px solid var(--accent); background: var(--accent-soft); }
   .decision b { font-size: 1rem; }
   .gs-wrap { overflow-x: auto; }
 
-  /* ---- week 5 ---- */
-  .w5-tabs { display: flex; gap: .3rem; border-bottom: 1px solid var(--line); margin-bottom: 1rem; flex-wrap: wrap; }
+  /* Week 5 */
+  .w5-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 1rem; flex-wrap: wrap; }
   .w5-tabs button {
-    border: 0; background: transparent; padding: .5rem .8rem; cursor: pointer;
-    color: var(--ink-2); font-weight: 600; font-size: .85rem;
+    border: 0; background: transparent; padding: .52rem .85rem; cursor: pointer;
+    color: var(--ink-2); font-weight: 500; font-size: .84rem;
     border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: all .15s ease; border-radius: var(--radius-xs) var(--radius-xs) 0 0;
   }
-  .w5-tabs button:hover { color: var(--ink); }
-  .w5-tabs button.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .md { font-size: .88rem; line-height: 1.65; }
-  .md h1 { font-size: 1.25rem; margin: 0 0 .6rem; }
-  .md h2 { font-size: 1rem; margin: 1.3rem 0 .5rem; }
-  .md h3 { font-size: .9rem; margin: 1rem 0 .3rem; }
-  .md p { margin: .5rem 0; }
-  .md ul, .md ol { margin: .5rem 0; padding-left: 1.3rem; }
-  .md li { margin: .25rem 0; }
+  .w5-tabs button:hover { color: var(--ink); background: var(--surface-2); }
+  .w5-tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .md { font-size: .88rem; line-height: 1.7; }
+  .md h1 { font-size: 1.25rem; margin: 0 0 .65rem; }
+  .md h2 { font-size: 1rem; margin: 1.4rem 0 .5rem; }
+  .md h3 { font-size: .9rem; margin: 1rem 0 .35rem; }
+  .md p { margin: .55rem 0; }
+  .md ul, .md ol { margin: .55rem 0; padding-left: 1.35rem; }
+  .md li { margin: .28rem 0; }
   .md code { font-family: var(--mono); font-size: .82em; background: var(--surface-2); padding: .08rem .3rem; border-radius: 4px; }
-  .md pre { background: var(--surface); padding: .7rem; border-radius: var(--radius-sm); overflow-x: auto; }
+  .md pre { background: var(--surface); padding: .8rem; border-radius: var(--radius-sm); overflow-x: auto; border: 1px solid var(--line); }
   .md pre code { background: none; padding: 0; }
-  .md blockquote { margin: .6rem 0; padding: .5rem .8rem; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-  .md table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .7rem 0; }
-  .md th { text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); padding: .45rem .5rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  .md td { padding: .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-  .md hr { border: 0; border-top: 1px solid var(--line); margin: 1.2rem 0; }
+  .md blockquote { margin: .65rem 0; padding: .55rem .9rem; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .md table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .75rem 0; }
+  .md th { text-align: left; font-size: .67rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); padding: .45rem .55rem; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--surface-2); }
+  .md td { padding: .5rem .55rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .md hr { border: 0; border-top: 1px solid var(--line); margin: 1.3rem 0; }
   .w5-trace {
     display: grid; grid-template-columns: 150px 1fr auto; gap: .6rem; align-items: start;
-    padding: .55rem .5rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: .82rem;
+    padding: .55rem .55rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: .82rem;
+    transition: background .12s;
   }
-  .w5-trace:hover { background: var(--surface); }
+  .w5-trace:hover { background: var(--surface-2); }
   .w5-trace .tid { font-family: var(--mono); font-size: .72rem; font-weight: 600; }
-  .w5-detail { background: var(--surface); border-radius: var(--radius-sm); padding: .7rem; margin-top: .5rem; }
+  .w5-detail { background: var(--surface-2); border-radius: var(--radius-sm); padding: .75rem; margin-top: .5rem; }
   .w5-detail pre { font-family: var(--mono); font-size: .74rem; white-space: pre-wrap; word-break: break-word; margin: .2rem 0 .6rem; }
   .w5-k { font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
 
-  /* ---- week 6 ---- */
+  /* Week 6 */
   .w6-steps { display: grid; }
-  .w6-step { display: grid; grid-template-columns: 1.7rem 1fr; gap: .6rem; align-items: start; padding: .5rem .4rem; border-bottom: 1px solid var(--line); font-size: .82rem; }
+  .w6-step { display: grid; grid-template-columns: 1.7rem 1fr; gap: .6rem; align-items: start; padding: .55rem .4rem; border-bottom: 1px solid var(--line); font-size: .82rem; }
   .w6-step:last-child { border-bottom: 0; }
   .w6-step .n { width: 1.5rem; height: 1.5rem; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; background: var(--surface-2); color: var(--ink-3); }
   .w6-step.done .n { background: var(--ok-soft); color: var(--ok); }
   .w6-step.current { background: var(--accent-soft); border-radius: var(--radius-sm); }
   .w6-step.current .n { background: var(--accent); color: var(--accent-ink); }
-  pre.w6-cmd { font-family: var(--mono); font-size: .76rem; background: var(--surface); padding: .5rem .7rem; border-radius: var(--radius-sm); margin: .5rem 0 0; white-space: pre-wrap; word-break: break-word; }
+  pre.w6-cmd { font-family: var(--mono); font-size: .76rem; background: var(--surface-2); padding: .55rem .75rem; border-radius: var(--radius-sm); margin: .5rem 0 0; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--line); }
   .w6-bar { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; min-width: 60px; }
   .w6-bar i { display: block; height: 100%; }
   .w6-case { display: grid; grid-template-columns: 44px 38px 1fr auto; gap: .6rem; align-items: center; padding: .5rem .4rem; border-bottom: 1px solid var(--line); cursor: pointer; font-size: .82rem; }
-  .w6-case:hover { background: var(--surface); }
+  .w6-case:hover { background: var(--surface-2); }
   .w6-case .cid { font-family: var(--mono); font-size: .72rem; font-weight: 600; }
   .w6-case .pills { display: flex; gap: .3rem; flex-wrap: wrap; justify-content: flex-end; }
-  .w6-sub { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .7rem; }
-  .w6-diff { font-family: var(--mono); font-size: .74rem; line-height: 1.5; background: var(--surface); border-radius: var(--radius-sm); padding: .6rem 0; overflow-x: auto; margin: 0; }
-  .w6-diff span { display: block; min-height: 1.5em; padding: 0 .7rem; white-space: pre-wrap; word-break: break-word; }
+  .w6-sub { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  .w6-diff { font-family: var(--mono); font-size: .74rem; line-height: 1.5; background: var(--surface-2); border-radius: var(--radius-sm); padding: .6rem 0; overflow-x: auto; margin: 0; border: 1px solid var(--line); }
+  .w6-diff span { display: block; min-height: 1.5em; padding: 0 .75rem; white-space: pre-wrap; word-break: break-word; }
   .w6-diff .add { background: var(--ok-soft); color: var(--ok); }
   .w6-diff .del { background: var(--danger-soft); color: var(--danger); text-decoration: line-through; }
   table.gs.w6-confusion td, table.gs.w6-confusion th { text-align: center; }
@@ -549,24 +653,261 @@
 
   pre.console {
     font-family: var(--mono); font-size: .76rem; line-height: 1.55;
-    background: var(--surface); border-radius: var(--radius-sm); padding: .9rem;
+    background: var(--surface-2); border-radius: var(--radius-sm); padding: .95rem;
     overflow: auto; max-height: 68vh; margin: 0; white-space: pre-wrap; word-break: break-word;
+    border: 1px solid var(--line);
   }
 
-  /* ---- toasts ---- */
-  .toasts { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 90; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
+  /* Toasts */
+  .toasts { position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 90; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
   .toast {
-    background: var(--ink); color: var(--bg); padding: .55rem .9rem;
-    border-radius: 999px; font-size: .82rem; font-weight: 500; box-shadow: var(--shadow);
-    animation: pop .18s ease;
+    background: var(--ink); color: var(--bg); padding: .6rem 1rem;
+    border-radius: 999px; font-size: .82rem; font-weight: 500;
+    box-shadow: var(--shadow-lg); animation: popIn .2s cubic-bezier(.34,1.56,.64,1);
   }
   .toast.err { background: var(--danger); color: #fff; }
-  @keyframes pop { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes popIn { from { opacity: 0; transform: translateY(10px) scale(.95); } }
 
-  @media (max-width: 760px) {
-    .sidebar { position: fixed; z-index: 70; height: 100%; box-shadow: var(--shadow); }
-    .sidebar.collapsed { margin-left: calc(var(--sidebar-w) * -1); }
+  /* ============================================================
+     Role Switcher & Week 9 System
+     ============================================================ */
+  .role-switcher {
+    display: inline-flex; align-items: center;
+    background: var(--surface-2);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 999px; padding: 3px; gap: 3px;
   }
+  .role-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: none; background: transparent; color: var(--ink-2);
+    font-size: .78rem; font-weight: 600; padding: .3rem .75rem;
+    border-radius: 999px; cursor: pointer; transition: all .18s ease;
+  }
+  .role-btn:hover { color: var(--ink); }
+  .role-btn.active {
+    background: var(--bg); color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .role-btn[data-role="admin"].active, .role-btn[data-w9role="admin"].active {
+    background: var(--accent-soft); color: var(--accent);
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  .role-btn[data-role="user"].active, .role-btn[data-w9role="user"].active {
+    background: var(--ok-soft); color: var(--ok);
+    box-shadow: 0 2px 8px var(--ok-soft);
+  }
+
+  .role-badge {
+    display: inline-block; padding: .16rem .48rem;
+    border-radius: 999px; font-size: .67rem;
+    font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  }
+  .role-badge.admin { background: var(--accent-soft); color: var(--accent); }
+  .role-badge.user { background: var(--ok-soft); color: var(--ok); }
+
+  /* All Weeks Matrix */
+  .weeks-matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem; margin: 1.2rem 0;
+  }
+  .week-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .week-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    opacity: 0; transition: opacity var(--transition);
+  }
+  .week-card:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: var(--shadow); }
+  .week-card:hover::before { opacity: 1; }
+  .week-card-head {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: .65rem;
+  }
+  .week-card-tag {
+    font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    padding: .2rem .52rem; border-radius: 6px;
+    background: var(--accent-soft); color: var(--accent);
+  }
+  .week-card-title { font-weight: 700; font-size: .98rem; margin-bottom: .4rem; color: var(--ink); }
+  .week-card-desc { font-size: .82rem; color: var(--ink-2); line-height: 1.55; margin-bottom: .85rem; flex: 1; }
+  .week-card-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .85rem; }
+  .week-card-action { display: flex; justify-content: flex-end; }
+
+  /* ============================================================
+     Customer MCP Chatbot — Premium
+     ============================================================ */
+  .mcp-chat-container {
+    display: flex; flex-direction: column;
+    min-height: 560px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .mcp-chat-head {
+    padding: 1rem 1.3rem;
+    background: linear-gradient(135deg, var(--surface-2) 0%, color-mix(in srgb, var(--accent-soft) 60%, var(--surface-2)) 100%);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: .7rem;
+  }
+  .mcp-chat-stream {
+    flex: 1; overflow-y: auto; padding: 1.3rem;
+    display: flex; flex-direction: column; gap: 1.3rem;
+    max-height: 580px;
+  }
+  .mcp-chat-empty {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: .6rem; color: var(--ink-3); padding: 2rem;
+  }
+  .mcp-chat-empty .icon { font-size: 2.5rem; margin-bottom: .5rem; }
+  .mcp-msg {
+    display: flex; gap: .8rem; max-width: 94%;
+    animation: popIn .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .mcp-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .mcp-msg.bot { align-self: flex-start; }
+  .mcp-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 700; flex-shrink: 0;
+  }
+  .mcp-avatar.user {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; box-shadow: 0 3px 10px var(--accent-glow);
+  }
+  .mcp-avatar.bot {
+    background: linear-gradient(135deg, var(--surface-3), var(--surface-2));
+    color: var(--ink); border: 1px solid var(--line-strong);
+  }
+  .mcp-bubble {
+    padding: .9rem 1.15rem;
+    border-radius: 14px;
+    font-size: .9rem; line-height: 1.6;
+  }
+  .mcp-msg.user .mcp-bubble {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #fff; border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+  .mcp-msg.bot .mcp-bubble {
+    background: var(--bg); border: 1px solid var(--line);
+    color: var(--ink); border-bottom-left-radius: 4px;
+    box-shadow: var(--shadow-sm); width: 100%;
+  }
+
+  /* MCP Attribution — Rich Provenance Card */
+  .mcp-attribution-box {
+    background: linear-gradient(135deg, var(--surface-2) 0%, color-mix(in srgb, var(--accent-soft) 50%, var(--surface-2)) 100%);
+    border: 1px solid var(--line-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: .65rem .9rem;
+    margin-bottom: .85rem;
+    font-size: .8rem;
+  }
+  .mcp-attribution-box.ticket-server {
+    border-left-color: var(--violet);
+    background: linear-gradient(135deg, var(--surface-2) 0%, color-mix(in srgb, var(--violet-soft) 50%, var(--surface-2)) 100%);
+  }
+  .mcp-attribution-box.gateway-server {
+    border-left-color: var(--info);
+    background: linear-gradient(135deg, var(--surface-2) 0%, color-mix(in srgb, var(--info-soft) 50%, var(--surface-2)) 100%);
+  }
+  .mcp-server-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: .4rem; margin-bottom: .4rem;
+  }
+  .mcp-server-name {
+    font-weight: 700; font-size: .84rem; display: flex; align-items: center; gap: .4rem;
+  }
+  .mcp-server-icon {
+    width: 22px; height: 22px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; background: var(--accent-soft); flex-shrink: 0;
+  }
+  .mcp-wire-drawer {
+    background: var(--surface-2);
+    border: 1px dashed var(--line-strong);
+    border-radius: 8px; padding: .5rem .7rem;
+    margin-top: .6rem; font-size: .76rem;
+  }
+  .mcp-wire-drawer summary {
+    cursor: pointer; font-weight: 600; color: var(--ink-2); user-select: none;
+    list-style: none;
+  }
+  .mcp-wire-drawer summary::-webkit-details-marker { display: none; }
+  .mcp-wire-drawer summary::before { content: '▸ '; color: var(--ink-3); }
+  .mcp-wire-drawer[open] summary::before { content: '▾ '; }
+  .mcp-wire-drawer summary:hover { color: var(--accent); }
+  .mcp-evidence-tag {
+    display: inline-flex; align-items: center; gap: .25rem;
+    background: var(--surface-2); border: 1px solid var(--line);
+    padding: .18rem .5rem; border-radius: 6px;
+    font-size: .73rem; font-family: var(--mono);
+    margin: .2rem .2rem .2rem 0; color: var(--ink-2);
+  }
+  .mcp-evidence-tag.kb { border-color: rgba(5,150,105,.25); background: var(--ok-soft); color: var(--ok); }
+  .mcp-evidence-tag.ticket { border-color: rgba(124,58,237,.25); background: var(--violet-soft); color: var(--violet); }
+
+  .mcp-chat-foot {
+    padding: .9rem 1.1rem;
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+  }
+  .mcp-input-row {
+    display: flex; gap: .5rem; align-items: center;
+    background: var(--bg); border: 1.5px solid var(--line-strong);
+    border-radius: 999px; padding: .35rem .35rem .35rem .9rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .mcp-input-row:focus-within {
+    border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .mcp-input-row input {
+    flex: 1; border: 0; outline: 0; background: transparent;
+    font-size: .9rem; color: var(--ink);
+  }
+  .mcp-input-row input::placeholder { color: var(--ink-3); }
+  .mcp-send-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; display: grid; place-items: center; font-size: 15px; flex: 0 0 36px;
+    box-shadow: 0 3px 10px var(--accent-glow); transition: all .15s ease;
+  }
+  .mcp-send-btn:hover { transform: scale(1.08); }
+  .mcp-upload-bar {
+    display: flex; align-items: center; gap: .65rem;
+    padding: .65rem .9rem;
+    background: var(--surface);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: var(--radius-sm); margin-bottom: .85rem;
+    transition: border-color .15s ease;
+  }
+  .mcp-upload-bar:hover { border-color: var(--accent); }
+  .mcp-chips { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .4rem; }
+  .mcp-chip {
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink-2);
+    padding: .38rem .7rem; border-radius: 999px; font-size: .78rem; cursor: pointer;
+    transition: all .15s ease;
+  }
+  .mcp-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .mcp-status-bar {
+    display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; font-size: .76rem; color: var(--ink-3);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); display: inline-block; flex-shrink: 0; }
+  .dot.live { background: var(--ok); box-shadow: 0 0 0 2px var(--ok-soft), 0 0 6px var(--ok-soft); }
 </style>
 </head>
 <body>
@@ -594,8 +935,10 @@
         <button class="side-link" data-view="golden"><span class="ic">▤</span> Golden set <span class="tail" id="navGoldenCount"></span></button>
         <button class="side-link" data-view="week5"><span class="ic">◈</span> Error analysis <span class="tail" id="navW5Count"></span></button>
         <button class="side-link" data-view="week6"><span class="ic">◇</span> Judge validation <span class="tail" id="navW6Count"></span></button>
+        <button class="side-link" data-view="week7"><span class="ic">⚖</span> Agent vs workflow <span class="tail" id="navW7Score"></span></button>
         <button class="side-link" data-view="week8"><span class="ic">⇢</span> Trajectory eval <span class="tail" id="navW8Gap"></span></button>
         <button class="side-link" data-view="week9"><span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span></button>
+        <button class="side-link" data-view="reports"><span class="ic">▣</span> Reports &amp; demo</button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
 
@@ -623,7 +966,14 @@
     <header class="main-head">
       <button class="icon-btn" id="sidebarBtn" title="Toggle sidebar">☰</button>
       <span class="ttl" id="viewTitle">Chat</span>
+      <div class="role-switcher" id="globalRoleSwitcher" style="margin-left:.75rem;">
+        <button class="role-btn active" data-role="admin" title="Full engineering access to all 9 weeks">🛡️ Admin Role</button>
+        <button class="role-btn" data-role="user" title="Customer AI Assistant answering questions via MCP">👤 User Role</button>
+      </div>
       <div class="sp">
+        <span class="status-chip ready" title="PostgreSQL + pgvector vector store"><span class="dot"></span>Postgres</span>
+        <span class="status-chip ready" title="2 Active MCP Servers: clouddesk-kb and ticket-history"><span class="dot"></span>2 MCP Servers</span>
+        <span class="pill warn hidden" id="runChip" title="One model-backed action runs at a time; a second request gets 409 until this finishes."></span>
         <button class="icon-btn bordered" id="inspectBtn" title="Inspect retrieval without generating">◎</button>
         <button class="icon-btn bordered" id="settingsBtn2" title="Retrieval settings">⚙</button>
       </div>
@@ -875,6 +1225,32 @@
       </div>
     </section>
 
+    <section class="view" id="view-week7">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Agent vs fixed workflow — the Week 7 race</h1>
+          <p class="lede" style="margin:0;">
+            The refund-chase resolver built twice: a tool-calling loop where Qwen2.5-1.5B picks the
+            tools, and three hard-coded steps. Same 10 tickets, same three tools, same model, same
+            output contract, same grader. Rendered from <code>week7/</code>; the Run live tab runs one
+            ticket through either system now.
+          </p>
+          <div class="w5-tabs" id="w7Tabs" style="margin-top:1rem;">
+            <button data-tab="overview" class="active">The four numbers</button>
+            <button data-tab="tickets">Per ticket</button>
+            <button data-tab="branching">Branching</button>
+            <button data-tab="budgets">Four budgets</button>
+            <button data-tab="tool">The third tool</button>
+            <button data-tab="verdict">Verdict</button>
+            <button data-tab="live">Run live</button>
+            <button data-tab="memory">Memory (bonus)</button>
+            <button data-tab="writeup">Write-up</button>
+          </div>
+          <div id="w7Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <section class="view" id="view-week8">
       <div class="scroll">
         <div class="measure wide">
@@ -903,24 +1279,53 @@
     <section class="view" id="view-week9">
       <div class="scroll">
         <div class="measure wide">
-          <h1>MCP — bolting on the ticket-history server</h1>
-          <p class="lede" style="margin:0;">
-            Support Ops shipped an MCP server for ticket lookup and escalation history. The agent learns its
-            tools from <code>tools/list</code> at runtime, so adding it took config, not code. Everything here is
-            read from <code>week9/</code>; the Discovery tab can also run <code>initialize</code> + <code>tools/list</code> live.
-          </p>
-          <div class="w5-tabs" id="w9Tabs" style="margin-top:1rem;">
-            <button data-tab="overview" class="active">Overview</button>
-            <button data-tab="discovery">Discovery 2 → 4</button>
-            <button data-tab="swap">Config-only swap</button>
-            <button data-tab="wire">JSON-RPC wire</button>
-            <button data-tab="trace">Query trace</button>
-            <button data-tab="error">Error before / after</button>
-            <button data-tab="risk">Risk note</button>
-            <button data-tab="gateway">Gateway (bonus)</button>
-            <button data-tab="writeup">Write-up</button>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem;">
+            <div>
+              <h1 style="margin:0 0 .2rem;">Week 9 — Model Context Protocol (MCP)</h1>
+              <p class="lede" style="margin:0;">
+                Two roles: <b>Admin</b> (inspect all weeks' implementations &amp; MCP architecture) and <b>User</b> (customer AI chatbot answering questions from uploaded documents &amp; tickets via MCP).
+              </p>
+            </div>
+            <div class="role-switcher" id="w9RoleSelector">
+              <button class="role-btn active" data-w9role="admin">🛡️ Admin Mode</button>
+              <button class="role-btn" data-w9role="user">👤 User Mode (Customer AI)</button>
+            </div>
           </div>
-          <div id="w9Body"><div class="muted">Loading…</div></div>
+
+          <div id="w9AdminContainer">
+            <div class="w5-tabs" id="w9Tabs" style="margin-top:1rem;">
+              <button data-tab="all_weeks" class="active">★ All Weeks Implementation</button>
+              <button data-tab="overview">Overview</button>
+              <button data-tab="discovery">Discovery 2 → 4</button>
+              <button data-tab="swap">Config-only swap</button>
+              <button data-tab="wire">JSON-RPC wire</button>
+              <button data-tab="trace">Query trace</button>
+              <button data-tab="error">Error before / after</button>
+              <button data-tab="risk">Risk note</button>
+              <button data-tab="gateway">Gateway (bonus)</button>
+              <button data-tab="writeup">Write-up</button>
+            </div>
+            <div id="w9Body"><div class="muted">Loading…</div></div>
+          </div>
+
+          <div id="w9UserContainer" class="hidden" style="margin-top:1rem;">
+            <!-- Rendered by w9CustomerChat() -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- REPORTS ---------------- -->
+    <section class="view" id="view-reports">
+      <div class="scroll">
+        <div class="measure wide">
+          <h1>Reports &amp; demo instructions</h1>
+          <p class="lede" style="margin:0;">
+            The markdown deliverables, rendered from the files in the repository so what you read
+            here is what is submitted. Start with the demo guide.
+          </p>
+          <div class="w5-tabs" id="repTabs" style="margin-top:1rem;"></div>
+          <div id="repBody"><div class="muted">Loading…</div></div>
         </div>
       </div>
     </section>
@@ -1033,12 +1438,21 @@ async function api(path, body) {
 })();
 
 /* ------------------------------------------------------------------ shell */
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', console: 'Console' };
+let appRole = 'admin';
+try { appRole = localStorage.getItem('clouddesk_role') || 'admin'; } catch {}
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week7: 'Agent vs workflow — Week 7', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', reports: 'Reports & demo', console: 'Console' };
 
 function show(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
   document.querySelectorAll('#nav .side-link').forEach(b => b.classList.toggle('active', b.dataset.view === view));
-  $('viewTitle').textContent = VIEW_TITLES[view] || view;
+  const isUser = (typeof appRole !== 'undefined' && appRole === 'user');
+  let title = VIEW_TITLES[view] || view;
+  if (isUser) {
+    if (view === 'ask') title = 'Customer AI Assistant';
+    if (view === 'library') title = 'Documents & Uploads';
+    if (view === 'week9') title = 'Customer MCP Assistant';
+  }
+  $('viewTitle').textContent = title;
   // Inspect and settings only mean anything for a question.
   $('inspectBtn').classList.toggle('hidden', view !== 'ask');
   $('settingsBtn2').classList.toggle('hidden', view !== 'ask');
@@ -1046,10 +1460,23 @@ function show(view) {
   if (view === 'golden') loadGolden();
   if (view === 'week5') loadWeek5();
   if (view === 'week6') loadWeek6();
+  if (view === 'week7') loadWeek7();
   if (view === 'week8') loadWeek8();
   if (view === 'week9') loadWeek9();
+  if (view === 'reports') loadReports();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
+
+/* ---- what is running: one model-backed action at a time, shown in the header ---- */
+async function pollRuns() {
+  try {
+    const r = await api('/api/runs');
+    const chip = $('runChip');
+    if (r.running) { chip.textContent = `● running: ${r.running}`; chip.classList.remove('hidden'); }
+    else chip.classList.add('hidden');
+  } catch {}
+}
+setInterval(pollRuns, 4000);
 document.querySelectorAll('#nav .side-link').forEach(b => b.onclick = () => show(b.dataset.view));
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-goto]');
@@ -1238,6 +1665,7 @@ function addAnswer(p, gen, insp) {
         <span class="pill violet">${esc(gen.retrieval_mode || p.mode || '')}</span>
         ${filters.map(f => `<span class="pill warn">${esc(f)}</span>`).join('')}
         ${gen.gate_bypass ? `<span class="pill ok">${esc(gen.gate_bypass)}</span>` : ''}
+        ${gen.trace_id ? `<span class="pill info" title="Recorded in traces/traces.jsonl; click Trace below to open it">trace ${esc(gen.trace_id)}</span>` : ''}
         ${gen.best_distance != null
           ? `<span class="muted" style="font-size:.7rem;margin-left:auto;">best distance ${fmt(gen.best_distance)} · gate ${Number(gen.threshold ?? 0.75).toFixed(2)}</span>`
           : `<span class="muted" style="font-size:.7rem;margin-left:auto;">no dense score · gate skipped</span>`}
@@ -1260,11 +1688,31 @@ function addAnswer(p, gen, insp) {
       <div class="a-foot">
         <button class="btn ghost sm" data-goto="inspect">Retrieval stages →</button>
         <button class="btn ghost sm" data-goto="console">Raw JSON</button>
+        ${gen.trace_id ? `<button class="btn ghost sm" data-trace="${esc(gen.trace_id)}">Trace ${esc(gen.trace_id)} ↗</button>` : ''}
+        ${gen.model_name ? `<span class="muted" style="font-size:.7rem;align-self:center;">${esc(gen.model_name)} · prompt ${esc(gen.prompt_version || '')}</span>` : ''}
       </div>
     </div>`;
   $('thread').appendChild(el);
   scrollDown();
 }
+
+// A trace is the record of how an answer was produced (prompt sha, every
+// retrieved chunk with its scores, the raw model output before any gate,
+// the outcome). Opening it from the answer proves the citation shown is the
+// one recorded, not a re-render.
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-trace]');
+  if (!b) return;
+  b.disabled = true;
+  try {
+    const r = await api('/api/trace', { trace_id: b.dataset.trace });
+    lastResponse = r.trace;
+    $('rawJson').textContent = JSON.stringify(r.trace, null, 2);
+    show('console');
+    toast(`Trace ${b.dataset.trace}: ${r.trace.retrieval?.length ?? 0} retrieved chunks, outcome ${r.trace.outcome?.refused ? 'refused' : 'answered'}`);
+  } catch (err) { toast(err.message, true); }
+  finally { b.disabled = false; }
+});
 
 /* ------------------------------------------------------------------ inspect */
 function hitHTML(c, score, width, color, isFinal) {
@@ -2249,8 +2697,25 @@ function w8Overview(d) {
       <tbody>${rows}</tbody></table></div>
       <p class="help" style="margin:.6rem 0 0;">Gap = outcome pass rate − trajectory pass rate. Step efficiency = laps taken ÷ laps
       needed (shortest accepted path + the answer lap); below 1.0 means steps were skipped, not saved.
-      Cost uses the Week 7 rate card on tokens summed over every lap.</p>`)}`;
+      Cost uses the Week 7 rate card on tokens summed over every lap.</p>`)}
+    ${w6Card(w6Eyebrow('Reproduce the numbers now — rescore the stored raw runs (no model, nothing written)') + `
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem;">
+        <button class="btn primary" id="w8Rescore" ${w8Rescored === 'busy' ? 'disabled' : ''}>${w8Rescored === 'busy' ? '<span class="spinner"></span> ' : ''}Rescore stored runs</button>
+        <span class="help">Running and scoring are separate: every trajectory is stored raw in <code>week8/runs/</code>, and the scorer re-derives each number from it.</span></div>
+      ${w8Rescored && w8Rescored !== 'busy' ? `<div class="decision" style="margin-bottom:.6rem;">${w8Rescored.all_match ? '<b>All stored numbers reproduce</b> from the raw runs on this machine.' : '<b>Some numbers differ</b> from week8/report.json — see below.'} (${esc(w8Rescored.rescored_at)})</div>
+        <div class="gs-wrap"><table class="gs"><thead><tr><th>Config</th><th>Run</th><th>Outcome</th><th>Trajectory</th><th>Gap</th><th>Tool choice</th><th>Args</th><th>Cost p50</th><th>Matches report.json</th></tr></thead><tbody>
+        ${Object.entries(w8Rescored.configs).map(([c, b]) => `<tr><td class="qid">${esc(c)}</td><td class="cid">${esc(b.run)}</td><td>${b.summary.outcome_pass_rate_pct}%</td><td>${b.summary.trajectory_pass_rate_pct}%</td><td><b>${b.summary.gap_pp} pp</b></td><td>${b.summary.tool_choice_accuracy_pct}%</td><td>${b.summary.argument_validity_pct}%</td><td>${w8Usd(b.summary.cost_p50_usd)}</td><td>${b.matches_report ? '<span class="pill ok">yes</span>' : '<span class="pill bad">no</span>'}</td></tr>`).join('')}
+        </tbody></table></div>` : ''}`)}`;
 }
+let w8Rescored = null;
+document.addEventListener('click', async e => {
+  const b = e.target.closest('#w8Rescore');
+  if (!b) return;
+  w8Rescored = 'busy'; renderWeek8();
+  try { w8Rescored = await api('/api/week8/rescore', {}); toast(w8Rescored.all_match ? 'Rescored: every number reproduces' : 'Rescored: differences found'); }
+  catch (err) { w8Rescored = null; toast(err.message, true); }
+  renderWeek8();
+});
 
 function w8Sequences(d) {
   return w6Card(w6Eyebrow('Expected tool sequences — asserted in code (CASES in week8_trajectory_eval.py)') +
@@ -2350,13 +2815,129 @@ function w8Writeup(d) {
 }
 
 /* ------------------------------------------------------------- week 9 */
-// Read from week9/ via /api/week9. The only live action is discovery
-// (POST /api/week9/discover): initialize + tools/list against real servers,
-// no model loaded.
+// Two roles: Admin (all weeks implementation & MCP deep architecture) and
+// User (Customer AI chatbot answering questions from uploaded docs via MCP).
 let week9 = null;
-let w9Tab = 'overview';
+let w9Tab = 'all_weeks';
 let w9Wire = 'stdio';
 let w9Live = null;
+let w9WireLive = null;
+let w9Role = appRole;
+
+let w9ChatMessages = [
+  {
+    sender: 'bot',
+    text: `Hello! I am your **CloudDesk Customer AI Assistant**, powered by the Model Context Protocol (MCP).\n\nI can answer questions directly from our knowledge base articles, any uploaded documents, or check live support tickets!\n\nEvery answer displays **which MCP server** was used to retrieve the answer. Try asking a question below or upload your own document!`,
+    mcp: {
+      server: 'clouddesk-kb',
+      server_info: { name: 'CloudDesk Knowledge Base Server', description: 'Internal RAG corpus covering help-centre articles & uploaded documents' },
+      tool: 'search_kb',
+      transport: 'stdio · JSON-RPC 2.0',
+      latency_ms: 18.0,
+      wire: []
+    }
+  }
+];
+
+function setAppRole(role) {
+  appRole = role;
+  w9Role = role;
+  try { localStorage.setItem('clouddesk_role', role); } catch {}
+
+  document.querySelectorAll('#globalRoleSwitcher button, #w9RoleSelector button').forEach(b => {
+    const r = b.dataset.role || b.dataset.w9role;
+    b.classList.toggle('active', r === role);
+  });
+
+  const isUser = (role === 'user');
+  document.querySelectorAll('#nav .side-link').forEach(btn => {
+    const v = btn.dataset.view;
+    if (isUser) {
+      if (['ask', 'library', 'week9'].includes(v)) {
+        btn.classList.remove('hidden');
+        if (v === 'ask') btn.innerHTML = '<span class="ic">✦</span> Customer AI Chat';
+        if (v === 'library') btn.innerHTML = '<span class="ic">📄</span> Documents &amp; Uploads <span class="tail" id="navDocCount"></span>';
+        if (v === 'week9') btn.innerHTML = '<span class="ic">⧉</span> MCP Customer Bot <span class="tail" id="navW9Tools"></span>';
+      } else {
+        btn.classList.add('hidden');
+      }
+    } else {
+      btn.classList.remove('hidden');
+      if (v === 'ask') btn.innerHTML = '<span class="ic">✦</span> Chat';
+      if (v === 'library') btn.innerHTML = '<span class="ic">☰</span> Library <span class="tail" id="navDocCount"></span>';
+      if (v === 'week9') btn.innerHTML = '<span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span>';
+    }
+  });
+
+  const adminContainer = $('w9AdminContainer');
+  const userContainer = $('w9UserContainer');
+  if (adminContainer && userContainer) {
+    if (role === 'admin') {
+      adminContainer.classList.remove('hidden');
+      userContainer.classList.add('hidden');
+      renderWeek9();
+    } else {
+      adminContainer.classList.add('hidden');
+      userContainer.classList.remove('hidden');
+      userContainer.innerHTML = w9CustomerChat(week9);
+    }
+  }
+
+  const activeViewEl = document.querySelector('.view.active');
+  const curView = activeViewEl ? activeViewEl.id.replace('view-', '') : 'ask';
+  if (isUser && !['ask', 'library', 'week9'].includes(curView)) {
+    show('week9');
+  }
+
+  // Update doc counter
+  const badge = $('navDocCount');
+  if (badge && docs) badge.textContent = docs.length;
+}
+
+document.addEventListener('click', e => {
+  const gb = e.target.closest('#globalRoleSwitcher button');
+  if (gb && gb.dataset.role) {
+    setAppRole(gb.dataset.role);
+    toast(`Switched to ${gb.dataset.role === 'admin' ? '🛡️ Admin Role' : '👤 User Role'}`);
+    return;
+  }
+  const w9rb = e.target.closest('#w9RoleSelector button');
+  if (w9rb && w9rb.dataset.w9role) {
+    setAppRole(w9rb.dataset.w9role);
+    toast(`Week 9 role: ${w9rb.dataset.w9role === 'admin' ? '🛡️ Admin Mode' : '👤 User Mode'}`);
+    return;
+  }
+  if (e.target.closest('#w9SwitchToUserBtn')) {
+    setAppRole('user');
+    toast('Switched to 👤 User Role (Customer Chatbot)');
+    return;
+  }
+  if (e.target.closest('#w9SwitchToAdminBtn')) {
+    setAppRole('admin');
+    toast('Switched to 🛡️ Admin Role (All Weeks Implementation)');
+    return;
+  }
+  const jb = e.target.closest('[data-jump-view]');
+  if (jb) {
+    const target = jb.dataset.jumpView;
+    if (target === 'week9_overview') {
+      w9Tab = 'overview';
+      document.querySelectorAll('#w9Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === 'overview'));
+      renderWeek9();
+    } else {
+      show(target);
+    }
+  }
+});
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('#w9WireNow');
+  if (!b) return;
+  w9WireLive = 'busy'; renderWeek9();
+  try { w9WireLive = await api('/api/week9/wire', {}); toast(`Wire captured: ${w9WireLive.messages.length} messages`); }
+  catch (err) { w9WireLive = null; toast(err.message, true); }
+  renderWeek9();
+});
 
 const w9Pre = (t, max = 420) => `<pre class="w6-cmd" style="white-space:pre-wrap;max-height:${max}px;overflow:auto;">${esc(t || '')}</pre>`;
 const w9Json = (o, max = 420) => w9Pre(JSON.stringify(o, null, 2), max);
@@ -2369,7 +2950,7 @@ async function loadWeek9(force = false) {
     week9 = await api('/api/week9');
     const b = week9.tools_before?.tool_count, a = week9.tools_after?.tool_count;
     $('navW9Tools').textContent = b != null && a != null ? `${b}→${a}` : '';
-    renderWeek9();
+    setAppRole(appRole);
   } catch (err) {
     $('w9Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
   }
@@ -2382,6 +2963,7 @@ $('w9Tabs').addEventListener('click', e => {
   document.querySelectorAll('#w9Tabs button').forEach(x => x.classList.toggle('active', x === b));
   renderWeek9();
 });
+
 document.addEventListener('click', async e => {
   const wb = e.target.closest('[data-w9wire]');
   if (wb) { w9Wire = wb.dataset.w9wire; renderWeek9(); return; }
@@ -2398,10 +2980,422 @@ document.addEventListener('click', async e => {
 });
 
 function renderWeek9() {
-  const view = { overview: w9Overview, discovery: w9Discovery, swap: w9Swap, wire: w9WireTab,
-                 trace: w9Trace, error: w9Error, risk: w9Risk, gateway: w9Gateway, writeup: w9Writeup }[w9Tab];
+  const adminContainer = $('w9AdminContainer');
+  const userContainer = $('w9UserContainer');
+  if (w9Role === 'user') {
+    if (adminContainer) adminContainer.classList.add('hidden');
+    if (userContainer) {
+      userContainer.classList.remove('hidden');
+      userContainer.innerHTML = w9CustomerChat(week9);
+    }
+    return;
+  }
+
+  if (adminContainer) adminContainer.classList.remove('hidden');
+  if (userContainer) userContainer.classList.add('hidden');
+
+  const view = { all_weeks: w9AllWeeks, overview: w9Overview, discovery: w9Discovery, swap: w9Swap, wire: w9WireTab,
+                 trace: w9Trace, error: w9Error, risk: w9Risk, gateway: w9Gateway, writeup: w9Writeup }[w9Tab] || w9AllWeeks;
   $('w9Body').innerHTML = view(week9);
 }
+
+function w9AllWeeks(d) {
+  const weeks = [
+    {
+      num: 'Weeks 1–3',
+      tag: 'Core RAG Foundation',
+      title: 'Help-Centre Ingestion & Dense pgvector Store',
+      desc: 'Local PostgreSQL with pgvector, MiniLM-L6-v2 embeddings, and 3 chunking strategies (Markdown, Recursive, Fixed-size). Multi-format document loader with frontmatter & sidecar metadata.',
+      meta: ['pgvector (dense cosine)', '3 chunkers', '7 help-centre docs', 'CLI + UI'],
+      view: 'library',
+      btn: 'Open Document Library →'
+    },
+    {
+      num: 'Week 4',
+      tag: 'Hybrid Retrieval & Rerank',
+      title: 'Dense + BM25 Reciprocal Rank Fusion & Cross-Encoder',
+      desc: 'BM25 lexical index combined with dense retrieval via Reciprocal Rank Fusion (RRF), followed by Cross-Encoder reranking. Evaluated against 12 golden test questions.',
+      meta: ['Hit-rate@3: 67% → 100%', 'p50 latency: 194ms', 'RRF fusion', 'Cross-Encoder'],
+      view: 'golden',
+      btn: 'Open Golden Set Evaluation →'
+    },
+    {
+      num: 'Week 5',
+      tag: 'Failure Analysis',
+      title: 'Production Error Analysis & Failure Taxonomy',
+      desc: 'Deep audit of 99 production traces. 4-tier failure taxonomy classifying retrieval misses, distractor traps, gate false-refusals, and hallucinations. Grounding gate calibrated at 0.75 distance.',
+      meta: ['99 production traces', '4-category taxonomy', '0.75 distance gate', '20 sample replay'],
+      view: 'week5',
+      btn: 'Open Error Analysis →'
+    },
+    {
+      num: 'Week 6',
+      tag: 'Judge Evaluation',
+      title: 'LLM-as-a-Judge Protocol & Validation',
+      desc: 'Validation of SmolLM2-1.7B-Instruct as an automated ticket grader. Validated against human assertions across frozen evaluation cases with confusion matrix and agreement metrics.',
+      meta: ['92% Judge Agreement', 'SmolLM2-1.7B', 'Assertion validation', 'Grading rubric'],
+      view: 'week6',
+      btn: 'Open Judge Validation →'
+    },
+    {
+      num: 'Week 7',
+      tag: 'Agent vs Workflow',
+      title: 'Autonomous Agent Loop vs Fixed DAG Workflow',
+      desc: 'Benchmarking autonomous multi-turn tool-calling agent against deterministic workflow on customer support tickets under 4 tight budgets (iterations, tokens, cost, wall-clock).',
+      meta: ['Qwen2.5-1.5B', '4 budget limits', 'Ticket resolution race', 'Token cost meter'],
+      view: 'week7',
+      btn: 'Open Agent vs Workflow Race →'
+    },
+    {
+      num: 'Week 8',
+      tag: 'Trajectory Evaluation',
+      title: 'Agent Trajectory Evaluation & Tool Sequences',
+      desc: 'Moving beyond final-answer grading to evaluate reasoning steps, tool calling patterns, loop detection, budget overrun mitigations, and indirect prompt injection defenses.',
+      meta: ['Sequence metrics', 'Loop traps identified', 'Mitigation verified', 'Regression suite'],
+      view: 'week8',
+      btn: 'Open Trajectory Evaluation →'
+    },
+    {
+      num: 'Week 9',
+      tag: 'Model Context Protocol',
+      title: 'MCP Architecture, Discovery & Gateway',
+      desc: 'Runtime tool discovery from decoupled MCP servers (clouddesk-kb and Support Ops ticket-history). Zero agent lines changed (0-diff proof). Audited gateway with token scopes.',
+      meta: ['2 → 4 tools discovered', '0 agent lines changed', 'JSON-RPC 2.0 stdio/HTTP', 'Gateway token audit'],
+      view: 'week9_overview',
+      btn: 'Inspect MCP Architecture →'
+    }
+  ];
+
+  const metricsBar = `
+    <div class="metric-row" style="margin-bottom:1.2rem;">
+      ${w6Metric('Progression', '9 / 9 Weeks', 'Weeks 1–9 implemented & fully verified')}
+      ${w6Metric('Golden Set Hit-Rate@3', '100%', 'Week 4: Hybrid RRF + Cross-Encoder')}
+      ${w6Metric('Judge Agreement', '92%', 'Week 6: SmolLM2-1.7B Evaluator')}
+      ${w6Metric('Agent Code Changes', '0 lines', 'Week 9: Decoupled MCP Runtime Discovery')}
+    </div>
+  `;
+
+  return `
+    <div style="background:linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 100%);border:1px solid var(--line-strong);border-radius:var(--radius);padding:1.2rem 1.4rem;margin-bottom:1.2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;">
+        <div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
+            <span class="role-badge admin">Admin Role Active</span>
+            <span class="pill ok">Full System Scope</span>
+          </div>
+          <h2 style="font-size:1.15rem;margin:0 0 .2rem;">All Weeks Implementation &amp; Architecture Matrix</h2>
+          <p class="muted" style="font-size:.85rem;margin:0;">
+            Executive overview of the entire 9-week progression. Click any week to open its interactive evaluation and workbench.
+          </p>
+        </div>
+        <button class="btn primary" id="w9SwitchToUserBtn">👤 Switch to Customer Chatbot (User Role)</button>
+      </div>
+    </div>
+    ${metricsBar}
+
+    <div class="weeks-matrix">
+      ${weeks.map(w => `
+        <div class="week-card">
+          <div>
+            <div class="week-card-head">
+              <span class="week-card-tag">${esc(w.num)}</span>
+              <span class="pill info" style="font-size:.7rem;">${esc(w.tag)}</span>
+            </div>
+            <div class="week-card-title">${esc(w.title)}</div>
+            <div class="week-card-desc">${esc(w.desc)}</div>
+            <div class="week-card-meta">
+              ${w.meta.map(m => `<span class="pill mono" style="font-size:.72rem;">${esc(m)}</span>`).join('')}
+            </div>
+          </div>
+          <div class="week-card-action">
+            <button class="btn sm bordered" data-jump-view="${esc(w.view)}">${esc(w.btn)}</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderW9Messages() {
+  return w9ChatMessages.map(msg => {
+    if (msg.sender === 'user') {
+      return `
+        <div class="mcp-msg user">
+          <div class="mcp-avatar user">👤</div>
+          <div class="mcp-bubble">${esc(msg.text)}</div>
+        </div>
+      `;
+    }
+    const mcp = msg.mcp;
+    const evidence = msg.evidence || [];
+    let attributionHtml = '';
+    if (mcp) {
+      const serverClass = mcp.server === 'ticket-history' ? 'ticket-server' : mcp.server === 'gateway' ? 'gateway-server' : '';
+      const serverIcon = mcp.server === 'clouddesk-kb' ? '⚡' : mcp.server === 'ticket-history' ? '🎫' : '🛡️';
+      const serverPillClass = mcp.server === 'clouddesk-kb' ? 'ok' : mcp.server === 'ticket-history' ? 'violet' : 'info';
+      const evidenceBadges = evidence.length ? `
+        <div style="margin-top:.4rem;margin-bottom:.2rem;">
+          <span class="eyebrow" style="font-size:.6rem;">Evidence passages</span><br>
+          ${evidence.map(ev => {
+            const label = ev.article_id ? `📄 ${ev.article_id}${ev.section ? ' · ' + ev.section : ''}` : (ev.ticket_id ? `🎫 ${ev.ticket_id}` : '📌 result');
+            const cls = ev.type === 'kb_passage' ? 'kb' : 'ticket';
+            return `<span class="mcp-evidence-tag ${cls}">${esc(label)}</span>`;
+          }).join('')}
+        </div>` : '';
+      const stepStyle = { data: 'ok', empty: 'warn', error: 'bad', skipped: '' };
+      const stepText = { data: s => `${s.items} item${s.items === 1 ? '' : 's'}`, empty: () => 'empty',
+                         error: () => 'no match', skipped: s => s.reason || 'skipped' };
+      const stepsHtml = (mcp.steps || []).length ? `
+        <details class="mcp-wire-drawer" ${msg.found === false ? 'open' : ''}>
+          <summary>🧭 Tools checked (${mcp.steps.filter(s => s.status !== 'skipped').length} called, ${mcp.steps.filter(s => s.status === 'data').length} with data)</summary>
+          <div style="display:flex;flex-direction:column;gap:.2rem;margin-top:.4rem;font-size:.74rem;">
+            ${mcp.steps.map(s => {
+              const args = s.arguments ? Object.entries(s.arguments).map(([k, v]) => `${k}=${typeof v === 'string' && v.length > 40 ? v.slice(0, 40) + '…' : v}`).join(', ') : '';
+              return `<div style="display:flex;gap:.4rem;align-items:center;${s.status === 'skipped' ? 'opacity:.55;' : ''}">
+                <span class="pill ${stepStyle[s.status] || ''}" style="font-size:.64rem;min-width:4.2rem;justify-content:center;">${esc(s.status)}</span>
+                <code>${esc(s.tool)}(${esc(args)})</code>
+                <span class="muted">· ${esc(s.server || '')} · ${esc(stepText[s.status] ? stepText[s.status](s) : '')}</span>
+              </div>`;
+            }).join('')}
+          </div>
+        </details>` : '';
+      attributionHtml = `
+        <div class="mcp-attribution-box ${serverClass}">
+          <div class="mcp-server-header">
+            <div class="mcp-server-name">
+              <div class="mcp-server-icon">${mcp.server ? serverIcon : '∅'}</div>
+              <span class="pill ${mcp.server ? serverPillClass : 'warn'}" style="font-size:.76rem;font-weight:700;">${mcp.server ? 'MCP · ' + esc(mcp.server) : 'No data from any MCP tool'}</span>
+              ${mcp.tool ? `<span class="pill info" style="font-size:.72rem;">🔧 ${esc(mcp.tool)}</span>` : ''}
+            </div>
+            <div style="display:flex;align-items:center;gap:.35rem;">
+              <span class="pill mono" style="font-size:.62rem;">${esc(mcp.transport || 'stdio · JSON-RPC 2.0')}</span>
+              ${mcp.latency_ms != null ? `<span class="pill warn" style="font-size:.72rem;">⏱ ${esc(String(mcp.latency_ms))}ms</span>` : ''}
+            </div>
+          </div>
+          <div class="muted" style="font-size:.75rem;margin-bottom:.25rem;">
+            ${esc(mcp.server_info?.description || 'Model Context Protocol tool execution')}
+          </div>
+          ${evidenceBadges}
+          ${stepsHtml}
+          ${mcp.wire && mcp.wire.length ? `
+            <details class="mcp-wire-drawer">
+              <summary>🔍 Inspect JSON-RPC 2.0 Wire Messages (${mcp.wire.length})</summary>
+              <pre class="w6-cmd" style="max-height:180px;margin-top:.5rem;font-size:.72rem;">${esc(JSON.stringify(mcp.wire, null, 2))}</pre>
+            </details>
+          ` : ''}
+        </div>
+      `;
+    }
+    return `
+      <div class="mcp-msg bot">
+        <div class="mcp-avatar bot">◆</div>
+        <div class="mcp-bubble">
+          ${attributionHtml}
+          <div style="margin-top:.3rem;">${md(msg.text)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function w9CustomerChat(d) {
+  const docCount = docs?.length || 7;
+  return `
+    <div class="mcp-chat-container">
+      <div class="mcp-chat-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem;">
+            <span class="role-badge user">User / Customer Role</span>
+            <span class="pill ok"><span class="dot"></span>Live MCP Servers</span>
+          </div>
+          <b style="font-size:1.05rem;">CloudDesk Customer AI Assistant</b>
+          <div class="muted" style="font-size:.8rem;">
+            Answers questions from ${docCount} uploaded documents &amp; tickets. Every answer cites its MCP server source.
+          </div>
+        </div>
+        <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;">
+          <span class="pill ok" title="Knowledge base articles & uploads">⚡ clouddesk-kb</span>
+          <span class="pill violet" title="Support Ops tickets & escalations">🎫 ticket-history</span>
+          <select id="w9ChatConfigSelect" style="padding:.25rem .5rem;font-size:.78rem;border-radius:6px;background:var(--bg);border:1px solid var(--line);">
+            <option value="server_two" selected>Direct MCP Servers (stdio)</option>
+            <option value="gateway">Audited Gateway (bonus)</option>
+          </select>
+          <button class="btn sm ghost" id="w9SwitchToAdminBtn">🛡️ Switch to Admin Role</button>
+        </div>
+      </div>
+
+      <!-- In-chat Document Uploader -->
+      <div style="padding:.8rem 1.2rem 0;">
+        <div class="mcp-upload-bar">
+          <span style="font-size:1.2rem;">📁</span>
+          <div style="flex:1;">
+            <div style="font-size:.82rem;font-weight:600;">Upload a Document for the Customer Chatbot</div>
+            <div class="muted" style="font-size:.75rem;">Upload any PDF, TXT, MD, or CSV file. It will be indexed into PostgreSQL and immediately accessible to MCP server <code>clouddesk-kb</code>.</div>
+          </div>
+          <input type="file" id="w9ChatFileInput" style="display:none;" />
+          <button class="btn sm" id="w9ChatUploadTrigger">Choose File…</button>
+        </div>
+
+        <div class="mcp-chips">
+          <button class="mcp-chip" data-w9-q="How long is a password reset link valid?">🔑 Reset link validity</button>
+          <button class="mcp-chip" data-w9-q="What should I do if my payment fails in HC-003?">💳 Payment failed in HC-003</button>
+          <button class="mcp-chip" data-w9-q="Who owns ticket TCK-4471 and what is its status?">🎫 Ticket TCK-4471 status</button>
+          <button class="mcp-chip" data-w9-q="Show the escalation history for ticket TCK-4458">⏱️ Ticket TCK-4458 escalations</button>
+          <button class="mcp-chip" data-w9-q="What are the file storage rules in HC-006?">📁 File storage rules</button>
+          <button class="mcp-chip" data-w9-q="What is the refund escalation process in HC-008?">💰 Refund escalation</button>
+        </div>
+      </div>
+
+      <!-- Messages Thread -->
+      <div class="mcp-chat-stream" id="w9ChatStream">
+        ${renderW9Messages()}
+      </div>
+
+      <!-- Composer -->
+      <div class="mcp-chat-foot">
+        <div class="mcp-input-row">
+          <input type="text" id="w9ChatInput" placeholder="Ask about uploaded documents, articles, or tickets…" />
+          <button class="mcp-send-btn" id="w9ChatSendBtn" title="Send message">↑</button>
+        </div>
+        <div class="mcp-status-bar" style="margin-top:.5rem;">
+          <span class="dot live"></span>
+          <span>MCP servers live · stdio · JSON-RPC 2.0</span>
+          <span style="margin-left:auto;font-size:.68rem;color:var(--ink-3);">⏎ Enter to send</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function sendW9ChatMessage(text) {
+  const q = (text || '').trim();
+  if (!q) return;
+
+  w9ChatMessages.push({ sender: 'user', text: q });
+  const stream = $('w9ChatStream');
+  if (stream) {
+    stream.innerHTML = renderW9Messages();
+    stream.innerHTML += `
+      <div class="mcp-msg bot" id="w9ChatLoading">
+        <div class="mcp-avatar bot">◆</div>
+        <div class="mcp-bubble">
+          <div style="display:flex;align-items:center;gap:.5rem;">
+            <span class="spinner"></span>
+            <span>Querying Model Context Protocol (MCP) servers &amp; discovering tools…</span>
+          </div>
+        </div>
+      </div>
+    `;
+    stream.scrollTop = stream.scrollHeight;
+  }
+
+  const which = $('w9ChatConfigSelect')?.value || 'server_two';
+  try {
+    const res = await api('/api/week9/chat', { query: q, which });
+    w9ChatMessages.push({
+      sender: 'bot',
+      text: res.answer,
+      mcp: res.mcp,
+      evidence: res.evidence,
+      found: res.found
+    });
+  } catch (err) {
+    w9ChatMessages.push({
+      sender: 'bot',
+      text: `⚠️ **Error executing MCP query:** ${err.message}`,
+      mcp: null
+    });
+  } finally {
+    const loadEl = $('w9ChatLoading');
+    if (loadEl) loadEl.remove();
+    if (stream) {
+      stream.innerHTML = renderW9Messages();
+      stream.scrollTop = stream.scrollHeight;
+    }
+  }
+}
+
+document.addEventListener('click', e => {
+  const chip = e.target.closest('[data-w9-q]');
+  if (chip) {
+    const q = chip.dataset.w9Q;
+    const inp = $('w9ChatInput');
+    if (inp) inp.value = q;
+    sendW9ChatMessage(q);
+    return;
+  }
+  if (e.target.closest('#w9ChatSendBtn')) {
+    const inp = $('w9ChatInput');
+    if (inp) {
+      const q = inp.value;
+      inp.value = '';
+      sendW9ChatMessage(q);
+    }
+    return;
+  }
+  if (e.target.closest('#w9ChatUploadTrigger')) {
+    $('w9ChatFileInput')?.click();
+    return;
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.id === 'w9ChatInput' && e.key === 'Enter') {
+    e.preventDefault();
+    const q = e.target.value;
+    e.target.value = '';
+    sendW9ChatMessage(q);
+  }
+});
+
+document.addEventListener('change', async e => {
+  if (e.target.id === 'w9ChatFileInput') {
+    const file = e.target.files[0];
+    if (!file) return;
+    toast(`Uploading and indexing ${file.name}…`);
+    try {
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const content = evt.target.result;
+          const res = await api('/api/upload', {
+            filename: file.name,
+            content: typeof content === 'string' ? content : '',
+            content_b64: typeof content !== 'string' ? btoa(String.fromCharCode(...new Uint8Array(content))) : undefined,
+            product_area: 'Customer Upload',
+            reindex: true
+          });
+          toast(`Indexed ${res.filename} (${res.chars} chars)`);
+          w9ChatMessages.push({
+            sender: 'bot',
+            text: `📄 **Document Uploaded & Indexed:** \`${res.filename}\` (${res.chars} characters).\n\nAssigned Article ID: **\`${res.article_id}\`** in category **\`${res.product_area}\`**.\n\nThis document is now indexed in PostgreSQL and immediately accessible to MCP server \`clouddesk-kb\` via \`search_kb\` and \`get_article\`! Ask any question about it now.`,
+            mcp: {
+              server: 'clouddesk-kb',
+              server_info: { name: 'CloudDesk Knowledge Base Server', description: 'Re-indexed PostgreSQL & BM25 store' },
+              tool: 'search_kb / get_article',
+              transport: 'stdio · JSON-RPC 2.0',
+              latency_ms: 50.0,
+              wire: []
+            }
+          });
+          const stream = $('w9ChatStream');
+          if (stream) {
+            stream.innerHTML = renderW9Messages();
+            stream.scrollTop = stream.scrollHeight;
+          }
+          loadDocs();
+        } catch (err) { toast(err.message, true); }
+      };
+      if (file.type.startsWith('text/') || file.name.endsWith('.md') || file.name.endsWith('.txt') || file.name.endsWith('.csv') || file.name.endsWith('.json')) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsArrayBuffer(file);
+      }
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+});
 
 function w9Box(title, body, tone = 'var(--line)') {
   return `<div style="border:1px solid ${tone};border-radius:var(--radius);padding:.7rem .8rem;background:var(--surface,transparent);min-width:180px;flex:1;">
@@ -2485,7 +3479,14 @@ function w9WireTab(d) {
     return where + toggle + w6Card(w6Eyebrow('Same handshake over streamable HTTP: each message is a POST to http://127.0.0.1:8931/mcp; the server issues an Mcp-Session-Id') +
       (d.wire_http || []).map(m => `<div style="margin-bottom:.4rem;"><span class="pill ${m.direction === 'send' ? 'info' : 'ok'}">${m.direction === 'send' ? 'host → server' : 'server → host'}</span>${w9Json(m.message, 220)}</div>`).join(''));
   }
-  return where + toggle + `<p class="help">${esc(w?._transport || '')}</p>` + (w?.messages || []).map(m => w6Card(
+  const live = w6Card(w6Eyebrow('Capture the wire now — initialize → initialized → tools/list → tools/call lookup_ticket(TCK-4471), stdio, no model') + `
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem;">
+        <button class="btn primary" id="w9WireNow" ${w9WireLive === 'busy' ? 'disabled' : ''}>${w9WireLive === 'busy' ? '<span class="spinner"></span> ' : ''}Capture the wire now</button>
+        <span class="help">Starts the ticket-history server as a child process and replays the same four steps with the host's own client. Nothing is written to week9/.</span></div>
+      ${w9WireLive && w9WireLive !== 'busy' ? `<p style="margin:.2rem 0;"><b>${w9WireLive.messages.length} raw messages</b> · protocol ${esc(w9WireLive.protocol_version)} · ${w9WireLive.tool_count} tools: ${w9Chips(w9WireLive.tools, 'ok')} · tools/call ${w9WireLive.call.is_error ? '<span class="pill bad">isError</span>' : '<span class="pill ok">ok</span>'}</p>
+        <p class="help" style="margin:.2rem 0 .5rem;">Model call: ${esc(w9WireLive.model_call)}</p>
+        ${w9WireLive.messages.map(m => `<div style="margin-bottom:.4rem;"><span class="pill ${m.direction === 'send' ? 'info' : 'ok'}">${m.direction === 'send' ? 'host → server' : 'server → host'}</span> <code>${esc(m.message.method || (m.message.result !== undefined ? 'result' : 'error'))}</code>${m.message.id !== undefined ? ` <span class="muted">id ${esc(m.message.id)}</span>` : ' <span class="muted">notification, no id</span>'}${w9Json(m.message, 200)}</div>`).join('')}` : ''}`);
+  return where + toggle + live + `<p class="help">${esc(w?._transport || '')}</p>` + (w?.messages || []).map(m => w6Card(
     `<div style="display:flex;justify-content:space-between;gap:.5rem;align-items:center;margin-bottom:.4rem;">
        <b>${esc(m.step)}</b><span class="pill ${m.direction === 'send' ? 'info' : 'ok'}">${m.direction === 'send' ? 'host → server' : 'server → host'}</span></div>
      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;">
@@ -2705,23 +3706,283 @@ $('pasteBtn').onclick = async () => {
   finally { $('pasteBtn').disabled = false; }
 };
 
+/* ------------------------------------------------------------------ week 7 */
+// The race is read from week7/ (CSVs, the stored run with every transcript,
+// the budget logs). The Run live tab is the only thing that calls a model.
+let week7 = null;
+let w7Tab = 'overview';
+let w7Live = { workflow: null, agent: null, busy: null };
+const w7Usd = (v) => v == null ? '—' : `$${Number(v).toFixed(6)}`;
+const w7Sec = (ms) => ms == null ? '—' : `${(Number(ms) / 1000).toFixed(1)} s`;
+const w7Pass = (p) => p === true || p === 'True' ? '<span class="pill ok">pass</span>' : p === false || p === 'False' ? '<span class="pill bad">fail</span>' : '<span class="muted">—</span>';
+const w7Path = (p) => (p && p.length) ? p.map(t => `<code>${esc(t)}</code>`).join(' → ') : '<span class="muted">no tool call</span>';
+
+async function loadWeek7(force = false) {
+  if (week7 && !force) { renderWeek7(); return; }
+  try {
+    week7 = await api('/api/week7');
+    const a = week7.summary?.agent, w = week7.summary?.workflow;
+    $('navW7Score').textContent = a && w ? `${a.passes}:${w.passes}` : '';
+    renderWeek7();
+  } catch (err) {
+    $('w7Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+
+$('w7Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (!b) return;
+  w7Tab = b.dataset.tab;
+  document.querySelectorAll('#w7Tabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderWeek7();
+});
+
+function renderWeek7() {
+  const d = week7;
+  if (!d) return;
+  const view = { overview: w7Overview, tickets: w7Tickets, branching: w7Branching, budgets: w7Budgets,
+                 tool: w7Tool, verdict: w7Verdict, live: w7LiveTab, memory: w7Memory, writeup: w7Writeup }[w7Tab];
+  $('w7Body').innerHTML = view(d);
+}
+
+function w7Overview(d) {
+  const a = d.summary?.agent, w = d.summary?.workflow, run = d.latest_run;
+  if (!a || !w) return w6Card('<div class="muted">No race yet.</div><pre class="w6-cmd">python main.py race --max-iterations 8 --max-seconds 300</pre>');
+  const cols = [
+    ['pass rate', s => `<b>${s.passes}/${s.n} = ${s.pass_rate_pct}%</b>`],
+    ['p50 latency', s => `<b>${w7Sec(s.p50_latency_ms)}</b> <span class="muted">(${Number(s.p50_latency_ms).toLocaleString()} ms)</span>`],
+    ['total tokens', s => `<b>${Number(s.total_tokens).toLocaleString()}</b> <span class="muted">(${s.mean_tokens_per_ticket}/ticket)</span>`],
+    ['cost per ticket', s => `<b>${w7Usd(s.cost_per_ticket_usd)}</b> <span class="muted">(total ${w7Usd(s.total_cost_usd)})</span>`],
+    ['model calls', s => s.model_calls], ['tool calls', s => s.tool_calls],
+    ['wrong-tool calls', s => s.wrong_tool_calls], ['budget terminations', s => s.budget_terminations],
+  ];
+  const ratio = (x, y) => y ? (x / y).toFixed(0) : '—';
+  return `<div class="metric-row">
+      ${w6Metric('Pass rate', `${a.pass_rate_pct}% <span class="arrow">vs</span> ${w.pass_rate_pct}%`, 'agent vs workflow · same grader')}
+      ${w6Metric('p50 latency', `${w7Sec(a.p50_latency_ms)} <span class="arrow">vs</span> ${w7Sec(w.p50_latency_ms)}`, `${ratio(a.p50_latency_ms, w.p50_latency_ms)}× slower`)}
+      ${w6Metric('Total tokens', `${Number(a.total_tokens).toLocaleString()} <span class="arrow">vs</span> ${Number(w.total_tokens).toLocaleString()}`, `${ratio(a.total_tokens, w.total_tokens)}× more · summed over every lap`)}
+      ${w6Metric('Cost / ticket', `${w7Usd(a.cost_per_ticket_usd)} <span class="arrow">vs</span> ${w7Usd(w.cost_per_ticket_usd)}`, `${ratio(a.cost_per_ticket_usd, w.cost_per_ticket_usd)}× dearer · stand-in rate card`)}
+    </div>
+    ${w6Card(w6Eyebrow('The comparable table — week7/race_summary.csv') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th></th><th>agent (loop)</th><th>workflow (3 fixed steps)</th></tr></thead><tbody>
+      ${cols.map(([k, f]) => `<tr><td class="qid">${k}</td><td>${f(a)}</td><td>${f(w)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="help" style="margin:.6rem 0 0;">Tokens are summed per model call across all laps, so the agent's re-sent transcript is counted every lap.
+      The models run locally (cash cost zero); cost = measured tokens × a documented stand-in rate card
+      (${run?.rate_card ? `$${run.rate_card.input_per_mtok}/Mtok in, $${run.rate_card.output_per_mtok}/Mtok out` : 'see README'}). Latency is measured wall-clock per ticket, model already warm.</p>`)}
+    ${run ? w6Card(w6Eyebrow('Provenance of these numbers') + `<div class="gs-wrap"><table class="gs"><tbody>
+      <tr><td class="qid">run file</td><td><code>week7/runs/${esc(run.file)}</code></td></tr>
+      <tr><td class="qid">ran at</td><td>${esc(run.ran_at)}</td></tr>
+      <tr><td class="qid">model</td><td>${esc(run.model)} (greedy, both systems)</td></tr>
+      <tr><td class="qid">build</td><td><code>${esc(run.app_version)}</code></td></tr>
+      <tr><td class="qid">budgets (agent)</td><td><code>${esc(JSON.stringify(run.budgets))}</code></td></tr>
+      <tr><td class="qid">inputs</td><td>${(run.tickets || []).map(t => `<code>${esc(t)}</code>`).join(' ')} — identical for both systems</td></tr>
+      </tbody></table></div>`) : ''}
+    ${w6Card(w6Eyebrow('Every race, and what changed between them') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Run</th><th>Budgets</th><th>Agent</th><th>Workflow</th></tr></thead><tbody>
+      ${(d.history || []).map(h => `<tr><td class="cid">${esc(h.file)}</td><td class="cid">${esc(JSON.stringify(h.budgets))}</td>
+        <td>${h.summary?.agent ? `${h.summary.agent.passes}/${h.summary.agent.n} · p50 ${w7Sec(h.summary.agent.p50_latency_ms)}` : '—'}</td>
+        <td>${h.summary?.workflow ? `${h.summary.workflow.passes}/${h.summary.workflow.n} · p50 ${w7Sec(h.summary.workflow.p50_latency_ms)}` : '—'}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="help" style="margin:.6rem 0 0;">Race 1 is the unguarded agent (it later became the Week 8 right-answer-wrong-path case). Race 2 enforced the wall clock inside a lap. Race 3, the reported one, tripled the budget: the agent still finished nothing.</p>`)}`;
+}
+
+function w7Tickets(d) {
+  const row = (r) => `<tr>
+      <td class="qid">${esc(r.system)}</td><td class="qid">${esc(r.ticket_id)}</td><td class="cid">${esc(r.class)}</td>
+      <td>${w7Pass(r.pass)}${r.fail_reason ? ` <span class="muted" style="font-size:.72rem;">${esc(r.fail_reason)}</span>` : ''}</td>
+      <td>${esc(r.decision || '∅')} <span class="muted">/ ${esc(r.expected_decision)}</span></td>
+      <td>${r.refund_amount ?? '∅'} <span class="muted">/ ${r.expected_amount ?? '∅'}</span></td>
+      <td>${w7Sec(r.latency_ms)}</td><td>${r.tokens}</td><td>${w7Usd(r.cost_usd)}</td><td>${r.model_calls}</td>
+      <td>${w7Path(r.path)}</td>
+      <td>${r.terminated_by ? `<span class="pill bad">${esc(r.terminated_by)}</span>` : '<span class="muted">—</span>'}</td>
+    </tr>
+    <tr><td colspan="12" style="padding:0 .5rem .6rem;"><details><summary class="help">transcript (${(r.log || []).length} lines)</summary>${w9Pre((r.log || []).join('\n'), 320)}</details></td></tr>`;
+  const systems = ['agent', 'workflow'];
+  return systems.map(sys => w6Card(w6Eyebrow(`${sys} — per ticket, from week7/race.csv + the run transcript`) + `<div class="gs-wrap"><table class="gs">
+    <thead><tr><th>System</th><th>Ticket</th><th>Class</th><th>Grade</th><th>Decision / expected</th><th>Amount / expected</th><th>Latency</th><th>Tokens</th><th>Cost</th><th>Model calls</th><th>Tools called</th><th>Ended by</th></tr></thead>
+    <tbody>${(d.rows || []).filter(r => r.system === sys).map(row).join('')}</tbody></table></div>`)).join('');
+}
+
+function w7Branching(d) {
+  const b = d.branching || [];
+  const seqDiffers = b.filter(x => x.workflow_path_differs_from_straight_line);
+  const branchy = b.filter(x => x.branch_after_step2);
+  return `<div class="decision" style="margin-bottom:1rem;"><b>Does the path change with the input or a tool result?</b>
+      Yes, at two levels. The <b>tool sequence</b> changes on ${seqDiffers.length} ticket(s) (${esc(seqDiffers.map(x => x.ticket_id).join(', ') || 'none')}):
+      no order id on the ticket, so step 2 is skipped by a fixed <code>if</code>. The <b>decision branch</b> changes on ${branchy.length} tickets
+      after step 2 — missing order, already refunded, duplicate charge, cancelled — where the same three tools run but
+      <code>get_order</code>'s status sends step 3 and the decision down a different rule. Every one of those branches is known before the
+      ticket arrives, which is the verdict's point: a varying path argues for a branch, not a loop.</div>
+    ${w6Card(w6Eyebrow('The 10 fixtures — week7/race_set.jsonl (stable ids, identical inputs for both systems)') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Ticket</th><th>Class</th><th>Branches after step 2</th><th>Why</th><th>Expected</th><th>Workflow path</th><th>Workflow</th><th>Agent path (race 3)</th><th>Agent</th></tr></thead><tbody>
+      ${b.map(x => `<tr><td class="qid">${esc(x.ticket_id)}</td><td class="cid">${esc(x.class)}</td>
+        <td>${x.branch_after_step2 ? '<span class="pill warn">depends on a prior result</span>' : '<span class="muted">straight line</span>'}</td>
+        <td style="font-size:.8rem;">${esc(x.why)}</td>
+        <td class="cid">${esc(x.expected.decision)}${x.expected.refund_amount != null ? ` $${x.expected.refund_amount}` : ''}</td>
+        <td>${w7Path(x.workflow_path)}${x.workflow_path_differs_from_straight_line ? ' <span class="pill info">sequence differs</span>' : ''}${x.workflow_tool_errors ? ' <span class="pill warn">tool error → escalate</span>' : ''}</td>
+        <td>${w7Pass(x.workflow_pass)} <span class="cid">${esc(x.workflow_decision || '')}</span></td>
+        <td>${w7Path(x.agent_path)}</td>
+        <td>${w7Pass(x.agent_pass)} ${x.agent_terminated_by ? `<span class="pill bad">${esc(x.agent_terminated_by)}</span>` : ''}</td></tr>`).join('')}
+      </tbody></table></div>`)}`;
+}
+
+function w7BudgetCard(b, title) {
+  if (!b) return '';
+  return w6Card(w6Eyebrow(title || b.file) + `<div class="gs-wrap"><table class="gs"><tbody>
+      <tr><td class="qid">captured</td><td>${esc(b.captured || '')}</td></tr>
+      <tr><td class="qid">command</td><td class="cid">${esc(b.command || '')}</td></tr>
+      <tr><td class="qid">configured budgets</td><td class="cid">${esc(JSON.stringify(b.budgets))}</td></tr>
+      <tr><td class="qid">budget that fired</td><td>${b.fired ? `<span class="pill bad">${esc(b.fired.budget)}</span> <code>${esc(b.fired.check)}</code>` : esc(b.terminated_by || '—')}</td></tr>
+      <tr><td class="qid">spent at termination</td><td>${esc(b.spent || '')}</td></tr>
+      <tr><td class="qid">result at termination</td><td class="cid">${esc(b.result_at_termination || '')}</td></tr>
+    </tbody></table></div>
+    <details style="margin-top:.5rem;" ${b.log.length < 14 ? 'open' : ''}><summary class="help">full log (${b.log.length} lines)</summary>${w9Pre(b.log.join('\n'), 300)}</details>`);
+}
+
+function w7Budgets(d) {
+  return `<div class="decision" style="margin-bottom:1rem;"><b>All four budgets are enforced in the loop</b> (<code>agent_runtime.Budgets.exceeded()</code> is asked before every lap and the
+      wall clock is also passed into <code>generate()</code> so a lap is cut mid-answer). Below: one clean termination per budget, each on CD-7001 with the other three set far out of reach, then the
+      original capture on CD-7008.</div>
+    ${(d.budget_logs || []).map(b => w7BudgetCard(b, `${b.terminated_by} — ${b.file}`)).join('')}
+    ${w7BudgetCard(d.budget_termination, `week7/budget_termination.log — the first capture (max_iterations, with the wall clock also at its limit)`)}`;
+}
+
+function w7Tool(d) {
+  const p1 = d.tool_probe?.v1 || {}, p2 = d.tool_probe?.v2 || {};
+  return `<div class="decision" style="margin-bottom:1rem;"><b>The third tool is <code>lookup_refund_policy(tier, order_status)</code></b>: one job, enum parameters, a description that names what it does not read.
+      Measured, sharpening the description did <b>not</b> move tool choice (${p1.correct_tool_choices ?? '?'}/${p1.decision_points ?? '?'} → ${p2.correct_tool_choices ?? '?'}/${p2.decision_points ?? '?'}): with the loose text the model picked the wrong tool ${p1.wrong_tool ?? '?'} times; its failure is calling no tool at all (${p1.no_tool_call ?? '?'} of ${p1.decision_points ?? '?'}).</div>
+    ${w6Card(w6Eyebrow('The three tools the model sees — src/support_tools.py TOOL_SCHEMAS') + (d.tool_schemas || []).map(t => `
+      <div style="margin-bottom:.8rem;"><b><code>${esc(t.name)}</code></b><div class="help" style="margin:.2rem 0;">${esc(t.description)}</div>
+      ${w9Json(t.parameters, 220)}</div>`).join(''))}
+    ${w6Card(w6Eyebrow('Tool-choice probe, 20 decision points each — week7/tool_probe_v1.json / v2') + `<div class="gs-wrap"><table class="gs">
+      <thead><tr><th>Variant</th><th>Description</th><th>Correct</th><th>No tool call</th><th>Wrong tool</th><th>Ran</th></tr></thead><tbody>
+      ${['v1', 'v2'].map(v => { const p = d.tool_probe?.[v] || {}; return `<tr><td class="qid">${v}</td><td style="font-size:.8rem;">${esc(p.description || '')}</td>
+        <td><b>${p.correct_tool_choices ?? '—'}/${p.decision_points ?? '—'}</b> (${p.correct_pct ?? '—'}%)</td><td>${p.no_tool_call ?? '—'}</td><td>${p.wrong_tool ?? '—'}</td><td class="cid">${esc(p.ran_at || '')}</td></tr>`; }).join('')}
+      </tbody></table></div>`)}
+    ${w6Card(md(d.tool_diff_md || ''))}`;
+}
+
+function w7Verdict(d) {
+  return `<p class="help">week7/verdict.md · ${d.verdict_words} words (limit 150, the italic source line excluded).</p>` + w6Card(md(d.verdict_md || '*not written*'));
+}
+
+function w7Memory(d) {
+  const lr = d.long_race || {};
+  return `<div class="decision" style="margin-bottom:1rem;">Bonus: a 6-turn window plus rolling summary (short-term) and a per-customer file (long-term), the same memory given to both systems, raced on 3 × 30-turn threads.</div>
+    ${w6Card(w6Eyebrow('week7/long_race_summary.csv') + `<div class="gs-wrap"><table class="gs"><thead><tr><th>System</th><th>Pass</th><th>p50 latency</th><th>Tokens</th><th>Cost / ticket</th><th>Budget terminations</th></tr></thead><tbody>
+      ${(lr.summary || []).map(s => `<tr><td class="qid">${esc(s.system)}</td><td>${s.passes}/${s.n}</td><td>${w7Sec(s.p50_latency_ms)}</td><td>${s.total_tokens}</td><td>${w7Usd(s.cost_per_ticket_usd)}</td><td>${s.budget_terminations}</td></tr>`).join('')}
+      </tbody></table></div>`)}
+    ${w6Card(w6Eyebrow('The tier survives a process restart — week7/memory/restart_demo.log') + w9Pre(lr.restart_log || '', 260))}`;
+}
+
+function w7Writeup(d) {
+  return w6Card(d.readme_md ? md(d.readme_md) : '<div class="muted">week7/README.md not written yet.</div>');
+}
+
+function w7LiveResult(r, label) {
+  if (!r) return '';
+  const run = r.run || {};
+  return w6Card(w6Eyebrow(`${label} · ${esc(r.ticket_id)} · saved to ${esc(r.saved_to)}`) + `
+    <div class="metric-row">
+      ${w6Metric('Grade', w7Pass(r.pass), esc(r.reason || ''))}
+      ${w6Metric('Decision', `${esc(run.result?.decision || '∅')}`, `expected ${esc(r.expected?.decision)}${r.expected?.refund_amount != null ? ` $${r.expected.refund_amount}` : ''} · got ${run.result?.refund_amount ?? '∅'}`)}
+      ${w6Metric('Latency', w7Sec(run.latency_ms), r.system === 'agent' ? `${run.meter?.iterations ?? '?'} laps` : `${run.meter?.steps ?? '?'} steps, ${run.meter?.model_calls ?? '?'} model call`)}
+      ${w6Metric('Tokens · cost', `${run.tokens} · ${w7Usd(run.cost_usd)}`, `in ${run.meter?.input_tokens} / out ${run.meter?.output_tokens}`)}
+    </div>
+    <p style="margin:.2rem 0;">Tools called: ${w7Path(r.path)}</p>
+    ${r.system === 'agent' ? `<p style="margin:.2rem 0;">Budgets <code>${esc(JSON.stringify(r.budgets))}</code> · ended by ${r.terminated_by ? `<span class="pill bad">${esc(r.terminated_by)}</span> <code>${esc(r.fired?.check || '')}</code>` : '<span class="pill ok">an answer</span>'} · evidence guard ${r.evidence_guard ? 'on' : 'off'}</p>` : ''}
+    <p style="margin:.2rem 0;"><b>Reply:</b> ${esc(run.result?.reply || '—')}</p>
+    ${w9Pre((run.log || []).join('\n'), 320)}`);
+}
+
+function w7LiveTab(d) {
+  const ids = (d.race_set || []).map(c => c.ticket_id);
+  const busy = w7Live.busy;
+  return `<div class="decision" style="margin-bottom:1rem;">Runs one race ticket through one system <b>now</b>, in this server, with the same tools, model (Qwen2.5-1.5B) and grader as the race.
+      The first run loads the model (about a minute); the workflow then takes a few seconds, the agent as long as its budgets allow. Output is saved under <code>week7/runs/live/</code>, never over the race files.</div>
+    ${w6Card(w6Eyebrow('Ticket') + `<div style="display:flex;gap:.6rem;align-items:end;flex-wrap:wrap;">
+      <div class="field" style="min-width:220px;"><label>Race ticket</label><select id="w7Ticket">${ids.map(i => { const c = d.race_set.find(x => x.ticket_id === i); return `<option value="${esc(i)}" ${i === 'CD-7007' ? 'selected' : ''}>${esc(i)} — ${esc(c.class)}</option>`; }).join('')}</select></div>
+      <button class="btn primary" id="w7RunWorkflow" ${busy ? 'disabled' : ''}>${busy === 'workflow' ? '<span class="spinner"></span> ' : ''}Run the fixed workflow</button>
+    </div>`)}
+    ${w6Card(w6Eyebrow('Agent loop under four budgets (clamped to the race ceilings: 8 laps · 8000 tokens · $0.01 · 300 s)') + `<div style="display:flex;gap:.6rem;align-items:end;flex-wrap:wrap;">
+      <div class="field" style="width:110px;"><label>max laps</label><input id="w7It" type="number" min="1" max="8" value="2"></div>
+      <div class="field" style="width:120px;"><label>max tokens</label><input id="w7Tok" type="number" min="200" max="8000" value="4000"></div>
+      <div class="field" style="width:120px;"><label>max cost $</label><input id="w7Cost" type="number" step="0.0001" min="0.0001" max="0.01" value="0.01"></div>
+      <div class="field" style="width:120px;"><label>max seconds</label><input id="w7Sec" type="number" min="5" max="300" value="120"></div>
+      <div class="field" style="width:160px;"><label>evidence guard</label><select id="w7Guard"><option value="1" selected>on (race 3)</option><option value="0">off (race 1 / W8 baseline)</option></select></div>
+      <button class="btn primary" id="w7RunAgent" ${busy ? 'disabled' : ''}>${busy === 'agent' ? '<span class="spinner"></span> ' : ''}Run the agent</button>
+    </div>
+    <p class="help" style="margin:.5rem 0 0;">Two laps on CD-7001 reproduces the budget-termination log live: the loop stops with <code>BUDGET max_iterations hit (2 &gt;= 2)</code> and reports what it spent.</p>`)}
+    ${w7LiveResult(w7Live.workflow, 'Workflow result')}
+    ${w7LiveResult(w7Live.agent, 'Agent result')}`;
+}
+
+document.addEventListener('click', async e => {
+  const wf = e.target.closest('#w7RunWorkflow'), ag = e.target.closest('#w7RunAgent');
+  if (!wf && !ag) return;
+  const ticket_id = $('w7Ticket').value;
+  const system = wf ? 'workflow' : 'agent';
+  const body = wf ? { ticket_id } : {
+    ticket_id, max_iterations: +$('w7It').value, max_tokens: +$('w7Tok').value,
+    max_cost_usd: +$('w7Cost').value, max_wall_seconds: +$('w7Sec').value, evidence_guard: $('w7Guard').value === '1' };
+  w7Live.busy = system; renderWeek7();
+  toast(wf ? `Running the workflow on ${ticket_id}…` : `Running the agent on ${ticket_id} under ${body.max_iterations} laps / ${body.max_wall_seconds} s…`);
+  try {
+    w7Live[system] = await api(`/api/week7/${system}`, body);
+    toast(`${system} on ${ticket_id}: ${w7Live[system].pass ? 'PASS' : 'FAIL — ' + w7Live[system].reason}${w7Live[system].terminated_by ? ` · ended by ${w7Live[system].terminated_by}` : ''}`);
+    week7 = null;                       // live_runs list changed
+  } catch (err) { toast(err.message, true); }
+  finally { w7Live.busy = null; if (!week7) { await loadWeek7(true); } else renderWeek7(); }
+});
+
+/* ------------------------------------------------------------------ reports */
+let reportsData = null;
+let repTab = 'demo_guide';
+
+async function loadReports(force = false) {
+  if (reportsData && !force) { renderReports(); return; }
+  try {
+    reportsData = await api('/api/reports');
+    $('repTabs').innerHTML = reportsData.docs.filter(x => x.exists).map(x =>
+      `<button data-tab="${esc(x.key)}" class="${x.key === repTab ? 'active' : ''}">${esc(x.title)}</button>`).join('');
+    renderReports();
+  } catch (err) {
+    $('repBody').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+  }
+}
+$('repTabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (!b) return;
+  repTab = b.dataset.tab;
+  document.querySelectorAll('#repTabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderReports();
+});
+function renderReports() {
+  const doc = (reportsData?.docs || []).find(x => x.key === repTab) || reportsData?.docs?.[0];
+  if (!doc) { $('repBody').innerHTML = '<div class="muted">No documents.</div>'; return; }
+  $('repBody').innerHTML = `<p class="help" style="margin:0 0 .6rem;">File: <code>${esc(doc.path)}</code>${doc.modified ? ` · modified ${esc(doc.modified)}` : ''}</p>`
+    + w6Card(doc.text ? md(doc.text) : '<div class="muted">Not written yet.</div>');
+}
+
 /* ------------------------------------------------------------------ boot */
 // #week8 or #week8/regression opens that view (and tab) directly — for demos.
+const TAB_STATE = { week6: ['w6Tabs', t => { w6Tab = t; }], week7: ['w7Tabs', t => { w7Tab = t; }],
+                    week8: ['w8Tabs', t => { w8Tab = t; }], week9: ['w9Tabs', t => { w9Tab = t; }],
+                    week5: ['w5Tabs', t => { w5Tab = t; }], reports: ['repTabs', t => { repTab = t; }] };
 function openFromHash() {
   const [view, tab] = location.hash.slice(1).split('/');
   if (!VIEW_TITLES[view]) return false;
-  if (view === 'week8' && tab) {
-    w8Tab = tab;
-    document.querySelectorAll('#w8Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
-  }
-  if (view === 'week9' && tab) {
-    w9Tab = tab;
-    document.querySelectorAll('#w9Tabs button').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  if (TAB_STATE[view] && tab) {
+    const [tabsId, setter] = TAB_STATE[view];
+    setter(tab);
+    document.querySelectorAll(`#${tabsId} button`).forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
   }
   show(view);
   return true;
 }
-if (!openFromHash()) show('ask');
+setAppRole(appRole);
+if (!openFromHash()) show(appRole === 'user' ? 'week9' : 'ask');
 window.addEventListener('hashchange', openFromHash);
 autoGrow();
 loadStatus();

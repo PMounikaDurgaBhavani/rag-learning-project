@@ -1,0 +1,81 @@
+{
+  "ran_at": "2026-10-11T17:43:57+00:00",
+  "source": "ui",
+  "system": "agent",
+  "ticket_id": "CD-7001",
+  "pass": false,
+  "reason": "no_decision",
+  "run": {
+    "system": "agent",
+    "ticket_id": "CD-7001",
+    "result": {
+      "ticket_id": "CD-7001",
+      "decision": null,
+      "refund_amount": null,
+      "tier": null,
+      "reply": ""
+    },
+    "terminated_by": "max_iterations",
+    "latency_ms": 13691.6,
+    "tokens": 1537,
+    "cost_usd": 0.0002742,
+    "meter": {
+      "iterations": 2,
+      "input_tokens": 1440,
+      "output_tokens": 97,
+      "tool_calls": 1,
+      "tool_errors": 0,
+      "wrong_tool_calls": 0,
+      "calls_by_tool": {
+        "find_ticket": 1
+      },
+      "evidence_rejections": 0,
+      "redactions": 0,
+      "guardrail_blocks": 0
+    },
+    "budgets": {
+      "max_iterations": 2,
+      "max_tokens": 4000,
+      "max_cost_usd": 0.01,
+      "max_wall_seconds": 120.0
+    },
+    "prompt_version": "agent-v1.0",
+    "evidence_guard": true,
+    "trajectory": [
+      {
+        "lap": 1,
+        "type": "tool",
+        "name": "find_ticket",
+        "arguments": {
+          "ticket_id": "CD-7001"
+        },
+        "result": {
+          "ticket_id": "CD-7001",
+          "customer_id": "CUS-201",
+          "order_id": "ORD-5001",
+          "tier": "standard",
+          "status": "open",
+          "message": "I cancelled in the first week and still got charged $49. Where is my refund?"
+        }
+      },
+      {
+        "lap": 2,
+        "type": "prose",
+        "text": "The ticket CD-7001 relates to an order ID ORD-5001 under standard tier CUS-201. The order has been open since last Monday and you were charged $49. You're asking about your refund, but there isn't any"
+      },
+      {
+        "lap": 2,
+        "type": "budget",
+        "limit": "max_iterations"
+      }
+    ],
+    "log": [
+      "[agent] ticket=CD-7001 budgets={'max_iterations': 2, 'max_tokens': 4000, 'max_cost_usd': 0.01, 'max_wall_seconds': 120.0}",
+      "[agent] lap 1: in=663 out=26 4305ms",
+      "[agent]   tool find_ticket({\"ticket_id\": \"CD-7001\"}) -> {\"ticket_id\": \"CD-7001\", \"customer_id\": \"CUS-201\", \"order_id\": \"ORD-5001\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"I cancelled in the first week and s",
+      "[agent] lap 2: in=777 out=71 9223ms",
+      "[agent] unparseable reply: 'The ticket CD-7001 relates to an order ID ORD-5001 under standard tier CUS-201. The order has been open since last Monda'",
+      "[agent] BUDGET max_iterations hit (2 >= 2) after 2 iterations, 1537 tokens, $0.000274, 13.7s \u2014 terminating cleanly"
+    ]
+  }
+}

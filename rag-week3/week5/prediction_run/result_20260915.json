@@ -1,0 +1,277 @@
+{
+  "scored_at": "2026-10-12T06:59:47+00:00",
+  "seed": 20260915,
+  "n": 20,
+  "unlabelled": [],
+  "criteria": {
+    "prediction_m1_at_most": 1,
+    "m1_count": 2,
+    "m1_pct": 10.0,
+    "baseline_m1_count": 4,
+    "baseline_m1_pct": 20.0,
+    "prediction_holds": false,
+    "falsified_by": [
+      "1: M1 at 2/20 (>= 2)",
+      "2: correct refusals 3/20 (< 4)"
+    ]
+  },
+  "mode_counts": {
+    "M1": 2,
+    "M2": 1,
+    "M3": 1,
+    "M4": 4,
+    "M5": 0
+  },
+  "new_modes": {},
+  "correct_refusals": 3,
+  "side_checks": {
+    "m3_human_count": 1,
+    "m3_truncation_proxy_count": 0,
+    "m3_truncation_proxy_known": 18,
+    "m3_proxy_rule": "output_tokens >= max_new_tokens - 2 (machine hint, not a label)",
+    "golden_hit_rate_at_3": 83.3,
+    "golden_reference": 83.3,
+    "golden_unchanged": true,
+    "golden_note": "prediction.md pinned 75.0%; the Week 4 label correction (results.md, 2026-10-11) makes 83.3% the current reference. Retrieval-only metric: the gate cannot move it.",
+    "answered_but_labelled_unanswerable": 0,
+    "refused_but_labelled_answerable": 5
+  },
+  "per_trace": [
+    {
+      "trace_id": "d3e783f2cf6a4a66",
+      "position": 73,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:model_reported_not_in_sources",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M1"
+      ],
+      "truncation_proxy": false,
+      "observation": "HC-005 says to contact the CloudDesk administrator when notifications stop suddenly, but the system refused despite the answer being available."
+    },
+    {
+      "trace_id": "c1b1628faa214b46",
+      "position": 62,
+      "outcome_0_85": "refused:ungrounded_answer",
+      "outcome_0_75": "refused:ungrounded_answer",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M4"
+      ],
+      "truncation_proxy": false,
+      "observation": "The billing article explains that an expired card should be updated, but the raw response gives unrelated account-lock and password-reset steps."
+    },
+    {
+      "trace_id": "f3a06ef14d694967",
+      "position": 23,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M3"
+      ],
+      "truncation_proxy": false,
+      "observation": "The raw response stops mid-sentence at `If the accoun`, matching M3 (reply stops mid-sentence)."
+    },
+    {
+      "trace_id": "1bb90578319c42ad",
+      "position": 42,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M4"
+      ],
+      "truncation_proxy": false,
+      "observation": "The response recommends login and password-reset steps instead of addressing the expired-card payment problem."
+    },
+    {
+      "trace_id": "3d5810c618474120",
+      "position": 78,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "The response correctly recommends requesting a new password-reset link, matching HC-001."
+    },
+    {
+      "trace_id": "71cad97adff34c97",
+      "position": 18,
+      "outcome_0_85": "refused:distance_gate",
+      "outcome_0_75": "refused:distance_gate",
+      "gate_delta": "same",
+      "answerable": "no",
+      "modes": [],
+      "truncation_proxy": null,
+      "observation": "The articles do not provide a per-user CloudDesk Enterprise plan price, so refusing is appropriate."
+    },
+    {
+      "trace_id": "03f73bb5a1094519",
+      "position": 67,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:model_reported_not_in_sources",
+      "gate_delta": "same",
+      "answerable": "unsure",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "The question does not specify what the user is waiting for, so the available refund context does not establish the intended answer."
+    },
+    {
+      "trace_id": "88dd7ec000424988",
+      "position": 8,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:model_reported_not_in_sources",
+      "gate_delta": "same",
+      "answerable": "unsure",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "The question does not specify which limits are meant, so the retrieved file-upload content does not establish the intended answer."
+    },
+    {
+      "trace_id": "633409505c0b4c6a",
+      "position": 25,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "HC-002 states that a temporary account lock lasts 15 minutes, matching the response."
+    },
+    {
+      "trace_id": "2577a4d1230243b5",
+      "position": 27,
+      "outcome_0_85": "refused:distance_gate",
+      "outcome_0_75": "refused:distance_gate",
+      "gate_delta": "same",
+      "answerable": "unsure",
+      "modes": [],
+      "truncation_proxy": null,
+      "observation": "The question does not specify what the user is waiting for, and the retrieved refund and upload chunks do not resolve that ambiguity."
+    },
+    {
+      "trace_id": "ba0b35cd475747a7",
+      "position": 59,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "HC-001 lists the password requirements, and the response matches them."
+    },
+    {
+      "trace_id": "9d6fc2a52c1741c3",
+      "position": 32,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "HC-005 identifies the Organization Administrator as the person who manages organization-level notification controls."
+    },
+    {
+      "trace_id": "fdca2cebc2e84b6b",
+      "position": 11,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:model_reported_not_in_sources",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M2"
+      ],
+      "truncation_proxy": false,
+      "observation": "HC-004 contains ticket-filtering guidance, but the system flatly refused this request for help locating the setting."
+    },
+    {
+      "trace_id": "2ea18980635f423a",
+      "position": 45,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:distance_gate",
+      "gate_delta": "refused:distance_gate -> refused:model_reported_not_in_sources",
+      "answerable": "no",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "The available articles do not establish whether CloudDesk integrates with Salesforce, so refusing is appropriate."
+    },
+    {
+      "trace_id": "076d42c7a5674fb4",
+      "position": 75,
+      "outcome_0_85": "refused:ungrounded_answer",
+      "outcome_0_75": "refused:ungrounded_answer",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M4"
+      ],
+      "truncation_proxy": false,
+      "observation": "HC-002 contains account-recovery steps, but the raw response includes article source metadata that is not part of the answer."
+    },
+    {
+      "trace_id": "105c30e831d549ef",
+      "position": 71,
+      "outcome_0_85": "refused:model_reported_not_in_sources",
+      "outcome_0_75": "refused:model_reported_not_in_sources",
+      "gate_delta": "same",
+      "answerable": "no",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "The available articles discuss billing and invoice-related topics but do not establish that invoice export is supported."
+    },
+    {
+      "trace_id": "1cf08481fc1e4cdc",
+      "position": 34,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M4"
+      ],
+      "truncation_proxy": false,
+      "observation": "HC-001 explains that an expired reset link should be replaced by requesting a new link, but the response gives unrelated password-reset and administrator-contact advice."
+    },
+    {
+      "trace_id": "2bcca536e9874c54",
+      "position": 33,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "HC-006 explains that upload availability can depend on permissions, matching the response shown."
+    },
+    {
+      "trace_id": "358d8c7920fd4040",
+      "position": 48,
+      "outcome_0_85": "refused:ungrounded_answer",
+      "outcome_0_75": "refused:ungrounded_answer",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [
+        "M1"
+      ],
+      "truncation_proxy": false,
+      "observation": "The raw model output gives the supported permission-related answer, but the system displayed a refusal despite the answer being available."
+    },
+    {
+      "trace_id": "5113e766fcb547f8",
+      "position": 83,
+      "outcome_0_85": "answered",
+      "outcome_0_75": "answered",
+      "gate_delta": "same",
+      "answerable": "yes",
+      "modes": [],
+      "truncation_proxy": false,
+      "observation": "HC-001 states that a password reset link is valid for 30 minutes, matching the response."
+    }
+  ]
+}

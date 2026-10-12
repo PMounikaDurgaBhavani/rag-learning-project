@@ -1,604 +1,492 @@
-# CloudDesk RAG — Week 3 & Week 4 Demo Guide
+# CloudDesk RAG — Live Demo Guide, Weeks 3–9
 
-A single reference for presenting both weeks: what was built, which concepts and
-models were used and why, what changed in Week 4, and a timed runbook for the
-live demo.
+One application, one browser tab, every week's evidence. This guide says how to
+start it, which screen to open, what to click, what to ask, what should appear,
+and what to say. Every number here is read from a file in this repository; the
+path is given next to it. Nothing is invented.
 
-Every number here is traceable to a file in [evaluation/](evaluation/).
-
----
-
-## 1. What the system is
-
-Six mock CloudDesk help-centre articles (`HC-001`–`HC-006`) covering
-Authentication, Billing, Ticket Management, Notifications and Storage. Four of
-the six carry a six-row troubleshooting table — and those tables are the hardest
-content in the corpus to retrieve. That single fact drove nearly every design
-decision across both weeks.
-
-| Article | Product area | Last updated | Troubleshooting table |
-|---|---|---|---|
-| HC-001 Password Reset | Authentication | 2026-08-01 | yes |
-| HC-002 Account Locked | Authentication | 2026-08-05 | yes |
-| HC-003 Billing & Payments | Billing | 2026-08-03 | yes |
-| HC-004 Ticket Search & Filtering | Ticket Management | 2026-08-08 | no |
-| HC-005 Notification Settings | Notifications | 2026-08-10 | yes |
-| HC-006 File Uploads & Storage | Storage | 2026-08-12 | yes |
-
-### Pipeline
-
-```
-load (YAML frontmatter → metadata)
-  → chunk (3 strategies; table-aware default)
-    → embed (all-MiniLM-L6-v2, 384-dim)
-      → index (ChromaDB, one collection per strategy)
-      → index (BM25Okapi, in-memory)                    ← Week 4
-        → retrieve Top-K (+ product_area / article_id / is_table filters)
-        → fuse dense + BM25 ranks with RRF (k=60)       ← Week 4
-          → 3 refusal gates (distance · model · grounding)
-            → answer (Qwen2.5-0.5B-Instruct) + verified citations
-```
-
-### Metadata on every chunk
-
-Required by the brief: `source_file`, `article_id`, `product_area`,
-`last_updated`. Added on top: `chunk_id`, `strategy`, `section`, `is_table`.
-The last one is what lets a troubleshooting-style question be routed straight at
-table content.
+The Weeks 3–4 deep dive (chunking sweep, golden set, the one retrieval change)
+is kept in full in [DEMO_GUIDE_WEEKS_3_4.md](DEMO_GUIDE_WEEKS_3_4.md).
 
 ---
 
-## 2. Models and libraries — and why each one
+## 1. What the system is, in plain language
 
-Everything runs locally on CPU. No API key, no network call at query time. That
-was deliberate: both weeks are about repeatable measurement, and a hosted model
-that changes underneath you makes before/after comparison meaningless.
+Two things share one stack:
 
-| Component | Choice | Why this one |
-|---|---|---|
-| **Embedding model** | `all-MiniLM-L6-v2` | 384 dimensions, ~22M params, comfortable on CPU. Strong sentence-similarity quality per millisecond, which matters when the evaluation sweeps 12 index configurations. Frozen across both weeks so the Week 4 comparison has exactly one moving part. |
-| **Vector store** | ChromaDB (persistent) | Local, zero-config, and supports a metadata `where` clause at query time — the whole basis of the metadata-filtering deliverable. One collection per chunking strategy so strategies are compared over identical documents. |
-| **Generator** | `Qwen2.5-0.5B-Instruct` | Small enough for laptop CPU with greedy decoding (`do_sample=False`), so answers are reproducible run to run. Its weakness — not reliable enough to cite its own sources — is exactly what forced the verified-citation design. |
-| **Splitters** | `langchain-text-splitters` | `RecursiveCharacterTextSplitter` and `CharacterTextSplitter` supply the two baseline strategies. The third is hand-written because no off-the-shelf splitter keeps a markdown table header attached to its rows. |
-| **Lexical retriever** *(Week 4)* | `rank_bm25` · `BM25Okapi` | Classical sparse ranking over a custom tokenizer that preserves identifiers — the regex `[A-Za-z0-9_\-\.\:]+` keeps `HC-003` intact instead of shredding it into `hc` and `003`. That is the entire reason it beats dense search on error codes and article IDs. |
-| **Cross-encoder** *(explored, excluded)* | `cross-encoder/ms-marco-MiniLM-L-6-v2` | Implemented in [src/reranker.py](src/reranker.py) and benchmarked, but deliberately kept **out** of the Week 4 before/after run — the brief allows exactly one retrieval change. Available behind `--rerank` as evidence the alternative was evaluated, not ignored. |
+**The CloudDesk Help Centre RAG (Weeks 3–5).** Seven mock help-centre articles
+(`HC-001`–`HC-006` plus `HC-008`, refunds and escalation) live in PostgreSQL
+with pgvector. A question is embedded (`all-MiniLM-L6-v2`), retrieved densely,
+retrieved lexically (BM25), fused by Reciprocal Rank Fusion, reranked by a
+cross-encoder, then answered by `Qwen2.5-0.5B-Instruct` behind three refusal
+gates (distance, model, grounding). Citations are verified by code against the
+retrieved chunks, never copied from the model. Every answer writes a trace
+(`traces/traces.jsonl`) with the prompt sha, every retrieved chunk and score,
+the raw model output and the outcome.
 
-**Why no bigger LLM.** Answer accuracy is capped at 62.5% by the 0.5B generator,
-and the write-up says so. It was not swapped out of discipline: retrieval and
-generation are scored separately, so a generation ceiling never gets mistaken
-for a retrieval problem. Swapping the LLM is named as the highest-value next
-change.
+**The ticket-reply agent (Weeks 6–9).** A separate customer-support task on
+its own fixtures (`week7/store.json`, `week6/eval_cases.jsonl`): draft a reply
+or chase a refund using three tools (`find_ticket`, `get_order`,
+`lookup_refund_policy`) and `Qwen2.5-1.5B-Instruct`. Week 6 validates the LLM
+judge that grades replies; Week 7 races the agent loop against a fixed
+workflow; Week 8 scores the agent's path, not only its answer; Week 9 turns the
+tools into MCP servers the agent discovers at runtime.
 
----
+Everything runs locally on CPU/MPS. No API key is needed. The models:
 
-## 3. Week 3 — build it, then prove it
-
-### Concept 1 · Three chunking strategies over identical documents
-
-| Strategy | How it splits | Chunks | Table rows stranded |
-|---|---|---|---|
-| `recursive` | Recursive splitter on markdown separators | 103 | **20** |
-| `fixed` | Fixed character budget, newline separator | 82 | **20** |
-| **`markdown`** | Section-aware; splits tables **by row and repeats the header row**; prefixes every chunk with `Article – Section` | 123 | **0** |
-
-The four troubleshooting tables hold 24 data rows between them. Both
-character-based strategies leave 20 of those rows in a chunk that no longer
-contains `| Problem | Possible Cause | Solution |`. A stranded row retrieved
-alone is three bare values with no column names — the generator cannot tell
-which one is the cause and which is the fix.
-
-Reproduce: `python src/chunking.py`
-
-### Concept 2 · A retrieval metric that actually discriminates
-
-The first evaluation scored a hit when the expected *article* appeared in the
-top K. With six articles that saturates instantly — **100% in 11 of 12
-configurations**, useless for choosing anything. It was replaced with:
-
-- **`chunk_hit@k`** — a top-k chunk literally contains the answer string *and*
-  comes from the expected article
-- **`table_ok@k`** — table questions only: the answer row *and* its header row
-  are in the same chunk
-- **`MRR`** — 1 / rank of the first chunk containing the answer
-- **`article_hit@k`** — kept only to show it does not discriminate
-
-Scoring is literal substring matching against an `answer_keys` list after case
-and whitespace normalisation — objective, no LLM judge, reproducible.
-
-#### The sweep: 3 strategies × 4 size/overlap settings × Top-3/Top-5
-
-| Config | Chunks | art@5 | chk@3 | chk@5 | tbl@5 | MRR |
-|---|---|---|---|---|---|---|
-| recursive/300/50 | 103 | 100% | 50% | 50% | 0% | 0.438 |
-| recursive/800/150 | 33 | 100% | 62% | 75% | 50% | 0.442 |
-| fixed/300/50 | 82 | 100% | 50% | 62% | 0% | 0.448 |
-| fixed/500/100 | 51 | 100% | 75% | 75% | 25% | 0.521 |
-| **markdown/300/50** | **123** | **100%** | **75%** | **88%** | **75%** | **0.650** |
-| markdown/500/100 | 65 | 100% | 62% | 75% | 50% | 0.483 |
-| markdown/800/150 | 54 | 100% | 62% | 62% | 25% | 0.458 |
-
-Three readings worth saying out loud:
-
-1. Article-level hit is flat at 100% while chunk-level hit spans 50–88% — the
-   old metric was blind to a 38-point spread.
-2. Table questions are where strategies separate: `recursive/300/50` and
-   `fixed/300/50` score **0%** on `table_ok` at both K values.
-3. `recursive/800/150` only reaches 50% because an 800-character window happens
-   to swallow a whole table — luck, paid for with worse precision at Top-3.
-
-#### Top-3 vs Top-5 on the winning config
-
-Top-5 buys **+13 points of `chunk_hit` and +25 points of `table_ok`** for two
-extra chunks of context. Table chunks tend to rank 3rd–5th because terse
-pipe-delimited rows embed weakly against surrounding prose. **Top-5 is what the
-application uses.**
-
-### Concept 3 · Metadata filtering, and proof it is really applied
-
-| Run | chunk_hit@3 | chunk_hit@5 | MRR |
-|---|---|---|---|
-| Unfiltered | 75% | 88% | 0.650 |
-| Filtered on correct `product_area` | **88%** | 88% | **0.667** |
-| Filtered on a deliberately **wrong** area | **0%** | **0%** | 0.000 |
-
-Filtering *promotes* the right chunk rather than finding unreachable ones —
-hit@3 gains 13 points while hit@5 is unchanged. The wrong-filter run is the
-important one: retrieval still returns five chunks every time but never the
-answer, which proves the `where` clause is enforced at query time and not
-silently dropped.
-
-On the ambiguous query *"How do I fix it?"*, unfiltered retrieval returns
-HC-001, HC-001, HC-006; filtered to `Billing` it returns HC-003 three times over.
-
-### Concept 4 · Refusal is three gates, because one is provably not enough
-
-| Gate | Mechanism |
+| Role | Model |
 |---|---|
-| **1 · Distance** | Top-1 cosine distance > 0.75 → refuse. *Calibrated, not guessed*: at the original 0.50 a genuinely answerable question (distance 0.7340) was wrongly refused. A full sweep put the accuracy peak at 0.75. |
-| **2 · Model** | The model emits the sentinel `NOT_IN_SOURCES`. A sentinel, **not** the refusal sentence — putting the literal refusal text in the prompt primed the 0.5B model to emit it even when the answer was present. |
-| **3 · Grounding** | No retrieved chunk actually supports the generated text → refuse. Scored on content-word coverage (≥ 0.55) plus a check for numbers asserted in the answer but absent from the chunk. |
+| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` |
+| Reranker | `cross-encoder/ms-marco-MiniLM-L-6-v2` |
+| Chat generator (Weeks 3–5) | `Qwen/Qwen2.5-0.5B-Instruct` |
+| Ticket drafter / agent (Weeks 6–9) | `Qwen/Qwen2.5-1.5B-Instruct` |
+| Judge (Week 6) | `HuggingFaceTB/SmolLM2-1.7B-Instruct` |
 
-**The finding worth leading with.** Two unsupported questions were written as
-deliberate traps — the corpus discusses the topic at length but never states the
-fact. *"What is the maximum file size limit in megabytes?"* retrieves at
-distance **0.2729**. Every supported question sits between 0.2739 and 0.7340.
-**The trap retrieves closer than every answerable question.**
+### The UI, one sidebar
 
-So a distance threshold is structurally incapable of separating "the topic is in
-the corpus" from "the fact is in the corpus". Gate 1 alone catches 4 of 6.
-Gates 2 and 3 catch the other two. **Refusal rate: 6/6, zero hallucinated
-answers.**
-
-### Concept 5 · Citations are verified, not claimed
-
-Citation markers are never taken from the model's output. Every retrieved chunk
-is scored against the generated answer in [src/grounding.py](src/grounding.py),
-and only chunks passing both checks are cited, with markers renumbered to match.
-A citation therefore *cannot* point at a chunk that does not contain the answer
-— measured at **100% correct article and 100% correct chunk** across the six
-answered questions. The number check doubles as a cheap hallucination guard:
-fabricated limits, prices and durations are exactly what a small model invents.
-
-### Concept 6 · Failures recorded, not hidden
-
-39 retrieval failures across the 12 configurations, dominated by the four table
-questions: 28 table-answer misses, 7 cases where the row was retrieved but the
-header was stranded, 4 ordinary misses.
-
-Case study — Q3, *"What should I do if my reset link has expired?"*, fails in
-all 12 configurations:
-
-| Intervention | Gold chunk rank | Distance |
+| Sidebar entry | What it is | Backed by |
 |---|---|---|
-| None | 21 of 123 | 0.8217 |
-| Filter `is_table=True` | **3** | 0.8217 |
-| Rephrase to "reset link has expired what is the solution" | **1** | 0.5853 |
+| **Chat** | the real RAG pipeline, with verified citations, refusal reasons and trace ids | `POST /api/ask` → `src/generator.py` |
+| **Library** | the documents in Postgres; upload, re-index, delete | `/api/documents`, `/api/upload` |
+| **Retrieval inspector** | dense vs BM25 vs fused+reranked stages for the last question | `POST /api/inspect` |
+| **Golden set** | Week 4: hit-rate@3 baseline vs hybrid, run live | `POST /api/golden/evaluate` → `src/golden_eval.py` |
+| **Error analysis** | Week 5: taxonomy, the 20 sampled traces, replay, prediction | `/api/week5`, `/api/week5/rerun` |
+| **Judge validation** | Week 6: cases, assertions vs judge, protocol evidence, agreement | `/api/week6`, `/api/week6/run` → `experiments/week6_eval.py` |
+| **Agent vs workflow** | Week 7: the four numbers, per-ticket transcripts, budgets, live runs | `/api/week7`, `/api/week7/workflow`, `/api/week7/agent` → `experiments/week7_ui.py` |
+| **Trajectory eval** | Week 8: sequences, gap, mitigation, regression, injection | `/api/week8`, `/api/week8/rescore` → `experiments/week8_trajectory_eval.py` |
+| **MCP servers** | Week 9: discovery 2→4, zero-diff swap, wire, errors, risk, gateway | `/api/week9`, `/api/week9/discover`, `/api/week9/wire` → `experiments/week9_ui.py` |
+| **Reports & demo** | this guide and every README, rendered from the files | `/api/reports` |
+| **Console** | raw JSON of the last response or trace | — |
 
-All five top-ranked chunks come from HC-001, so `article_hit@5` reports a perfect
-hit while the answer sits at rank 21 — exactly the blindness the old metric had.
-Root cause: the question is phrased as a procedure request and embeds close to
-the five "How to Reset Your Password" chunks, while the table row is terse and
-verbless. This is a **query/content phrasing mismatch, not a chunking defect** —
-and it is what sets up Week 4.
+Any view and tab opens directly from the URL hash, e.g.
+`http://localhost:8000/#week8/regression` or `#week7/budgets`.
 
-### Week 3 decision
-
-**`markdown` chunking, `chunk_size=300`, `chunk_overlap=50`, Top-5.** Best on
-every discriminating metric, structurally eliminates the table defect, and the
-gain is not luck. Cost: 123 chunks versus 82 for `fixed` — 50% more vectors,
-negligible at this size, worth rechecking at scale.
+One model-backed action runs at a time. While one runs, the header shows
+`● running: …` and a second expensive request is refused with HTTP 409 and the
+name of the run in progress (so a double click cannot start a duplicate race).
+Nothing expensive runs when the app starts.
 
 ---
 
-## 4. Week 4 — one change, measured honestly
+## 2. Prerequisites
 
-Week 4 adds no features to the answer path. It asks a narrower, harder question:
-where does the Week 3 retriever fail, and does one specific fix move the number?
+- macOS with the project's `venv/` (Python 3.11, `pip install -r requirements.txt`).
+- The Postgres cluster at `~/pgdata/clouddesk`, port 5433, database
+  `clouddesk_rag`, with pgvector ([SETUP_DB.md](SETUP_DB.md)). `.env` holds
+  `DATABASE_URL` (copy `.env.example`).
+- The five models above in the Hugging Face cache (they download on first use;
+  do this before the demo, not during it).
+- Optional: Langfuse keys in `.env`. Without them traces still go to
+  `traces/traces.jsonl`. `RAG_LANGFUSE=0` turns the sink off per run.
 
-### Step 1 · A 12-question golden set, written before any retrieval ran
+---
 
-Each entry in [evaluation/golden_set.jsonl](evaluation/golden_set.jsonl) names
-the question, the exact `expected_chunk_id`, and the answer key. **Six of the
-twelve contain exact identifiers** (`HC-001`–`HC-006`) against a required
-minimum of four. Declaring the expected chunk ID first is what makes the
-exercise honest — there is no way to move the goalposts after seeing results.
+## 3. Start it
 
-> **Revision (2026-10-11).** An audit found four golden labels pointing at a
-> chunk that does not state the answer (GS-04, GS-06, GS-09, GS-12). They were
-> corrected by one rule — the label moves to the chunk in the same section
-> that does state the answer, chosen without looking at retrieval output — and
-> the identical experiment was re-run. Every number in this section is from
-> the corrected run. Say this up front in the demo; it is a stronger story
-> than the original, because it shows the eval checking itself.
+```bash
+cd rag-week3
+LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 pg_ctl -D ~/pgdata/clouddesk -o "-p 5433" -l ~/pgdata/clouddesk/server.log start
+pg_isready -p 5433                     # "accepting connections"
+source venv/bin/activate
+python main.py status                  # 7 documents · markdown 138 chunks (default)
+python main.py ui                      # opens http://localhost:8000
+```
 
-### Step 2 · Baseline, then classify every miss
+`python main.py ui --no-browser --port 8000` if you want to open the tab yourself.
+The locale variables are required: without them the cluster fails to start
+("postmaster became multithreaded during startup").
 
-All 12 questions through the Week 3 dense retriever at Top-3.
+Warm the models before anyone is watching: ask one question in Chat (loads
+the 0.5B generator, embeddings and reranker, ~30 s), and on *Agent vs workflow
+→ Run live* run the workflow once (loads the 1.5B agent model, ~1 min).
 
-- **Baseline hit-rate@3: 8/12 = 66.7%**
-- **Failure tally: R = 4 · Not-In-Corpus = 0 · G = not assessed** (no
-  generation step runs in this experiment, so no claim is made about it)
+---
 
-| ID | Expected chunk | Evidence — what came back instead |
+## 4. The demo script (about 25 minutes)
+
+Each step: **open** → **click** → **what appears** → **say**.
+
+### Step 1 — Chat: an answerable question (Weeks 3–4)
+
+Open **Chat**. Click the preset chip **Reset link validity** (or type
+`How long is a CloudDesk password reset link valid?`) and press ↵.
+
+What appears (measured 2026-10-11, build `374d717`):
+
+- pill `✓ Grounded · 3 citations`, mode `hybrid_rerank`, `best distance 0.375 · gate 0.75`
+- answer **`30 minutes [1] [2] [3]`**
+- *Verified sources*: `HC-001-markdown-15`, `HC-001-markdown-5`, `HC-001-markdown-11`, each with coverage 100%
+- a `trace <id>` pill and a **Trace … ↗** button
+
+Say: "Citations are not the model's: each retrieved chunk is scored against
+the answer for content-word coverage and for numbers it asserts; only chunks
+that pass are cited, then the markers are renumbered. The answer came from
+HC-001 and the three cited chunks are three of the five retrieved."
+
+Click **Retrieval stages →**: the inspector shows the dense list, the BM25 list
+and the fused + reranked list side by side, with `d`/`b` ranks and `rrf`
+scores. Click **Trace … ↗**: the Console shows the full trace record (prompt
+version and sha, every retrieved chunk with distance/bm25/rrf/rerank, the raw
+model output, the outcome, the build).
+
+### Step 2 — Chat: the trap (unsupported question)
+
+Click **Refusal test** (`What is the maximum file size limit for CloudDesk uploads in megabytes?`).
+
+What appears: `✕ Refused`, reason **`model_reported_not_in_sources`**,
+`best distance 0.2729`, and a collapsible *What the retrieved sources actually
+say* with the HC-006 chunks.
+
+Say: "This retrieves *closer* than every answerable question in the set —
+0.27 against 0.375 for the last one. A distance gate can say the topic is in
+the corpus; it cannot say the fact is. The model gate and the grounding gate
+catch it. Six of six unsupported questions are refused, zero hallucinated."
+
+### Step 3 — Chat: ambiguous and out-of-scope
+
+Type `How do I fix it?` → `✕ Refused`, **`distance_gate (1.4422 > 0.75)`**.
+Say: "Too vague to retrieve anything close. Open ⚙ Settings, set *Product
+area* to Billing and ask again, or use the Library's filters: the retrieval
+is filtered at query time, which the Week 3 wrong-filter run proved (0/8 hits
+with a deliberately wrong area while still returning five chunks)."
+
+Type `What is the capital of France?` → refused by the distance gate at ≈1.79.
+
+Type `My card expired and payment failed in HC-003. What do I do?` → the exact
+identifier `HC-003` is a *lexical anchor* that bypasses the distance gate
+(`gate_bypass` pill), HC-003 chunks are retrieved, and the 0.5B model's answer
+is then refused as **`ungrounded_answer`**. Say so plainly: "This is the
+generation ceiling, not retrieval — the right chunks are in context (open
+*Retrieval stages*), the 0.5B model paraphrases them beyond what any single
+chunk supports, and the grounding gate refuses rather than ship it. That
+ceiling is why the ticket work in Weeks 6–9 uses the 1.5B model."
+
+### Step 4 — Golden set (Week 4)
+
+Open **Golden set**. The 12 questions with pre-declared `expected_chunk_id`
+are listed (6 with an exact identifier). Click **Run evaluation**.
+
+What appears: hit-rate@3 **66.7% → 83.3%** (8/12 → 10/12), 2 of 4 retrieval
+failures fixed (GS-01, GS-06), 0 regressions, 3 promoted to rank 1, and
+per-question before/after ranks. Latency p50 on this Postgres backend is
+≈28 ms for both arms; the authoritative Week 4 figure is 12.63 → 13.09 ms
+(commit `efd07ba`, inside the ±0.63 ms noise band).
+
+Say: "One change — BM25 fused with the dense list by RRF, k = 60. Everything
+else is held constant: embedding model, chunking, chunk size, overlap, index,
+the 25-candidate pool, k = 3, the golden set. Four labels were corrected on
+2026-10-11 by a rule that never looked at retrieval output; the revision is in
+[results.md](results.md) §2.1 and the original numbers are in git."
+
+Source: `evaluation/golden_ab_results.json`, `evaluation/golden_set.jsonl`.
+
+### Step 5 — Error analysis (Week 5)
+
+Open **Error analysis**.
+
+- *Taxonomy* tab: five modes from 20 open-coded traces (`week5/taxonomy.md`).
+- *The 20 traces* tab: seed `20260907`, 20 of 99, selection rule shown; click
+  any row for the full trace. **↻ Rerun these 20 on the current build**
+  re-asks every one and shows then/now outcomes (20 model calls, ~1–2 min;
+  the run is saved under `week5/reruns/`).
+- *Prediction* tab: `week5/prediction.md`, committed `c152efb` on 2026-09-08
+  **before** any fix: "raising the distance gate 0.75 → 0.85 drops mode 1
+  from 20% to under 10% on a fresh seeded sample (seed 20260915)".
+
+Say: "The prediction is dated and committed before the change, with the three
+things that would prove it wrong written down."
+
+**Prediction experiment status (2026-10-11).** The two traffic arms were run
+today on build `374d717` by `experiments/week5_prediction.py traffic`:
+92 traces each at thresholds 0.75 and 0.85, isolated under
+`traces/week5_prediction/`, manifests in `week5/prediction_run/arm_t0.75.json`
+and `arm_t0.85.json` (sha-bound, 0 failures). The seeded sample was drawn
+(`week5/prediction_run/sample_20260915.json`: 20 of 92; 1 of the 20 differs
+from its 0.75 twin at a gate). **The production threshold is unchanged at
+0.75**; the arm passes 0.85 per call. What remains is the human step the tool
+refuses to do: open-code the 20 traces in
+`week5/prediction_run/notes_20260915.md` (mode 1 present/absent, exactly as
+in the original pass), then `python experiments/week5_prediction.py score`
+evaluates the committed criteria. Until that is done, say "the arms are run
+and sampled; the verdict needs my 20 labels", not a number.
+
+### Step 6 — Judge validation (Week 6)
+
+Open **Judge validation**.
+
+- *Overview*: 25 cases, **6 assertions vs 1 judged criterion**, latest pass
+  rate, agreement before → after.
+- *Pass rate by mode*: click **Run eval** with *Assertions only* (seconds; it
+  checks the 25 frozen replies and prints pass rate per mode M1–M5). The
+  terminal equivalent is `python main.py eval --frozen`. The warning box
+  "the average hides M5" is the point: per-mode rates, not one number.
+- *The 25 cases*: each tagged with one Week 5 mode (M1 7 · M2 5 · M3 5 · M4 4 ·
+  M5 4). **R01–R04 are regression cases replayed verbatim from real failed
+  Week 5 traces**; each shows its `source_trace_id` (e.g. R01 ←
+  `5a50d54f665441d4`, refused by the distance gate at 0.7659) and the
+  original failure. The other 21 are clearly synthetic.
+- *Judge prompts*: **v0 → v1** diff — the six deterministic criteria (ticket
+  ID, refund amount, escalation tag, refund window, cut off, leaked headers)
+  deleted from the prompt and moved to `src/ticket_assertions.py`; v1 judges
+  one binary criterion, RESOLUTION, and tells the model not to grade the rest.
+- *Protocol evidence*: computed live from git. Today it shows `replies_25.json`
+  frozen at `b594458` (2026-09-15) and `labels_25.json` **not on disk**.
+
+Say what is true: "The protocol is built and enforced by the tool — `label`
+refuses once a judge result exists, `judge` refuses until the labels are
+committed and sha-bound to the frozen replies, `make-judge-v2` refuses examples
+v1 did not get wrong and refuses before `prediction.txt` is committed. The
+blind labelling is mine to do and is not done yet, so there is no
+agreement_before/after number to show; I will not quote one."
+
+**To complete Week 6 (your steps, in this order, each committed):**
+
+```bash
+python experiments/week6_eval.py label                 # 25 blind labels, shuffled, mode hidden
+git add week6/labels_25.json && git commit -m "week6: blind labels"
+python experiments/week6_eval.py judge --version v1    # agreement_before -> judge_results_v1.json
+# write week6/prediction.txt (one falsifiable sentence) and commit it
+python experiments/week6_eval.py make-judge-v2 --examples ID,ID   # two of v1's own disagreements
+python experiments/week6_eval.py judge --version v2    # agreement_after, same labels
+python experiments/week6_eval.py status                # protocol_evidence.md with commit ordering
+# then write week6/disagreements.md (who was right, with evidence) and score the prediction
+```
+
+After that the *Agreement*, *Protocol evidence* and *Write-up* tabs fill in
+from the files, with no code change.
+
+Bonus tabs already wired: *RAGAS* (local re-implementation, policy-section
+check for the 7 policy-backed cases, "faithfully wrong" detection) and
+*G-Eval*, both gated on the labels like the judge; their `--smoke` outputs on
+3 hand-written replies are shown meanwhile.
+
+### Step 7 — Agent vs workflow (Week 7)
+
+Open **Agent vs workflow**.
+
+- *The four numbers* (`week7/race_summary.csv`, run `race_20260921-134848`,
+  budgets 8 laps / 8000 tokens / $0.01 / 300 s):
+
+| | agent (loop) | workflow (3 fixed steps) |
 |---|---|---|
-| GS-01 | `HC-001-markdown-5` | Gold ranked #8. Top-3 `-15, -6, -18`: the FAQ chunk `-15` at rank 1 also says "valid for 30 minutes", so this is a strict miss only. |
-| GS-04 | `HC-002-markdown-6` | Gold ranked #9. Top-3 `-20, -5, -1`: the FAQ chunk `-20` at rank 1 also says "lasts 15 minutes"; `-5` is the old, wrong label ("a short period"). |
-| GS-05 | `HC-002-markdown-10` | Gold ranked #7. Top-3 `-7, -4, -3`: a "Follow these steps:" stub and two overview paragraphs. Nothing in the top 3 states the fix. |
-| GS-06 | `HC-003-markdown-8` | Gold ranked #4. Top-3 `-4, -9, -6`: supported methods, the one-line "update it before the next billing attempt" (the old label), and the *add* steps rather than the *update* steps. |
+| pass rate | **0/10 = 0.0%** | **10/10 = 100.0%** |
+| p50 latency | **338.6 s** | **3.8 s** |
+| total tokens | **44,748** (4,475/ticket) | **1,793** (179/ticket) |
+| cost per ticket | **$0.000746** | **$0.000042** |
+| model calls | 49 | 10 |
+| budget terminations | 10 (9 wall clock, 1 iterations) | 0 |
 
-GS-09 and GS-12, counted as failures in the first report, were hits in both
-arms once the label pointed at the row that actually holds the answer.
+  Say: "Tokens are summed per model call across every lap, so the loop's
+  re-sent transcript is counted each time. The models are local, so cost is
+  measured tokens times a documented stand-in rate card ($0.15/$0.60 per Mtok)."
+- *Per ticket*: both systems, every ticket, with the full transcript under
+  each row.
+- *Branching*: the 10 fixtures (stable ids `CD-7001`–`CD-7010`, identical for
+  both systems), 5 of which branch after step 2. The tool *sequence* changes
+  only on CD-7008 (no order id → step 2 skipped by a fixed `if`); the
+  *decision* changes on five tickets from what `get_order` returns (missing,
+  refunded, duplicate, cancelled). Say: "A varying path argues for a branch,
+  not a loop. Every branch is known before the ticket arrives."
+- *Four budgets*: one clean termination log per budget
+  (`week7/budget_logs/*.log`, each on CD-7001 with the other three out of
+  reach): `max_iterations` (2 ≥ 2), `max_tokens` (1537 ≥ 1200),
+  `max_cost_usd` ($0.000274 ≥ $0.000200), `max_wall_seconds` (15.3 s ≥ 15.0 s,
+  lap 2 cut mid-generation). Each shows the configured limits, the budget
+  that fired, and the spend at termination.
+- *The third tool*: `lookup_refund_policy(tier, order_status)` with enum
+  parameters; the description diff and the probe — **7/20 correct before and
+  after**. Say the honest result: "Sharpening the description did not move
+  tool choice; with the loose text the model picked the wrong tool zero
+  times. Its failure is calling no tool at all."
+- *Verdict*: `week7/verdict.md`, 145 words, quoting the four numbers.
+- *Run live*: pick **CD-7007** and click **Run the fixed workflow**. Measured
+  today: PASS, `escalated`, 3 steps, 1 model call, 164 tokens, $0.000035,
+  6.5 s; step 2 returns `order_not_found`, step 3 takes the escalation rule.
+  Then pick **CD-7001**, max laps **2**, click **Run the agent**. Measured
+  today: it stops with **`BUDGET max_iterations hit (2 >= 2) after 2
+  iterations, 1537 tokens, $0.000274, 13.7s — terminating cleanly`** — the
+  same tokens and cost as the committed log, because decoding is greedy. Both
+  live runs are saved under `week7/runs/live/`, never over the race files.
 
-Three of the four real misses are terse table rows or numbered steps, and half
-the set contains an exact identifier the embedding treats as ordinary text.
-That points at one fix, not two.
+Do **not** run `python main.py race` live: the agent arm takes about an hour.
 
-### Step 3 · The one change: BM25 + Reciprocal Rank Fusion
+### Step 8 — Trajectory eval (Week 8)
 
-Dense search is asked for 25 candidates. BM25 is asked for 25 candidates over
-the same chunks. The two ranked lists are fused **by position, not by score** —
-which is why no normalisation is needed between a cosine distance and a BM25
-score:
+Open **Trajectory eval** (or `#week8/gap`).
 
-```
-RRF_score(d) = 1 / (60 + rank_dense(d)) + 1 / (60 + rank_bm25(d))
-```
+- *Overview* (`week8/trajectory_summary.csv`, same 10 tickets, Qwen2.5-1.5B,
+  budgets 8 / 8000 / $0.01 / 1800 s):
 
-The choice was between BM25 + RRF and cross-encoder reranking. Reranking helps
-when the right chunk is already in the candidate pool but ranked low; BM25 helps
-when exact tokens are missed entirely. The failure evidence — identifiers and
-terse table rows — pointed at the second. The cross-encoder was still built and
-benchmarked, but kept out of the comparison so only one variable moved.
+| config | outcome | trajectory | **gap** | tool choice | arg validity | step eff. | cost p50 | cost max |
+|---|---|---|---|---|---|---|---|---|
+| baseline | 0% | 10% | **−10 pp** | 33.3% | 86.2% | 1.27 | $0.000580 | $0.001514 |
+| mitigated | 40% | 40% | **0 pp** | 43.6% | 90.9% | 2.23 | $0.001409 | $0.001524 |
+| week7_race1 (rescored) | 40% | 10% | **+30 pp** | 30.6% | 100% | 1.02 | $0.000502 | $0.000773 |
 
-#### The entire retrieval diff — as it exists in code
+  Click **Rescore stored runs**: every number is re-derived from the raw
+  trajectories in `week8/runs/` with no model, and the table says whether it
+  matches `report.json` (it does: "All stored numbers reproduce").
+- *The 10 sequences*: expected tool paths asserted in code; CD-7005, CD-7007
+  and CD-7008 accept alternates as a set. Say: "Under a single-sequence eval
+  CD-7008's correct `find_ticket → answer` would fail and the race-1 gap would
+  read 40 pp instead of 30."
+- *Right answer, wrong path*: **CD-7010 in race 1 — outcome PASS, trajectory
+  FAIL.** It approved $19.99 without ever calling `get_order`; the amount came
+  from the customer's sentence. The trace is shown. Say: "A 31-day-old charge
+  would have been refunded the same way. The outcome test passed a guess."
+- *Mitigation*: top mode by harm = `skipped_evidence` (7 tickets). ONE change:
+  re-planning on unsupported answers (`evidence_guard=True`, a one-argument
+  diff). **7 → 0 tickets**, outcome 0% → 40%. **The price:** tokens p50
+  3,406 → 8,391 (+146%), cost p50 +$0.000829/ticket (+143%), step efficiency
+  1.27 → 2.23.
+- *Regression* (`week8/regression.csv`): every mode, before → after. Point at
+  the rows that got **worse** (`prose_instead_of_action` 8 → 15 events,
+  `budget_exhausted` 2 → 6 tickets, `redundant_call` 14 → 16) and the **new**
+  mode the guard created (`skipped_evidence_caught`, 12 events). Say: "The fix
+  turns wrong answers into no answers. Safer, still a failure, and measured."
+- *Injection (bonus)*: controlled fixture CD-7201 with a pasted "email" in the
+  customer message (`week8/injection_summary.md`). Undefended: 0 of 3 variants
+  obeyed (all ran out of tokens). Defended: one `issue_refund` attempt with an
+  invented amount, refused by the read-only scope; the output guardrail
+  blocked `refund_approved 210` on a 75-day-old charge. Guardrail cost on
+  clean tickets: 0 tokens; the sanitizer cost argument validity 90.9% → 38.6%.
+  The refund tool writes only to a sandbox ledger (`week8/refund_ledger.jsonl`).
 
-The two arms live in [src/golden_eval.py](src/golden_eval.py) lines 60–68.
-Point at the file rather than a slide:
+### Step 9 — MCP servers (Week 9)
 
-```python
-if arm == "baseline":
-    return retrieve_chunks(query, top_k=candidate_k, strategy=strategy)
+Open **MCP servers** (or `#week9/discovery`).
 
-dense  = retrieve_chunks(query, top_k=candidate_k, strategy=strategy)
-sparse = retrieve_bm25(query,   top_k=candidate_k, strategy=strategy)
-return reciprocal_rank_fusion(dense, sparse, k_constant=RRF_K)   # 60
+- *Discovery 2 → 4*: from the servers' own `tools/list` answers
+  (`week9/tools_before.json`: `get_article`, `search_kb`; `tools_after.json`:
+  plus `lookup_ticket`, `get_escalation_history`). Click **Run tools/list
+  now** with *Server one + two*: the real servers start as child processes,
+  `initialize` + `tools/list` run, and **4 tools** come back (no model).
+- *Config-only swap*: `week9/agent_diff.txt` — `git diff 1715ab5 d4e76e4 --
+  src/mcp_agent.py src/mcp_client.py src/agent_runtime.py` is **empty, 0
+  changed lines**; `config_diff.txt` is the whole change (5 lines of
+  `week9/mcp_config.json`). Say: "The host names no tool; it builds its tool
+  list from `tools/list`."
+- *JSON-RPC wire*: `week9/wire.json`, seven messages — `initialize` →
+  result → `notifications/initialized` (no id, no reply) → `tools/list` →
+  result → `tools/call lookup_ticket` → result — every top-level field
+  annotated. Click **Capture the wire now**: the same four steps replayed
+  live over stdio, protocol `2025-06-18`, raw messages shown. The box at the
+  top says where the model runs: **only in the host, between `tools/list` and
+  `tools/call`**; never in the client, the server, or on the wire.
+- *Query trace*: `runs/query_ticket_history.json` — the agent, given the
+  config, discovers `lookup_ticket` and calls it on `TCK-4471` through the
+  `ticket-history` server, which is named in the trace.
+- *Error before / after*: same failing call `get_article("HC-8")` replayed as
+  lap 1. Before: `Error executing tool get_article: Error 3` → the model tells
+  the user to "check the article ID and try again". After: the docstring is a
+  prompt (when to call, id format `HC-` + three digits, what to do instead) and
+  the error is returned as `isError: true` with the action first: `Retry now:
+  call get_article with article_id "HC-008". Reason: … Known ids: …`. Say what
+  did not change: "After three rewrites the 1.5B model still never re-called
+  the tool; it now explains the fix to the user instead of blaming them."
+- *Risk note*: `week9/risk_note.md`, five lines — author/provenance, reachable
+  data, logging, stolen-token impact, **verdict: don't ship as configured**
+  (the token is committed in config; the client passes the server the whole
+  environment).
+- *Gateway (bonus)*: one front door, one audit line per call
+  (`week9/logs/gateway_audit.log`), token scope denying
+  `get_escalation_history`, the denial reaching the model as `isError: true`.
 
-# unchanged: embedding model, chunking strategy, chunk size, overlap,
-#            index, candidate pool (25), k (3), golden set, no reranker
-```
+### Step 10 — Reports & demo
 
-### Step 4 · Same 12 questions, per-question result
-
-Ranks are positions in the 25-candidate list.
-
-| ID | Expected chunk | Before | After | Status |
-|---|---|---|---|---|
-| GS-01 | `HC-001-markdown-5` | miss (#8) | **#2** | **FIXED** |
-| GS-02 | `HC-001-markdown-6` | #1 | #2 | held |
-| GS-03 | `HC-001-markdown-11` | #1 | #1 | held |
-| GS-04 | `HC-002-markdown-6` | miss (#9) | miss (#4) | unfixed |
-| GS-05 | `HC-002-markdown-10` | miss (#7) | miss (#8) | unfixed |
-| GS-06 | `HC-003-markdown-8` | miss (#4) | **#2** | **FIXED** |
-| GS-07 | `HC-003-markdown-13` | #1 | #1 | held |
-| GS-08 | `HC-004-markdown-8` | #3 | **#1** | promoted |
-| GS-09 | `HC-005-markdown-16` | #2 | **#1** | promoted |
-| GS-10 | `HC-005-markdown-23` | #3 | **#1** | promoted |
-| GS-11 | `HC-006-markdown-3` | #1 | #1 | held |
-| GS-12 | `HC-006-markdown-11` | #2 | #2 | held |
-
-**2 of 4 R-failures fixed, 2 unfixed, zero regressions.** Three questions were
-also *promoted to rank 1*, so rank-1 accuracy on hits went from 4/8 to 6/10.
-Be candid about what the relabelling did: the GS-06 correction *created* a fix
-(the old label was a hit in both arms), and the GS-04 correction *created* a
-miss in both arms. Neither favours the hybrid arm by construction, because the
-rule never looked at retrieval output.
-
-**Sensitivity check.** If any chunk that states the answer verbatim is
-credited (the FAQ sections repeat several answers), baseline is 10/12 and
-hybrid 11/12. GS-05 is the only question that fails under both scorings in
-both arms.
-
-### Step 5 · The shipping decision
-
-| Metric | Before | After | Delta |
-|---|---|---|---|
-| Hit-rate@3 | 66.7% (8/12) | 83.3% (10/12) | **+16.7 pts** |
-| Rank-1 accuracy on hits | 50.0% (4/8) | 60.0% (6/10) | +10.0 pts |
-| p50 latency — authoritative run, commit `efd07ba` | 12.63 ms | 13.09 ms | +0.46 ms, inside ±0.63 ms noise |
-| Regressions | — | 0 | — |
-
-**Verdict: SHIP.** Recall up, rank-1 precision up, no regressions, no
-measurable latency cost.
-
-> **Say this before you are asked — the latency numbers.** Three saved runs
-> disagree. The first run (`week4_golden_evaluation.json`, commit `124b9a3`)
-> showed hybrid *faster* at 17.97 → 11.35 ms; that is a warm-up artefact — the
-> baseline ran first and paid model-load and collection-open costs, and hybrid
-> does strictly more work. The authoritative Week 4 measurement is the
-> `efd07ba` commit of `golden_ab_results.json`: full warm-up, five interleaved
-> repeats, 12.63 → 13.09 ms, inside noise. The *current* file shows ~28.5 ms
-> for both arms because Week 5 moved the vector store to PostgreSQL + pgvector
-> and the file was regenerated on that backend; that is not a Week 4 number.
-> Naming this yourself is stronger than being caught by it.
-> The honest claim is **"no measurable latency cost"**, not "hybrid is faster".
-
-### Why the two unfixed questions stayed unfixed
-
-Both are in HC-002 and both fail for the reason Week 3 already diagnosed on
-Q3: the question is conversational (*"How long does… last"*, *"What should I
-do if…"*) while the target is a one-line fact or a verbless pipe-delimited row.
-BM25 helps when the question and the chunk share rare tokens; it does not help
-when the shared vocabulary — "locked", "failed", "attempts" — is spread across
-every chunk of the article. GS-04 did move, from #9 to #4, so it is one lever
-away; GS-05 did not move at all. The two levers already identified: route
-troubleshooting-style questions through the `is_table=True` filter, or rewrite
-the query (which moved Q3 from rank 21 to rank 1).
+Open **Reports & demo**. This guide and every week's README render from the
+files, with the path shown, so a reviewer can open the same file.
 
 ---
 
-## 5. Week 3 → Week 4, side by side
+## 5. Exact questions for the chat, and what to expect
 
-| Dimension | Week 3 | Week 4 |
+| Question | Expected | Why |
 |---|---|---|
-| **Question** | Which chunking strategy and Top-K should we use? | Where does retrieval break, and does one fix move it? |
-| **Evaluation set** | 8 known-answer + 6 unsupported + 4 ambiguous | 12-question golden set with pre-declared `expected_chunk_id` |
-| **Headline metric** | `chunk_hit@5`, `table_ok@5`, MRR | hit-rate@3 with before/after p50 latency |
-| **Retrieval** | Dense only — MiniLM over ChromaDB | **new** Dense + BM25Okapi fused with RRF (k = 60) |
-| **Failure handling** | Failures counted; one case study by hand | **new** Automated R / G / Not-In-Corpus classification with per-question evidence |
-| **Diagnostics** | `--show-retrieved` on the CLI | **new** `inspect` — side-by-side dense vs BM25 vs hybrid vs reranked, plus grounding scores |
-| **Query handling** | Query used verbatim | **new** Query rewriting and HyDE as CLI commands (not in the measured comparison) |
-| **Ingestion** | Markdown with YAML frontmatter | **new** Universal loader — PDF, DOCX, PPTX, XLSX, CSV, JSON, HTML, images via OCR, sidecar `.meta.json` |
-| **Interface** | CLI only | **new** `python main.py ui` — browser studio with upload, re-index and inspection |
-| **Held constant** | — | Embedding model, chunking strategy, chunk size, overlap, prompt, LLM, refusal gates, golden set |
-
-> **The single-variable rule.** Rewriting, HyDE, the cross-encoder, the universal
-> loader and the web UI all exist in the repo. *None of them touched the measured
-> before/after run.* If asked why the extra features are there but not in the
-> numbers, that restraint is the correct answer — state it first rather than
-> defending it later.
-
-### Reference: retrieval methods benchmarked on the Week 3 8-question set
-
-| Method | hit@1 | hit@3 | hit@5 | MRR | Table grounding |
-|---|---|---|---|---|---|
-| Dense only (MiniLM) | 50.0% | 75.0% | 87.5% | 0.650 | 75.0% |
-| BM25 only (lexical) | 50.0% | 87.5% | 100% | 0.650 | 100% |
-| **Hybrid RRF (dense + BM25)** | **87.5%** | 87.5% | 87.5% | **0.875** | 75.0% |
-| Hybrid + cross-encoder | 62.5% | 75.0% | 87.5% | 0.713 | 75.0% |
-
-This is the evidence behind choosing RRF over reranking: hybrid RRF nearly
-doubles rank-1 accuracy and lifts MRR from 0.650 to 0.875, while the
-cross-encoder — a general-purpose MS MARCO model with no exposure to this
-corpus's terse table rows — actively hurts. On eight questions each result is
-worth 12.5 points, so treat the ordering as directional, not decisive.
+| `How long is a CloudDesk password reset link valid?` | **Grounded**, `30 minutes [1] [2] [3]`, HC-001 chunks 15/5/11, best distance 0.375 | the fact is stated in the article (and repeated in its FAQ) |
+| `Why is the Upload File button unavailable in CloudDesk?` | Grounded from the HC-006 troubleshooting table (chunk `HC-006-markdown-11`, header row kept with the row) | table-aware chunking |
+| `What is the troubleshooting solution when the reset link has expired?` | Grounded, HC-001 | GS-03, rank 1 in both arms |
+| `What is the maximum file size limit for CloudDesk uploads in megabytes?` | **Refused**, `model_reported_not_in_sources`, best distance 0.2729 | the trap: topic present, fact absent |
+| `How much does the CloudDesk Enterprise plan cost per user?` | Refused | pricing is not in the corpus |
+| `What is the capital of France?` | Refused, `distance_gate (≈1.79 > 0.75)` | out of scope |
+| `How do I fix it?` | Refused, `distance_gate (1.4422 > 0.75)`; with *Product area = Billing* retrieval narrows to HC-003 | ambiguous |
+| `My card expired and payment failed in HC-003. What do I do?` | `gate_bypass` on the HC-003 anchor, HC-003 chunks retrieved, then **refused `ungrounded_answer`** | the 0.5B generation ceiling, caught by the grounding gate |
 
 ---
 
-## 6. Demo runbook (~15 minutes)
+## 6. Artefacts and measured results, by week
 
-Run `python main.py ingest` and one throwaway `ask` **before** anyone is
-watching — the first call downloads and loads models, and dead air is the only
-thing that can go wrong here.
-
-### 0:00 — Frame it in one sentence
-
-> "Six help-centre articles, a local RAG stack, and two weeks of work. Week 3 was
-> about choosing a chunking strategy on evidence instead of intuition. Week 4 was
-> about finding where retrieval actually breaks and changing exactly one thing to
-> fix it."
-
-### 1:00 — The table problem (the whole reason for strategy three)
-
-```bash
-python src/chunking.py
-```
-
-Point at the last column: 20 stranded table rows for both character-based
-strategies, 0 for `markdown`. Show what a stranded row looks like retrieved on
-its own — three bare values, no column names.
-
-> "This is why I wrote a third strategy instead of tuning chunk size. No
-> character-based splitter keeps a markdown table header attached to its rows."
-
-### 3:00 — Why the obvious metric was useless
-
-Show the sweep table. Article-level hit is 100% in 11 of 12 configurations while
-chunk-level hit spans 50–88%.
-
-> "My first metric said every configuration was perfect. That is how I knew the
-> metric was wrong, not the system."
-
-### 5:00 — Grounded answer with a verified citation
-
-```bash
-python main.py ask "Why is the Upload File button unavailable in CloudDesk?" --show-retrieved
-```
-
-The answer comes from a table row and the cited chunk carries that row *with its
-header*. Note that the citation was produced by the grounding scorer, not copied
-from the model.
-
-### 7:00 — Metadata filtering, including the negative control
-
-```bash
-python main.py search "How do I fix it?" --top-k 3
-python main.py search "How do I fix it?" --top-k 3 --area Billing
-python main.py search "payment failed" --top-k 5 --area Notifications   # wrong filter
-```
-
-> "The wrong-filter run is the one that proves it. Five chunks come back every
-> time, but never the answer — so the filter is genuinely enforced at query time."
-
-### 9:00 — Refusal, and the trap that breaks the distance gate
-
-```bash
-python main.py ask "What is the capital of France?"
-python main.py ask "What is the maximum file size limit for CloudDesk uploads in megabytes?"
-```
-
-The first is caught by distance at 1.7898. The second retrieves at **0.2729** —
-closer than every answerable question in the set — and is caught by the model and
-grounding gates instead.
-
-> "Distance measures whether the topic is in the corpus. It cannot measure
-> whether the fact is. That is the single most useful thing I learned in Week 3."
-
-### 11:00 — Week 4: the golden set and the baseline
-
-```bash
-cat evaluation/golden_set.jsonl
-```
-
-Twelve questions with the expected chunk ID declared before any retrieval ran;
-six contain an exact identifier. Four labels were later found to point at the
-wrong half of a split section and were corrected by rule (see §4). Baseline:
-8/12 = 66.7%, failure tally R 4 · Not-In-Corpus 0 · G not assessed.
-
-### 12:30 — The one change, run live
-
-```bash
-python main.py search        "How long is a password reset link valid in CloudDesk?" --top-k 3
-python main.py hybrid-search "How long is a password reset link valid in CloudDesk?" --top-k 3
-```
-
-This is GS-01: a miss on the baseline, rank 2 with hybrid. The hybrid output
-prints `rrf=…` alongside each chunk's `dense` and `bm25` rank, which makes the
-fusion visible rather than asserted.
-
-Optional deeper view if there is time:
-
-```bash
-python main.py inspect "What should I do if my payment fails in HC-003?"
-```
-
-### 14:00 — The numbers and the decision
-
-```bash
-python experiments/evaluate_golden_ab.py
-```
-
-Hit-rate@3 66.7% → 83.3%. Two R-failures fixed, two unfixed, zero regressions,
-three questions promoted to rank 1. (`evaluate_week4_improvement.py` is the
-first, single-pass script; keep it for history but demo the A/B version, which
-warms up and interleaves.) **Volunteer the latency caveat here** rather than
-waiting for it.
-
-> "Ship it — recall up, rank-1 precision up, no regressions, no measurable
-> latency cost. The two that stayed broken are both in HC-002, phrased
-> conversationally against a numbered-step or table-row chunk, and I already
-> know the two levers that move them."
-
-### 15:00 — Close on what you would do next
-
-Swap the 0.5B generator (answer accuracy is capped at 62.5% by generation, not
-retrieval). Route troubleshooting-phrased questions through `is_table=True`.
-Infer `product_area` from the query so filtering stops being manual. Store
-`last_updated` as an integer so date ranges become filterable.
+| Week | Evidence | Headline |
+|---|---|---|
+| 3 | `evaluation/retrieval_results.json`, `filtering_results.json`, `threshold_results.json`, `generation_results.json`; `DEMO_GUIDE_WEEKS_3_4.md` | markdown/300/50/Top-5: chunk-hit@5 88%, table-ok@5 75%, MRR 0.650; refusals 6/6; citations 100% correct chunk |
+| 4 | `evaluation/golden_set.jsonl`, `golden_ab_results.json`, `results.md` | hit-rate@3 66.7% → 83.3%, 2/4 fixed, 0 regressions, latency +0.46 ms inside noise (`efd07ba`) |
+| 5 | `week5/sample.json` (seed 20260907), `taxonomy.md`, `notes.md`, `prediction.md` (`c152efb`), `replay_evidence.md`; `week5/prediction_run/arm_t0.75.json`, `arm_t0.85.json`, `sample_20260915.json`, `notes_20260915.md` (blank, yours) | 5 modes; prediction committed before the change; both arms run (92 + 92, build `374d717`); score pending your 20 labels |
+| 6 | `week6/eval_cases.jsonl`, `judge_v0_presplit.txt`, `judge_v1.txt`, `replies_25.json` (`b594458`), `runs/run_*.json`, `protocol_evidence.md` | 25 cases, 6 assertions vs 1 judged criterion, 4 real regressions; **labels_25.json, judge results, prediction.txt, judge_v2.txt: not yet done (yours)** |
+| 7 | `week7/race_summary.csv`, `race.csv`, `runs/race_20260921-134848.json`, `budget_logs/*.log`, `budget_termination.log`, `verdict.md`, `tool_description_diff.md`, `tool_probe_v1/v2.json`; `runs/live/*.json` | 0/10 vs 10/10 · 338.6 s vs 3.8 s · 44,748 vs 1,793 tokens · $0.000746 vs $0.000042 |
+| 8 | `week8/trajectory_summary.csv`, `trajectory_results.csv`, `regression.csv`, `report.json`, `runs/traj_*.json`, `injection_summary.md` | gap +30 pp (race 1), −10 → 0 pp (baseline → mitigated); skipped_evidence 7 → 0 at +146% tokens; 3 modes worse, 1 new |
+| 9 | `week9/tools_before.json`, `tools_after.json`, `agent_diff.txt`, `config_diff.txt`, `wire.json`, `wire_raw.json`, `wire_http.json`, `runs/query_ticket_history.json`, `error_before_after.md`, `risk_note.md`, `logs/` | 2 → 4 tools from tools/list; 0 agent lines changed; 7 annotated wire messages; recoverable error; don't-ship verdict |
 
 ---
 
-## 7. Questions you should expect
+## 7. Tests
 
-**Why did the first run show the hybrid retriever faster than dense-only?**
-It is not. Hybrid does strictly more work. In that first run the baseline loop
-ran first and absorbed model-load and collection-open costs. The clean
-re-measurement (`efd07ba`: warm-up, five interleaved repeats) shows 12.63 →
-13.09 ms, inside the noise band. The defensible claim is "no measurable cost".
+```bash
+python tests/test_pipeline.py          # loader, chunking, grounding, metrics, eval data   (no model)
+python tests/test_week5_prediction.py  # prediction-experiment provenance, synthetic       (no model)
+python tests/test_weeks6_9.py          # Weeks 6–9 + the JSON API over a socket           (no model; starts the MCP servers)
+python tests/test_rag_live.py          # the real pipeline, traced to a temp dir          (0.5B model, ~1 min)
+```
 
-**You changed the gold labels. How is that not moving the goalposts?**
-Four labels pointed at a chunk that does not contain the answer — the section
-split at 300 tokens and the label landed on the wrong half. The rule was fixed
-before looking at any retrieval output: move the label to the chunk in the same
-section that states the answer. Applied blind, it helped and hurt the hybrid
-arm equally — it created one fix (GS-06) and one shared miss (GS-04). The
-original labels and numbers are preserved in git (`124b9a3`, `efd07ba`).
-
-**Why only 2 of 4 failures fixed? Was the change worth it?**
-Hit-rate@3 is a blunt instrument at n=12. The fuller picture is +16.7 points of
-recall *and* three questions promoted to rank 1, so rank-1 accuracy went
-4/8 → 6/10 with zero regressions. On the Week 3 set, hybrid RRF lifts MRR from
-0.650 to 0.875.
-
-**Why BM25 rather than the cross-encoder?**
-The evidence pointed there. Reranking helps when the right chunk is in the
-candidate pool but ranked low; BM25 helps when exact tokens are missed outright,
-and half the golden set carries identifiers like `HC-003`. The cross-encoder was
-built and benchmarked anyway — on this corpus it scored *worse* than plain RRF
-(MRR 0.713 vs 0.875), because an MS MARCO model has no exposure to terse
-pipe-delimited table rows.
-
-**How do you know the metadata filter is actually applied?**
-The wrong-filter run. Every question was re-run with a deliberately incorrect
-`product_area`: `chunk_hit@5` dropped to 0/8 while retrieval still returned five
-chunks each time.
-
-**Can a citation ever point at the wrong chunk?**
-Not by construction. Markers are never copied from the model — each retrieved
-chunk is scored for content-word coverage (≥ 0.55) and for numbers asserted but
-absent, and only passing chunks are cited. Measured at 100% correct chunk and
-article.
-
-**Isn't 8 questions (Week 3) or 12 (Week 4) too small?**
-Yes, and the write-up says so. One question is worth 12.5 points in Week 3 and
-8.3 in Week 4, so adjacent configurations are within noise. The gaps claimed as
-real are the large structural ones — 0% versus 75% table grounding — not the
-one-point differences.
-
-**Why such a small LLM?**
-Reproducibility and local execution. Its unreliability is also what produced the
-verified-citation design. Because retrieval and generation are scored
-separately, the 62.5% answer accuracy is correctly attributed to generation —
-retrieval put the answer in context for 88% of questions.
-
-**What breaks first if the corpus grows to 6,000 articles?**
-The in-memory BM25 index, which is rebuilt from source documents per process.
-Chroma scales; a full re-tokenisation of the corpus does not. The calibrated
-distance threshold would also need re-deriving, since it was fitted to this
-corpus's distance distribution.
+Run on 2026-10-11: all four pass — 30, 76, 87 and 22 checks, 0 failures,
+0 skips. None of them writes to `traces/traces.jsonl` or any `week*/` artefact.
 
 ---
 
-## 8. Fix these before submitting
+## 8. Known limitations and troubleshooting
 
-Three repo issues found while assembling this document. None affect the results
-— all three affect whether a reviewer can reproduce them.
+- **Week 6 has no agreement number yet.** The blind labels are a human step
+  (§4 step 6). The tool refuses to run the judge before they are committed,
+  and this guide refuses to quote a number that does not exist.
+- **Week 5 prediction is run but not scored.** The 20 sampled traces need
+  your mode-1 labels before `score` can evaluate the committed criteria.
+- **The 0.5B chat model** answers 62.5% of known-answer questions correctly
+  and sometimes refuses (`ungrounded_answer`) with the right chunks in
+  context. Retrieval and generation are scored separately, so this is
+  attributed to generation; it is the stated highest-value next change.
+- **The agent loses by a lot** because it is a 1.5B model on a laptop. Say
+  so. A frontier model would pass more tickets; it would not change the
+  25× token cost of a loop over a task whose steps are known in advance.
+- **Latency is noisy on this machine** (the Week 8 README documents two
+  discarded, confounded runs). Tokens and cost are deterministic under greedy
+  decoding; latency is reported but not leaned on.
+- **Postgres will not start** → the locale line in §3. **`pg_isready` says no
+  response** → the cluster is down; the UI's `/api/health` shows
+  `store_reachable: false`.
+- **A button says "another run is in progress"** → one model-backed action at
+  a time; wait for the header chip to clear. The Week 7 live agent is clamped
+  to the race ceilings (8 laps / 8000 tokens / $0.01 / 300 s).
+- **First click is slow** → model load; warm up before the demo (§3).
+- **Langfuse** is optional; with keys in `.env` every chat answer, ticket
+  draft and eval score also appears there. `RAG_LANGFUSE=0` to turn it off.
 
-1. **`results.md` no longer contains Week 3.** The Week 4 report overwrote it.
-   Week 3's write-up is intact in commit `48e93d7` and recoverable with
-   `git show 48e93d7:rag-week3/results.md`. Both weeks are graded on
-   `results.md`, so restore Week 3 and append Week 4 as a second part — or split
-   into `results-week3.md` and `results-week4.md`.
-2. **`requirements.txt` is missing every ML dependency.**
-   `sentence-transformers`, `transformers`, `torch` and `rank_bm25` are all
-   imported but none are listed. A fresh clone cannot run `ingest`. Regenerate
-   with `pip freeze` from the working venv.
-3. **README still describes Week 3 only.** It documents `ingest / ask / search /
-   demo` but not `hybrid-search`, `inspect`, `failure-report`,
-   `evaluate-hybrid` or `ui`. A short Week 4 section with the before/after
-   numbers makes the repo readable without opening a source file.
+---
 
-Latency *was* re-run this way in commit `efd07ba` (warm-up discarded, arms
-interleaved): hybrid came out 0.46 ms slower, inside noise, and the shipping
-decision did not change. The 2026-10-11 label audit then corrected four gold
-labels and re-ran the same experiment; `results.md` now carries both the
-corrected numbers and the history of the latency measurements.
+## 9. Pre-demo checklist
+
+1. `pg_isready -p 5433` → accepting connections.
+2. `python main.py status` → 7 documents, `markdown 138 chunks (default)`.
+3. `python tests/test_weeks6_9.py` → All checks passed.
+4. `python main.py ui` → http://localhost:8000 opens; `/api/health` shows `"ok": true`.
+5. Ask one question in Chat (warms the 0.5B generator, embeddings, reranker).
+6. *Agent vs workflow → Run live* → run the workflow on CD-7007 once (warms the 1.5B model).
+7. *MCP servers → Discovery* → **Run tools/list now** → 4 tools.
+8. Have `week7/race_summary.csv`, `week8/regression.csv`, `week9/risk_note.md` open in a terminal as backup.
+9. Decide in advance what you say about Week 6 and the Week 5 score: the honest state, not a number.
+
+### Live-demo run order (short form)
+
+Chat (answer → trap → ambiguous) → Golden set (Run evaluation) → Error
+analysis (prediction) → Judge validation (assertions run, protocol state) →
+Agent vs workflow (four numbers → budgets → live workflow → live 2-lap agent) →
+Trajectory eval (gap → mitigation → regression → rescore) → MCP servers
+(discovery live → zero diff → wire live → error → risk) → Reports.

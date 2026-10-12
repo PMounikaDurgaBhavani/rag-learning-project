@@ -1,0 +1,45 @@
+{
+  "ran_at": "2026-10-11T17:43:42+00:00",
+  "source": "ui",
+  "system": "workflow",
+  "ticket_id": "CD-7007",
+  "pass": true,
+  "reason": "ok",
+  "run": {
+    "system": "workflow",
+    "ticket_id": "CD-7007",
+    "result": {
+      "ticket_id": "CD-7007",
+      "decision": "escalated",
+      "refund_amount": null,
+      "tier": "standard",
+      "reply": "The ticket CD-7007 is being escalated due to missing order information and no policy details provided."
+    },
+    "terminated_by": null,
+    "latency_ms": 6466.8,
+    "tokens": 164,
+    "cost_usd": 3.4949999999999996e-05,
+    "meter": {
+      "steps": 3,
+      "model_calls": 1,
+      "input_tokens": 141,
+      "output_tokens": 23,
+      "tool_calls": 3,
+      "tool_errors": 1,
+      "calls_by_tool": {
+        "find_ticket": 1,
+        "get_order": 1,
+        "lookup_refund_policy": 1
+      }
+    },
+    "budgets": null,
+    "prompt_version": "workflow-v1.0",
+    "log": [
+      "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7007\"}) -> {\"ticket_id\": \"CD-7007\", \"customer_id\": \"CUS-207\", \"order_id\": \"ORD-5099\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"Refund for order ORD-5099 please, i",
+      "[workflow] step 2: get_order({\"order_id\": \"ORD-5099\"}) -> {\"error\": \"order_not_found\", \"order_id\": \"ORD-5099\", \"order_status\": \"missing\"}",
+      "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"missing\"}) -> {\"rule\": \"escalate_order_not_found\", \"window_days\": null, \"escalate\": true, \"explanation\": \"Without an order the refund cannot be assessed; escalate to a human ",
+      "[workflow] decision=escalated amount=None (escalate_order_not_found)",
+      "[workflow] reply call: in=141 out=23 6232ms"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "ran_at": "2026-10-12T07:40:01+00:00",
+  "source": "ui",
+  "system": "workflow",
+  "ticket_id": "CD-7006",
+  "pass": true,
+  "reason": "ok",
+  "run": {
+    "system": "workflow",
+    "ticket_id": "CD-7006",
+    "result": {
+      "ticket_id": "CD-7006",
+      "decision": "refund_approved",
+      "refund_amount": 89.0,
+      "tier": "standard",
+      "reply": "The refund for your order on ticket ID CD-7006, which was charged twice and now has an order status of duplicate, will be fully approved at $89.00."
+    },
+    "terminated_by": null,
+    "latency_ms": 17206.8,
+    "tokens": 185,
+    "cost_usd": 4.62e-05,
+    "meter": {
+      "steps": 3,
+      "model_calls": 1,
+      "input_tokens": 144,
+      "output_tokens": 41,
+      "tool_calls": 3,
+      "tool_errors": 0,
+      "calls_by_tool": {
+        "find_ticket": 1,
+        "get_order": 1,
+        "lookup_refund_policy": 1
+      }
+    },
+    "budgets": null,
+    "prompt_version": "workflow-v1.0",
+    "log": [
+      "[workflow] step 1: find_ticket({\"ticket_id\": \"CD-7006\"}) -> {\"ticket_id\": \"CD-7006\", \"customer_id\": \"CUS-206\", \"order_id\": \"ORD-5006\", \"tier\": \"standard\", \"status\": \"open\", \"message\": \"You charged me twice for the same i",
+      "[workflow] step 2: get_order({\"order_id\": \"ORD-5006\"}) -> {\"order_id\": \"ORD-5006\", \"customer_id\": \"CUS-206\", \"amount\": 89.0, \"charge_date\": \"2026-03-05\", \"days_since_charge\": 200, \"order_status\": \"duplicate\"}",
+      "[workflow] step 3: lookup_refund_policy({\"tier\": \"standard\", \"order_status\": \"duplicate\"}) -> {\"rule\": \"refund_full_any_age\", \"window_days\": null, \"escalate\": false, \"explanation\": \"A duplicate charge is refunded in full regardless of age.\"}",
+      "[workflow] decision=refund_approved amount=89.0 (refund_full_any_age)",
+      "[workflow] reply call: in=144 out=41 16799ms"
+    ]
+  }
+}

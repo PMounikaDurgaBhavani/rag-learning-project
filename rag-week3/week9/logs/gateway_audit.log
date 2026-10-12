@@ -4,3 +4,21 @@
 {"at": "2026-10-07T05:23:51+00:00", "caller": "handover-bot", "tool": "resources/read tickets://TCK-4471/escalations", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
 {"at": "2026-10-07T05:23:58+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
 {"at": "2026-10-07T05:23:58+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "deny", "is_error": true}
+{"at": "2026-10-12T14:24:17+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:23+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:25+00:00", "caller": "handover-bot", "tool": "get_article", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": true}
+{"at": "2026-10-12T14:24:25+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "deny", "is_error": true}
+{"at": "2026-10-12T14:24:25+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "TCK-4471", "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:30+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:32+00:00", "caller": "handover-bot", "tool": "get_article", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:32+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "HC-003", "decision": "deny", "is_error": true}
+{"at": "2026-10-12T14:24:32+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "HC-003", "decision": "allow", "is_error": true}
+{"at": "2026-10-12T14:24:37+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:39+00:00", "caller": "handover-bot", "tool": "get_article", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:39+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "HC-008", "decision": "deny", "is_error": true}
+{"at": "2026-10-12T14:24:39+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "HC-008", "decision": "allow", "is_error": true}
+{"at": "2026-10-12T14:24:44+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}
+{"at": "2026-10-12T14:24:46+00:00", "caller": "handover-bot", "tool": "get_article", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": true}
+{"at": "2026-10-12T14:24:46+00:00", "caller": "handover-bot", "tool": "get_escalation_history", "server": "ticket-history", "ticket_id": "TCK-9999", "decision": "deny", "is_error": true}
+{"at": "2026-10-12T14:24:46+00:00", "caller": "handover-bot", "tool": "lookup_ticket", "server": "ticket-history", "ticket_id": "TCK-9999", "decision": "allow", "is_error": true}
+{"at": "2026-10-12T14:24:52+00:00", "caller": "handover-bot", "tool": "search_kb", "server": "clouddesk-kb", "ticket_id": null, "decision": "allow", "is_error": false}

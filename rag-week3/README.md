@@ -1,10 +1,34 @@
-# CloudDesk Help Centre RAG — Week 3, Module 2
+# CloudDesk Help Centre RAG — Weeks 3–9
 
-A retrieval-augmented generation application over 6 mock help-centre
+A retrieval-augmented generation application over mock help-centre
 articles, built to **measure** retrieval quality rather than just
-produce answers.
+produce answers — and, from Week 6 on, the ticket-reply agent built on the
+same stack: judge validation, agent-vs-workflow race, trajectory eval, and
+MCP servers.
 
-Full evaluation write-up: **[results.md](results.md)**
+**Live demo of every week: [DEMO_GUIDE.md](DEMO_GUIDE.md)** — start the
+app, which screen to open, what to click, what to say.
+
+Week 4 evaluation write-up: **[results.md](results.md)**.
+Per-week notes: [week5/](week5/README.md) · [week6/](week6/README.md) ·
+[week7/](week7/README.md) · [week8/](week8/README.md) · [week9/](week9/README.md).
+
+## The one app
+
+```bash
+LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 pg_ctl -D ~/pgdata/clouddesk -o "-p 5433" -l ~/pgdata/clouddesk/server.log start
+source venv/bin/activate
+python main.py ui            # http://localhost:8000
+```
+
+Sidebar: **Chat** (the real RAG pipeline, Weeks 3–5) · Library · Retrieval
+inspector · Golden set (Week 4) · Error analysis (Week 5) · Judge validation
+(Week 6) · Agent vs workflow (Week 7) · Trajectory eval (Week 8) · MCP servers
+(Week 9) · Reports & demo. Every number in those views is read from the
+`week*/` and `evaluation/` artefacts, and every button runs the real code.
+
+Tests (no model): `python tests/test_pipeline.py`, `python tests/test_week5_prediction.py`,
+`python tests/test_weeks6_9.py`. With the model: `python tests/test_rag_live.py`.
 
 ---
 

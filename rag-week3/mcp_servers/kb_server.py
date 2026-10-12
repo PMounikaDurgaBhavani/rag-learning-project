@@ -43,10 +43,17 @@ def _documents():
 @server.tool()
 def search_kb(query: str, top_k: int = 3) -> list[dict]:
     """Search the CloudDesk help-centre articles by keyword. Returns the best
-    matching passages with their article_id, product area and section."""
+    matching passages with their article_id, product area and section, or an
+    empty list when no passage shares a meaningful word with the query."""
     with _quiet():
-        from bm25_retriever import retrieve_bm25
+        from bm25_retriever import retrieve_bm25, tokenize
+        from grounding import STOPWORDS
         chunks = retrieve_bm25(query, top_k=max(1, min(int(top_k), 5)))
+    # BM25 always ranks something first, even when the only overlap is
+    # "what" and "is" ("what is react" -> HC-002). A passage that shares no
+    # content word with the query is not a match, whatever its score.
+    terms = {t for t in tokenize(query) if t not in STOPWORDS}
+    chunks = [c for c in chunks if terms.intersection(tokenize(c.get("content") or ""))]
     return [{"article_id": c.get("article_id"), "product_area": c.get("product_area"),
              "section": c.get("section"), "text": (c.get("content") or "")[:600]}
             for c in chunks]

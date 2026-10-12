@@ -13,13 +13,28 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/week5/rerun       re-ask the 20 sampled questions on the current build
   GET  /api/week6             judge-validation artefacts (cases, runs, agreement, protocol)
   POST /api/week6/run         the one eval command over the frozen replies
+  GET  /api/week7             agent vs workflow race: the 4 numbers, per-ticket transcripts, budgets
+  POST /api/week7/workflow    run the fixed workflow on one race ticket (live, 1.5B model)
+  POST /api/week7/agent       run the agent loop on one race ticket under four budgets (live)
   GET  /api/week8             trajectory eval: sequences, numbers, gap, mitigation, regression
+  POST /api/week8/rescore     rescore the stored trajectory runs in memory (no model, no writes)
   GET  /api/week9             MCP: discovery, diffs, annotated wire, transcripts, risk, gateway
   POST /api/week9/discover    live initialize + tools/list (no model) for one config
+  POST /api/week9/wire        live initialize -> tools/list -> tools/call against server two (no model)
+  POST /api/week9/chat        customer chat query via MCP servers with server attribution
+  GET  /api/reports           the markdown deliverables (DEMO_GUIDE, READMEs, results) for the UI
+  GET  /api/health            store reachable, index counts, build, what is running
+  GET  /api/runs              which long-running action holds the model lock right now
   GET  /api/golden            the 12 golden questions
   POST /api/golden/evaluate   hit-rate@k + p50 latency, baseline vs one change
   POST /api/reindex           rebuild every index
   POST /api/documents/delete  remove a document and re-index
+
+Concurrency: the server is threaded so the evidence views stay readable
+while a model-backed action runs, but every action that touches a model or
+the index takes RUN_LOCK without waiting. A second expensive request while
+one is in flight gets 409 and the name of the run in progress, instead of
+quietly queueing a duplicate.
 """
 
 import base64
@@ -28,9 +43,11 @@ import json
 import os
 import re
 import sys
+import threading
 import traceback
 import shutil
 import tempfile
+import time
 import urllib.parse
 import webbrowser
 from datetime import datetime
@@ -259,6 +276,172 @@ def week9_module():
     return week9_ui
 
 
+def week7_module():
+    """experiments/week7_ui.py reads week7/ and runs one ticket live for the UI."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week7_ui
+    return week7_ui
+
+
+ROOT_DIR = Path(SRC_DIR).parent
+
+# The markdown deliverables the Reports view renders. Paths are relative to
+# the repo root; the UI shows the path next to each document so a reviewer
+# can open the same file.
+REPORT_FILES = [
+    ("demo_guide", "Demo guide (Weeks 3–9)", "DEMO_GUIDE.md"),
+    ("readme", "README", "README.md"),
+    ("results", "Week 4 report (results.md)", "results.md"),
+    ("demo_guide_w34", "Weeks 3–4 deep-dive guide", "DEMO_GUIDE_WEEKS_3_4.md"),
+    ("week5", "Week 5 README", "week5/README.md"),
+    ("week6", "Week 6 README", "week6/README.md"),
+    ("week6_demo", "Week 6 demo notes", "week6/DEMO.md"),
+    ("week7", "Week 7 README", "week7/README.md"),
+    ("week7_demo", "Week 7 demo notes", "week7/DEMO.md"),
+    ("week8", "Week 8 README", "week8/README.md"),
+    ("week8_demo", "Week 8 demo notes", "week8/DEMO.md"),
+    ("week9", "Week 9 README", "week9/README.md"),
+    ("week9_demo", "Week 9 demo notes", "week9/DEMO.md"),
+    ("database", "Database notes", "DATABASE.md"),
+    ("setup_db", "Postgres setup", "SETUP_DB.md"),
+]
+
+
+def reports():
+    docs = []
+    for key, title, rel in REPORT_FILES:
+        path = ROOT_DIR / rel
+        docs.append({"key": key, "title": title, "path": rel,
+                     "exists": path.exists(),
+                     "text": path.read_text(encoding="utf-8") if path.exists() else None,
+                     "modified": datetime.fromtimestamp(path.stat().st_mtime).isoformat(timespec="seconds")
+                     if path.exists() else None})
+    return {"docs": docs}
+
+
+def week8_rescore():
+    """Rescore every stored trajectory run from its raw transcripts, in memory.
+
+    Scoring never needs the model (week8_trajectory_eval separates `run` from
+    `report`), so this is cheap. Nothing is written: the result is compared
+    against week8/report.json so the UI can say whether the committed numbers
+    reproduce from the raw runs on this machine.
+    """
+    w8 = week8_module()
+    stored = json.loads(w8.REPORT_JSON.read_text(encoding="utf-8")) if w8.REPORT_JSON.exists() else {}
+    out = {"rescored_at": datetime.now().isoformat(timespec="seconds"), "configs": {}}
+    for config in list(w8.CONFIGS) + w8.HISTORICAL:
+        path, scored = w8.scored_config(config)
+        if not scored:
+            continue
+        summary = w8.summarise(scored)
+        was = (stored.get("configs") or {}).get(config, {}).get("summary") or {}
+        keys = ["outcome_pass_rate_pct", "trajectory_pass_rate_pct", "gap_pp",
+                "tool_choice_accuracy_pct", "argument_validity_pct", "step_efficiency_mean",
+                "cost_p50_usd", "cost_max_usd"]
+        out["configs"][config] = {
+            "run": path.relative_to(w8.ROOT).as_posix(),
+            "summary": {k: summary.get(k) for k in keys},
+            "stored": {k: was.get(k) for k in keys},
+            "matches_report": all(summary.get(k) == was.get(k) for k in keys),
+            "tickets": [{"ticket_id": s["ticket_id"], "outcome_pass": s["outcome_pass"],
+                         "trajectory_pass": s["trajectory_pass"], "path": s["path"]} for s in scored],
+        }
+    out["all_match"] = all(c["matches_report"] for c in out["configs"].values()) if out["configs"] else False
+    return out
+
+
+def week9_wire_capture():
+    """initialize -> initialized -> tools/list -> tools/call against server two, live.
+
+    The same four steps week9/wire.json annotates, replayed now over stdio
+    with the host's own client; the raw messages come back unformatted and
+    nothing is written to week9/. No model runs: the tools/call is fixed.
+    """
+    from mcp_client import MCPConnection, load_config
+    w9 = week9_module()
+    spec = load_config(w9.W9 / "mcp_config.json")["ticket-history"]
+    wire = []
+    connection = MCPConnection("ticket-history", spec, root=str(w9.ROOT), wire=wire)
+    try:
+        init = connection.connect()
+        tools = connection.list_tools()
+        result = connection.call_tool("lookup_ticket", {"ticket_id": "TCK-4471"})
+    finally:
+        connection.close()
+    return {"server": "ticket-history", "transport": connection.transport,
+            "protocol_version": init.get("protocolVersion"), "server_info": init.get("serverInfo"),
+            "tool_count": len(tools), "tools": sorted(t["name"] for t in tools),
+            "call": {"tool": "lookup_ticket", "arguments": {"ticket_id": "TCK-4471"},
+                     "is_error": bool(result.get("isError")),
+                     "text": "\n".join(c.get("text", "") for c in result.get("content", []))},
+            "messages": wire,
+            "model_call": "none — the model only ever runs in the host between tools/list and "
+                          "tools/call; this capture fixed the call so no model was needed"}
+
+
+# ---------------------------------------------------------------------------
+# one expensive action at a time
+# ---------------------------------------------------------------------------
+
+RUN_LOCK = threading.Lock()
+RUN_STATE = {"name": None, "started": None}
+
+
+class Busy(Exception):
+    pass
+
+
+class exclusive:
+    """Hold the model/index lock for one action, or refuse at once with 409."""
+
+    def __init__(self, name):
+        self.name = name
+
+    def __enter__(self):
+        if not RUN_LOCK.acquire(blocking=False):
+            raise Busy(f"another run is in progress: {RUN_STATE['name']} "
+                       f"(started {RUN_STATE['started']}). Wait for it to finish.")
+        RUN_STATE.update(name=self.name, started=datetime.now().isoformat(timespec="seconds"))
+        return self
+
+    def __exit__(self, *exc):
+        RUN_STATE.update(name=None, started=None)
+        RUN_LOCK.release()
+        return False
+
+
+def runs_status():
+    return {"running": RUN_STATE["name"], "started": RUN_STATE["started"]}
+
+
+def health():
+    import tracing
+    reachable = False
+    try:
+        reachable = db.server_reachable(db.DATABASE_URL)
+    except Exception:
+        reachable = False
+    return {
+        "ok": reachable,
+        "store": db.safe_url(db.DATABASE_URL),
+        "store_reachable": reachable,
+        "indexes": index_status() if reachable else {},
+        "build": tracing.app_version(),
+        "models": {
+            "embedding": "sentence-transformers/all-MiniLM-L6-v2",
+            "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+            "chat_generator": os.environ.get("RAG_LLM", "Qwen/Qwen2.5-0.5B-Instruct"),
+            "ticket_agent": os.environ.get("RAG_AGENT_LLM", "Qwen/Qwen2.5-1.5B-Instruct"),
+            "judge": os.environ.get("RAG_JUDGE_MODEL", "HuggingFaceTB/SmolLM2-1.7B-Instruct"),
+        },
+        "tracing": {"jsonl": tracing.TRACING_ENABLED, "langfuse": tracing.langfuse_enabled()},
+        **runs_status(),
+    }
+
+
 def run_retrieval(query, active_query, top_k, strategy, where):
     dense = retrieve_chunks(active_query, top_k=top_k, strategy=strategy, where=where)
     bm25 = retrieve_bm25(active_query, top_k=top_k, strategy=strategy, where=where)
@@ -319,10 +502,18 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week5_artefacts())
             elif parsed.path == "/api/week6":
                 self._send_json(week6_module().ui_artefacts())
+            elif parsed.path == "/api/week7":
+                self._send_json(week7_module().ui_artefacts())
             elif parsed.path == "/api/week8":
                 self._send_json(week8_module().ui_artefacts())
             elif parsed.path == "/api/week9":
                 self._send_json(week9_module().ui_artefacts())
+            elif parsed.path == "/api/reports":
+                self._send_json(reports())
+            elif parsed.path == "/api/health":
+                self._send_json(health())
+            elif parsed.path == "/api/runs":
+                self._send_json(runs_status())
             elif parsed.path == "/api/golden":
                 self._send_json({
                     "questions": golden_eval.load_golden_set(),
@@ -351,30 +542,65 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
 
         try:
             if parsed.path == "/api/upload":
-                self._handle_upload(payload)
+                with exclusive("upload + re-index"):
+                    self._handle_upload(payload)
             elif parsed.path == "/api/trace":
                 self._handle_trace(payload)
             elif parsed.path == "/api/week6/run":
                 judge = "auto" if payload.get("judge") == "auto" else "none"
-                self._send_json({"status": "ok", **week6_module().ui_run(judge)})
+                with exclusive("week 6 eval" + (" + judge" if judge == "auto" else " (assertions)")):
+                    self._send_json({"status": "ok", **week6_module().ui_run(judge)})
+            elif parsed.path == "/api/week7/workflow":
+                with exclusive(f"week 7 workflow on {payload.get('ticket_id')}"):
+                    self._send_json({"status": "ok",
+                                     **week7_module().run_workflow(payload.get("ticket_id"))})
+            elif parsed.path == "/api/week7/agent":
+                with exclusive(f"week 7 agent on {payload.get('ticket_id')}"):
+                    self._send_json({"status": "ok", **week7_module().run_agent(
+                        payload.get("ticket_id"),
+                        max_iterations=payload.get("max_iterations", 4),
+                        max_tokens=payload.get("max_tokens", 4000),
+                        max_cost_usd=payload.get("max_cost_usd", 0.01),
+                        max_wall_seconds=payload.get("max_wall_seconds", 120.0),
+                        evidence_guard=payload.get("evidence_guard", True))})
+            elif parsed.path == "/api/week8/rescore":
+                self._send_json({"status": "ok", **week8_rescore()})
             elif parsed.path == "/api/week9/discover":
                 which = payload.get("which") if payload.get("which") in (
                     "server_one", "server_two", "gateway") else "server_two"
-                self._send_json({"status": "ok", **week9_module().discover(which)})
+                with exclusive(f"week 9 discovery ({which})"):
+                    self._send_json({"status": "ok", **week9_module().discover(which)})
+            elif parsed.path == "/api/week9/wire":
+                with exclusive("week 9 wire capture"):
+                    self._send_json({"status": "ok", **week9_wire_capture()})
+            elif parsed.path == "/api/week9/chat":
+                from mcp_chat import handle_mcp_chat
+                which = payload.get("which", "server_two")
+                query = payload.get("query", "")
+                top_k = payload.get("top_k", 3)
+                with exclusive("week 9 mcp customer chat"):
+                    self._send_json(handle_mcp_chat(query=query, which_config=which, top_k=top_k))
             elif parsed.path == "/api/week5/rerun":
                 from week5_rerun import rerun_sample
-                self._send_json({"status": "ok",
-                                 **rerun_sample(retrieval_mode=payload.get("mode") or None)})
+                with exclusive("week 5 rerun of the 20 sampled questions"):
+                    self._send_json({"status": "ok",
+                                     **rerun_sample(retrieval_mode=payload.get("mode") or None)})
             elif parsed.path == "/api/golden/evaluate":
-                self._handle_golden(payload)
+                with exclusive("golden set evaluation"):
+                    self._handle_golden(payload)
             elif parsed.path == "/api/reindex":
-                self._send_json({"status": "ok", "chunks": rebuild_indexes()})
+                with exclusive("re-index"):
+                    self._send_json({"status": "ok", "chunks": rebuild_indexes()})
             elif parsed.path == "/api/documents/delete":
-                self._handle_delete(payload)
+                with exclusive("delete + re-index"):
+                    self._handle_delete(payload)
             elif parsed.path in ("/api/ask", "/api/inspect"):
-                self._handle_query(parsed.path, payload)
+                with exclusive("chat question"):
+                    self._handle_query(parsed.path, payload)
             else:
                 self.send_error(404, "Unknown API route")
+        except Busy as e:
+            self._send_json({"status": "error", "error": str(e), **runs_status()}, status=409)
         except ExtractionError as e:
             self._send_json({"status": "error", "error": str(e)}, status=415)
         except ValueError as e:
@@ -508,9 +734,14 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
             self._send_json(generation)
 
 
+class StudioServer(http.server.ThreadingHTTPServer):
+    """Threaded so the evidence views answer while a model run holds RUN_LOCK."""
+    allow_reuse_address = True
+    daemon_threads = True
+
+
 def run_server(port: int = 8000, open_browser: bool = True):
-    http.server.HTTPServer.allow_reuse_address = True
-    httpd = http.server.HTTPServer(("", port), RAGRequestHandler)
+    httpd = StudioServer(("", port), RAGRequestHandler)
     url = f"http://localhost:{port}"
 
     print("=" * 72)

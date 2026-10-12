@@ -93,6 +93,23 @@ Same failing call, `get_article("HC-8")`, replayed in every run (`error_before_a
 - **The denial reaches the model** as `isError: true`: "Permission denied: caller 'handover-bot' is not allowed to call get_escalation_history (token scope). This is not an outage, and retrying will not help. You can still use: get_article, lookup_ticket, search_kb…". The model did not retry the denied call, and it told the user it lacks permission. It also said "try again later", which the message says will not help, and it did not use the offered `lookup_ticket`.
 - **Tool vs resource, observed:** with the escalation history attached as a resource (`--attach tickets://TCK-4471/escalations`), the model still spent a call on the denied `get_escalation_history` before answering from the attached context. A tool the model can see, it calls. The stricter fix is to filter denied tools out of `tools/list`, so the model never sees them; this gateway denies at call time so the denial could be shown reaching the model.
 
+## 6. Two Roles in Week 9: Admin and User
+
+The Week 9 interactive environment supports two distinct operating roles:
+
+1. **Admin Role (All Weeks Implementation & Architecture):**
+   - Displays the **All Weeks Implementation Matrix**: an executive retrospective spanning Weeks 1 through 9 (pgvector store, hybrid BM25 + dense RRF, error taxonomy, LLM judge validation, agent vs workflow race, trajectory eval, and MCP architecture).
+   - Direct links to launch and test any week's live environment.
+   - Deep-dive access to MCP dynamic discovery (`tools/list`), config-only swap diffs, JSON-RPC wire inspection, risk note, and gateway audit logs.
+
+2. **User Role (Customer Support Chatbot with MCP Server Attribution):**
+   - Customer-facing support AI chatbot answering any questions from uploaded documents, help-centre articles, or support tickets.
+   - Built-in document uploader allowing users to upload new documents (PDF, TXT, MD, CSV) directly from chat, instantly indexed into Postgres.
+   - **MCP Server Attribution:** Every answer explicitly reveals which MCP server was used:
+     - `clouddesk-kb`: Knowledge Base & uploaded document search (`search_kb`, `get_article`)
+     - `ticket-history`: Support Ops ticket store (`lookup_ticket`, `get_escalation_history`)
+     - Includes tool names, latency, grounding citations, and an expandable JSON-RPC 2.0 wire drawer.
+
 ## Topic map
 
 | topic | here |
@@ -103,3 +120,5 @@ Same failing call, `get_article("HC-8")`, replayed in every run (`error_before_a
 | Tools, resources, prompts | tools model-invoked (`tools/call`); resources app-attached (`--attach`, `resources/read`); prompts user-picked (`--prompt`, `prompts/get`) |
 | Transports | stdio for all runs; streamable HTTP tested against the ticket server (`--http 8931`) with the same client |
 | JSON-RPC handshake | `wire.json`: `initialize` → result → `notifications/initialized` → `tools/list` → `tools/call` |
+| Roles (Admin & User) | Admin mode for full 9-week retrospective; User mode for customer chatbot with live MCP server attribution |
+
