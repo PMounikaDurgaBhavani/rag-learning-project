@@ -168,6 +168,45 @@ check(
     supporting == []
 )
 
+# Week 5 regression (trace 358d8c7920fd4040, seed-20260915 sample): the user
+# asked "...according to HC-006 troubleshooting?", the model answered
+# correctly and repeated the id, and the grounding gate refused it because
+# chunk text never contains its own article id ("006" flagged, coverage 0.538).
+def real_chunk(chunk_id):
+    for c in markdown_chunks:
+        if c["metadata"]["chunk_id"] == chunk_id:
+            return {"chunk_id": chunk_id, "article_id": c["metadata"]["article_id"],
+                    "content": c["content"]}
+    return None
+
+
+upload_row = real_chunk("HC-006-markdown-11")
+week5_answer = ("The Upload File button is unavailable according to HC-006 "
+                "troubleshooting because users lack required permission.")
+check("the HC-006 upload-button row is chunk HC-006-markdown-11",
+      upload_row is not None and "lacks required permission" in upload_row["content"])
+if upload_row:
+    supporting, scores = verify_answer(week5_answer, [upload_row])
+    check("an answer naming the chunk's own article id is attributed to it (358d8c7920fd4040)",
+          [c["chunk_id"] for c, _ in supporting] == ["HC-006-markdown-11"], scores)
+    supporting, scores = verify_answer(week5_answer.replace("HC-006", "HC-003"), [upload_row])
+    check("a DIFFERENT article id is still an unsupported number",
+          supporting == [] and "003" in scores[0]["unsupported_numbers"], scores)
+
+# M4 must still be caught: trace 076d42c7a5674fb4 pasted a source header
+# into the answer. Its numbers are not the chunk's own id and stay flagged.
+recovery = real_chunk("HC-002-markdown-8")
+leaked = ("To recover a locked account, follow these steps:\n\n[2] (article HC-002, "
+          "file article_02.md, updated 2026-08-05)\n\n1. Stop attempting to log in.\n"
+          "2. Wait 15 minutes.\n3. Make sure you are using the correct email address.\n"
+          "4. Verify that you are using the latest password.\n5. Try logging in again.")
+if recovery:
+    supporting, scores = verify_answer(leaked, [recovery])
+    check("a leaked source header is still refused (076d42c7a5674fb4, M4)",
+          supporting == [] and {"2026", "08", "05"} <= set(scores[0]["unsupported_numbers"]), scores)
+else:
+    check("HC-002-markdown-8 exists", False)
+
 
 print("\nMetrics")
 

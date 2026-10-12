@@ -79,7 +79,23 @@ def unsupported_numbers(answer, chunk_text):
     ]
 
 
+def without_own_article_id(answer, article_id):
+    """Drop mentions of the chunk's OWN article id before scoring it.
+
+    A chunk's text never contains its article id (that lives in metadata),
+    so an answer that repeats the "HC-006" the user asked about lost two
+    content words and had "006" flagged as an unsupported number - a correct
+    answer refused as ungrounded (week5 trace 358d8c7920fd4040). Only the
+    chunk's own id is dropped: a different article id, or numbers from a
+    leaked source header, are still scored and still flagged.
+    """
+    if not article_id:
+        return answer
+    return re.sub(rf"\b{re.escape(article_id)}\b", " ", answer or "", flags=re.I)
+
+
 def score_chunk(answer, chunk):
+    answer = without_own_article_id(answer, chunk.get("article_id"))
     return {
         "chunk_id": chunk["chunk_id"],
         "coverage": round(coverage(answer, chunk["content"]), 3),
