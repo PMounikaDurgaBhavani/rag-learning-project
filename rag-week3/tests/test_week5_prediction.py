@@ -408,6 +408,14 @@ with tempfile.TemporaryDirectory() as tmp:
     rc = wp.cmd_score(sample_args())
     check("cmd_score refuses invalid labels and writes no result",
           rc == 1 and not (wp.RUN_DIR / "result_20260915.json").exists())
+    notes_path.write_text(template, encoding="utf-8")
+    rc = wp.cmd_score(sample_args())
+    check("cmd_score on a blank review writes no result and exits non-zero",
+          rc == 2 and not (wp.RUN_DIR / "result_20260915.json").exists())
+    notes_path.write_text(partial, encoding="utf-8")
+    rc = wp.cmd_score(sample_args())
+    check("cmd_score on a partial review (1/20) writes no result and exits non-zero",
+          rc == 2 and not (wp.RUN_DIR / "result_20260915.json").exists())
     notes_path.write_text(filled, encoding="utf-8")
     rc = wp.cmd_score(sample_args())
     check("cmd_score writes a result for valid labels",

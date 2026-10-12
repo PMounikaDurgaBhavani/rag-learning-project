@@ -833,6 +833,27 @@ def cmd_score(args):
 
     report = score(sample, labels, golden_reference())
 
+    # An incomplete review is not a result. Counts over unlabelled traces are
+    # zeros by construction, and a result file holding them reads as "M1 = 0%"
+    # to anyone who opens it — so nothing is written and the exit is non-zero
+    # until every trace carries both an `answerable` and a `modes` line.
+    if report["unlabelled"]:
+        done = report["n"] - len(report["unlabelled"])
+        print("=" * 78)
+        print(f"WEEK 5 PREDICTION — NOT SCORED: {done}/{report['n']} traces reviewed")
+        print("=" * 78)
+        print(f"{len(report['unlabelled'])} trace(s) in {notes_path.name} still have an empty "
+              f"`answerable:` or `modes:` line:")
+        for tid in report["unlabelled"]:
+            lab = labels.get(tid, {})
+            gaps = [name for name, empty in (("answerable", not lab.get("answerable")),
+                                             ("modes", lab.get("modes") is None)) if empty]
+            print(f"   {tid}  missing: {', '.join(gaps)}")
+        print("\nNo counts are reported and no result file is written: counts over "
+              "unreviewed traces would be zeros, not measurements.")
+        print("VERDICT: none — finish the review, then run `score` again.")
+        return 2
+
     out = RUN_DIR / f"result_{args.seed}.json"
     out.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
@@ -840,11 +861,6 @@ def cmd_score(args):
     print("=" * 78)
     print(f"WEEK 5 PREDICTION — scored over {report['n']} traces, seed {report['seed']}")
     print("=" * 78)
-    if report["unlabelled"]:
-        print(f"UNLABELLED: {len(report['unlabelled'])} trace(s) have an empty modes/answerable "
-              f"line — no verdict until every trace is coded:")
-        for tid in report["unlabelled"]:
-            print(f"   {tid}")
     print(f"M1            : {c['m1_count']}/{report['n']} ({c['m1_pct']}%)  "
           f"baseline {c['baseline_m1_count']}/20 ({c['baseline_m1_pct']}%)  "
           f"predicted <= {c['prediction_m1_at_most']}")
