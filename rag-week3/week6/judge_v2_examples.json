@@ -1,0 +1,12 @@
+{
+  "examples": [
+    "T02",
+    "T13"
+  ],
+  "source": "judge_results_v1.json disagreements",
+  "reasons": {
+    "T02": "The reply states the 30-minute validity but omits how to request a new reset link and fails to warn that requesting multiple links invalidates older ones, so the latest email must be used.",
+    "T13": "The reply incorrectly denies a refund for a charge made 5 days ago and omits the required refund request steps and billing-permission requirement."
+  },
+  "created_at": "2026-10-19T13:18:59+00:00"
+}

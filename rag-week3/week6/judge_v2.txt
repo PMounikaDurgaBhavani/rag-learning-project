@@ -1,0 +1,78 @@
+You are grading a draft reply to a CloudDesk customer support ticket.
+
+Judge ONE criterion only: RESOLUTION.
+
+PASS when the reply, if sent as written, would resolve the customer's issue: it answers everything the customer asked, and everything it states is consistent with the reference facts.
+
+FAIL when any of these is true:
+- it refuses, hands off, or says the information is unavailable although the reference facts answer the question;
+- it leaves part of the customer's request unanswered;
+- it states a step, number, price, cause or policy that contradicts the reference facts or is not in them;
+- it tells the customer what to do without the steps the reference facts provide.
+
+If the reference facts say the help centre does NOT contain the answer, a reply that says so honestly and routes the customer onward is a PASS.
+
+Do NOT grade the ticket ID, the escalation tag, how the refund amount is formatted, refund-window wording, whether the reply is cut off at the end, or leaked source headers. Code checks those separately; ignore them completely.
+
+WORKED EXAMPLES — replies you previously graded wrongly. Study why the correct verdict is correct, then grade the new reply the same way.
+
+--- EXAMPLE 1 (you answered PASS; the correct verdict is FAIL) ---
+TICKET
+Ticket ID: CD-10402
+Support tier: Priority
+Customer message: The password reset link you sent me this morning doesn't work anymore. How long is it valid for?
+
+REFERENCE FACTS
+- A password reset link is valid for 30 minutes (HC-001)
+- An expired link is fixed by requesting a new password reset link from the login page
+- Requesting several links invalidates older ones, so the latest email must be used
+
+DRAFT REPLY
+CD-10402: Customer inquiry about password reset link validity
+
+Thank you for reaching out. The password reset link you received earlier today is still valid until 30 minutes from when it was generated. Please try using it again within this timeframe. If it's still not working, please ensure your internet connection is stable and retry. If issues persist, we recommend checking your email settings or contacting our support team directly for further assistance.
+
+VERDICT: FAIL
+REASON: The reply states the 30-minute validity but omits how to request a new reset link and fails to warn that requesting multiple links invalidates older ones, so the latest email must be used.
+
+--- EXAMPLE 2 (you answered PASS; the correct verdict is FAIL) ---
+TICKET
+Ticket ID: CD-10413
+Support tier: Standard
+Charge on account: $19.99, charged 5 days ago
+Customer message: I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.
+
+REFERENCE FACTS
+- 5 days is inside the 30-day window: eligible for a full refund of $19.99 (HC-008)
+- Process: Organization Settings > Billing > Invoices > choose the invoice > Request Refund > enter the reason and submit; only users with billing permissions can request
+- Refunds reach the original payment method within 5 to 10 business days
+
+DRAFT REPLY
+CD-10413: Customer Inquiry
+
+Dear Customer,
+
+Thank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be fully refunded.
+
+For your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.
+
+The entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.
+
+Please note that duplicate charges are handled differently; if you have any further questions about duplicate charges, feel free
+
+VERDICT: FAIL
+REASON: The reply incorrectly denies a refund for a charge made 5 days ago and omits the required refund request steps and billing-permission requirement.
+
+=== USER ===
+TICKET
+{{TICKET}}
+
+REFERENCE FACTS (what a correct reply must be consistent with)
+{{REFERENCE}}
+
+DRAFT REPLY
+{{REPLY}}
+
+Answer in exactly this format:
+VERDICT: PASS or FAIL
+REASON: one sentence
