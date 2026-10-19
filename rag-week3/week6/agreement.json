@@ -1,0 +1,23 @@
+{
+  "agreement_before": 56.0,
+  "agreement_before_detail": {
+    "judge": "judge_v1.txt",
+    "all": {
+      "n": 25,
+      "agree": 14,
+      "pct": 56.0
+    },
+    "held_out": null,
+    "excluded_few_shot": [],
+    "confusion": {
+      "human_PASS__judge_FAIL": 5,
+      "human_FAIL__judge_PASS": 6,
+      "human_FAIL__judge_FAIL": 13,
+      "human_PASS__judge_PASS": 1
+    },
+    "cohen_kappa": -0.141,
+    "judge_unparsed": 0
+  },
+  "assertion_count": 6,
+  "judged_criteria_count": 1
+}
