@@ -1,0 +1,144 @@
+{
+  "criterion": "resolution (binary PASS/FAIL)",
+  "criterion_source": "week6/judge_v1.txt (system part, shown verbatim while labelling)",
+  "labeller": "PMounikaDurgaBhavani",
+  "protocol": "blind: labelled from ticket + reference facts + reply only; no judge result existed; case mode and regression flag hidden; order shuffled",
+  "replies_file": "week6/replies_25.json",
+  "replies_sha": "1fbe62b5d4021a4b",
+  "replies_commit": {
+    "commit": "b594458",
+    "committed_at": "2026-09-15T16:04:14+05:30",
+    "subject": "week6: freeze 25 replies for blind labelling"
+  },
+  "order_seed": 6,
+  "started_at": "2026-10-19T07:05:33+00:00",
+  "labels": {
+    "T08": {
+      "label": "FAIL",
+      "note": "The reply invents the 5 MB limit and supported formats, and does not confirm whether ZIP uploads are allowed. It should direct the customer to the administrator for the organization's configured limits.",
+      "labelled_at": "2026-10-19T07:07:14+00:00"
+    },
+    "T11": {
+      "label": "FAIL",
+      "note": "The reply leaves out essential password reset steps, including opening the reset email, using the link, entering and confirming a new password, and clicking Reset Password.",
+      "labelled_at": "2026-10-19T07:08:21+00:00"
+    },
+    "R04": {
+      "label": "FAIL",
+      "note": "The reply omits the Forgot Password recovery step and includes an unhelpful administrator contact placeholder instead of giving the complete recovery instructions.",
+      "labelled_at": "2026-10-19T07:08:55+00:00"
+    },
+    "T20": {
+      "label": "FAIL",
+      "note": "The reply is incomplete: it omits checking whether the organization's email server blocks CloudDesk emails and does not finish explaining that requesting multiple links invalidates older ones.",
+      "labelled_at": "2026-10-19T07:09:27+00:00"
+    },
+    "R01": {
+      "label": "PASS",
+      "note": "The reply correctly states the minimum 8-character requirement and all other required password rules.",
+      "labelled_at": "2026-10-19T07:11:25+00:00"
+    },
+    "T12": {
+      "label": "FAIL",
+      "note": "The reply omits trying a different supported file, checking whether other CloudDesk features work, and contacting the administrator if uploads still fail; it also ends before completing the troubleshooting guidance.",
+      "labelled_at": "2026-10-19T07:13:43+00:00"
+    },
+    "T14": {
+      "label": "PASS",
+      "note": "The reply lists all required steps to add and save a payment method and explains that it can be used for future billing transactions.",
+      "labelled_at": "2026-10-19T07:14:14+00:00"
+    },
+    "T17": {
+      "label": "PASS",
+      "note": "The reply honestly states that the help centre does not provide the pricing information and routes the customer to a specialist without inventing a price.",
+      "labelled_at": "2026-10-19T07:14:59+00:00"
+    },
+    "T18": {
+      "label": "FAIL",
+      "note": "The reply omits the Forgot Password recovery option and gives an unsupported administrator email address instead of simply advising the customer to contact their administrator if access remains blocked.",
+      "labelled_at": "2026-10-19T07:19:37+00:00"
+    },
+    "T06": {
+      "label": "PASS",
+      "note": "The reply correctly identifies missing upload permissions as a possible cause and directs the customer to the organization administrator to verify permissions.",
+      "labelled_at": "2026-10-19T07:20:03+00:00"
+    },
+    "T04": {
+      "label": "FAIL",
+      "note": "The reply fails to clearly state that the charge is ineligible for a refund because it is outside the 30-day window, incorrectly suggests requesting a refund through a manager, and omits how to turn off automatic renewal.",
+      "labelled_at": "2026-10-19T07:20:39+00:00"
+    },
+    "R02": {
+      "label": "FAIL",
+      "note": "The reply uses a generic hand-off instead of asking what billing help is needed or directing the customer to Organization Settings > Billing for invoices, payment methods, and payment status.",
+      "labelled_at": "2026-10-19T07:21:09+00:00"
+    },
+    "T21": {
+      "label": "FAIL",
+      "note": "The reply incorrectly says the 29-day-old charge is outside the refund window, fails to provide the refund request steps, and does not mention the 5–10 business-day processing time.",
+      "labelled_at": "2026-10-19T07:21:40+00:00"
+    },
+    "T16": {
+      "label": "FAIL",
+      "note": "The reply does not clearly state that the 76-day-old charge is ineligible for a refund and leaves the outcome ambiguous by discussing refund processing despite the charge being outside the 30-day window.",
+      "labelled_at": "2026-10-19T07:22:07+00:00"
+    },
+    "R03": {
+      "label": "FAIL",
+      "note": "The reply omits the required steps to update the expired card under Organization Settings > Billing > Payment Methods and instead gives irrelevant support-contact instructions.",
+      "labelled_at": "2026-10-19T07:22:47+00:00"
+    },
+    "T09": {
+      "label": "FAIL",
+      "note": "The reply invents a billing-information mismatch, fails to explain that the 40-day-old charge is outside the refund window, and omits how to turn off automatic renewal.",
+      "labelled_at": "2026-10-19T07:23:19+00:00"
+    },
+    "T10": {
+      "label": "FAIL",
+      "note": "The reply omits the required 15-minute wait for the account lockout, does not mention the reset link's 30-minute validity, and fails to advise checking payment status and verifying or updating the payment method.",
+      "labelled_at": "2026-10-19T07:23:47+00:00"
+    },
+    "T19": {
+      "label": "FAIL",
+      "note": "The reply directs the customer to the administrator but omits the required checks for email notifications, the registered email address, spam or junk folders, and organizational email blocking.",
+      "labelled_at": "2026-10-19T07:24:17+00:00"
+    },
+    "T05": {
+      "label": "FAIL",
+      "note": "The reply correctly states the 15-minute lockout period but omits the instruction to stop login attempts during the lock and the Forgot Password option if the password is forgotten.",
+      "labelled_at": "2026-10-19T07:24:45+00:00"
+    },
+    "T01": {
+      "label": "PASS",
+      "note": "The reply correctly lists all password requirements, including the minimum 8 characters, uppercase and lowercase letters, a number, and a password different from the previous one.",
+      "labelled_at": "2026-10-19T07:25:16+00:00"
+    },
+    "T02": {
+      "label": "FAIL",
+      "note": "The reply states the 30-minute validity but omits how to request a new reset link and fails to warn that requesting multiple links invalidates older ones, so the latest email must be used.",
+      "labelled_at": "2026-10-19T07:25:58+00:00"
+    },
+    "T07": {
+      "label": "PASS",
+      "note": "The reply correctly confirms a full $89 refund for the duplicate charge regardless of the 30-day window and states that it will return to the original payment method within 5–10 business days.",
+      "labelled_at": "2026-10-19T07:26:32+00:00"
+    },
+    "T13": {
+      "label": "FAIL",
+      "note": "The reply incorrectly denies a refund for a charge made 5 days ago and omits the required refund request steps and billing-permission requirement.",
+      "labelled_at": "2026-10-19T07:27:00+00:00"
+    },
+    "T03": {
+      "label": "FAIL",
+      "note": "The reply incorrectly denies refund eligibility for a 12-day-old charge, invents a cancellation-related restriction, and omits the correct $49 refund outcome and 5–10 business-day timeline.",
+      "labelled_at": "2026-10-19T07:27:33+00:00"
+    },
+    "T15": {
+      "label": "FAIL",
+      "note": "The reply incorrectly asserts insufficient funds as the definite cause of the failed payment and omits the recommended steps to verify or update payment information or contact the payment provider.",
+      "labelled_at": "2026-10-19T07:28:05+00:00"
+    }
+  },
+  "updated_at": "2026-10-19T07:28:05+00:00",
+  "complete": true
+}
