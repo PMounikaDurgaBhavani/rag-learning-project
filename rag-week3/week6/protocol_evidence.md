@@ -1,6 +1,6 @@
 # Week 6 — protocol evidence
 
-Generated 2026-10-20T18:05:59+00:00 by `python experiments/week6_eval.py status`.
+Generated 2026-10-20T18:08:20+00:00 by `python experiments/week6_eval.py status`.
 
 | file | what | first commit | committed at | commits | on disk matches HEAD |
 |---|---|---|---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-10-20T18:05:59+00:00 by `python experiments/week6_eval.py status`
 | `judge_results_v1.json` | judge v1 run -> agreement_before | `39fb144` | 2026-10-19T18:48:05+05:30 | 1 | yes |
 | `prediction.txt` | prediction before iterating | `39fb144` | 2026-10-19T18:48:05+05:30 | 1 | yes |
 | `judge_v2.txt` | judge with 2 of v1's disagreements | `4b3b65a` | 2026-10-19T18:52:23+05:30 | 1 | yes |
-| `judge_results_v2.json` | judge v2 run -> agreement_after | — | — | 0 | NO |
+| `judge_results_v2.json` | judge v2 run -> agreement_after | `446970d` | 2026-10-20T23:37:57+05:30 | 1 | yes |
 
 ## Ordering checks
 
