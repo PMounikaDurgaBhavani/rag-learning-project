@@ -19,5 +19,31 @@
     "judge_unparsed": 0
   },
   "assertion_count": 6,
-  "judged_criteria_count": 1
+  "judged_criteria_count": 1,
+  "agreement_after": 76.0,
+  "agreement_after_detail": {
+    "judge": "judge_v2.txt",
+    "all": {
+      "n": 25,
+      "agree": 19,
+      "pct": 76.0
+    },
+    "held_out": {
+      "n": 23,
+      "agree": 18,
+      "pct": 78.3
+    },
+    "excluded_few_shot": [
+      "T02",
+      "T13"
+    ],
+    "confusion": {
+      "human_PASS__judge_PASS": 4,
+      "human_FAIL__judge_PASS": 4,
+      "human_FAIL__judge_FAIL": 15,
+      "human_PASS__judge_FAIL": 2
+    },
+    "cohen_kappa": 0.409,
+    "judge_unparsed": 0
+  }
 }

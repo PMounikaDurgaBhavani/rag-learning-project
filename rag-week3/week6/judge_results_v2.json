@@ -1,0 +1,339 @@
+{
+  "version": "v2",
+  "judge_prompt": "week6/judge_v2.txt",
+  "judge_prompt_sha": "e0ac6da7ec7f4295",
+  "judge_model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "judge_params": {
+    "max_new_tokens": 80,
+    "do_sample": false,
+    "return_full_text": false
+  },
+  "run_started_at": "2026-10-19T13:22:47+00:00",
+  "run_finished_at": "2026-10-19T20:55:30+00:00",
+  "app_version": "4b3b65a",
+  "protocol_evidence": {
+    "replies_commit": {
+      "commit": "b594458",
+      "committed_at": "2026-09-15T16:04:14+05:30",
+      "subject": "week6: freeze 25 replies for blind labelling"
+    },
+    "labels_commit": {
+      "commit": "635844c",
+      "committed_at": "2026-10-19T12:58:36+05:30",
+      "subject": "week6: 25 blind hand labels (before judge run)"
+    },
+    "labels_first_commit": {
+      "commit": "635844c",
+      "committed_at": "2026-10-19T12:58:36+05:30",
+      "subject": "week6: 25 blind hand labels (before judge run)"
+    },
+    "labels_commit_count": 1,
+    "labels_updated_at": "2026-10-19T07:28:05+00:00",
+    "prediction_commit": {
+      "commit": "39fb144",
+      "committed_at": "2026-10-19T18:48:05+05:30",
+      "subject": "week6: judge v1 agreement + prediction before iterating"
+    }
+  },
+  "agreement": {
+    "all": {
+      "n": 25,
+      "agree": 19,
+      "pct": 76.0
+    },
+    "held_out": {
+      "n": 23,
+      "agree": 18,
+      "pct": 78.3
+    },
+    "excluded_few_shot": [
+      "T02",
+      "T13"
+    ],
+    "confusion": {
+      "human_PASS__judge_PASS": 4,
+      "human_FAIL__judge_PASS": 4,
+      "human_FAIL__judge_FAIL": 15,
+      "human_PASS__judge_FAIL": 2
+    },
+    "cohen_kappa": 0.409,
+    "judge_unparsed": 0
+  },
+  "rows": [
+    {
+      "id": "T01",
+      "mode": "M1",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly states the password requirements and provides a clear solution for the customer to resolve the issue.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly states the password requirements and provides a clear solution for the customer to resolve the issue.",
+      "human": "PASS",
+      "human_note": "The reply correctly lists all password requirements, including the minimum 8 characters, uppercase and lowercase letters, a number, and a password different from the previous one.",
+      "agree": true
+    },
+    {
+      "id": "T02",
+      "mode": "M1",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly states the password reset link validity and provides instructions for troubleshooting.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly states the password reset link validity and provides instructions for troubleshooting.",
+      "human": "FAIL",
+      "human_note": "The reply states the 30-minute validity but omits how to request a new reset link and fails to warn that requesting multiple links invalidates older ones, so the latest email must be used.",
+      "agree": false
+    },
+    {
+      "id": "T03",
+      "mode": "M1",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply incorrectly states that the charge is eligible for a refund due to the 30-day window, but omits the requirement that the charge must be made within the 30-day window to be eligible for a full refund.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply incorrectly states that the charge is eligible for a refund due to the 30-day window, but omits the requirement that the charge must be made within the 30-day window to be eligible for a full refund.",
+      "human": "FAIL",
+      "human_note": "The reply incorrectly denies refund eligibility for a 12-day-old charge, invents a cancellation-related restriction, and omits the correct $49 refund outcome and 5–10 business-day timeline.",
+      "agree": true
+    },
+    {
+      "id": "T04",
+      "mode": "M1",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required refund request steps and billing-permission requirement.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required refund request steps and billing-permission requirement.",
+      "human": "FAIL",
+      "human_note": "The reply fails to clearly state that the charge is ineligible for a refund because it is outside the 30-day window, incorrectly suggests requesting a refund through a manager, and omits how to turn off automatic renewal.",
+      "agree": true
+    },
+    {
+      "id": "T05",
+      "mode": "M1",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply does not state that the account will remain locked for 15 minutes after repeated failed login attempts.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply does not state that the account will remain locked for 15 minutes after repeated failed login attempts.",
+      "human": "FAIL",
+      "human_note": "The reply correctly states the 15-minute lockout period but omits the instruction to stop login attempts during the lock and the Forgot Password option if the password is forgotten.",
+      "agree": true
+    },
+    {
+      "id": "R01",
+      "mode": "M1",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly states the minimum character requirements for a new password under HC-001.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly states the minimum character requirements for a new password under HC-001.",
+      "human": "PASS",
+      "human_note": "The reply correctly states the minimum 8-character requirement and all other required password rules.",
+      "agree": true
+    },
+    {
+      "id": "T06",
+      "mode": "M1",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required information about the role's upload permission and the need to contact the organization administrator.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required information about the role's upload permission and the need to contact the organization administrator.",
+      "human": "PASS",
+      "human_note": "The reply correctly identifies missing upload permissions as a possible cause and directs the customer to the organization administrator to verify permissions.",
+      "agree": false
+    },
+    {
+      "id": "R02",
+      "mode": "M2",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply does not ask what billing help is needed, or point to Organization Settings > Billing, where invoices, payment methods and payment status are managed.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply does not ask what billing help is needed, or point to Organization Settings > Billing, where invoices, payment methods and payment status are managed.",
+      "human": "FAIL",
+      "human_note": "The reply uses a generic hand-off instead of asking what billing help is needed or directing the customer to Organization Settings > Billing for invoices, payment methods, and payment status.",
+      "agree": true
+    },
+    {
+      "id": "T07",
+      "mode": "M2",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly states that duplicate charges are refunded in full, regardless of the 30-day window, and provides the refund amount and processing time.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly states that duplicate charges are refunded in full, regardless of the 30-day window, and provides the refund amount and processing time.",
+      "human": "PASS",
+      "human_note": "The reply correctly confirms a full $89 refund for the duplicate charge regardless of the 30-day window and states that it will return to the original payment method within 5–10 business days.",
+      "agree": true
+    },
+    {
+      "id": "T08",
+      "mode": "M2",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply answers all three parts honestly and points to the administrator for the configured limits.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply answers all three parts honestly and points to the administrator for the configured limits.",
+      "human": "FAIL",
+      "human_note": "The reply invents the 5 MB limit and supported formats, and does not confirm whether ZIP uploads are allowed. It should direct the customer to the administrator for the organization's configured limits.",
+      "agree": false
+    },
+    {
+      "id": "T09",
+      "mode": "M2",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required refund request steps and billing-permission requirement.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required refund request steps and billing-permission requirement.",
+      "human": "FAIL",
+      "human_note": "The reply invents a billing-information mismatch, fails to explain that the 40-day-old charge is outside the refund window, and omits how to turn off automatic renewal.",
+      "agree": true
+    },
+    {
+      "id": "T10",
+      "mode": "M2",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required steps to resolve the payment issue and the required information about the payment status in the CloudDesk portal.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required steps to resolve the payment issue and the required information about the payment status in the CloudDesk portal.",
+      "human": "FAIL",
+      "human_note": "The reply omits the required 15-minute wait for the account lockout, does not mention the reset link's 30-minute validity, and fails to advise checking payment status and verifying or updating the payment method.",
+      "agree": true
+    },
+    {
+      "id": "R03",
+      "mode": "M3",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required steps for updating the payment method and does not mention that an expired payment method should be updated before the next billing attempt.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required steps for updating the payment method and does not mention that an expired payment method should be updated before the next billing attempt.",
+      "human": "FAIL",
+      "human_note": "The reply omits the required steps to update the expired card under Organization Settings > Billing > Payment Methods and instead gives irrelevant support-contact instructions.",
+      "agree": true
+    },
+    {
+      "id": "T11",
+      "mode": "M3",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly outlines the steps to reset the password, including the valid 30-minute reset link, and provides a clear explanation of the process.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly outlines the steps to reset the password, including the valid 30-minute reset link, and provides a clear explanation of the process.",
+      "human": "FAIL",
+      "human_note": "The reply leaves out essential password reset steps, including opening the reset email, using the link, entering and confirming a new password, and clicking Reset Password.",
+      "agree": false
+    },
+    {
+      "id": "T12",
+      "mode": "M3",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required troubleshooting steps for failed uploads, including verifying internet connection, refreshing the page, trying a different supported file, and checking whether other CloudDesk features work.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required troubleshooting steps for failed uploads, including verifying internet connection, refreshing the page, trying a different supported file, and checking whether other CloudDesk features work.",
+      "human": "FAIL",
+      "human_note": "The reply omits trying a different supported file, checking whether other CloudDesk features work, and contacting the administrator if uploads still fail; it also ends before completing the troubleshooting guidance.",
+      "agree": true
+    },
+    {
+      "id": "T13",
+      "mode": "M3",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required refund request steps and billing-permission requirement.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required refund request steps and billing-permission requirement.",
+      "human": "FAIL",
+      "human_note": "The reply incorrectly denies a refund for a charge made 5 days ago and omits the required refund request steps and billing-permission requirement.",
+      "agree": true
+    },
+    {
+      "id": "T14",
+      "mode": "M3",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly lists every step to add a new payment method, following the reference facts.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly lists every step to add a new payment method, following the reference facts.",
+      "human": "PASS",
+      "human_note": "The reply lists all required steps to add and save a payment method and explains that it can be used for future billing transactions.",
+      "agree": true
+    },
+    {
+      "id": "R04",
+      "mode": "M4",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the required recovery steps and does not provide contact information for the administrator assistance team.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the required recovery steps and does not provide contact information for the administrator assistance team.",
+      "human": "FAIL",
+      "human_note": "The reply omits the Forgot Password recovery step and includes an unhelpful administrator contact placeholder instead of giving the complete recovery instructions.",
+      "agree": true
+    },
+    {
+      "id": "T15",
+      "mode": "M4",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply incorrectly asserts that the card is locked due to insufficient funds, when in fact the help center cannot say whether the card is locked or out of funds.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply incorrectly asserts that the card is locked due to insufficient funds, when in fact the help center cannot say whether the card is locked or out of funds.",
+      "human": "FAIL",
+      "human_note": "The reply incorrectly asserts insufficient funds as the definite cause of the failed payment and omits the recommended steps to verify or update payment information or contact the payment provider.",
+      "agree": true
+    },
+    {
+      "id": "T16",
+      "mode": "M4",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply incorrectly denies a refund for a charge made 76 days ago and omits the required refund request steps and billing-permission requirement.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply incorrectly denies a refund for a charge made 76 days ago and omits the required refund request steps and billing-permission requirement.",
+      "human": "FAIL",
+      "human_note": "The reply does not clearly state that the 76-day-old charge is ineligible for a refund and leaves the outcome ambiguous by discussing refund processing despite the charge being outside the 30-day window.",
+      "agree": true
+    },
+    {
+      "id": "T17",
+      "mode": "M4",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply does not answer the customer's question about the Enterprise plan cost per user, instead routing the customer onward without providing the answer.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply does not answer the customer's question about the Enterprise plan cost per user, instead routing the customer onward without providing the answer.",
+      "human": "PASS",
+      "human_note": "The reply honestly states that the help centre does not provide the pricing information and routes the customer to a specialist without inventing a price.",
+      "agree": false
+    },
+    {
+      "id": "T18",
+      "mode": "M5",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the step to contact the administrator if the account stays inaccessible.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the step to contact the administrator if the account stays inaccessible.",
+      "human": "FAIL",
+      "human_note": "The reply omits the Forgot Password recovery option and gives an unsupported administrator email address instead of simply advising the customer to contact their administrator if access remains blocked.",
+      "agree": true
+    },
+    {
+      "id": "T19",
+      "mode": "M5",
+      "judge": "PASS",
+      "parsed": true,
+      "judge_reason": "The draft reply correctly identifies the cause of the notifications stopping working and provides a clear solution by contacting the CloudDesk administrator.",
+      "judge_raw": "VERDICT: PASS\nREASON: The draft reply correctly identifies the cause of the notifications stopping working and provides a clear solution by contacting the CloudDesk administrator.",
+      "human": "FAIL",
+      "human_note": "The reply directs the customer to the administrator but omits the required checks for email notifications, the registered email address, spam or junk folders, and organizational email blocking.",
+      "agree": false
+    },
+    {
+      "id": "T20",
+      "mode": "M5",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply omits the requirement to check spam or junk folders and email filtering rules.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply omits the requirement to check spam or junk folders and email filtering rules.",
+      "human": "FAIL",
+      "human_note": "The reply is incomplete: it omits checking whether the organization's email server blocks CloudDesk emails and does not finish explaining that requesting multiple links invalidates older ones.",
+      "agree": true
+    },
+    {
+      "id": "T21",
+      "mode": "M5",
+      "judge": "FAIL",
+      "parsed": true,
+      "judge_reason": "The reply incorrectly states that the charge is eligible for a refund due to the 30-day window, when in fact it is not eligible for a refund.",
+      "judge_raw": "VERDICT: FAIL\nREASON: The reply incorrectly states that the charge is eligible for a refund due to the 30-day window, when in fact it is not eligible for a refund.",
+      "human": "FAIL",
+      "human_note": "The reply incorrectly says the 29-day-old charge is outside the refund window, fails to provide the refund request steps, and does not mention the 5–10 business-day processing time.",
+      "agree": true
+    }
+  ]
+}
