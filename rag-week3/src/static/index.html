@@ -1280,7 +1280,7 @@
     <section class="view" id="view-week9">
       <div class="scroll">
         <div class="measure wide">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem;">
+          <div id="w9AdminHead" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem;">
             <div>
               <h1 style="margin:0 0 .2rem;">Week 9 — Model Context Protocol (MCP)</h1>
               <p class="lede" style="margin:0;">
@@ -1512,9 +1512,9 @@ function show(view) {
   const isUser = (typeof appRole !== 'undefined' && appRole === 'user');
   let title = VIEW_TITLES[view] || view;
   if (isUser) {
-    if (view === 'ask') title = 'Customer AI Assistant';
     if (view === 'library') title = 'Documents & Uploads';
-    if (view === 'week9') title = 'Customer MCP Assistant';
+    if (view === 'week9') title = 'Customer Chatbot';
+    if (view === 'week10') title = 'Agent Chatbot — single vs multi-agent';
   }
   $('viewTitle').textContent = title;
   // Inspect and settings only mean anything for a question.
@@ -2676,6 +2676,8 @@ async function loadDocuments() {
     artSel.innerHTML = '<option value="">All documents</option>' + docs.map(d => `<option value="${esc(d.article_id)}">${esc(d.article_id)} · ${esc(d.source_file)}</option>`).join('');
     artSel.value = docs.some(d => d.article_id === keepD) ? keepD : '';
     $('navDocCount').textContent = docs.length || '';
+    const chatCount = $('w9DocCount');
+    if (chatCount) chatCount.textContent = `${docs.length} document${docs.length === 1 ? '' : 's'}`;
   } catch (err) {
     $('docList').innerHTML = `<div class="muted" style="padding:1.5rem;text-align:center;">Failed to load: ${esc(err.message)}</div>`;
   }
@@ -2892,15 +2894,8 @@ let w9Role = appRole;
 let w9ChatMessages = [
   {
     sender: 'bot',
-    text: `Hello! I am your **CloudDesk Customer AI Assistant**, powered by the Model Context Protocol (MCP).\n\nI can answer questions directly from our knowledge base articles, any uploaded documents, or check live support tickets!\n\nEvery answer displays **which MCP server** was used to retrieve the answer. Try asking a question below or upload your own document!`,
-    mcp: {
-      server: 'clouddesk-kb',
-      server_info: { name: 'CloudDesk Knowledge Base Server', description: 'Internal RAG corpus covering help-centre articles & uploaded documents' },
-      tool: 'search_kb',
-      transport: 'stdio · JSON-RPC 2.0',
-      latency_ms: 18.0,
-      wire: []
-    }
+    text: `Hello! I am the **CloudDesk Customer Chatbot**.\n\nAsk about help-centre articles, any document you upload, or a support ticket (e.g. TCK-4471). Choose how I answer with **Answer with**:\n\n- **⚡ MCP tools** — I check every tool on the live MCP servers and show the data they return, or tell you there is none.\n- **✦ AI answer** — I write a reply from the documents and cite the passages it came from, or refuse when nothing supports an answer.`,
+    mcp: null
   }
 ];
 
@@ -3198,6 +3193,31 @@ function renderW9Messages() {
         </div>
       `;
     }
+    if (msg.rag) {
+      const gen = msg.rag;
+      const sources = gen.sources || [];
+      const badges = sources.map(c => `<span class="mcp-evidence-tag kb">[${esc(String(c.marker))}] 📄 ${esc(c.article_id)}${c.section ? ' · ' + esc(c.section) : ''}</span>`).join('');
+      return `
+        <div class="mcp-msg bot">
+          <div class="mcp-avatar bot">◆</div>
+          <div class="mcp-bubble">
+            <div class="mcp-attribution-box">
+              <div class="mcp-server-header">
+                <div class="mcp-server-name">
+                  <div class="mcp-server-icon">✦</div>
+                  <span class="pill ${gen.refused ? 'warn' : 'ok'}" style="font-size:.76rem;font-weight:700;">${gen.refused ? 'AI answer · no supported answer' : 'AI answer · grounded'}</span>
+                  <span class="pill info" style="font-size:.72rem;">${esc(gen.retrieval_mode || 'hybrid_rerank')}</span>
+                </div>
+                <span class="pill mono" style="font-size:.62rem;">${esc(gen.model_name || '')}</span>
+              </div>
+              ${badges ? `<div style="margin-top:.4rem;"><span class="eyebrow" style="font-size:.6rem;">Cited sources</span><br>${badges}</div>` : ''}
+              ${gen.refused && gen.refusal_reason ? `<div class="muted" style="font-size:.72rem;margin-top:.3rem;">Refused at: <code>${esc(gen.refusal_reason)}</code></div>` : ''}
+            </div>
+            <div style="margin-top:.3rem;">${md(gen.refused ? `**No relevant data found** in the documents for this question.\n\n${gen.answer}` : msg.text)}</div>
+          </div>
+        </div>
+      `;
+    }
     const mcp = msg.mcp;
     const evidence = msg.evidence || [];
     let attributionHtml = '';
@@ -3271,7 +3291,8 @@ function renderW9Messages() {
 }
 
 function w9CustomerChat(d) {
-  const docCount = docs?.length || 7;
+  const docCount = docs?.length || 0;
+  const modeOpt = (v, label) => `<option value="${v}" ${w9ChatMode === v ? 'selected' : ''}>${label}</option>`;
   return `
     <div class="mcp-chat-container">
       <div class="mcp-chat-head">
@@ -3280,19 +3301,20 @@ function w9CustomerChat(d) {
             <span class="role-badge user">User / Customer Role</span>
             <span class="pill ok"><span class="dot"></span>Live MCP Servers</span>
           </div>
-          <b style="font-size:1.05rem;">CloudDesk Customer AI Assistant</b>
+          <b style="font-size:1.05rem;">CloudDesk Customer Chatbot</b>
           <div class="muted" style="font-size:.8rem;">
-            Answers questions from ${docCount} uploaded documents &amp; tickets. Every answer cites its MCP server source.
+            One chat over <span id="w9DocCount">${docCount} document${docCount === 1 ? '' : 's'}</span> &amp; live tickets. Pick how it answers: MCP tools show the data each tool returned; AI answer writes a cited reply from the documents.
           </div>
         </div>
         <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;">
           <span class="pill ok" title="Knowledge base articles & uploads">⚡ clouddesk-kb</span>
           <span class="pill violet" title="Support Ops tickets & escalations">🎫 ticket-history</span>
+          <label class="muted" for="w9ChatConfigSelect" style="font-size:.74rem;">Answer with</label>
           <select id="w9ChatConfigSelect" style="padding:.25rem .5rem;font-size:.78rem;border-radius:6px;background:var(--bg);border:1px solid var(--line);">
-            <option value="server_two" selected>Direct MCP Servers (stdio)</option>
-            <option value="gateway">Audited Gateway (bonus)</option>
+            ${modeOpt('server_two', '⚡ MCP tools — KB + tickets')}
+            ${modeOpt('gateway', '🛡️ MCP tools — audited gateway')}
+            ${modeOpt('rag', '✦ AI answer — documents, cited')}
           </select>
-          <button class="btn sm ghost" id="w9SwitchToAdminBtn">🛡️ Switch to Admin Role</button>
         </div>
       </div>
 
@@ -3302,7 +3324,7 @@ function w9CustomerChat(d) {
           <span style="font-size:1.2rem;">📁</span>
           <div style="flex:1;">
             <div style="font-size:.82rem;font-weight:600;">Upload a Document for the Customer Chatbot</div>
-            <div class="muted" style="font-size:.75rem;">Upload any PDF, TXT, MD, or CSV file. It will be indexed into PostgreSQL and immediately accessible to MCP server <code>clouddesk-kb</code>.</div>
+            <div class="muted" style="font-size:.75rem;">Upload any PDF, DOCX, TXT, MD, or CSV file. It is indexed into PostgreSQL, listed under Documents &amp; Uploads, and searchable by every answer mode.</div>
           </div>
           <input type="file" id="w9ChatFileInput" style="display:none;" />
           <button class="btn sm" id="w9ChatUploadTrigger">Choose File…</button>
@@ -3331,13 +3353,30 @@ function w9CustomerChat(d) {
         </div>
         <div class="mcp-status-bar" style="margin-top:.5rem;">
           <span class="dot live"></span>
-          <span>MCP servers live · stdio · JSON-RPC 2.0</span>
+          <span id="w9ChatModeNote">${w9ChatModeNote()}</span>
           <span style="margin-left:auto;font-size:.68rem;color:var(--ink-3);">⏎ Enter to send</span>
         </div>
       </div>
     </div>
   `;
 }
+
+let w9ChatMode = 'server_two';
+try { w9ChatMode = localStorage.getItem('clouddesk_chat_mode') || 'server_two'; } catch {}
+
+function w9ChatModeNote() {
+  return w9ChatMode === 'rag'
+    ? 'AI answer · hybrid retrieval + rerank · grounded, cited, refuses when unsupported'
+    : `MCP servers live · ${w9ChatMode === 'gateway' ? 'audited gateway' : 'stdio'} · JSON-RPC 2.0`;
+}
+
+document.addEventListener('change', e => {
+  if (e.target.id !== 'w9ChatConfigSelect') return;
+  w9ChatMode = e.target.value;
+  try { localStorage.setItem('clouddesk_chat_mode', w9ChatMode); } catch {}
+  const note = $('w9ChatModeNote');
+  if (note) note.textContent = w9ChatModeNote();
+});
 
 async function sendW9ChatMessage(text) {
   const q = (text || '').trim();
@@ -3353,7 +3392,7 @@ async function sendW9ChatMessage(text) {
         <div class="mcp-bubble">
           <div style="display:flex;align-items:center;gap:.5rem;">
             <span class="spinner"></span>
-            <span>Querying Model Context Protocol (MCP) servers &amp; discovering tools…</span>
+            <span>${w9ChatMode === 'rag' ? 'Retrieving passages &amp; writing a cited answer…' : 'Querying Model Context Protocol (MCP) servers &amp; discovering tools…'}</span>
           </div>
         </div>
       </div>
@@ -3361,8 +3400,13 @@ async function sendW9ChatMessage(text) {
     stream.scrollTop = stream.scrollHeight;
   }
 
-  const which = $('w9ChatConfigSelect')?.value || 'server_two';
+  const which = w9ChatMode;
   try {
+    if (which === 'rag') {
+      const gen = await api('/api/ask', { query: q, top_k: 5, mode: 'hybrid_rerank' });
+      w9ChatMessages.push({ sender: 'bot', text: gen.answer || '', rag: gen, found: !gen.refused });
+      return;
+    }
     const res = await api('/api/week9/chat', { query: q, which });
     w9ChatMessages.push({
       sender: 'bot',
@@ -3424,47 +3468,33 @@ document.addEventListener('change', async e => {
   if (e.target.id === 'w9ChatFileInput') {
     const file = e.target.files[0];
     if (!file) return;
+    e.target.value = '';           // choosing the same file again still fires change
     toast(`Uploading and indexing ${file.name}…`);
     try {
-      const reader = new FileReader();
-      reader.onload = async (evt) => {
-        try {
-          const content = evt.target.result;
-          const res = await api('/api/upload', {
-            filename: file.name,
-            content: typeof content === 'string' ? content : '',
-            content_b64: typeof content !== 'string' ? btoa(String.fromCharCode(...new Uint8Array(content))) : undefined,
-            product_area: 'Customer Upload',
-            reindex: true
-          });
-          toast(`Indexed ${res.filename} (${res.chars} chars)`);
-          w9ChatMessages.push({
-            sender: 'bot',
-            text: `📄 **Document Uploaded & Indexed:** \`${res.filename}\` (${res.chars} characters).\n\nAssigned Article ID: **\`${res.article_id}\`** in category **\`${res.product_area}\`**.\n\nThis document is now indexed in PostgreSQL and immediately accessible to MCP server \`clouddesk-kb\` via \`search_kb\` and \`get_article\`! Ask any question about it now.`,
-            mcp: {
-              server: 'clouddesk-kb',
-              server_info: { name: 'CloudDesk Knowledge Base Server', description: 'Re-indexed PostgreSQL & BM25 store' },
-              tool: 'search_kb / get_article',
-              transport: 'stdio · JSON-RPC 2.0',
-              latency_ms: 50.0,
-              wire: []
-            }
-          });
-          const stream = $('w9ChatStream');
-          if (stream) {
-            stream.innerHTML = renderW9Messages();
-            stream.scrollTop = stream.scrollHeight;
-          }
-          loadDocs();
-        } catch (err) { toast(err.message, true); }
-      };
-      if (file.type.startsWith('text/') || file.name.endsWith('.md') || file.name.endsWith('.txt') || file.name.endsWith('.csv') || file.name.endsWith('.json')) {
-        reader.readAsText(file);
-      } else {
-        reader.readAsArrayBuffer(file);
+      // readAsBase64 goes through a data URL: spreading the bytes into
+      // String.fromCharCode overflowed the call stack on any PDF over ~64 KB.
+      const b64 = await readAsBase64(file);
+      const res = await api('/api/upload', {
+        filename: file.name,
+        content_b64: b64,
+        product_area: 'Customer Upload',
+        reindex: true
+      });
+      toast(`Indexed ${res.filename} (${res.chars} chars)`);
+      w9ChatMessages.push({
+        sender: 'bot',
+        text: `📄 **Document Uploaded & Indexed:** \`${res.filename}\` (${res.chars} characters).\n\nAssigned Article ID: **\`${res.article_id}\`** in category **\`${res.product_area}\`**.\n\nIt is now in **Documents & Uploads** and searchable by every answer mode of this chat. Ask any question about it now.`,
+        mcp: null
+      });
+      const stream = $('w9ChatStream');
+      if (stream) {
+        stream.innerHTML = renderW9Messages();
+        stream.scrollTop = stream.scrollHeight;
       }
+      await loadDocuments();
+      loadStatus();
     } catch (err) {
-      toast(err.message, true);
+      toast('Upload failed: ' + err.message, true);
     }
   }
 });
@@ -4142,8 +4172,21 @@ $('w10Send').onclick = async () => {
   }
 };
 
+let w10Timer = null, w10StartedAt = 0;
 function w10Loading(mode, done) {
-  return w10Render(done, Object.keys(done)) + `<div class="card"><span class="spinner"></span> Running the <b>${mode === 'single' ? 'single agent' : 'multi-agent path'}</b>… retrieval, then ${mode === 'single' ? 'one model call' : 'triage, the specialists, and synthesis'}.</div>`;
+  clearInterval(w10Timer);
+  w10StartedAt = Date.now();
+  // The elapsed clock is the honest loading state on an 8 GB machine: the
+  // first request loads ~3 GB of weights, and a swapped-out server can take
+  // minutes per call. The request itself is only abandoned after 20 min.
+  w10Timer = setInterval(() => {
+    const el = $('w10Elapsed');
+    if (!el) { clearInterval(w10Timer); return; }
+    const s = Math.round((Date.now() - w10StartedAt) / 1000);
+    el.textContent = `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`;
+  }, 1000);
+  return w10Render(done, Object.keys(done)) + `<div class="card"><span class="spinner"></span> Running the <b>${mode === 'single' ? 'single agent' : 'multi-agent path'}</b>… retrieval, then ${mode === 'single' ? 'one model call' : 'triage, the specialists, and synthesis'}. <span class="pill mono" id="w10Elapsed">0m 00s</span>
+    <div class="help" style="margin-top:.4rem;">Measured on this laptop with a warm model: single agent 25–105 s per question, multi-agent 25–220 s. The first question of a server session adds about 70 s of model loading. If the machine is swapping (other apps holding memory), every model call slows down many times over; the server keeps working and the result is saved under <code>week10/runs/live/</code> even if this page gives up after 20 minutes.</div></div>`;
 }
 
 function w10Render(results, modes) {
@@ -4160,7 +4203,9 @@ function w10Render(results, modes) {
       <tr><td>cost (stand-in rate card)</td><td>${w10Usd(s.meter.cost_usd)}</td><td>${w10Usd(m.meter.cost_usd)}</td></tr>
       <tr><td>citations</td><td>${(s.citations || []).map(c => c.article_id).join(', ') || '—'}</td><td>${(m.citations || []).map(c => c.article_id).join(', ') || '—'}</td></tr>
       </tbody></table></div>`;
-    return cmp + `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1rem;">${cards.join('')}</div>`;
+    // Stacked, not side by side: the multi-agent card carries a task table
+    // that needs the full width, and a half-width column clipped it.
+    return cmp + cards.join('');
   }
   return cards.join('');
 }
@@ -4174,15 +4219,15 @@ function w10ResultCard(r, title) {
     ? `<ul style="margin:.3rem 0 0;padding-left:1.1rem;">${r.citations.map(c => `<li><code>[${c.marker}]</code> ${esc(c.article_id || '')} · ${esc(c.section || '')} <span class="cid">${esc(c.chunk_id || '')}</span></li>`).join('')}</ul>`
     : `<div class="muted">no citation in the reply${r.refused ? ' (routed hand-off)' : ''}</div>`;
   const routing = r.routing ? `<p style="margin:.4rem 0 0;"><b>Routing:</b> ${(r.routing.dispatch || []).map(x => `<code>${esc(x)}</code>`).join(' + ') || 'none'} · ${Object.entries(r.routing.decided_by || {}).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join('; ')}</p>` : '';
-  const taskRows = tasks.length ? `<table class="gs" style="margin-top:.5rem;"><thead><tr><th>task</th><th>agent</th><th>kind</th><th>lifecycle</th><th>tokens in/out</th><th>latency</th><th>attempts</th></tr></thead><tbody>
-    ${tasks.map(t => `<tr><td class="cid">${esc(t.id)}${t.parent_id ? `<br>↳ ${esc(t.parent_id)}` : ''}</td><td>${esc(t.agent)}</td><td>${esc(t.kind)}${t.transport ? ` <span class="pill mono">${esc(t.transport)}</span>` : ''}</td>
-      <td>${t.transitions.map(x => x.state).join(' → ')} ${w10StatePill(t.status)}${t.error ? `<div class="help" style="color:var(--danger);">${esc(t.error.message || JSON.stringify(t.error))}</div>` : ''}</td>
-      <td>${t.input_tokens} / ${t.output_tokens}</td><td>${w10Sec(t.latency_ms)}</td><td>${t.attempts || '—'}</td></tr>`).join('')}</tbody></table>` : '<p class="help" style="margin:.4rem 0 0;">One model call, no hand-offs: the single agent has no tasks to show.</p>';
+  const taskRows = tasks.length ? `<div style="overflow-x:auto;margin-top:.5rem;"><table class="gs" style="min-width:720px;"><thead><tr><th>task</th><th>agent</th><th>kind</th><th>lifecycle</th><th>tokens in/out</th><th>latency</th><th>attempts</th></tr></thead><tbody>
+    ${tasks.map(t => `<tr><td class="cid">${esc(t.id)}${t.parent_id ? `<br>↳ ${esc(t.parent_id)}` : ''}</td><td style="white-space:nowrap;">${esc(t.agent)}</td><td style="white-space:nowrap;">${esc(t.kind)}${t.transport ? ` <span class="pill mono">${esc(t.transport)}</span>` : ''}</td>
+      <td style="white-space:nowrap;"><span class="cid">${t.transitions.map(x => x.state).join(' → ')}</span> ${w10StatePill(t.status)}${t.error ? `<div class="help" style="color:var(--danger);white-space:normal;">${esc(t.error.message || JSON.stringify(t.error))}</div>` : ''}</td>
+      <td style="white-space:nowrap;">${t.input_tokens} / ${t.output_tokens}</td><td style="white-space:nowrap;">${w10Sec(t.latency_ms)}</td><td>${t.attempts || '—'}</td></tr>`).join('')}</tbody></table></div>` : '<p class="help" style="margin:.4rem 0 0;">One model call, no hand-offs: the single agent has no tasks to show.</p>';
   const handRows = hand.length ? `<ul style="margin:.3rem 0 0;padding-left:1.1rem;font-size:.8rem;">${hand.map(h => `<li>${esc(h.direction)} <code>${esc(h.from_agent)}</code> → <code>${esc(h.to_agent)}</code> · <span class="pill ${h.status === 'completed' || h.status === 'sent' ? 'ok' : 'bad'}">${esc(h.status)}</span>${h.input_tokens != null ? ` · ${h.input_tokens}/${h.output_tokens} tok` : ''} · <span class="muted">${esc(h.summary)}</span></li>`).join('')}</ul>` : '';
   const spec = Object.entries(r.specialists || {}).map(([k, v]) => `<details style="margin-top:.4rem;"><summary>${esc(k)} findings${v.evidence === false ? ' · <span class="pill warn">no evidence</span>' : ''}</summary>${w9Pre(v.findings || '(none)', 220)}${v.facts ? w9Pre(JSON.stringify(v.facts, null, 2), 200) : ''}</details>`).join('');
   const resyn = (r.resynthesis || []).length ? `<details style="margin-top:.4rem;"><summary>Conflict resolution: ${r.resynthesis.length} re-synthesis</summary>${r.resynthesis.map(x => `<p class="help">${esc(x.reason)}</p>${w9Pre(x.rejected, 160)}`).join('')}</details>` : '';
   const errs = (r.errors || []).length ? `<div class="card" style="border-color:var(--danger);margin-top:.6rem;"><div class="eyebrow">Errors (${r.errors.length}) · retries ${r.retries ?? r.meter?.retries ?? 0}</div>${r.errors.map(e => `<div class="help">${esc(e.agent)}: ${esc(e.message)}${e.status ? ` (HTTP ${e.status})` : ''}, ${e.attempts} attempt(s)</div>`).join('')}${r.http_status ? `<div class="help">API answered HTTP ${r.http_status} · status <code>${esc(r.status_text || 'degraded')}</code></div>` : ''}</div>` : '';
-  return `<div class="card" style="margin-bottom:1rem;">
+  return `<div class="card" style="margin-bottom:1rem;min-width:0;overflow:hidden;">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
       <div class="eyebrow" style="margin:0;">${esc(title)} · <code>${esc(r.ticket?.ticket_id || '')}</code> · ${esc(r.ticket?.tier || '')}</div>
       <div>${w10Outcome(r)}${r.fault ? ` <span class="pill bad">fault injected: ${esc(r.fault.specialist)}</span>` : ''}</div>
