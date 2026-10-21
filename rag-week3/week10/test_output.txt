@@ -1,0 +1,328 @@
+# Week 10 test run 2026-10-21T13:03:55Z · build 7e44499 + Week 10 working tree · all deliverables present
+
+=== python tests/test_pipeline.py ===
+Loader
+  PASS  loads 7 articles
+  PASS  every article has the required metadata
+
+Chunking
+  PASS  recursive: produces chunks
+  PASS  recursive: every chunk has the required metadata
+  PASS  recursive: chunk_ids are unique
+  PASS  recursive: no chunk is empty
+  PASS  fixed: produces chunks
+  PASS  fixed: every chunk has the required metadata
+  PASS  fixed: chunk_ids are unique
+  PASS  fixed: no chunk is empty
+  PASS  markdown: produces chunks
+  PASS  markdown: every chunk has the required metadata
+  PASS  markdown: chunk_ids are unique
+  PASS  markdown: no chunk is empty
+  PASS  markdown strategy strands no table rows
+  PASS  markdown strategy flags table chunks
+
+Grounding
+  PASS  exact answer scores full coverage
+  PASS  fabricated number is detected
+  PASS  supported number is not flagged
+  PASS  citation markers are ignored when checking numbers
+  PASS  an answer with a fabricated number is not attributed
+  PASS  the HC-006 upload-button row is chunk HC-006-markdown-11
+  PASS  an answer naming the chunk's own article id is attributed to it (358d8c7920fd4040)
+  PASS  a DIFFERENT article id is still an unsupported number
+  PASS  a leaked source header is still refused (076d42c7a5674fb4, M4)
+
+Metrics
+  PASS  gold chunk is recognised with header
+  PASS  gold chunk is recognised without header
+  PASS  table grounding requires the header row
+  PASS  wrong article is never gold
+
+Evaluation data
+  PASS  8 known-answer questions
+  PASS  at least 3 table-based questions
+  PASS  every table question names its header row
+  PASS  every answer key exists in its expected article
+  PASS  6 unsupported questions
+
+All checks passed.
+exit code: 0
+
+=== python tests/test_week10.py ===
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/nobody HTTP/1.1" 404 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/src/specialist_worker.py", line 91, in handle
+    result = self.specialists[name].run(payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/tests/test_week10.py", line 295, in run
+    raise RuntimeError("secret internal detail: DATABASE_URL=postgres://x:y@z")
+RuntimeError: secret internal detail: DATABASE_URL=postgres://x:y@z
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/src/specialist_worker.py", line 91, in handle
+    result = self.specialists[name].run(payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/tests/test_week10.py", line 295, in run
+    raise RuntimeError("secret internal detail: DATABASE_URL=postgres://x:y@z")
+RuntimeError: secret internal detail: DATABASE_URL=postgres://x:y@z
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/src/specialist_worker.py", line 91, in handle
+    result = self.specialists[name].run(payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kasiguruprasad/Desktop/AI/rag-learning-project/rag-week3/tests/test_week10.py", line 295, in run
+    raise RuntimeError("secret internal detail: DATABASE_URL=postgres://x:y@z")
+RuntimeError: secret internal detail: DATABASE_URL=postgres://x:y@z
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "GET /api/week10 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 409 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 503 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "POST /api/week10/chat HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:09] "GET /api/reports HTTP/1.1" 200 -
+Cases — the ten-case manifest
+  PASS  ten cases, two per Week 5 mode
+  PASS  selection is deterministic
+  PASS  the judge's few-shot examples are excluded
+  PASS  every chosen case keeps its original reference facts
+  PASS  the committed manifest equals the rule applied today
+  PASS  the manifest records the source file sha and the rule
+  PASS  single results ran exactly the manifest's cases in order
+  PASS  single per-case rows carry what the aggregates need
+  PASS  multi results ran exactly the manifest's cases in order
+  PASS  multi per-case rows carry what the aggregates need
+
+Manager — routing, lifecycle, hand-offs, synthesis (fake model, fake retriever)
+  PASS  a knowledge question dispatches only the knowledge specialist (triage said no ticket specialist)
+  PASS  routing records who decided each specialist
+  PASS  one root task, one triage, one specialist, one synthesis
+  PASS  child tasks name the root as parent
+  PASS  the specialist task went CREATED -> ASSIGNED -> RUNNING -> COMPLETED, in order
+  PASS  every task has start/end timestamps and a latency
+  PASS  a dispatch and a return hand-off, manager -> specialist -> manager, with task ids
+  PASS  the return hand-off carries the specialist's token cost
+  PASS  the knowledge specialist retrieved with the single agent's top_k and no filter
+  PASS  synthesis used the same reply rules as the single agent
+  PASS  the synthesis prompt contains the numbered sources and the specialist findings
+  PASS  the final reply's [1] is resolved to the chunk it cites
+  PASS  tokens are summed over every model call (triage + specialist + synthesis)
+  PASS  cost = tokens x the Week 7 rate card
+  PASS  the context re-send multiplier divides total prompt tokens by the ticket's own tokens
+  PASS  the reference facts never reach either arm's prompt
+  PASS  root status COMPLETED, not degraded
+  PASS  a charge on the account dispatches the ticket specialist by rule, before the knowledge specialist
+  PASS  the ticket specialist decided eligibility in code from ticket_policy (duplicate -> eligible, $89.00)
+  PASS  the ticket specialist retrieved HC-008 passages only
+  PASS  sources for synthesis are the union of both specialists' passages, de-duplicated
+  PASS  no re-synthesis when the reply agrees with the determination
+  PASS  a reply that contradicts the determination is re-synthesised once and recorded
+  PASS  the rewrite request names the conflict
+  PASS  re-synthesis is bounded: 4 model calls = triage + 2 specialists + 2 syntheses
+  PASS  unparseable triage falls back to a recorded rule instead of crashing
+  PASS  below the evidence gate: refused, not_found, routed hand-off, no synthesis call
+  PASS  the knowledge specialist still completed (it reported no evidence, which is an answer)
+  PASS  uncited findings above the gate are still evidence (v1.1); the omission is recorded
+  PASS  a Priority not-found reply carries the escalation tag
+  PASS  a terminal task refuses further transitions
+  PASS  unknown states are rejected
+
+Failure — HTTP 500 at the specialist boundary, bounded retries, honest degradation
+  PASS  parse_fault reads specialist:TICKET
+  PASS  the faulted specialist answers HTTP 500 for the faulted ticket, before running
+  PASS  the same specialist answers 200 for another ticket
+  PASS  the other specialist answers 200 for the faulted ticket
+  PASS  an unknown specialist is 404
+  PASS  the manager retried exactly max_attempts times and stopped
+  PASS  the task is FAILED with the error recorded (kind, status, attempts)
+  PASS  the lifecycle shows CREATED -> ASSIGNED -> RUNNING -> FAILED
+  PASS  the failure propagates: root FAILED, degraded, an error entry, retries counted
+  PASS  the manager did not invent an answer: the reply is the routed hand-off with the tier's tag
+  PASS  no synthesis call was made after the failure
+  PASS  the return hand-off records the failure
+  PASS  the other specialist was still dispatched and completed over HTTP
+  PASS  an unrelated ticket through the same worker is unaffected
+  PASS  a specialist exception is a 500 whose body names the specialist and leaks no internals
+  PASS  that failure also degrades honestly and the safe message carries no internals
+  PASS  a specialist slower than the timeout is TIMED_OUT, not retried, and degrades
+
+Metrics — percentiles and aggregates
+  PASS  nearest-rank p50/p95/p99 on 1..10
+  PASS  percentile of an empty list is None
+  PASS  pass rate, latency and token aggregates come from the rows
+  PASS  per-mode pass rates are reported
+
+Server — the Week 10 routes over a real socket
+  PASS  GET / serves the Week 10 view and the chatbot controls
+  PASS  GET /api/week10 returns the artefacts and the examples
+  PASS  the examples include not-found questions and carry ticket fields
+  PASS  POST /api/week10/chat with an empty message -> 400
+  PASS  POST /api/week10/chat with a bad mode -> 400
+  PASS  a fault can only be injected into the multi path -> 400
+  PASS  a non-numeric charge amount -> 400
+  PASS  a chat while another run holds the model lock -> 409
+  PASS  a degraded answer is 503 with status 'degraded', a safe error, and the routed reply
+  PASS  a normal answer is 200 with status ok
+  PASS  the Reports view lists the Week 10 README and report
+
+Deliverables — present and within their limits
+  PASS  week10/cases_10.json exists and is not empty
+  PASS  week10/results_single.json exists and is not empty
+  PASS  week10/results_multi.json exists and is not empty
+  PASS  week10/comparison.json exists and is not empty
+  PASS  week10/comparison.csv exists and is not empty
+  PASS  week10/race_table.md exists and is not empty
+  PASS  week10/handoffs.log exists and is not empty
+  PASS  week10/failure_case.md exists and is not empty
+  PASS  week10/failure_case.json exists and is not empty
+  PASS  week10/verdict.md exists and is not empty
+  PASS  week10/REPORT.md exists and is not empty
+  PASS  week10/checklist.md exists and is not empty
+  PASS  week10/README.md exists and is not empty
+  PASS  verdict.md is at most 10 non-empty lines
+  PASS  the stored failure case shows bounded retries and a FAILED task with its error
+
+All checks passed.
+exit code: 0
+
+=== python tests/test_weeks6_9.py ===
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /api/week7 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /api/week8 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:17] "GET /api/week9 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/week6 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/week5 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/reports HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/golden HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/runs HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "POST /api/ask HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "POST /api/trace HTTP/1.1" 404 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "POST /api/week7/workflow HTTP/1.1" 400 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "POST /api/week7/workflow HTTP/1.1" 409 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/runs HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "GET /api/runs HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:18] "POST /api/week8/rescore HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:28] "POST /api/week9/chat HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:34:47] "POST /api/week9/chat HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:35:01] "POST /api/week9/chat HTTP/1.1" 200 -
+127.0.0.1 - - [21/Oct/2026 18:35:12] "POST /api/week9/chat HTTP/1.1" 200 -
+Week 6 — assertions vs judge, blind-label gate, agreement
+  PASS  6 deterministic assertions, 1 judged criterion
+  PASS  judge v0 grades '1. ticket id:' and judge v1 does not
+  PASS  judge v0 grades '2. refund amount:' and judge v1 does not
+  PASS  judge v0 grades '3. escalation:' and judge v1 does not
+  PASS  judge v0 grades '4. refund window:' and judge v1 does not
+  PASS  judge v0 grades '5. complete:' and judge v1 does not
+  PASS  judge v0 grades '6. clean:' and judge v1 does not
+  PASS  judge v1 grades ONE criterion, RESOLUTION, and tells the model not to grade the rest
+  PASS  judge v0 graded 7 criteria (6 now deterministic + resolution)
+  PASS  ticket_id_echoed passes when the id is present
+  PASS  ticket_id_echoed fails on the wrong id
+  PASS  refund_amount_numeric passes on $49.00
+  PASS  refund_amount_numeric fails when no number is given
+  PASS  no_refund_outside_window fails a promise at 45 days
+  PASS  no_refund_outside_window passes a denial at 45 days
+  PASS  escalation tag required for Priority
+  PASS  escalation tag must be absent for Standard
+  PASS  labels present: protocol_check reports the committed state
+  PASS  the UI cannot force a judge the protocol disallows
+  PASS  agreement = agreements / 25 as a percentage
+  PASS  held-out agreement excludes the few-shot ids
+  PASS  25+ cases, each tagged with one Week 5 mode
+  PASS  at least 2 regression fixtures carry a source trace id and the original failure
+  PASS  regression fixtures replay the message verbatim from the real failed trace
+
+Week 7 — identical inputs, output contract, four budgets
+  PASS  10 fixtures with stable ids
+  PASS  at least 3 cases where a later action depends on a previous result
+  PASS  both systems ran exactly the same 10 inputs in the stored race
+  PASS  the stored race records model, build, budgets and rate card
+  PASS  every stored run carries the same output contract
+  PASS  tokens are summed over every lap, not the last call
+  PASS  normalise_result coerces into the shared contract
+  PASS  unknown decisions become None, not a guess
+  PASS  grade() is one function for both systems
+  PASS  max_iterations fires
+  PASS  max_tokens fires
+  PASS  max_cost_usd fires
+  PASS  max_wall_seconds fires
+  PASS  nothing fires under budget
+  PASS  one clean termination log per budget, each naming the budget that fired
+  PASS  each budget log records the configured limit and the spend at termination
+  PASS  live agent runs from the UI are clamped to the race ceilings
+
+Week 8 — alternate trajectories, argument validation, gap, one mitigation
+  PASS  10 expected sequences
+  PASS  alternate valid paths are accepted as sets (3 cases)
+  PASS  CD-7008 via find_ticket -> answer passes the trajectory (alternate path)
+  PASS  right answer on the wrong path: outcome PASS, trajectory FAIL, skipped_evidence counted
+  PASS  fabricated order id is detected
+  PASS  a real id from another ticket is ungrounded, not valid
+  PASS  the ticket's own order id is valid
+  PASS  ticket id checked against the fixture
+  PASS  step efficiency = laps taken / laps needed (4/4 = 1.0 on the shortest path)
+  PASS  gap = outcome pass rate - trajectory pass rate, in percentage points
+  PASS  exactly ONE mitigation between baseline and mitigated
+  PASS  the mitigation targets the harm ranking's top mode
+  PASS  the regression table covers every mode in the taxonomy
+  PASS  the regression table reports modes that worsened or appeared
+
+Week 9 — discovery, config-only server addition, recoverable error, no model in servers
+  PASS  the config names both servers
+  PASS  host does not hard-code tool 'lookup_ticket'
+  PASS  host does not hard-code tool 'get_escalation_history'
+  PASS  host does not hard-code tool 'search_kb'
+  PASS  host does not hard-code tool 'get_article'
+  PASS  no model call inside mcp_servers/kb_server.py
+  PASS  no model call inside third_party/ticket_history_server/server.py
+  PASS  git: zero agent-module lines changed between one server and two
+  PASS  git: the config diff is the whole change
+  PASS  agent_diff.txt records 0 changed lines
+  PASS  live tools/list from the ticket-history server
+  PASS  initialize agreed a protocol version
+  PASS  live tools/list from our kb server
+  PASS  malformed id -> isError with a recoverable, actionable message
+  PASS  saved tool counts match live discovery (2 -> 4)
+
+Server — JSON API over a real socket
+  PASS  GET / serves the UI with every workspace
+  PASS  GET /api/week7
+  PASS  GET /api/week8
+  PASS  GET /api/week9
+  PASS  GET /api/week6
+  PASS  GET /api/week5
+  PASS  GET /api/reports
+  PASS  GET /api/golden
+  PASS  GET /api/runs
+  PASS  GET /api/health
+  PASS  POST /api/ask with an empty query -> 400
+  PASS  POST /api/trace unknown id -> 404
+  PASS  POST /api/week7/workflow rejects a ticket outside the race set (400)
+  PASS  a second expensive run while one is in progress -> 409 naming the run
+  PASS  GET /api/runs reports the run in progress
+  PASS  the lock is released afterwards
+  PASS  POST /api/week8/rescore reproduces the stored report from the raw runs
+  PASS  POST /api/week9/chat ticket query routes to ticket-history MCP server
+  PASS  POST /api/week9/chat KB query routes to clouddesk-kb MCP server
+  PASS  POST /api/week9/chat off-topic query returns no passages, not a stopword match
+  PASS  POST /api/week9/chat unknown ticket id -> no data, not a search match on 'ticket'
+  PASS  chat does not hard-code tool 'lookup_ticket'
+  PASS  chat does not hard-code tool 'get_escalation_history'
+  PASS  chat does not hard-code tool 'search_kb'
+  PASS  chat does not hard-code tool 'get_article'
+
+All checks passed.
+exit code: 0

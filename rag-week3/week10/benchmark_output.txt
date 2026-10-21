@@ -1,0 +1,142 @@
+# Week 10 benchmark console, captured 2026-10-21 (transformers progress/warning lines removed)
+
+=================== week10_run_multi_v11.log ===================
+Week 10 · 10 cases · arms ('multi',) · transport inprocess
+retrieval hybrid_rerank top_k=5 threshold=0.75 · decoding {'max_new_tokens': 160, 'do_sample': False, 'return_full_text': False}
+Failed to export span batch code: None, reason: HTTPSConnectionPool(host='us.cloud.langfuse.com', port=443): Read timed out. (read timeout=4.988722324371338)
+cold start (model load + first token, not charged to any case): 70296 ms
+
+== multi ==
+   1/10 T01  M1 answered    25934 ms   1653 tok  3 call(s)  2 handoff(s)
+   2/10 T03  M1 answered    81418 ms   2654 tok  4 call(s)  4 handoff(s)
+   3/10 R02  M2 refused      4224 ms    186 tok  1 call(s)  2 handoff(s)
+   4/10 T07  M2 answered    79031 ms   2792 tok  4 call(s)  4 handoff(s)
+   5/10 R03  M3 answered    32870 ms   1537 tok  3 call(s)  2 handoff(s)
+   6/10 T11  M3 answered    91324 ms   1708 tok  3 call(s)  2 handoff(s)
+   7/10 R04  M4 answered    59620 ms   1631 tok  3 call(s)  2 handoff(s)
+   8/10 T16  M4 answered    84632 ms   2683 tok  4 call(s)  4 handoff(s)
+   9/10 T18  M5 answered    91410 ms   1588 tok  3 call(s)  2 handoff(s)
+  10/10 T21  M5 answered   216223 ms   3895 tok  5 call(s)  4 handoff(s)
+  -> week10/runs/multi_20261021-082404.json
+
+exit 0
+
+=================== week10_run_single_v11.log ===================
+Week 10 · 10 cases · arms ('single',) · transport inprocess
+retrieval hybrid_rerank top_k=5 threshold=0.75 · decoding {'max_new_tokens': 160, 'do_sample': False, 'return_full_text': False}
+cold start (model load + first token, not charged to any case): 70761 ms
+
+== single ==
+   1/10 T01  M1 answered    38103 ms    769 tok  1 call(s)  0 handoff(s)
+   2/10 T03  M1 answered   102243 ms    830 tok  1 call(s)  0 handoff(s)
+   3/10 R02  M2 refused      2286 ms      0 tok  0 call(s)  0 handoff(s)
+   4/10 T07  M2 answered    91785 ms    831 tok  1 call(s)  0 handoff(s)
+   5/10 R03  M3 answered   104330 ms    744 tok  1 call(s)  0 handoff(s)
+   6/10 T11  M3 answered    25931 ms    696 tok  1 call(s)  0 handoff(s)
+   7/10 R04  M4 answered    53448 ms    757 tok  1 call(s)  0 handoff(s)
+   8/10 T16  M4 answered    97749 ms    820 tok  1 call(s)  0 handoff(s)
+   9/10 T18  M5 answered    88181 ms    715 tok  1 call(s)  0 handoff(s)
+  10/10 T21  M5 answered    73650 ms    846 tok  1 call(s)  0 handoff(s)
+  -> week10/runs/single_20261021-083852.json
+
+exit 0
+
+=================== week10_judge_report_failure.log ===================
+Judge v2 (HuggingFaceTB/SmolLM2-1.7B-Instruct, prompt sha e0ac6da7ec7f4295) · agreement with blind labels: before 56.0% after 76.0%
+== single ==
+  T01  judge PASS assertions ok                                       -> PASS
+  T03  judge FAIL assertions FAIL not_cut_off                         -> FAIL
+  R02  judge FAIL assertions ok                                       -> FAIL
+  T07  judge PASS assertions FAIL escalation_tag_iff_priority,not_cut_off -> FAIL
+  R03  judge FAIL assertions ok                                       -> FAIL
+  T11  judge PASS assertions ok                                       -> PASS
+  R04  judge FAIL assertions FAIL not_cut_off                         -> FAIL
+  T16  judge FAIL assertions FAIL escalation_tag_iff_priority,not_cut_off -> FAIL
+  T18  judge FAIL assertions ok                                       -> FAIL
+  T21  judge FAIL assertions FAIL not_cut_off                         -> FAIL
+  -> week10/results_single.json
+== multi ==
+  T01  judge PASS assertions ok                                       -> PASS
+  T03  judge FAIL assertions FAIL not_cut_off                         -> FAIL
+  R02  judge FAIL assertions ok                                       -> FAIL
+  T07  judge PASS assertions FAIL escalation_tag_iff_priority,not_cut_off -> FAIL
+  R03  judge PASS assertions ok                                       -> PASS
+  T11  judge FAIL assertions ok                                       -> FAIL
+  R04  judge PASS assertions FAIL not_cut_off                         -> FAIL
+  T16  judge FAIL assertions FAIL escalation_tag_iff_priority         -> FAIL
+  T18  judge FAIL assertions FAIL no_prompt_scaffolding               -> FAIL
+  T21  judge PASS assertions ok                                       -> PASS
+  -> week10/results_multi.json
+# Week 10 — race table: single agent vs manager + two specialists
+
+Generated 2026-10-21T12:55:21+00:00 from `week10/runs/single_20261021-083852.json` and `week10/runs/multi_20261021-082404.json` (build `7e44499`). Same 10 cases, same model, same retrieval, same judge.
+
+| metric | single agent | multi-agent | note |
+|---|---|---|---|
+| pass rate | **2/10 = 20.0%** | **3/10 = 30.0%** | assertions AND judge |
+| judge PASS (model-based) | 3/10 | 5/10 | judge v2, agreement with blind labels 76.0% (held-out 78.3%) |
+| assertions pass (deterministic) | 5/10 | 5/10 | 6 code checks |
+| citations inside the reference articles | 0/0 | 0/0 | deterministic; denominator = replies that cite |
+| refused / not found | 1 / 1 | 1 / 1 | routed hand-off |
+| degraded (specialist failure) | 0 | 0 | |
+| p50 latency | 80.9 s | 80.2 s | median, sequential, warm |
+| p95 latency | 104.3 s | 216.2 s | nearest-rank: the slowest case at n=10 |
+| p99 latency | 104.3 s | 216.2 s | same case as p95 at n=10 |
+| mean latency | 67.8 s | 76.7 s | |
+| input tokens | 5,665 | 17,199 | summed per model call |
+| output tokens | 1,343 | 3,128 | |
+| total tokens | **7,008** (700.8/case) | **20,327** (2032.7/case) | |
+| cost per case | $0.000166 | $0.000446 | stand-in rate card $0.15/$0.6 per Mtok, not a provider charge |
+| total cost | $0.001657 | $0.004456 | |
+| model calls | 9 (0.9/case) | 33 (3.3/case) | |
+| hand-offs | 0 | 28 (2.8/case) | dispatch + return, manager ↔ specialist |
+| specialist calls | 0 | 14 | |
+| re-synthesis (conflict resolution) | — | 1 | bounded to 1 per case |
+| context re-send multiplier | — | 38.75× | total prompt tokens / ticket tokens, mean |
+| errors / retries / timeouts | 0 / 0 / 0 | 0 / 0 / 0 | |
+
+## Pass rate by Week 5 mode
+
+| mode | n | single | multi |
+|---|---|---|---|
+| M1 | 2 | 1/2 | 1/2 |
+| M2 | 2 | 0/2 | 0/2 |
+| M3 | 2 | 1/2 | 1/2 |
+| M4 | 2 | 0/2 | 0/2 |
+| M5 | 2 | 0/2 | 1/2 |
+
+## Per case
+
+| case | mode | single | multi | single s / tok | multi s / tok | multi calls / hand-offs | winner |
+|---|---|---|---|---|---|---|---|
+| T01 | M1 | PASS | PASS | 38.1 / 769 | 25.9 / 1653 | 3 / 2 | both |
+| T03 | M1 | FAIL | FAIL | 102.2 / 830 | 81.4 / 2654 | 4 / 4 | neither |
+| R02 | M2 | FAIL | FAIL (not found) | 2.3 / 0 | 4.2 / 186 | 1 / 2 | neither |
+| T07 | M2 | FAIL | FAIL | 91.8 / 831 | 79.0 / 2792 | 4 / 4 | neither |
+| R03 | M3 | FAIL | PASS | 104.3 / 744 | 32.9 / 1537 | 3 / 2 | multi |
+| T11 | M3 | PASS | FAIL | 25.9 / 696 | 91.3 / 1708 | 3 / 2 | single |
+| R04 | M4 | FAIL | FAIL | 53.4 / 757 | 59.6 / 1631 | 3 / 2 | neither |
+| T16 | M4 | FAIL | FAIL | 97.7 / 820 | 84.6 / 2683 | 4 / 4 | neither |
+| T18 | M5 | FAIL | FAIL | 88.2 / 715 | 91.4 / 1588 | 3 / 2 | neither |
+| T21 | M5 | FAIL | PASS | 73.6 / 846 | 216.2 / 3895 | 5 / 4 | multi |
+
+Wins: {'single': 1, 'multi': 2, 'both': 1, 'neither': 6}.
+
+Largest token-consuming hand-off: **manager (synthesis) on T21**, 2401 tokens (in 2188 / out 213), 151.6 s. Task `task-86e1915138`.
+
+Cold start (model load, charged to no case): single 70.8 s, multi 70.3 s.
+
+Wrote comparison.json, comparison.csv, race_table.md, handoffs.log
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/ticket_specialist HTTP/1.1" 500 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+[worker] "POST /specialist/knowledge_specialist HTTP/1.1" 200 -
+worker http://127.0.0.1:60677 fault={'specialist': 'ticket_specialist', 'ticket_id': 'CD-10407'} retry policy {'max_attempts': 2, 'retry_on': (500, 502, 503, 504), 'backoff_s': 0.2}
+== faulted case T07 (CD-10407) ==
+   status FAILED degraded=True errors=[{'task': 'task-42c071034f', 'agent': 'ticket_specialist', 'kind': 'http_error', 'status': 500, 'message': 'ticket_specialist specialist returned HTTP 500 (2 attempts)', 'attempts': 2}]
+   answer: "[ESCALATED-PRIORITY]\nCD-10407: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up."
+== control case T01 (CD-10401), same worker, same fault ==
+   status COMPLETED degraded=False errors=[]
+
+Wrote week10/failure_case.json and week10/failure_case.md
+exit 0

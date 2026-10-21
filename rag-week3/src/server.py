@@ -285,6 +285,15 @@ def week7_module():
     return week7_ui
 
 
+def week10_module():
+    """experiments/week10_ui.py reads week10/ and runs one question live for the UI."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week10_ui
+    return week10_ui
+
+
 ROOT_DIR = Path(SRC_DIR).parent
 
 # The markdown deliverables the Reports view renders. Paths are relative to
@@ -304,6 +313,8 @@ REPORT_FILES = [
     ("week8_demo", "Week 8 demo notes", "week8/DEMO.md"),
     ("week9", "Week 9 README", "week9/README.md"),
     ("week9_demo", "Week 9 demo notes", "week9/DEMO.md"),
+    ("week10", "Week 10 README", "week10/README.md"),
+    ("week10_report", "Week 10 report", "week10/REPORT.md"),
     ("database", "Database notes", "DATABASE.md"),
     ("setup_db", "Postgres setup", "SETUP_DB.md"),
 ]
@@ -508,6 +519,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week8_module().ui_artefacts())
             elif parsed.path == "/api/week9":
                 self._send_json(week9_module().ui_artefacts())
+            elif parsed.path == "/api/week10":
+                self._send_json(week10_module().ui_artefacts())
             elif parsed.path == "/api/reports":
                 self._send_json(reports())
             elif parsed.path == "/api/health":
@@ -580,6 +593,23 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 top_k = payload.get("top_k", 3)
                 with exclusive("week 9 mcp customer chat"):
                     self._send_json(handle_mcp_chat(query=query, which_config=which, top_k=top_k))
+            elif parsed.path == "/api/week10/chat":
+                mode = payload.get("mode") or "single"
+                fault = payload.get("inject_fault") or None
+                with exclusive(f"week 10 {mode}-agent chat" + (f" (fault: {fault})" if fault else "")):
+                    result = week10_module().run_chat(mode, payload.get("message"),
+                                                      payload.get("ticket"), inject_fault=fault)
+                # A reply written after a specialist failed is still safe (a
+                # routed hand-off), but the service was degraded: say so in the
+                # status code as well as the body, so a client cannot mistake
+                # it for a normal answer.
+                result.pop("status", None)          # the API's status is the contract below
+                if result.get("degraded"):
+                    self._send_json({**result, "status": "degraded",
+                                     "error": "a specialist was unavailable; the ticket was routed "
+                                              "to a person instead of being answered"}, status=503)
+                else:
+                    self._send_json({**result, "status": "ok"})
             elif parsed.path == "/api/week5/rerun":
                 from week5_rerun import rerun_sample
                 with exclusive("week 5 rerun of the 20 sampled questions"):

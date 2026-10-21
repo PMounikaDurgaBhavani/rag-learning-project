@@ -55,6 +55,7 @@ Everything runs locally on CPU/MPS. No API key is needed. The models:
 | **Agent vs workflow** | Week 7: the four numbers, per-ticket transcripts, budgets, live runs | `/api/week7`, `/api/week7/workflow`, `/api/week7/agent` → `experiments/week7_ui.py` |
 | **Trajectory eval** | Week 8: sequences, gap, mitigation, regression, injection | `/api/week8`, `/api/week8/rescore` → `experiments/week8_trajectory_eval.py` |
 | **MCP servers** | Week 9: discovery 2→4, zero-diff swap, wire, errors, risk, gateway | `/api/week9`, `/api/week9/discover`, `/api/week9/wire` → `experiments/week9_ui.py` |
+| **Multi-agent benchmark** | Week 10: single vs multi-agent chatbot, the 10 cases, race table, hand-offs, HTTP 500 experiment, verdict | `/api/week10`, `/api/week10/chat` → `experiments/week10_ui.py`, `src/multi_agent.py` |
 | **Reports & demo** | this guide and every README, rendered from the files | `/api/reports` |
 | **Console** | raw JSON of the last response or trace | — |
 
@@ -392,7 +393,33 @@ Open **MCP servers** (or `#week9/discovery`).
   (`week9/logs/gateway_audit.log`), token scope denying
   `get_escalation_history`, the denial reaching the model as `isError: true`.
 
-### Step 10 — Reports & demo
+### Step 10 — Multi-agent benchmark (Week 10)
+
+Open **Multi-agent benchmark**. Numbers: `week10/race_table.md`; the verdict:
+`week10/verdict.md`; how it was measured: `week10/README.md`.
+
+- *Chatbot*: pick an example chip (the ten benchmark cases, plus two questions
+  the help centre cannot answer), choose **Compare both**, press **Ask**. The
+  single agent runs first, then the manager with its two specialists; the
+  comparison table and both cards show the answer, citations, routing, every
+  task's lifecycle, the hand-offs, tokens, cost and latency. Say: "Same model,
+  same retrieval, same reply rules. The only new capability is the ticket
+  specialist deciding refund eligibility in code." Try a *Not in the help
+  centre* chip to show the routed hand-off, with no invented policy.
+- *Race table*: pass rate (assertions AND judge v2), p50/p95/p99 with the n=10
+  caveat, tokens in/out, cost on the stand-in rate card, calls and hand-offs,
+  the pass rate per Week 5 mode, and the largest token-consuming hand-off.
+- *Hand-offs*: `handoffs.log`, one line per dispatch, return and task.
+- *Failure experiment*: choose a specialist and a case, press **Run with the
+  fault**. The worker answers HTTP 500 for that ticket only; the card shows two
+  attempts, a FAILED task, and the routed hand-off; the API answered 503
+  `degraded`. The stored run is `week10/failure_case.md`.
+- *Verdict* and *Write-up*: `verdict.md` (ten lines) and `REPORT.md`.
+
+Do **not** run `python main.py week10 all` live: both arms take about half an
+hour on this machine.
+
+### Step 11 — Reports & demo
 
 Open **Reports & demo**. This guide and every week's README render from the
 files, with the path shown, so a reviewer can open the same file.
@@ -434,6 +461,7 @@ files, with the path shown, so a reviewer can open the same file.
 python tests/test_pipeline.py          # loader, chunking, grounding, metrics, eval data   (no model)
 python tests/test_week5_prediction.py  # prediction-experiment provenance, synthetic       (no model)
 python tests/test_weeks6_9.py          # Weeks 6–9 + the JSON API over a socket           (no model; starts the MCP servers)
+python tests/test_week10.py            # Week 10: manager, specialists, HTTP 500, API      (no model; starts the specialist worker)
 python tests/test_rag_live.py          # the real pipeline, traced to a temp dir          (0.5B model, ~1 min)
 ```
 

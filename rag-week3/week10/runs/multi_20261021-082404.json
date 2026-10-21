@@ -1,0 +1,3930 @@
+{
+  "ran_at": "2026-10-21T03:08:04+00:00",
+  "app_version": "7e44499",
+  "arm": "multi",
+  "session_id": "week10-20261021-082404",
+  "manifest_sha": "df600e1f8c667486",
+  "case_ids": [
+    "T01",
+    "T03",
+    "R02",
+    "T07",
+    "R03",
+    "T11",
+    "R04",
+    "T16",
+    "T18",
+    "T21"
+  ],
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "retrieval": {
+    "retrieval_mode": "hybrid_rerank",
+    "strategy": "markdown",
+    "top_k": 5,
+    "threshold": 0.75
+  },
+  "decoding": {
+    "max_new_tokens": 160,
+    "do_sample": false,
+    "return_full_text": false
+  },
+  "rate_card_usd_per_mtok": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+  },
+  "transport": "inprocess",
+  "latency_method": "sequential, per case, end to end, model warm",
+  "cold_start_ms": 70295.9,
+  "langfuse": {
+    "enabled": true
+  },
+  "rows": [
+    {
+      "case_id": "T01",
+      "mode": "M1",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10401",
+      "question": "My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+      "reference_articles": [
+        "HC-001"
+      ],
+      "arm": "multi",
+      "answer": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Must be different from the previous password.\n\nPlease make sure your new password adheres to these guidelines before attempting to set it. If you continue to face issues, feel free to reach out to our support team for further assistance.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-6",
+          "article_id": "HC-001",
+          "section": "Password Requirements",
+          "distance": 0.37869079367030967
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-1",
+          "article_id": "HC-001",
+          "section": "Overview",
+          "distance": 0.6912777467866473
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-14",
+          "article_id": "HC-001",
+          "section": "Security Information",
+          "distance": 0.640211586914353
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-17",
+          "article_id": "HC-002",
+          "section": "Password Manager Considerations",
+          "distance": 0.6732780537986169
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-markdown-9",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.8547876390688185
+        }
+      ],
+      "best_distance": 0.37869079367030967,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 132,
+      "max_new_tokens": 160,
+      "input_tokens": 1428,
+      "output_tokens": 225,
+      "tokens": 1653,
+      "cost_usd": 0.000349,
+      "model_calls": 3,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 42,
+      "context_resend_multiplier": 34.0,
+      "latency_ms": 25934.3,
+      "model_latency_ms": 25509.7,
+      "trace_id": "a4f28167062a4d1f",
+      "langfuse_trace_id": "1226654a39dd199c2423646d654580db",
+      "task_ids": [
+        "task-28e634904a",
+        "task-5eb906592b",
+        "task-692e9fcb00",
+        "task-731c4bfbc3"
+      ],
+      "tasks": [
+        {
+          "id": "task-28e634904a",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:14.715+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:14.716+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:14.716+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:55:40.647+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10401\nSupport tier: Standard\nCustomer message: My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+          "output": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at le\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:55:14.716+00:00",
+          "ended_at": "2026-10-21T02:55:40.647+00:00",
+          "latency_ms": 25931.6,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-5eb906592b",
+          "parent_id": "task-28e634904a",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:14.722+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:14.722+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:14.722+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:55:18.642+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10401\nSupport tier: Standard\nCustomer message: My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:55:14.722+00:00",
+          "ended_at": "2026-10-21T02:55:18.642+00:00",
+          "latency_ms": 3919.7,
+          "model_calls": 1,
+          "input_tokens": 180,
+          "output_tokens": 33,
+          "tokens": 213,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-692e9fcb00",
+          "parent_id": "task-28e634904a",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:18.642+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:18.642+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:18.642+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:55:25.296+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10401\", \"message\": \"My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?\"}",
+          "output": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from \u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:55:18.642+00:00",
+          "ended_at": "2026-10-21T02:55:25.297+00:00",
+          "latency_ms": 6655.0,
+          "model_calls": 1,
+          "input_tokens": 542,
+          "output_tokens": 60,
+          "tokens": 602,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-731c4bfbc3",
+          "parent_id": "task-28e634904a",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:25.298+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:25.298+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:25.298+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:55:40.645+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-001-markdown-6\", \"HC-001-markdown-1\", \"HC-001-markdown-14\", \"HC-002-markdown-17\", \"HC-002-markdown-9\"], \"findings\": [\"[knowledge specialist]\\nTo set a new password on CloudDesk, it needs to meet these requirements:\\n\\n- At \u2026",
+          "output": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at le\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:55:25.298+00:00",
+          "ended_at": "2026-10-21T02:55:40.645+00:00",
+          "latency_ms": 15347.4,
+          "model_calls": 1,
+          "input_tokens": 706,
+          "output_tokens": 132,
+          "tokens": 838,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-bfbf7ae25b",
+          "at": "2026-10-21T02:55:18.642+00:00",
+          "direction": "dispatch",
+          "from_task": "task-28e634904a",
+          "from_agent": "manager",
+          "to_task": "task-692e9fcb00",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10401\", \"tier\": \"Standard\", \"message\": \"My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_ch\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 281
+        },
+        {
+          "id": "handoff-5c29020bc7",
+          "at": "2026-10-21T02:55:25.297+00:00",
+          "direction": "return",
+          "from_task": "task-692e9fcb00",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-28e634904a",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"To set a new password on CloudDesk, it needs to meet these requirements:\\n\\n- At least 8 characters long.\\n- Contains at least one uppercase letter.\\n- Contains at least one lowercase letter.\\n- Contains at least one number.\\n\u2026",
+          "status": "completed",
+          "input_tokens": 542,
+          "output_tokens": 60,
+          "context_chars": 418
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-5eb906592b",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 180,
+          "output_tokens": 33,
+          "latency_ms": 3796.2
+        },
+        {
+          "task": "task-692e9fcb00",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 542,
+          "output_tokens": 60,
+          "latency_ms": 6403.3
+        },
+        {
+          "task": "task-731c4bfbc3",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 706,
+          "output_tokens": 132,
+          "latency_ms": 15310.2
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": true, \"reason\": \"The customer is asking about setting up a password that requires specific criteria.\"}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": true,
+          "reason": "The customer is asking about setting up a password that requires specific criteria."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.37869079367030967,
+          "lexical_anchors": [],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from the previous password.\n\nSource: [1]",
+          "model_cited": [
+            1
+          ],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from the previous password.\n\nSource: [1]",
+              "input_tokens": 542,
+              "output_tokens": 60,
+              "latency_ms": 6403.3,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": true,
+          "chunk_ids": [
+            "HC-001-markdown-6",
+            "HC-001-markdown-1",
+            "HC-001-markdown-14",
+            "HC-002-markdown-17",
+            "HC-002-markdown-9"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T03",
+      "mode": "M1",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10403",
+      "question": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+      "reference_articles": [
+        "HC-008"
+      ],
+      "arm": "multi",
+      "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.\n\nHowever, please note that if you have duplicate charges due to an error, those charges will be refunded in full. In your case, since you were charged $49.00 for a subscription you had already cancelled, this situation does not meet the conditions for a refund.\n\nWe understand that this may cause inconvenience, but based on the current policy, we cannot process a refund for the charge you received.\n\nPlease rest assured that we will keep your details",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-008-markdown-2",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 0.7139648582349709
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-008-markdown-5",
+          "article_id": "HC-008",
+          "section": "Duplicate Charges",
+          "distance": 1.0413114093561595
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-008-markdown-13",
+          "article_id": "HC-008",
+          "section": "Frequently Asked Questions",
+          "distance": 1.0560949545076341
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-008-markdown-1",
+          "article_id": "HC-008",
+          "section": "Overview",
+          "distance": 1.0753278546523795
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-008-markdown-6",
+          "article_id": "HC-008",
+          "section": "Refund Amount and Timing",
+          "distance": 1.0631029122655764
+        },
+        {
+          "rank": 6,
+          "chunk_id": "HC-008-markdown-3",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 0.7914095036455282
+        }
+      ],
+      "best_distance": 0.7139648582349709,
+      "lexical_anchors": [
+        "charged",
+        "days",
+        "get",
+        "refunded",
+        "subscription"
+      ],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 160,
+      "max_new_tokens": 160,
+      "input_tokens": 2260,
+      "output_tokens": 394,
+      "tokens": 2654,
+      "cost_usd": 0.000575,
+      "model_calls": 4,
+      "handoffs": 4,
+      "specialist_calls": 2,
+      "tool_calls": 2,
+      "resynthesis": 0,
+      "base_context_tokens": 60,
+      "context_resend_multiplier": 37.67,
+      "latency_ms": 81418.4,
+      "model_latency_ms": 78603.4,
+      "trace_id": "fc94918f71df466f",
+      "langfuse_trace_id": "6114b7f6b55fe5163d1294baa9264c60",
+      "task_ids": [
+        "task-46abd3049f",
+        "task-6f4c2542df",
+        "task-6a72d8f7b4",
+        "task-74e1d70e30",
+        "task-327701f1c1"
+      ],
+      "tasks": [
+        {
+          "id": "task-46abd3049f",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:03.825+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10403\nSupport tier: Standard\nCharge on account: $49.00, charged 12 days ago\nCustomer message: I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "output": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligib\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:55:42.409+00:00",
+          "ended_at": "2026-10-21T02:57:03.825+00:00",
+          "latency_ms": 81418.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-6f4c2542df",
+          "parent_id": "task-46abd3049f",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:42.409+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:55:47.236+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10403\nSupport tier: Standard\nCharge on account: $49.00, charged 12 days ago\nCustomer message: I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:55:42.409+00:00",
+          "ended_at": "2026-10-21T02:55:47.236+00:00",
+          "latency_ms": 4827.5,
+          "model_calls": 1,
+          "input_tokens": 198,
+          "output_tokens": 35,
+          "tokens": 233,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-6a72d8f7b4",
+          "parent_id": "task-46abd3049f",
+          "agent": "ticket_specialist",
+          "role": "Ticket / support specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:55:47.237+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:55:47.237+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:55:47.237+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:56:03.478+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10403\", \"message\": \"I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?\"}",
+          "output": "**Known Facts:**  \n- The charge on the account was $49.00, made 12 days ago.  \n- The refund request has been initiated.  \n\n**Determination:**  \nThe charge is eligible for a full refund because it was requested within the 30-day window.  \n\n*\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:55:47.237+00:00",
+          "ended_at": "2026-10-21T02:56:03.479+00:00",
+          "latency_ms": 16242.9,
+          "model_calls": 1,
+          "input_tokens": 453,
+          "output_tokens": 109,
+          "tokens": 562,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-74e1d70e30",
+          "parent_id": "task-46abd3049f",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:56:03.486+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:56:03.486+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:56:03.486+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:56:20.610+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10403\", \"message\": \"I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?\"}",
+          "output": "No, you cannot get a refund for a charge older than 30 days. However, if you have duplicate charges due to an error, they will be refunded in full. For your specific case where you were charged $49 twelve days ago for a subscription you had\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:56:03.486+00:00",
+          "ended_at": "2026-10-21T02:56:20.611+00:00",
+          "latency_ms": 17125.2,
+          "model_calls": 1,
+          "input_tokens": 556,
+          "output_tokens": 90,
+          "tokens": 646,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-327701f1c1",
+          "parent_id": "task-46abd3049f",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:56:20.618+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:56:20.618+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:56:20.618+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:03.823+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-008-markdown-2\", \"HC-008-markdown-5\", \"HC-008-markdown-13\", \"HC-008-markdown-1\", \"HC-008-markdown-6\", \"HC-008-markdown-3\"], \"findings\": [\"[ticket specialist] The policy determination below was made from the account records \u2026",
+          "output": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligib\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:56:20.618+00:00",
+          "ended_at": "2026-10-21T02:57:03.824+00:00",
+          "latency_ms": 43206.8,
+          "model_calls": 1,
+          "input_tokens": 1053,
+          "output_tokens": 160,
+          "tokens": 1213,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-37fce647f6",
+          "at": "2026-10-21T02:55:47.237+00:00",
+          "direction": "dispatch",
+          "from_task": "task-46abd3049f",
+          "from_agent": "manager",
+          "to_task": "task-6a72d8f7b4",
+          "to_agent": "ticket_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10403\", \"tier\": \"Standard\", \"message\": \"I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?\", \"charge_amount\": 49.0, \"days_since_charge\": 12, \"duplicate_charge\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 276
+        },
+        {
+          "id": "handoff-e7eb59f38d",
+          "at": "2026-10-21T02:56:03.482+00:00",
+          "direction": "return",
+          "from_task": "task-6a72d8f7b4",
+          "from_agent": "ticket_specialist",
+          "to_task": "task-46abd3049f",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"**Known Facts:**  \\n- The charge on the account was $49.00, made 12 days ago.  \\n- The refund request has been initiated.  \\n\\n**Determination:**  \\nThe charge is eligible for a full refund because it was requested within the \u2026",
+          "status": "completed",
+          "input_tokens": 453,
+          "output_tokens": 109,
+          "context_chars": 594
+        },
+        {
+          "id": "handoff-0cf925b6d7",
+          "at": "2026-10-21T02:56:03.486+00:00",
+          "direction": "dispatch",
+          "from_task": "task-46abd3049f",
+          "from_agent": "manager",
+          "to_task": "task-74e1d70e30",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10403\", \"tier\": \"Standard\", \"message\": \"I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?\", \"charge_amount\": 49.0, \"days_since_charge\": 12, \"duplicate_charge\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 276
+        },
+        {
+          "id": "handoff-a772c58207",
+          "at": "2026-10-21T02:56:20.613+00:00",
+          "direction": "return",
+          "from_task": "task-74e1d70e30",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-46abd3049f",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"No, you cannot get a refund for a charge older than 30 days. However, if you have duplicate charges due to an error, they will be refunded in full. For your specific case where you were charged $49 twelve days ago for a subscr\u2026",
+          "status": "completed",
+          "input_tokens": 556,
+          "output_tokens": 90,
+          "context_chars": 572
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-6f4c2542df",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 198,
+          "output_tokens": 35,
+          "latency_ms": 4797.1
+        },
+        {
+          "task": "task-6a72d8f7b4",
+          "agent": "ticket_specialist",
+          "kind": "specialist",
+          "input_tokens": 453,
+          "output_tokens": 109,
+          "latency_ms": 14181.0
+        },
+        {
+          "task": "task-74e1d70e30",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 556,
+          "output_tokens": 90,
+          "latency_ms": 16592.0
+        },
+        {
+          "task": "task-327701f1c1",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 1053,
+          "output_tokens": 160,
+          "latency_ms": 43033.3
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\n  \"ticket_specialist\": true,\n  \"knowledge_specialist\": true,\n  \"reason\": \"The customer has asked about a charge from a past transaction.\"\n}",
+        "triage_parsed": {
+          "ticket_specialist": true,
+          "knowledge_specialist": true,
+          "reason": "The customer has asked about a charge from a past transaction."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "rule: charge or refund request on the account"
+        },
+        "dispatch": [
+          "ticket_specialist",
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "ticket_specialist": {
+          "specialist": "ticket_specialist",
+          "facts": {
+            "ticket_id": "CD-10403",
+            "tier": "Standard",
+            "escalation_required": false,
+            "escalation_tag": "[ESCALATED-PRIORITY]",
+            "refund_requested": true,
+            "charge_amount": 49.0,
+            "days_since_charge": 12,
+            "duplicate_charge": false,
+            "refund_window_days": 30,
+            "eligible": true,
+            "determination": "Charged 12 days ago, within the 30-day window: eligible for a full refund of $49.00.",
+            "missing": []
+          },
+          "findings": "**Known Facts:**  \n- The charge on the account was $49.00, made 12 days ago.  \n- The refund request has been initiated.  \n\n**Determination:**  \nThe charge is eligible for a full refund because it was requested within the 30-day window.  \n\n**Required Actions:**  \n- Process the refund as requested by the customer.  \n- Ensure transparency with the customer about the eligibility criteria.  \n- Inform the customer that they will receive their full payment back within the next few business days.",
+          "model_cited": [],
+          "calls": [
+            {
+              "text": "**Known Facts:**  \n- The charge on the account was $49.00, made 12 days ago.  \n- The refund request has been initiated.  \n\n**Determination:**  \nThe charge is eligible for a full refund because it was requested within the 30-day window.  \n\n**Required Actions:**  \n- Process the refund as requested by the customer.  \n- Ensure transparency with the customer about the eligibility criteria.  \n- Inform the customer that they will receive their full payment back within the next few business days.",
+              "input_tokens": 453,
+              "output_tokens": 109,
+              "latency_ms": 14181.0,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "chunk_ids": [
+            "HC-008-markdown-2",
+            "HC-008-markdown-3",
+            "HC-008-markdown-5"
+          ]
+        },
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.7139648582349709,
+          "lexical_anchors": [
+            "charged",
+            "days",
+            "get",
+            "refunded",
+            "subscription"
+          ],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "No, you cannot get a refund for a charge older than 30 days. However, if you have duplicate charges due to an error, they will be refunded in full. For your specific case where you were charged $49 twelve days ago for a subscription you had already cancelled, this would fall outside the eligibility criteria for a refund as defined by the policy. Please check again if there might be any other issues related to the cancellation process.",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "No, you cannot get a refund for a charge older than 30 days. However, if you have duplicate charges due to an error, they will be refunded in full. For your specific case where you were charged $49 twelve days ago for a subscription you had already cancelled, this would fall outside the eligibility criteria for a refund as defined by the policy. Please check again if there might be any other issues related to the cancellation process.",
+              "input_tokens": 556,
+              "output_tokens": 90,
+              "latency_ms": 16592.0,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-008-markdown-2",
+            "HC-008-markdown-5",
+            "HC-008-markdown-13",
+            "HC-008-markdown-1",
+            "HC-008-markdown-6"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "R02",
+      "mode": "M2",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90002",
+      "question": "billing",
+      "reference_articles": [
+        "HC-003"
+      ],
+      "arm": "multi",
+      "answer": "CD-90002: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+      "refused": true,
+      "refusal_reason": "no_evidence (distance_gate (0.8849 > 0.75))",
+      "not_found": true,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [],
+      "best_distance": 0.8849062782414292,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": null,
+      "max_new_tokens": null,
+      "input_tokens": 159,
+      "output_tokens": 27,
+      "tokens": 186,
+      "cost_usd": 4e-05,
+      "model_calls": 1,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 20,
+      "context_resend_multiplier": 7.95,
+      "latency_ms": 4223.7,
+      "model_latency_ms": 3497.7,
+      "trace_id": "84a7216de185414c",
+      "langfuse_trace_id": "1661fb8bf4cbd5b6a8729364d4383a58",
+      "task_ids": [
+        "task-5c057f5a69",
+        "task-520eef6801",
+        "task-00323abda1"
+      ],
+      "tasks": [
+        {
+          "id": "task-5c057f5a69",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:03.932+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:03.932+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:03.932+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:08.155+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90002\nSupport tier: Standard\nCustomer message: billing",
+          "output": "CD-90002: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:57:03.932+00:00",
+          "ended_at": "2026-10-21T02:57:08.155+00:00",
+          "latency_ms": 4222.3,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-520eef6801",
+          "parent_id": "task-5c057f5a69",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:03.934+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:03.934+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:03.934+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:07.452+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90002\nSupport tier: Standard\nCustomer message: billing",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:57:03.934+00:00",
+          "ended_at": "2026-10-21T02:57:07.453+00:00",
+          "latency_ms": 3519.7,
+          "model_calls": 1,
+          "input_tokens": 159,
+          "output_tokens": 27,
+          "tokens": 186,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-00323abda1",
+          "parent_id": "task-5c057f5a69",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:07.455+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:07.456+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:07.456+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:08.154+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-90002\", \"message\": \"billing\"}",
+          "output": "No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8849 > 0.75)).",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:57:07.456+00:00",
+          "ended_at": "2026-10-21T02:57:08.154+00:00",
+          "latency_ms": 698.6,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 1
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-b0f489954f",
+          "at": "2026-10-21T02:57:07.456+00:00",
+          "direction": "dispatch",
+          "from_task": "task-5c057f5a69",
+          "from_agent": "manager",
+          "to_task": "task-00323abda1",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-90002\", \"tier\": \"Standard\", \"message\": \"billing\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refund_requested\": false}}",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 183
+        },
+        {
+          "id": "handoff-9d77e51753",
+          "at": "2026-10-21T02:57:08.155+00:00",
+          "direction": "return",
+          "from_task": "task-00323abda1",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-5c057f5a69",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8849 > 0.75)).\", \"chunks\": [\"HC-003-markdown-3\", \"HC-003-markdown-1\", \"HC-003-markdown-2\", \"HC-003-markdown-9\", \"HC-003-mark\u2026",
+          "status": "completed",
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "context_chars": 249
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-520eef6801",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 159,
+          "output_tokens": 27,
+          "latency_ms": 3497.7
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": true, \"reason\": \"The customer is asking about billing information.\"}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": true,
+          "reason": "The customer is asking about billing information."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.8849062782414292,
+          "lexical_anchors": [],
+          "evidence": false,
+          "gate_reason": "distance_gate (0.8849 > 0.75)",
+          "findings": "No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8849 > 0.75)).",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [],
+          "tool_calls": 1,
+          "chunk_ids": [
+            "HC-003-markdown-3",
+            "HC-003-markdown-1",
+            "HC-003-markdown-2",
+            "HC-003-markdown-9",
+            "HC-003-markdown-5"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T07",
+      "mode": "M2",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10407",
+      "question": "refund??? charged twice $89 this month",
+      "reference_articles": [
+        "HC-008"
+      ],
+      "arm": "multi",
+      "answer": "CD-10407: Customer Inquiry Regarding Refund for Duplicate Charge\n\nDear Customer,\n\nThank you for reaching out to us regarding your duplicate charge. We understand that you've experienced a situation where you were charged twice for $89.00 this month. Based on our policy, we confirm that every duplicate charge is fully refunded in full, regardless of its age.\n\nWe have already initiated the refund process for you, which will cover the exact amount of $89.00. This refund will be returned to the original payment method within 5 to 10 business days.\n\nPlease note that this refund covers the duplicate charge, and it's important to ensure that no further charges occur by turning off automatic renewal through Organization Settings > Billing.\n\nYour satisfaction is our top priority,",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-008-markdown-5",
+          "article_id": "HC-008",
+          "section": "Duplicate Charges",
+          "distance": 0.9253673233200916
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-008-markdown-6",
+          "article_id": "HC-008",
+          "section": "Refund Amount and Timing",
+          "distance": 1.0724504805953743
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-008-markdown-2",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.033366355302881
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-008-markdown-3",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.066340839833672
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-008-markdown-4",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.2399954855435236
+        }
+      ],
+      "best_distance": 0.9253673233200916,
+      "lexical_anchors": [
+        "charged"
+      ],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 160,
+      "max_new_tokens": 160,
+      "input_tokens": 2280,
+      "output_tokens": 512,
+      "tokens": 2792,
+      "cost_usd": 0.000649,
+      "model_calls": 4,
+      "handoffs": 4,
+      "specialist_calls": 2,
+      "tool_calls": 2,
+      "resynthesis": 0,
+      "base_context_tokens": 56,
+      "context_resend_multiplier": 40.71,
+      "latency_ms": 79031.0,
+      "model_latency_ms": 76161.40000000001,
+      "trace_id": "6ec5b28725c54db5",
+      "langfuse_trace_id": "87b7ba3520bcad0b04851fc14becfd4f",
+      "task_ids": [
+        "task-9ba41e1a13",
+        "task-d6daeb6746",
+        "task-d6213daa4d",
+        "task-7f8d53b183",
+        "task-1fc9bcaeac"
+      ],
+      "tasks": [
+        {
+          "id": "task-9ba41e1a13",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:58:27.193+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10407\nSupport tier: Priority\nCharge on account: $89.00, charged 3 days ago (a duplicate of an earlier charge on the same invoice)\nCustomer message: refund??? charged twice $89 this month",
+          "output": "CD-10407: Customer Inquiry Regarding Refund for Duplicate Charge\n\nDear Customer,\n\nThank you for reaching out to us regarding your duplicate charge. We understand that you've experienced a situation where you were charged twice for $89.00 th\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:57:08.164+00:00",
+          "ended_at": "2026-10-21T02:58:27.193+00:00",
+          "latency_ms": 79030.9,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-d6daeb6746",
+          "parent_id": "task-9ba41e1a13",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:08.164+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:12.218+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10407\nSupport tier: Priority\nCharge on account: $89.00, charged 3 days ago (a duplicate of an earlier charge on the same invoice)\nCustomer message: refund??? charged twice $89 this month",
+          "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:57:08.164+00:00",
+          "ended_at": "2026-10-21T02:57:12.219+00:00",
+          "latency_ms": 4054.9,
+          "model_calls": 1,
+          "input_tokens": 195,
+          "output_tokens": 39,
+          "tokens": 234,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-d6213daa4d",
+          "parent_id": "task-9ba41e1a13",
+          "agent": "ticket_specialist",
+          "role": "Ticket / support specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:12.219+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:12.219+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:12.220+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:27.755+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10407\", \"message\": \"refund??? charged twice $89 this month\"}",
+          "output": "**Known Facts:**  \n- The charge on the account was duplicated; both charges were for $89.00.  \n- A refund request has been initiated.  \n- The charge occurred 3 days ago.  \n\n**Determination:**  \nThe duplicate charge will be fully refunded as\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:57:12.220+00:00",
+          "ended_at": "2026-10-21T02:57:27.756+00:00",
+          "latency_ms": 15536.7,
+          "model_calls": 1,
+          "input_tokens": 451,
+          "output_tokens": 153,
+          "tokens": 604,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-7f8d53b183",
+          "parent_id": "task-9ba41e1a13",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:27.759+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:27.759+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:27.759+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:57:51.692+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10407\", \"message\": \"refund??? charged twice $89 this month\"}",
+          "output": "The customer has been charged twice for $89 this month. According to the policy:\n\n1. Every duplicate charge is refunded in full.\n2. A refund is always for the exact amount that was charged ($89).\n3. Approved refunds are returned to the orig\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:57:27.759+00:00",
+          "ended_at": "2026-10-21T02:57:51.693+00:00",
+          "latency_ms": 23933.8,
+          "model_calls": 1,
+          "input_tokens": 547,
+          "output_tokens": 160,
+          "tokens": 707,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-1fc9bcaeac",
+          "parent_id": "task-9ba41e1a13",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:57:51.700+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:57:51.700+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:57:51.700+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:58:27.189+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-008-markdown-5\", \"HC-008-markdown-6\", \"HC-008-markdown-2\", \"HC-008-markdown-3\", \"HC-008-markdown-4\"], \"findings\": [\"[ticket specialist] The policy determination below was made from the account records and is authoritative.\\\u2026",
+          "output": "CD-10407: Customer Inquiry Regarding Refund for Duplicate Charge\n\nDear Customer,\n\nThank you for reaching out to us regarding your duplicate charge. We understand that you've experienced a situation where you were charged twice for $89.00 th\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:57:51.700+00:00",
+          "ended_at": "2026-10-21T02:58:27.192+00:00",
+          "latency_ms": 35492.9,
+          "model_calls": 1,
+          "input_tokens": 1087,
+          "output_tokens": 160,
+          "tokens": 1247,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-153e0018f6",
+          "at": "2026-10-21T02:57:12.220+00:00",
+          "direction": "dispatch",
+          "from_task": "task-9ba41e1a13",
+          "from_agent": "manager",
+          "to_task": "task-d6213daa4d",
+          "to_agent": "ticket_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10407\", \"tier\": \"Priority\", \"message\": \"refund??? charged twice $89 this month\", \"charge_amount\": 89.0, \"days_since_charge\": 3, \"duplicate_charge\": true, \"refund_requested\": true}}",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 209
+        },
+        {
+          "id": "handoff-ece9918349",
+          "at": "2026-10-21T02:57:27.757+00:00",
+          "direction": "return",
+          "from_task": "task-d6213daa4d",
+          "from_agent": "ticket_specialist",
+          "to_task": "task-9ba41e1a13",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"**Known Facts:**  \\n- The charge on the account was duplicated; both charges were for $89.00.  \\n- A refund request has been initiated.  \\n- The charge occurred 3 days ago.  \\n\\n**Determination:**  \\nThe duplicate charge will \u2026",
+          "status": "completed",
+          "input_tokens": 451,
+          "output_tokens": 153,
+          "context_chars": 815
+        },
+        {
+          "id": "handoff-f8c49de04e",
+          "at": "2026-10-21T02:57:27.759+00:00",
+          "direction": "dispatch",
+          "from_task": "task-9ba41e1a13",
+          "from_agent": "manager",
+          "to_task": "task-7f8d53b183",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10407\", \"tier\": \"Priority\", \"message\": \"refund??? charged twice $89 this month\", \"charge_amount\": 89.0, \"days_since_charge\": 3, \"duplicate_charge\": true, \"refund_requested\": true}}",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 209
+        },
+        {
+          "id": "handoff-c19fb1402d",
+          "at": "2026-10-21T02:57:51.694+00:00",
+          "direction": "return",
+          "from_task": "task-7f8d53b183",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-9ba41e1a13",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"The customer has been charged twice for $89 this month. According to the policy:\\n\\n1. Every duplicate charge is refunded in full.\\n2. A refund is always for the exact amount that was charged ($89).\\n3. Approved refunds are re\u2026",
+          "status": "completed",
+          "input_tokens": 547,
+          "output_tokens": 160,
+          "context_chars": 902
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-d6daeb6746",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 195,
+          "output_tokens": 39,
+          "latency_ms": 4030.3
+        },
+        {
+          "task": "task-d6213daa4d",
+          "agent": "ticket_specialist",
+          "kind": "specialist",
+          "input_tokens": 451,
+          "output_tokens": 153,
+          "latency_ms": 14987.9
+        },
+        {
+          "task": "task-7f8d53b183",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 547,
+          "output_tokens": 160,
+          "latency_ms": 21750.9
+        },
+        {
+          "task": "task-1fc9bcaeac",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 1087,
+          "output_tokens": 160,
+          "latency_ms": 35392.3
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\n  \"ticket_specialist\": true,\n  \"knowledge_specialist\": true,\n  \"reason\": \"The customer has asked for a refund after being charged twice within the same month.\"\n}",
+        "triage_parsed": {
+          "ticket_specialist": true,
+          "knowledge_specialist": true,
+          "reason": "The customer has asked for a refund after being charged twice within the same month."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "rule: charge or refund request on the account"
+        },
+        "dispatch": [
+          "ticket_specialist",
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "ticket_specialist": {
+          "specialist": "ticket_specialist",
+          "facts": {
+            "ticket_id": "CD-10407",
+            "tier": "Priority",
+            "escalation_required": true,
+            "escalation_tag": "[ESCALATED-PRIORITY]",
+            "refund_requested": true,
+            "charge_amount": 89.0,
+            "days_since_charge": 3,
+            "duplicate_charge": true,
+            "refund_window_days": 30,
+            "eligible": true,
+            "determination": "Duplicate charge: refunded in full regardless of age. Refund amount $89.00.",
+            "missing": []
+          },
+          "findings": "**Known Facts:**  \n- The charge on the account was duplicated; both charges were for $89.00.  \n- A refund request has been initiated.  \n- The charge occurred 3 days ago.  \n\n**Determination:**  \nThe duplicate charge will be fully refunded as per the policy.  \n\n**Required Actions:**  \n- Process the refund for $89.00.  \n- Inform the customer that their request for a refund has been processed.  \n- Ensure all support tiers are aware of the policy and procedures regarding refunds.  \n- Document the action taken and any relevant notes.  \n\n**Missing Information:**  \n- No additional details about the specific circumstances or previous charges.  \n- No mention of any other potential issues with the transaction.",
+          "model_cited": [],
+          "calls": [
+            {
+              "text": "**Known Facts:**  \n- The charge on the account was duplicated; both charges were for $89.00.  \n- A refund request has been initiated.  \n- The charge occurred 3 days ago.  \n\n**Determination:**  \nThe duplicate charge will be fully refunded as per the policy.  \n\n**Required Actions:**  \n- Process the refund for $89.00.  \n- Inform the customer that their request for a refund has been processed.  \n- Ensure all support tiers are aware of the policy and procedures regarding refunds.  \n- Document the action taken and any relevant notes.  \n\n**Missing Information:**  \n- No additional details about the specific circumstances or previous charges.  \n- No mention of any other potential issues with the transaction.",
+              "input_tokens": 451,
+              "output_tokens": 153,
+              "latency_ms": 14987.9,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "chunk_ids": [
+            "HC-008-markdown-5",
+            "HC-008-markdown-2",
+            "HC-008-markdown-3"
+          ]
+        },
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.9253673233200916,
+          "lexical_anchors": [
+            "charged"
+          ],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "The customer has been charged twice for $89 this month. According to the policy:\n\n1. Every duplicate charge is refunded in full.\n2. A refund is always for the exact amount that was charged ($89).\n3. Approved refunds are returned to the original payment method within 5 to 10 business days.\n4. Subscription charges can be fully refunded only if requested within 30 days of the charge date.\n5. Charges made more than 30 days before the refund request are not eligible for a refund.\n6. When a charge is outside the refund window, customers can turn off automatic renewal from Organization Settings > Billing to prevent future charges.\n\nTherefore, the refund should cover the full amount of $89. The support agent should inform the customer that they have received",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "The customer has been charged twice for $89 this month. According to the policy:\n\n1. Every duplicate charge is refunded in full.\n2. A refund is always for the exact amount that was charged ($89).\n3. Approved refunds are returned to the original payment method within 5 to 10 business days.\n4. Subscription charges can be fully refunded only if requested within 30 days of the charge date.\n5. Charges made more than 30 days before the refund request are not eligible for a refund.\n6. When a charge is outside the refund window, customers can turn off automatic renewal from Organization Settings > Billing to prevent future charges.\n\nTherefore, the refund should cover the full amount of $89. The support agent should inform the customer that they have received",
+              "input_tokens": 547,
+              "output_tokens": 160,
+              "latency_ms": 21750.9,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-008-markdown-5",
+            "HC-008-markdown-6",
+            "HC-008-markdown-2",
+            "HC-008-markdown-3",
+            "HC-008-markdown-4"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "R03",
+      "mode": "M3",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90003",
+      "question": "My card expired and the CloudDesk payment failed. What should I do?",
+      "reference_articles": [
+        "HC-003"
+      ],
+      "arm": "multi",
+      "answer": "CD-90003: Customer inquiry regarding payment failure due to card expiration\n\nDear Customer,\n\nThank you for reaching out. We understand that your card has expired, which could have caused the payment failure. To resolve this issue, please follow these steps:\n\n1. Log into your CloudDesk account.\n2. Go to the Billing section.\n3. Click on the 'Update Payment Method' button.\n4. Follow the prompts to enter your new credit/debit card information.\n\nAfter completing these steps, try making another payment. If the problem persists, please contact our support team at [support-email]. Our specialists can assist you further.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-003-markdown-11",
+          "article_id": "HC-003",
+          "section": "Failed Payments",
+          "distance": 0.7339798529172119
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-23",
+          "article_id": "HC-002",
+          "section": "Security Information",
+          "distance": 0.9094878977231744
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-markdown-9",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.9376597404479905
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-19",
+          "article_id": "HC-002",
+          "section": "Administrator Assistance",
+          "distance": 0.8650723695754925
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-003-markdown-13",
+          "article_id": "HC-003",
+          "section": "Troubleshooting",
+          "distance": 0.9179199484729841
+        }
+      ],
+      "best_distance": 0.7339798529172119,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 141,
+      "max_new_tokens": 160,
+      "input_tokens": 1305,
+      "output_tokens": 232,
+      "tokens": 1537,
+      "cost_usd": 0.000335,
+      "model_calls": 3,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 34,
+      "context_resend_multiplier": 38.38,
+      "latency_ms": 32870.3,
+      "model_latency_ms": 31707.0,
+      "trace_id": "05ad94e1e2744b69",
+      "langfuse_trace_id": "04535a30da20270e957510ee6d8832ff",
+      "task_ids": [
+        "task-7f0e27ac3b",
+        "task-cac082e955",
+        "task-c404d1134a",
+        "task-40cbaec931"
+      ],
+      "tasks": [
+        {
+          "id": "task-7f0e27ac3b",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:59:00.178+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90003\nSupport tier: Standard\nCustomer message: My card expired and the CloudDesk payment failed. What should I do?",
+          "output": "CD-90003: Customer inquiry regarding payment failure due to card expiration\n\nDear Customer,\n\nThank you for reaching out. We understand that your card has expired, which could have caused the payment failure. To resolve this issue, please fo\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:58:27.309+00:00",
+          "ended_at": "2026-10-21T02:59:00.178+00:00",
+          "latency_ms": 32869.7,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-cac082e955",
+          "parent_id": "task-7f0e27ac3b",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:58:27.309+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:58:33.946+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90003\nSupport tier: Standard\nCustomer message: My card expired and the CloudDesk payment failed. What should I do?",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:58:27.309+00:00",
+          "ended_at": "2026-10-21T02:58:33.946+00:00",
+          "latency_ms": 6636.9,
+          "model_calls": 1,
+          "input_tokens": 172,
+          "output_tokens": 50,
+          "tokens": 222,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-c404d1134a",
+          "parent_id": "task-7f0e27ac3b",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:58:33.947+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:58:33.947+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:58:33.947+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:58:40.070+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-90003\", \"message\": \"My card expired and the CloudDesk payment failed. What should I do?\"}",
+          "output": "[1] When a payment fails due to a card expiration, update the payment method on CloudDesk.\n[2] Contact your CloudDesk administrator for assistance if the issue persists after updating the payment method.",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:58:33.947+00:00",
+          "ended_at": "2026-10-21T02:58:40.070+00:00",
+          "latency_ms": 6123.4,
+          "model_calls": 1,
+          "input_tokens": 494,
+          "output_tokens": 41,
+          "tokens": 535,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-40cbaec931",
+          "parent_id": "task-7f0e27ac3b",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:58:40.072+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:58:40.072+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:58:40.072+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:59:00.171+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-003-markdown-11\", \"HC-002-markdown-23\", \"HC-002-markdown-9\", \"HC-002-markdown-19\", \"HC-003-markdown-13\"], \"findings\": [\"[knowledge specialist]\\n[1] When a payment fails due to a card expiration, update the payment method on\u2026",
+          "output": "CD-90003: Customer inquiry regarding payment failure due to card expiration\n\nDear Customer,\n\nThank you for reaching out. We understand that your card has expired, which could have caused the payment failure. To resolve this issue, please fo\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:58:40.072+00:00",
+          "ended_at": "2026-10-21T02:59:00.172+00:00",
+          "latency_ms": 20100.0,
+          "model_calls": 1,
+          "input_tokens": 639,
+          "output_tokens": 141,
+          "tokens": 780,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-b48cfe99a9",
+          "at": "2026-10-21T02:58:33.947+00:00",
+          "direction": "dispatch",
+          "from_task": "task-7f0e27ac3b",
+          "from_agent": "manager",
+          "to_task": "task-c404d1134a",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-90003\", \"tier\": \"Standard\", \"message\": \"My card expired and the CloudDesk payment failed. What should I do?\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refund_requested\": fals\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 243
+        },
+        {
+          "id": "handoff-29bb233498",
+          "at": "2026-10-21T02:58:40.071+00:00",
+          "direction": "return",
+          "from_task": "task-c404d1134a",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-7f0e27ac3b",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"[1] When a payment fails due to a card expiration, update the payment method on CloudDesk.\\n[2] Contact your CloudDesk administrator for assistance if the issue persists after updating the payment method.\", \"chunks\": [\"HC-003-\u2026",
+          "status": "completed",
+          "input_tokens": 494,
+          "output_tokens": 41,
+          "context_chars": 341
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-cac082e955",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 172,
+          "output_tokens": 50,
+          "latency_ms": 6601.4
+        },
+        {
+          "task": "task-c404d1134a",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 494,
+          "output_tokens": 41,
+          "latency_ms": 5144.2
+        },
+        {
+          "task": "task-40cbaec931",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 639,
+          "output_tokens": 141,
+          "latency_ms": 19961.4
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": true, \"reason\": \"The customer is experiencing an issue related to their payment method, but they are not asking about charges, refunds, billing, or being on the Priority tier.\"}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": true,
+          "reason": "The customer is experiencing an issue related to their payment method, but they are not asking about charges, refunds, billing, or being on the Priority tier."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.7339798529172119,
+          "lexical_anchors": [],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "[1] When a payment fails due to a card expiration, update the payment method on CloudDesk.\n[2] Contact your CloudDesk administrator for assistance if the issue persists after updating the payment method.",
+          "model_cited": [
+            1,
+            2
+          ],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "[1] When a payment fails due to a card expiration, update the payment method on CloudDesk.\n[2] Contact your CloudDesk administrator for assistance if the issue persists after updating the payment method.",
+              "input_tokens": 494,
+              "output_tokens": 41,
+              "latency_ms": 5144.2,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": true,
+          "chunk_ids": [
+            "HC-003-markdown-11",
+            "HC-002-markdown-23",
+            "HC-002-markdown-9",
+            "HC-002-markdown-19",
+            "HC-003-markdown-13"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T11",
+      "mode": "M3",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10411",
+      "question": "Can you walk me through resetting my password step by step? I've never done it before.",
+      "reference_articles": [
+        "HC-001"
+      ],
+      "arm": "multi",
+      "answer": "CD-10411: Customer Requested Password Reset\n\nHello,\n\nThank you for reaching out. To help you reset your CloudDesk password, please follow these steps:\n\n1. Log into CloudDesk using your credentials.\n2. Navigate to the My Account or Settings section.\n3. Locate the Forgot Password option and click on it.\n4. Enter your email address associated with your account.\n5. Wait for the system to send an email to verify your identity.\n6. Verify the email by following the instructions provided.\n7. Set a new password once you have verified your email.\n\nPlease note that special attention must be given to the expiration of the reset link; ensure you act quickly after receiving the email.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-001-markdown-2",
+          "article_id": "HC-001",
+          "section": "How to Reset Your Password",
+          "distance": 0.718344411800621
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-001-markdown-7",
+          "article_id": "HC-001",
+          "section": "Reset Email Not Received",
+          "distance": 0.9480953278427926
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-001-markdown-5",
+          "article_id": "HC-001",
+          "section": "How to Reset Your Password",
+          "distance": 0.6590326631645738
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-001-markdown-1",
+          "article_id": "HC-001",
+          "section": "Overview",
+          "distance": 0.908829439738891
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-001-markdown-16",
+          "article_id": "HC-001",
+          "section": "Frequently Asked Questions",
+          "distance": 0.6301855665334697
+        }
+      ],
+      "best_distance": 0.6301855665334697,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 156,
+      "max_new_tokens": 160,
+      "input_tokens": 1341,
+      "output_tokens": 367,
+      "tokens": 1708,
+      "cost_usd": 0.000421,
+      "model_calls": 3,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 38,
+      "context_resend_multiplier": 35.29,
+      "latency_ms": 91324.1,
+      "model_latency_ms": 90397.1,
+      "trace_id": "1e99247764b04613",
+      "langfuse_trace_id": "53889751df316f9f6e016141da5bfab9",
+      "task_ids": [
+        "task-a57470ff98",
+        "task-97b2c27c67",
+        "task-f59bbabe73",
+        "task-9ebfdab7bd"
+      ],
+      "tasks": [
+        {
+          "id": "task-a57470ff98",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:59:00.345+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:59:00.346+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:59:00.346+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:00:31.666+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10411\nSupport tier: Standard\nCustomer message: Can you walk me through resetting my password step by step? I've never done it before.",
+          "output": "CD-10411: Customer Requested Password Reset\n\nHello,\n\nThank you for reaching out. To help you reset your CloudDesk password, please follow these steps:\n\n1. Log into CloudDesk using your credentials.\n2. Navigate to the My Account or Settings \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:59:00.346+00:00",
+          "ended_at": "2026-10-21T03:00:31.666+00:00",
+          "latency_ms": 91322.5,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-97b2c27c67",
+          "parent_id": "task-a57470ff98",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:59:00.346+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:59:00.346+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:59:00.346+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:59:13.451+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10411\nSupport tier: Standard\nCustomer message: Can you walk me through resetting my password step by step? I've never done it before.",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:59:00.346+00:00",
+          "ended_at": "2026-10-21T02:59:13.452+00:00",
+          "latency_ms": 13105.5,
+          "model_calls": 1,
+          "input_tokens": 176,
+          "output_tokens": 51,
+          "tokens": 227,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-f59bbabe73",
+          "parent_id": "task-a57470ff98",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:59:13.453+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:59:13.453+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:59:13.454+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T02:59:37.206+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10411\", \"message\": \"Can you walk me through resetting my password step by step? I've never done it before.\"}",
+          "output": "Sure! Here\u2019s how you can reset your CloudDesk password:\n\n1. **Log into CloudDesk**: Go to the CloudDesk website or app where you registered.\n   \n2. **Navigate to Account Settings**: Look for an option like \"My Account\" or \"Settings.\"\n\n3. **\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T02:59:13.454+00:00",
+          "ended_at": "2026-10-21T02:59:37.208+00:00",
+          "latency_ms": 23754.9,
+          "model_calls": 1,
+          "input_tokens": 450,
+          "output_tokens": 160,
+          "tokens": 610,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-9ebfdab7bd",
+          "parent_id": "task-a57470ff98",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T02:59:37.215+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T02:59:37.215+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T02:59:37.215+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:00:31.663+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-001-markdown-2\", \"HC-001-markdown-7\", \"HC-001-markdown-5\", \"HC-001-markdown-1\", \"HC-001-markdown-16\"], \"findings\": [\"[knowledge specialist]\\nSure! Here\\u2019s how you can reset your CloudDesk password:\\n\\n1. **Log into Clou\u2026",
+          "output": "CD-10411: Customer Requested Password Reset\n\nHello,\n\nThank you for reaching out. To help you reset your CloudDesk password, please follow these steps:\n\n1. Log into CloudDesk using your credentials.\n2. Navigate to the My Account or Settings \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T02:59:37.215+00:00",
+          "ended_at": "2026-10-21T03:00:31.664+00:00",
+          "latency_ms": 54449.6,
+          "model_calls": 1,
+          "input_tokens": 715,
+          "output_tokens": 156,
+          "tokens": 871,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-85eff32099",
+          "at": "2026-10-21T02:59:13.454+00:00",
+          "direction": "dispatch",
+          "from_task": "task-a57470ff98",
+          "from_agent": "manager",
+          "to_task": "task-f59bbabe73",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10411\", \"tier\": \"Standard\", \"message\": \"Can you walk me through resetting my password step by step? I've never done it before.\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refu\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 262
+        },
+        {
+          "id": "handoff-237f690c4e",
+          "at": "2026-10-21T02:59:37.210+00:00",
+          "direction": "return",
+          "from_task": "task-f59bbabe73",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-a57470ff98",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"Sure! Here\\u2019s how you can reset your CloudDesk password:\\n\\n1. **Log into CloudDesk**: Go to the CloudDesk website or app where you registered.\\n   \\n2. **Navigate to Account Settings**: Look for an option like \\\"My Accoun\u2026",
+          "status": "completed",
+          "input_tokens": 450,
+          "output_tokens": 160,
+          "context_chars": 915
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-97b2c27c67",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 176,
+          "output_tokens": 51,
+          "latency_ms": 13049.1
+        },
+        {
+          "task": "task-f59bbabe73",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 450,
+          "output_tokens": 160,
+          "latency_ms": 23003.8
+        },
+        {
+          "task": "task-9ebfdab7bd",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 715,
+          "output_tokens": 156,
+          "latency_ms": 54344.2
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\n  \"ticket_specialist\": false,\n  \"knowledge_specialist\": true,\n  \"reason\": \"The customer is asking for a step-by-step guide to resetting their password, which falls under the 'read the customer's account' category.\"\n}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": true,
+          "reason": "The customer is asking for a step-by-step guide to resetting their password, which falls under the 'read the customer's account' category."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.6301855665334697,
+          "lexical_anchors": [],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "Sure! Here\u2019s how you can reset your CloudDesk password:\n\n1. **Log into CloudDesk**: Go to the CloudDesk website or app where you registered.\n   \n2. **Navigate to Account Settings**: Look for an option like \"My Account\" or \"Settings.\"\n\n3. **Reset Password Option**: Find a section labeled \"Forgot Password?\" or similar. Click on this option.\n\n4. **Enter Email Address**: Enter your email address associated with your account.\n\n5. **Wait for Confirmation**: After clicking submit, you will need to wait a short period while the system sends an email to verify your identity.\n\n6. **Verify Email**: Check your inbox for the verification email. Follow the instructions provided in the email to complete the password reset process.\n\n7. **Set New Password**: Once",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "Sure! Here\u2019s how you can reset your CloudDesk password:\n\n1. **Log into CloudDesk**: Go to the CloudDesk website or app where you registered.\n   \n2. **Navigate to Account Settings**: Look for an option like \"My Account\" or \"Settings.\"\n\n3. **Reset Password Option**: Find a section labeled \"Forgot Password?\" or similar. Click on this option.\n\n4. **Enter Email Address**: Enter your email address associated with your account.\n\n5. **Wait for Confirmation**: After clicking submit, you will need to wait a short period while the system sends an email to verify your identity.\n\n6. **Verify Email**: Check your inbox for the verification email. Follow the instructions provided in the email to complete the password reset process.\n\n7. **Set New Password**: Once",
+              "input_tokens": 450,
+              "output_tokens": 160,
+              "latency_ms": 23003.8,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-001-markdown-2",
+            "HC-001-markdown-7",
+            "HC-001-markdown-5",
+            "HC-001-markdown-1",
+            "HC-001-markdown-16"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "R04",
+      "mode": "M4",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90004",
+      "question": "Account locked. Help.",
+      "reference_articles": [
+        "HC-002"
+      ],
+      "arm": "multi",
+      "answer": "CD-90004: Account Locked\n\nDear Customer,\n\nThank you for reaching out regarding your account being locked. We understand this situation can be frustrating.\n\nTo resolve this issue, please follow these steps:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** to allow any potential lockout periods to expire.\n3. **Ensure you are using the correct email address**.\n4. **Verify that you are using the latest password**.\n5. **Try logging in again** once the 15-minute window has passed.\n\nIf you encounter any issues during this process, feel free to reach out to our administrator team at [CloudDesk Support Email]. They will guide you through the recovery process.\n\nPlease note that the temporary lock period is designed",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-002-markdown-18",
+          "article_id": "HC-002",
+          "section": "Administrator Assistance",
+          "distance": 0.7183984656806504
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-8",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.5308458124375228
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-markdown-9",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.7169159785581627
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-5",
+          "article_id": "HC-002",
+          "section": "What Happens When an Account Is Locked",
+          "distance": 0.8397136699214642
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-markdown-4",
+          "article_id": "HC-002",
+          "section": "Why an Account Becomes Locked",
+          "distance": 0.6613269241640867
+        }
+      ],
+      "best_distance": 0.5308458124375228,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 160,
+      "max_new_tokens": 160,
+      "input_tokens": 1355,
+      "output_tokens": 276,
+      "tokens": 1631,
+      "cost_usd": 0.000369,
+      "model_calls": 3,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 24,
+      "context_resend_multiplier": 56.46,
+      "latency_ms": 59620.4,
+      "model_latency_ms": 56135.7,
+      "trace_id": "7cf880e71d66495e",
+      "langfuse_trace_id": "015a88094e0184eec5cc9bfa15eb2bf2",
+      "task_ids": [
+        "task-bd2b1f8c59",
+        "task-7f938f0429",
+        "task-cfcb68e8ff",
+        "task-889379c0b4"
+      ],
+      "tasks": [
+        {
+          "id": "task-bd2b1f8c59",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:01:31.375+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90004\nSupport tier: Standard\nCustomer message: Account locked. Help.",
+          "output": "CD-90004: Account Locked\n\nDear Customer,\n\nThank you for reaching out regarding your account being locked. We understand this situation can be frustrating.\n\nTo resolve this issue, please follow these steps:\n\n1. **Stop attempting to log in** \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:00:31.758+00:00",
+          "ended_at": "2026-10-21T03:01:31.375+00:00",
+          "latency_ms": 59619.1,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-7f938f0429",
+          "parent_id": "task-bd2b1f8c59",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:00:31.758+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:00:36.319+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-90004\nSupport tier: Standard\nCustomer message: Account locked. Help.",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:00:31.758+00:00",
+          "ended_at": "2026-10-21T03:00:36.319+00:00",
+          "latency_ms": 4561.1,
+          "model_calls": 1,
+          "input_tokens": 162,
+          "output_tokens": 29,
+          "tokens": 191,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-cfcb68e8ff",
+          "parent_id": "task-bd2b1f8c59",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:00:36.321+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:00:36.321+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:00:36.321+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:00:51.055+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-90004\", \"message\": \"Account locked. Help.\"}",
+          "output": "Account locked. Help.\n\nSteps:\n1. Stop attempting to log in.\n2. Wait 15 minutes.\n3. Ensure correct email address.\n4. Verify latest password.\n5. Try logging in again.\n6. Use \"Forgot Password\" if needed.\n7. Contact administrator if still inacc\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:00:36.321+00:00",
+          "ended_at": "2026-10-21T03:00:51.055+00:00",
+          "latency_ms": 14734.0,
+          "model_calls": 1,
+          "input_tokens": 501,
+          "output_tokens": 87,
+          "tokens": 588,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-889379c0b4",
+          "parent_id": "task-bd2b1f8c59",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:00:51.056+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:00:51.056+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:00:51.056+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:01:31.372+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-002-markdown-18\", \"HC-002-markdown-8\", \"HC-002-markdown-9\", \"HC-002-markdown-5\", \"HC-002-markdown-4\"], \"findings\": [\"[knowledge specialist]\\nAccount locked. Help.\\n\\nSteps:\\n1. Stop attempting to log in.\\n2. Wait 15 minutes\u2026",
+          "output": "CD-90004: Account Locked\n\nDear Customer,\n\nThank you for reaching out regarding your account being locked. We understand this situation can be frustrating.\n\nTo resolve this issue, please follow these steps:\n\n1. **Stop attempting to log in** \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:00:51.056+00:00",
+          "ended_at": "2026-10-21T03:01:31.373+00:00",
+          "latency_ms": 40317.9,
+          "model_calls": 1,
+          "input_tokens": 692,
+          "output_tokens": 160,
+          "tokens": 852,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-d956b24e8a",
+          "at": "2026-10-21T03:00:36.321+00:00",
+          "direction": "dispatch",
+          "from_task": "task-bd2b1f8c59",
+          "from_agent": "manager",
+          "to_task": "task-cfcb68e8ff",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-90004\", \"tier\": \"Standard\", \"message\": \"Account locked. Help.\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refund_requested\": false}}",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 197
+        },
+        {
+          "id": "handoff-f11b1369c8",
+          "at": "2026-10-21T03:00:51.055+00:00",
+          "direction": "return",
+          "from_task": "task-cfcb68e8ff",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-bd2b1f8c59",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"Account locked. Help.\\n\\nSteps:\\n1. Stop attempting to log in.\\n2. Wait 15 minutes.\\n3. Ensure correct email address.\\n4. Verify latest password.\\n5. Try logging in again.\\n6. Use \\\"Forgot Password\\\" if needed.\\n7. Contact adm\u2026",
+          "status": "completed",
+          "input_tokens": 501,
+          "output_tokens": 87,
+          "context_chars": 532
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-7f938f0429",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 162,
+          "output_tokens": 29,
+          "latency_ms": 4535.3
+        },
+        {
+          "task": "task-cfcb68e8ff",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 501,
+          "output_tokens": 87,
+          "latency_ms": 11355.3
+        },
+        {
+          "task": "task-889379c0b4",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 692,
+          "output_tokens": 160,
+          "latency_ms": 40245.1
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": false, \"reason\": \"The ticket does not require assistance from either specialist.\"}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": false,
+          "reason": "The ticket does not require assistance from either specialist."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.5308458124375228,
+          "lexical_anchors": [],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "Account locked. Help.\n\nSteps:\n1. Stop attempting to log in.\n2. Wait 15 minutes.\n3. Ensure correct email address.\n4. Verify latest password.\n5. Try logging in again.\n6. Use \"Forgot Password\" if needed.\n7. Contact administrator if still inaccessible.\n\nPolicies:\n- Temporary lock period applies.\n- User waits until expiration before retrying.\n- Administrators can help unlock accounts.",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "Account locked. Help.\n\nSteps:\n1. Stop attempting to log in.\n2. Wait 15 minutes.\n3. Ensure correct email address.\n4. Verify latest password.\n5. Try logging in again.\n6. Use \"Forgot Password\" if needed.\n7. Contact administrator if still inaccessible.\n\nPolicies:\n- Temporary lock period applies.\n- User waits until expiration before retrying.\n- Administrators can help unlock accounts.",
+              "input_tokens": 501,
+              "output_tokens": 87,
+              "latency_ms": 11355.3,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-002-markdown-18",
+            "HC-002-markdown-8",
+            "HC-002-markdown-9",
+            "HC-002-markdown-5",
+            "HC-002-markdown-4"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T16",
+      "mode": "M4",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10416",
+      "question": "I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.",
+      "reference_articles": [
+        "HC-008"
+      ],
+      "arm": "multi",
+      "answer": "CD-10416: Hi there,\n\nThank you for reaching out about your recent charge. As per our policy, charges made more than 30 days prior are not eligible for a refund. Your charge of $75.00, which was made 76 days ago, falls outside this window.\n\nWe understand that this may have caused some inconvenience, but unfortunately, we cannot provide a discount or credit in lieu of a refund. We recommend checking your billing settings to turn off any automatic renewals if needed.\n\nFor further assistance, please contact our Customer Service team at [insert contact information].\n\nBest regards,\n[Your Name]  \nCloudDesk Support Agent",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-008-markdown-6",
+          "article_id": "HC-008",
+          "section": "Refund Amount and Timing",
+          "distance": 1.1444994896797953
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-008-markdown-5",
+          "article_id": "HC-008",
+          "section": "Duplicate Charges",
+          "distance": 1.1798210740089183
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-008-markdown-2",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.0954525527627652
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-008-markdown-7",
+          "article_id": "HC-008",
+          "section": "Refund Amount and Timing",
+          "distance": 1.2115714567261093
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-008-markdown-15",
+          "article_id": "HC-008",
+          "section": "Frequently Asked Questions",
+          "distance": 1.1914179071339188
+        },
+        {
+          "rank": 6,
+          "chunk_id": "HC-008-markdown-3",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 0.8177811124585732
+        }
+      ],
+      "best_distance": 1.0954525527627652,
+      "lexical_anchors": [
+        "charged",
+        "days"
+      ],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 136,
+      "max_new_tokens": 160,
+      "input_tokens": 2304,
+      "output_tokens": 379,
+      "tokens": 2683,
+      "cost_usd": 0.000573,
+      "model_calls": 4,
+      "handoffs": 4,
+      "specialist_calls": 2,
+      "tool_calls": 2,
+      "resynthesis": 0,
+      "base_context_tokens": 69,
+      "context_resend_multiplier": 33.39,
+      "latency_ms": 84631.7,
+      "model_latency_ms": 74725.1,
+      "trace_id": "cacbb8404f2e4e30",
+      "langfuse_trace_id": "fbbfbb45f8d6b74fd6cea5dab89f208e",
+      "task_ids": [
+        "task-575a1eadc0",
+        "task-b66e441858",
+        "task-4f125ea5fe",
+        "task-086d774e3f",
+        "task-2f12d0adc4"
+      ],
+      "tasks": [
+        {
+          "id": "task-575a1eadc0",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:02:56.134+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10416\nSupport tier: Priority\nCharge on account: $75.00, charged 76 days ago\nCustomer message: I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.",
+          "output": "CD-10416: Hi there,\n\nThank you for reaching out about your recent charge. As per our policy, charges made more than 30 days prior are not eligible for a refund. Your charge of $75.00, which was made 76 days ago, falls outside this window.\n\n\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:01:31.506+00:00",
+          "ended_at": "2026-10-21T03:02:56.135+00:00",
+          "latency_ms": 84631.1,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-b66e441858",
+          "parent_id": "task-575a1eadc0",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:01:31.506+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:01:38.416+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10416\nSupport tier: Priority\nCharge on account: $75.00, charged 76 days ago\nCustomer message: I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.",
+          "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:01:31.506+00:00",
+          "ended_at": "2026-10-21T03:01:38.416+00:00",
+          "latency_ms": 6910.2,
+          "model_calls": 1,
+          "input_tokens": 207,
+          "output_tokens": 40,
+          "tokens": 247,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-4f125ea5fe",
+          "parent_id": "task-575a1eadc0",
+          "agent": "ticket_specialist",
+          "role": "Ticket / support specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:01:38.417+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:01:38.417+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:01:38.417+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:02:04.972+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10416\", \"message\": \"I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.\"}",
+          "output": "**Known Facts:**\n- The charge on the account was $75.00, made 76 days ago.\n- A refund request has been initiated.\n- The charge is outside the 30-day eligibility window for refunds.\n\n**Determination:** The charge is not eligible for a refund\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:01:38.417+00:00",
+          "ended_at": "2026-10-21T03:02:04.974+00:00",
+          "latency_ms": 26557.0,
+          "model_calls": 1,
+          "input_tokens": 483,
+          "output_tokens": 134,
+          "tokens": 617,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-086d774e3f",
+          "parent_id": "task-575a1eadc0",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:02:04.983+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:02:04.983+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:02:04.983+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:02:24.408+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10416\", \"message\": \"I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.\"}",
+          "output": "The refund amount for your charge from July 1st, 76 days ago, is $75. According to our policy, approved refunds are returned to the original payment method within 5 to 10 business days. However, you also requested a discount for the inconve\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:02:04.983+00:00",
+          "ended_at": "2026-10-21T03:02:24.408+00:00",
+          "latency_ms": 19425.9,
+          "model_calls": 1,
+          "input_tokens": 546,
+          "output_tokens": 69,
+          "tokens": 615,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-2f12d0adc4",
+          "parent_id": "task-575a1eadc0",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:02:24.413+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:02:24.414+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:02:24.414+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:02:56.121+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-008-markdown-6\", \"HC-008-markdown-5\", \"HC-008-markdown-2\", \"HC-008-markdown-7\", \"HC-008-markdown-15\", \"HC-008-markdown-3\"], \"findings\": [\"[ticket specialist] The policy determination below was made from the account records \u2026",
+          "output": "CD-10416: Hi there,\n\nThank you for reaching out about your recent charge. As per our policy, charges made more than 30 days prior are not eligible for a refund. Your charge of $75.00, which was made 76 days ago, falls outside this window.\n\n\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:02:24.414+00:00",
+          "ended_at": "2026-10-21T03:02:56.123+00:00",
+          "latency_ms": 31710.4,
+          "model_calls": 1,
+          "input_tokens": 1068,
+          "output_tokens": 136,
+          "tokens": 1204,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-c1a660eb39",
+          "at": "2026-10-21T03:01:38.417+00:00",
+          "direction": "dispatch",
+          "from_task": "task-575a1eadc0",
+          "from_agent": "manager",
+          "to_task": "task-4f125ea5fe",
+          "to_agent": "ticket_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10416\", \"tier\": \"Priority\", \"message\": \"I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.\", \"charge_amount\": 75.0, \"days_since_charge\": 76, \"duplicate_charge\"\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 275
+        },
+        {
+          "id": "handoff-de9d364f07",
+          "at": "2026-10-21T03:02:04.978+00:00",
+          "direction": "return",
+          "from_task": "task-4f125ea5fe",
+          "from_agent": "ticket_specialist",
+          "to_task": "task-575a1eadc0",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"**Known Facts:**\\n- The charge on the account was $75.00, made 76 days ago.\\n- A refund request has been initiated.\\n- The charge is outside the 30-day eligibility window for refunds.\\n\\n**Determination:** The charge is not el\u2026",
+          "status": "completed",
+          "input_tokens": 483,
+          "output_tokens": 134,
+          "context_chars": 722
+        },
+        {
+          "id": "handoff-7cca72e669",
+          "at": "2026-10-21T03:02:04.983+00:00",
+          "direction": "dispatch",
+          "from_task": "task-575a1eadc0",
+          "from_agent": "manager",
+          "to_task": "task-086d774e3f",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10416\", \"tier\": \"Priority\", \"message\": \"I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.\", \"charge_amount\": 75.0, \"days_since_charge\": 76, \"duplicate_charge\"\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 275
+        },
+        {
+          "id": "handoff-3ba3f0d2a9",
+          "at": "2026-10-21T03:02:24.410+00:00",
+          "direction": "return",
+          "from_task": "task-086d774e3f",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-575a1eadc0",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"The refund amount for your charge from July 1st, 76 days ago, is $75. According to our policy, approved refunds are returned to the original payment method within 5 to 10 business days. However, you also requested a discount f\u2026",
+          "status": "completed",
+          "input_tokens": 546,
+          "output_tokens": 69,
+          "context_chars": 438
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-b66e441858",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 207,
+          "output_tokens": 40,
+          "latency_ms": 6869.2
+        },
+        {
+          "task": "task-4f125ea5fe",
+          "agent": "ticket_specialist",
+          "kind": "specialist",
+          "input_tokens": 483,
+          "output_tokens": 134,
+          "latency_ms": 20767.4
+        },
+        {
+          "task": "task-086d774e3f",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 546,
+          "output_tokens": 69,
+          "latency_ms": 15540.5
+        },
+        {
+          "task": "task-2f12d0adc4",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 1068,
+          "output_tokens": 136,
+          "latency_ms": 31548.0
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": true, \"knowledge_specialist\": true, \"reason\": \"The customer has asked about a charge from the Priority support tier and wants a refund along with a discount.\"}",
+        "triage_parsed": {
+          "ticket_specialist": true,
+          "knowledge_specialist": true,
+          "reason": "The customer has asked about a charge from the Priority support tier and wants a refund along with a discount."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "rule: charge or refund request on the account"
+        },
+        "dispatch": [
+          "ticket_specialist",
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "ticket_specialist": {
+          "specialist": "ticket_specialist",
+          "facts": {
+            "ticket_id": "CD-10416",
+            "tier": "Priority",
+            "escalation_required": true,
+            "escalation_tag": "[ESCALATED-PRIORITY]",
+            "refund_requested": true,
+            "charge_amount": 75.0,
+            "days_since_charge": 76,
+            "duplicate_charge": false,
+            "refund_window_days": 30,
+            "eligible": false,
+            "determination": "Charged 76 days ago, outside the 30-day window: NOT eligible. Do not promise or process a refund; automatic renewal can be turned off in Organization Settings > Billing.",
+            "missing": []
+          },
+          "findings": "**Known Facts:**\n- The charge on the account was $75.00, made 76 days ago.\n- A refund request has been initiated.\n- The charge is outside the 30-day eligibility window for refunds.\n\n**Determination:** The charge is not eligible for a refund due to exceeding the 30-day window.\n\n**Required Actions:**\n1. Inform the customer that their charge is not eligible for a refund as per the policy.\n2. Suggest turning off automatic renewals in Organization Settings if applicable.\n3. Offer alternative support options such as contacting Customer Service directly for assistance with discounts or other issues related to the charge.",
+          "model_cited": [],
+          "calls": [
+            {
+              "text": "**Known Facts:**\n- The charge on the account was $75.00, made 76 days ago.\n- A refund request has been initiated.\n- The charge is outside the 30-day eligibility window for refunds.\n\n**Determination:** The charge is not eligible for a refund due to exceeding the 30-day window.\n\n**Required Actions:**\n1. Inform the customer that their charge is not eligible for a refund as per the policy.\n2. Suggest turning off automatic renewals in Organization Settings if applicable.\n3. Offer alternative support options such as contacting Customer Service directly for assistance with discounts or other issues related to the charge.",
+              "input_tokens": 483,
+              "output_tokens": 134,
+              "latency_ms": 20767.4,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "chunk_ids": [
+            "HC-008-markdown-2",
+            "HC-008-markdown-5",
+            "HC-008-markdown-3"
+          ]
+        },
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 1.0954525527627652,
+          "lexical_anchors": [
+            "charged",
+            "days"
+          ],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "The refund amount for your charge from July 1st, 76 days ago, is $75. According to our policy, approved refunds are returned to the original payment method within 5 to 10 business days. However, you also requested a discount for the inconvenience caused by this charge. Not covered: Discounts or credits.",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "The refund amount for your charge from July 1st, 76 days ago, is $75. According to our policy, approved refunds are returned to the original payment method within 5 to 10 business days. However, you also requested a discount for the inconvenience caused by this charge. Not covered: Discounts or credits.",
+              "input_tokens": 546,
+              "output_tokens": 69,
+              "latency_ms": 15540.5,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-008-markdown-6",
+            "HC-008-markdown-5",
+            "HC-008-markdown-2",
+            "HC-008-markdown-7",
+            "HC-008-markdown-15"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T18",
+      "mode": "M5",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10418",
+      "question": "My account is locked, what should I do?",
+      "reference_articles": [
+        "HC-002"
+      ],
+      "arm": "multi",
+      "answer": "CD-10418: Your account is currently locked due to multiple failed login attempts. Please follow these steps:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct email address.\n4. Confirm that you are using the most recent password.\n5. **Try logging in again** once the 15-minute wait is over.\n\nIf you still cannot access your account, please contact our CloudDesk administrator for further assistance. [Source: Article HC-002, file article_02.md, updated 2026-08-05]",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-002-markdown-8",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.5802035254421944
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-002-markdown-9",
+          "article_id": "HC-002",
+          "section": "How to Recover a Locked Account",
+          "distance": 0.7909826622877507
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-002-markdown-21",
+          "article_id": "HC-002",
+          "section": "Frequently Asked Questions",
+          "distance": 0.8639001698166562
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-002-markdown-4",
+          "article_id": "HC-002",
+          "section": "Why an Account Becomes Locked",
+          "distance": 0.7485504969522365
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-002-markdown-6",
+          "article_id": "HC-002",
+          "section": "What Happens When an Account Is Locked",
+          "distance": 0.8887646926588848
+        }
+      ],
+      "best_distance": 0.5802035254421944,
+      "lexical_anchors": [],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 138,
+      "max_new_tokens": 160,
+      "input_tokens": 1356,
+      "output_tokens": 232,
+      "tokens": 1588,
+      "cost_usd": 0.000343,
+      "model_calls": 3,
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 29,
+      "context_resend_multiplier": 46.76,
+      "latency_ms": 91410.3,
+      "model_latency_ms": 83090.8,
+      "trace_id": "5c03e055662b4e53",
+      "langfuse_trace_id": "d863f53ce474c175e0e475c98af94e32",
+      "task_ids": [
+        "task-c08f53ce8c",
+        "task-a1a46e8524",
+        "task-22c57f788a",
+        "task-f5bc43d656"
+      ],
+      "tasks": [
+        {
+          "id": "task-c08f53ce8c",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:02:56.351+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:02:56.351+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:02:56.351+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:04:27.755+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10418\nSupport tier: Standard\nCustomer message: My account is locked, what should I do?",
+          "output": "CD-10418: Your account is currently locked due to multiple failed login attempts. Please follow these steps:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct emai\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:02:56.351+00:00",
+          "ended_at": "2026-10-21T03:04:27.756+00:00",
+          "latency_ms": 91406.6,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-a1a46e8524",
+          "parent_id": "task-c08f53ce8c",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:02:56.353+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:02:56.353+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:02:56.353+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:03:13.874+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10418\nSupport tier: Standard\nCustomer message: My account is locked, what should I do?",
+          "output": "[\"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:02:56.353+00:00",
+          "ended_at": "2026-10-21T03:03:13.881+00:00",
+          "latency_ms": 17527.9,
+          "model_calls": 1,
+          "input_tokens": 167,
+          "output_tokens": 31,
+          "tokens": 198,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-22c57f788a",
+          "parent_id": "task-c08f53ce8c",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:03:13.888+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:03:13.888+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:03:13.888+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:03:34.314+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10418\", \"message\": \"My account is locked, what should I do?\"}",
+          "output": "Stop attempting to log in.\nWait 15 minutes.\nMake sure you are using the correct email address.\nVerify that you are using the latest password.\nTry logging in again.\nIf you do not remember your password, use the \"Forgot Password\" option.\nCont\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:03:13.889+00:00",
+          "ended_at": "2026-10-21T03:03:34.314+00:00",
+          "latency_ms": 20425.5,
+          "model_calls": 1,
+          "input_tokens": 511,
+          "output_tokens": 63,
+          "tokens": 574,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-f5bc43d656",
+          "parent_id": "task-c08f53ce8c",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:03:34.322+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:03:34.323+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:03:34.323+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:04:27.752+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-002-markdown-8\", \"HC-002-markdown-9\", \"HC-002-markdown-21\", \"HC-002-markdown-4\", \"HC-002-markdown-6\"], \"findings\": [\"[knowledge specialist]\\nStop attempting to log in.\\nWait 15 minutes.\\nMake sure you are using the correct \u2026",
+          "output": "CD-10418: Your account is currently locked due to multiple failed login attempts. Please follow these steps:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct emai\u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:03:34.323+00:00",
+          "ended_at": "2026-10-21T03:04:27.754+00:00",
+          "latency_ms": 53431.5,
+          "model_calls": 1,
+          "input_tokens": 678,
+          "output_tokens": 138,
+          "tokens": 816,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-e59466c4d7",
+          "at": "2026-10-21T03:03:13.888+00:00",
+          "direction": "dispatch",
+          "from_task": "task-c08f53ce8c",
+          "from_agent": "manager",
+          "to_task": "task-22c57f788a",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10418\", \"tier\": \"Standard\", \"message\": \"My account is locked, what should I do?\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refund_requested\": false}}",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 215
+        },
+        {
+          "id": "handoff-3cf70a0e7c",
+          "at": "2026-10-21T03:03:34.318+00:00",
+          "direction": "return",
+          "from_task": "task-22c57f788a",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-c08f53ce8c",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"Stop attempting to log in.\\nWait 15 minutes.\\nMake sure you are using the correct email address.\\nVerify that you are using the latest password.\\nTry logging in again.\\nIf you do not remember your password, use the \\\"Forgot Pa\u2026",
+          "status": "completed",
+          "input_tokens": 511,
+          "output_tokens": 63,
+          "context_chars": 451
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-a1a46e8524",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 167,
+          "output_tokens": 31,
+          "latency_ms": 17421.0
+        },
+        {
+          "task": "task-22c57f788a",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 511,
+          "output_tokens": 63,
+          "latency_ms": 12332.7
+        },
+        {
+          "task": "task-f5bc43d656",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 678,
+          "output_tokens": 138,
+          "latency_ms": 53337.1
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": false, \"reason\": \"The customer's issue does not require assistance from either specialist.\"}",
+        "triage_parsed": {
+          "ticket_specialist": false,
+          "knowledge_specialist": false,
+          "reason": "The customer's issue does not require assistance from either specialist."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "triage: False"
+        },
+        "dispatch": [
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.5802035254421944,
+          "lexical_anchors": [],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "Stop attempting to log in.\nWait 15 minutes.\nMake sure you are using the correct email address.\nVerify that you are using the latest password.\nTry logging in again.\nIf you do not remember your password, use the \"Forgot Password\" option.\nContact your CloudDesk administrator if the account remains inaccessible.",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "Stop attempting to log in.\nWait 15 minutes.\nMake sure you are using the correct email address.\nVerify that you are using the latest password.\nTry logging in again.\nIf you do not remember your password, use the \"Forgot Password\" option.\nContact your CloudDesk administrator if the account remains inaccessible.",
+              "input_tokens": 511,
+              "output_tokens": 63,
+              "latency_ms": 12332.7,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-002-markdown-8",
+            "HC-002-markdown-9",
+            "HC-002-markdown-21",
+            "HC-002-markdown-4",
+            "HC-002-markdown-6"
+          ]
+        }
+      },
+      "resynthesis_detail": [],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    },
+    {
+      "case_id": "T21",
+      "mode": "M5",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10421",
+      "question": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+      "reference_articles": [
+        "HC-008"
+      ],
+      "arm": "multi",
+      "answer": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. Our account records show that you were charged $30 by mistake 29 days ago. Given our policy, this charge is eligible for a full refund of $30.00.\n\nPlease note that any other duplicate charges would be refunded according to the policy.\n\nWe apologize for any inconvenience caused and appreciate your understanding.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "not_found": false,
+      "degraded": false,
+      "status": "COMPLETED",
+      "errors": [],
+      "retries": 0,
+      "retrieved": [
+        {
+          "rank": 1,
+          "chunk_id": "HC-008-markdown-13",
+          "article_id": "HC-008",
+          "section": "Frequently Asked Questions",
+          "distance": 0.9222514030119209
+        },
+        {
+          "rank": 2,
+          "chunk_id": "HC-008-markdown-3",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.018251303121637
+        },
+        {
+          "rank": 3,
+          "chunk_id": "HC-008-markdown-5",
+          "article_id": "HC-008",
+          "section": "Duplicate Charges",
+          "distance": 0.980475304183335
+        },
+        {
+          "rank": 4,
+          "chunk_id": "HC-008-markdown-2",
+          "article_id": "HC-008",
+          "section": "Refund Eligibility Window",
+          "distance": 1.0731208455182222
+        },
+        {
+          "rank": 5,
+          "chunk_id": "HC-008-markdown-6",
+          "article_id": "HC-008",
+          "section": "Refund Amount and Timing",
+          "distance": 1.000648111356059
+        }
+      ],
+      "best_distance": 0.9222514030119209,
+      "lexical_anchors": [
+        "charged",
+        "days",
+        "get",
+        "refunded"
+      ],
+      "gate_bypass": null,
+      "model_cited": [],
+      "citations": [],
+      "output_tokens_reply": 97,
+      "max_new_tokens": 160,
+      "input_tokens": 3411,
+      "output_tokens": 484,
+      "tokens": 3895,
+      "cost_usd": 0.000802,
+      "model_calls": 5,
+      "handoffs": 4,
+      "specialist_calls": 2,
+      "tool_calls": 2,
+      "resynthesis": 1,
+      "base_context_tokens": 60,
+      "context_resend_multiplier": 56.85,
+      "latency_ms": 216223.1,
+      "model_latency_ms": 208441.5,
+      "trace_id": "1a2d7928bdd04f17",
+      "langfuse_trace_id": "51a327cf3920f4fc322518aa4d2d3146",
+      "task_ids": [
+        "task-5e0166dcb4",
+        "task-09a12c0a94",
+        "task-b7c0577afd",
+        "task-4b3d61005d",
+        "task-86e1915138"
+      ],
+      "tasks": [
+        {
+          "id": "task-5e0166dcb4",
+          "parent_id": null,
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "manager",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:04:27.874+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:04:27.875+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:04:27.875+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:08:04.096+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10421\nSupport tier: Standard\nCharge on account: $30.00, charged 29 days ago\nCustomer message: I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "output": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. Our account records show that you were charged $30 by mistake 29 days ago. Given our policy, this charge is eligible for a full refund of $30.00.\n\nPlease note that \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:04:27.875+00:00",
+          "ended_at": "2026-10-21T03:08:04.096+00:00",
+          "latency_ms": 216222.2,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "tokens": 0,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-09a12c0a94",
+          "parent_id": "task-5e0166dcb4",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "triage",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:04:27.875+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:04:27.875+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:04:27.875+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:04:33.821+00:00"
+            }
+          ],
+          "input": "Ticket ID: CD-10421\nSupport tier: Standard\nCharge on account: $30.00, charged 29 days ago\nCustomer message: I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:04:27.875+00:00",
+          "ended_at": "2026-10-21T03:04:33.823+00:00",
+          "latency_ms": 5947.7,
+          "model_calls": 1,
+          "input_tokens": 198,
+          "output_tokens": 39,
+          "tokens": 237,
+          "tool_calls": 0
+        },
+        {
+          "id": "task-b7c0577afd",
+          "parent_id": "task-5e0166dcb4",
+          "agent": "ticket_specialist",
+          "role": "Ticket / support specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:04:33.827+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:04:33.827+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:04:33.827+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:05:13.134+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10421\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\"}",
+          "output": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the \u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:04:33.827+00:00",
+          "ended_at": "2026-10-21T03:05:13.137+00:00",
+          "latency_ms": 39312.2,
+          "model_calls": 1,
+          "input_tokens": 453,
+          "output_tokens": 98,
+          "tokens": 551,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-4b3d61005d",
+          "parent_id": "task-5e0166dcb4",
+          "agent": "knowledge_specialist",
+          "role": "Knowledge / RAG specialist",
+          "kind": "specialist",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:05:13.151+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:05:13.151+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:05:13.151+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:05:32.425+00:00"
+            }
+          ],
+          "input": "{\"ticket_id\": \"CD-10421\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\"}",
+          "output": "To get your $30 charge refunded:\n\n1. **Eligibility**: Since you were charged 29 days ago, which exceeds the 30-day eligibility window, this charge cannot be refunded.\n   \n2. **Duplicate Charge**: If there was another charge on the same invo\u2026",
+          "error": null,
+          "attempts": 1,
+          "transport": "in-process",
+          "started_at": "2026-10-21T03:05:13.151+00:00",
+          "ended_at": "2026-10-21T03:05:32.425+00:00",
+          "latency_ms": 19274.2,
+          "model_calls": 1,
+          "input_tokens": 572,
+          "output_tokens": 134,
+          "tokens": 706,
+          "tool_calls": 1
+        },
+        {
+          "id": "task-86e1915138",
+          "parent_id": "task-5e0166dcb4",
+          "agent": "manager",
+          "role": "Manager / orchestrator",
+          "kind": "synthesis",
+          "status": "COMPLETED",
+          "transitions": [
+            {
+              "state": "CREATED",
+              "at": "2026-10-21T03:05:32.441+00:00"
+            },
+            {
+              "state": "ASSIGNED",
+              "at": "2026-10-21T03:05:32.441+00:00"
+            },
+            {
+              "state": "RUNNING",
+              "at": "2026-10-21T03:05:32.441+00:00"
+            },
+            {
+              "state": "COMPLETED",
+              "at": "2026-10-21T03:08:04.085+00:00"
+            }
+          ],
+          "input": "{\"sources\": [\"HC-008-markdown-13\", \"HC-008-markdown-3\", \"HC-008-markdown-5\", \"HC-008-markdown-2\", \"HC-008-markdown-6\"], \"findings\": [\"[ticket specialist] The policy determination below was made from the account records and is authoritative.\u2026",
+          "output": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. Our account records show that you were charged $30 by mistake 29 days ago. Given our policy, this charge is eligible for a full refund of $30.00.\n\nPlease note that \u2026",
+          "error": null,
+          "attempts": 0,
+          "transport": null,
+          "started_at": "2026-10-21T03:05:32.442+00:00",
+          "ended_at": "2026-10-21T03:08:04.088+00:00",
+          "latency_ms": 151645.9,
+          "model_calls": 2,
+          "input_tokens": 2188,
+          "output_tokens": 213,
+          "tokens": 2401,
+          "tool_calls": 0
+        }
+      ],
+      "handoff_records": [
+        {
+          "id": "handoff-ba1dad783d",
+          "at": "2026-10-21T03:04:33.827+00:00",
+          "direction": "dispatch",
+          "from_task": "task-5e0166dcb4",
+          "from_agent": "manager",
+          "to_task": "task-b7c0577afd",
+          "to_agent": "ticket_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10421\", \"tier\": \"Standard\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\", \"charge_amount\": 30.0, \"days_since_charge\": 29, \"duplicate_charge\": false, \"refund_request\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 251
+        },
+        {
+          "id": "handoff-e078120e9a",
+          "at": "2026-10-21T03:05:13.147+00:00",
+          "direction": "return",
+          "from_task": "task-b7c0577afd",
+          "from_agent": "ticket_specialist",
+          "to_task": "task-5e0166dcb4",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"**Known Facts:**  \\n- The charge was made 29 days ago.  \\n- It falls within the 30-day eligibility window for refunds.  \\n\\n**Determination:**  \\n- Eligible for a full refund of $30.00.  \\n\\n**Required Actions:**  \\n- Process \u2026",
+          "status": "completed",
+          "input_tokens": 453,
+          "output_tokens": 98,
+          "context_chars": 484
+        },
+        {
+          "id": "handoff-08527246cf",
+          "at": "2026-10-21T03:05:13.151+00:00",
+          "direction": "dispatch",
+          "from_task": "task-5e0166dcb4",
+          "from_agent": "manager",
+          "to_task": "task-4b3d61005d",
+          "to_agent": "knowledge_specialist",
+          "summary": "{\"ticket\": {\"ticket_id\": \"CD-10421\", \"tier\": \"Standard\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\", \"charge_amount\": 30.0, \"days_since_charge\": 29, \"duplicate_charge\": false, \"refund_request\u2026",
+          "status": "sent",
+          "input_tokens": null,
+          "output_tokens": null,
+          "context_chars": 251
+        },
+        {
+          "id": "handoff-35b284cd18",
+          "at": "2026-10-21T03:05:32.427+00:00",
+          "direction": "return",
+          "from_task": "task-4b3d61005d",
+          "from_agent": "knowledge_specialist",
+          "to_task": "task-5e0166dcb4",
+          "to_agent": "manager",
+          "summary": "{\"findings\": \"To get your $30 charge refunded:\\n\\n1. **Eligibility**: Since you were charged 29 days ago, which exceeds the 30-day eligibility window, this charge cannot be refunded.\\n   \\n2. **Duplicate Charge**: If there was another charg\u2026",
+          "status": "completed",
+          "input_tokens": 572,
+          "output_tokens": 134,
+          "context_chars": 762
+        }
+      ],
+      "calls": [
+        {
+          "task": "task-09a12c0a94",
+          "agent": "manager",
+          "kind": "triage",
+          "input_tokens": 198,
+          "output_tokens": 39,
+          "latency_ms": 5892.5
+        },
+        {
+          "task": "task-b7c0577afd",
+          "agent": "ticket_specialist",
+          "kind": "specialist",
+          "input_tokens": 453,
+          "output_tokens": 98,
+          "latency_ms": 33351.1
+        },
+        {
+          "task": "task-4b3d61005d",
+          "agent": "knowledge_specialist",
+          "kind": "specialist",
+          "input_tokens": 572,
+          "output_tokens": 134,
+          "latency_ms": 17801.4
+        },
+        {
+          "task": "task-86e1915138",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 1009,
+          "output_tokens": 116,
+          "latency_ms": 31597.7
+        },
+        {
+          "task": "task-86e1915138",
+          "agent": "manager",
+          "kind": "synthesis",
+          "input_tokens": 1179,
+          "output_tokens": 97,
+          "latency_ms": 119798.8
+        }
+      ],
+      "routing": {
+        "triage_raw": "{\n  \"ticket_specialist\": true,\n  \"knowledge_specialist\": true,\n  \"reason\": \"The customer asked about a charge that occurred in the past and requested a refund.\"\n}",
+        "triage_parsed": {
+          "ticket_specialist": true,
+          "knowledge_specialist": true,
+          "reason": "The customer asked about a charge that occurred in the past and requested a refund."
+        },
+        "decided_by": {
+          "knowledge_specialist": "policy: always consulted",
+          "ticket_specialist": "rule: charge or refund request on the account"
+        },
+        "dispatch": [
+          "ticket_specialist",
+          "knowledge_specialist"
+        ]
+      },
+      "specialists": {
+        "ticket_specialist": {
+          "specialist": "ticket_specialist",
+          "facts": {
+            "ticket_id": "CD-10421",
+            "tier": "Standard",
+            "escalation_required": false,
+            "escalation_tag": "[ESCALATED-PRIORITY]",
+            "refund_requested": true,
+            "charge_amount": 30.0,
+            "days_since_charge": 29,
+            "duplicate_charge": false,
+            "refund_window_days": 30,
+            "eligible": true,
+            "determination": "Charged 29 days ago, within the 30-day window: eligible for a full refund of $30.00.",
+            "missing": []
+          },
+          "findings": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the determined eligibility.  \n- Inform the customer that they are entitled to a full refund of $30.00.  \n- Ensure the refund is processed promptly.",
+          "model_cited": [],
+          "calls": [
+            {
+              "text": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the determined eligibility.  \n- Inform the customer that they are entitled to a full refund of $30.00.  \n- Ensure the refund is processed promptly.",
+              "input_tokens": 453,
+              "output_tokens": 98,
+              "latency_ms": 33351.1,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "chunk_ids": [
+            "HC-008-markdown-5",
+            "HC-008-markdown-3",
+            "HC-008-markdown-2"
+          ]
+        },
+        "knowledge_specialist": {
+          "specialist": "knowledge_specialist",
+          "best_distance": 0.9222514030119209,
+          "lexical_anchors": [
+            "charged",
+            "days",
+            "get",
+            "refunded"
+          ],
+          "evidence": true,
+          "gate_reason": null,
+          "findings": "To get your $30 charge refunded:\n\n1. **Eligibility**: Since you were charged 29 days ago, which exceeds the 30-day eligibility window, this charge cannot be refunded.\n   \n2. **Duplicate Charge**: If there was another charge on the same invoice, all duplicates will be refunded in full.\n\n3. **Subscription Charges**: Subscription charges can only be fully refunded if the refund request is made within 30 days of the charge date.\n\nGiven these points, you cannot receive a refund for the mistaken charge as it falls outside the 30-day window. However, any other duplicate charges would be refunded according to the policy.",
+          "model_cited": [],
+          "not_covered": [],
+          "calls": [
+            {
+              "text": "To get your $30 charge refunded:\n\n1. **Eligibility**: Since you were charged 29 days ago, which exceeds the 30-day eligibility window, this charge cannot be refunded.\n   \n2. **Duplicate Charge**: If there was another charge on the same invoice, all duplicates will be refunded in full.\n\n3. **Subscription Charges**: Subscription charges can only be fully refunded if the refund request is made within 30 days of the charge date.\n\nGiven these points, you cannot receive a refund for the mistaken charge as it falls outside the 30-day window. However, any other duplicate charges would be refunded according to the policy.",
+              "input_tokens": 572,
+              "output_tokens": 134,
+              "latency_ms": 17801.4,
+              "max_new_tokens": 160
+            }
+          ],
+          "tool_calls": 1,
+          "findings_cite_sources": false,
+          "chunk_ids": [
+            "HC-008-markdown-13",
+            "HC-008-markdown-3",
+            "HC-008-markdown-5",
+            "HC-008-markdown-2",
+            "HC-008-markdown-6"
+          ]
+        }
+      },
+      "resynthesis_detail": [
+        {
+          "reason": "eligible for $30.00, but the reply does not state that amount",
+          "rejected": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. As we discussed earlier, since your charge was made 29 days ago, which exceeds the 30-day eligibility window for refunds, this specific charge cannot be refunded.\n\nHowever, if there was another charge on the same invoice, all duplicates will be refunded in full.\n\nFor future reference, please ensure that you check the charge dates carefully to avoid such mistakes.\n\nWe apologize for any inconvenience caused and appreciate your understanding.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Team"
+        }
+      ],
+      "transport": "in-process",
+      "prompt_version": "week10-multi-v1.1",
+      "model_name": "Qwen/Qwen2.5-1.5B-Instruct"
+    }
+  ]
+}

@@ -938,6 +938,7 @@
         <button class="side-link" data-view="week7"><span class="ic">⚖</span> Agent vs workflow <span class="tail" id="navW7Score"></span></button>
         <button class="side-link" data-view="week8"><span class="ic">⇢</span> Trajectory eval <span class="tail" id="navW8Gap"></span></button>
         <button class="side-link" data-view="week9"><span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span></button>
+        <button class="side-link" data-view="week10"><span class="ic">⋔</span> Multi-agent benchmark <span class="tail" id="navW10Score"></span></button>
         <button class="side-link" data-view="reports"><span class="ic">▣</span> Reports &amp; demo</button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
@@ -1315,6 +1316,64 @@
       </div>
     </section>
 
+    <!-- ---------------- WEEK 10 ---------------- -->
+    <section class="view" id="view-week10">
+      <div class="scroll">
+        <div class="measure wide">
+          <div id="w10AdminHead">
+            <h1 style="margin:0 0 .2rem;">Week 10 — single agent vs manager + two specialists</h1>
+            <p class="lede" style="margin:0;">
+              The Week 6 ticket-reply task built twice: one RAG call (<code>src/ticket_reply.py</code>), and a
+              manager that triages, dispatches a ticket specialist and a knowledge specialist, and writes the
+              reply from their findings (<code>src/multi_agent.py</code>). Same model, same retrieval, same reply
+              rules, same judge. Rendered from <code>week10/</code>; the Chatbot tab runs either path <b>now</b>.
+            </p>
+          </div>
+          <div class="w5-tabs" id="w10Tabs" style="margin-top:1rem;">
+            <button data-tab="chat" class="active">Chatbot</button>
+            <button data-tab="cases">The 10 cases</button>
+            <button data-tab="race">Race table</button>
+            <button data-tab="handoffs">Hand-offs</button>
+            <button data-tab="failure">Failure experiment</button>
+            <button data-tab="verdict">Verdict</button>
+            <button data-tab="writeup">Write-up</button>
+          </div>
+
+          <div id="w10ChatPanel" style="margin-top:1rem;">
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="eyebrow" style="margin-bottom:.5rem;">Ask the ticket agent</div>
+              <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:end;">
+                <div class="field" style="min-width:240px;"><label>Agent mode</label>
+                  <select id="w10Mode">
+                    <option value="single">Single agent — one RAG call</option>
+                    <option value="multi">Multi-agent — manager + 2 specialists</option>
+                    <option value="compare">Compare both on this question</option>
+                  </select></div>
+                <div class="field" style="width:130px;"><label>Ticket id</label><input type="text" id="w10TicketId" placeholder="auto"></div>
+                <div class="field" style="width:130px;"><label>Support tier</label><select id="w10Tier"><option value="Standard">Standard</option><option value="Priority">Priority</option></select></div>
+                <div class="field" style="width:110px;"><label>Charge $</label><input type="text" id="w10Amount" placeholder="none"></div>
+                <div class="field" style="width:110px;"><label>Days ago</label><input type="text" id="w10Days" placeholder="—"></div>
+                <div class="field" style="width:110px;"><label>Duplicate</label><select id="w10Dup"><option value="0">no</option><option value="1">yes</option></select></div>
+                <div class="field" style="width:150px;"><label>Refund requested</label><select id="w10Refund"><option value="0">no</option><option value="1">yes</option></select></div>
+              </div>
+              <div class="field" style="margin-top:.6rem;"><label>Customer message</label>
+                <textarea id="w10Msg" rows="3" placeholder="Type the customer's message, or pick an example below" style="width:100%;padding:.6rem .7rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:inherit;resize:vertical;"></textarea></div>
+              <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.5rem;">
+                <button class="btn primary" id="w10Send">Ask</button>
+                <button class="btn" id="w10Clear">Clear</button>
+                <span class="help" id="w10Status">Both paths run in this server with Qwen2.5-1.5B. The first question loads the model (about a minute); later ones take 10–60 s for the single agent and longer for the multi-agent path.</span>
+              </div>
+              <div class="eyebrow" style="margin:.9rem 0 .4rem;">Example questions — the 10 benchmark cases, plus two the help centre cannot answer</div>
+              <div class="chip-row" id="w10Examples" style="justify-content:flex-start;margin-top:0;"><span class="muted">Loading…</span></div>
+            </div>
+            <div id="w10Results"><div class="muted" style="padding:1rem;">No question asked yet. Pick an example or type a message, choose a mode, and press <b>Ask</b>.</div></div>
+          </div>
+
+          <div id="w10Body" class="hidden" style="margin-top:1rem;"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ---------------- REPORTS ---------------- -->
     <section class="view" id="view-reports">
       <div class="scroll">
@@ -1440,9 +1499,14 @@ async function api(path, body) {
 /* ------------------------------------------------------------------ shell */
 let appRole = 'admin';
 try { appRole = localStorage.getItem('clouddesk_role') || 'admin'; } catch {}
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week7: 'Agent vs workflow — Week 7', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', reports: 'Reports & demo', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week7: 'Agent vs workflow — Week 7', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', week10: 'Multi-agent benchmark — Week 10', reports: 'Reports & demo', console: 'Console' };
+
+// The user role is one chatbot (MCP tools + AI answer in one thread), the documents,
+// and the Week 10 agent chatbot (single vs multi-agent on the same question).
+const USER_VIEWS = ['week9', 'library', 'week10'];
 
 function show(view) {
+  if (appRole === 'user' && !USER_VIEWS.includes(view)) view = 'week9';
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
   document.querySelectorAll('#nav .side-link').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   const isUser = (typeof appRole !== 'undefined' && appRole === 'user');
@@ -1463,6 +1527,7 @@ function show(view) {
   if (view === 'week7') loadWeek7();
   if (view === 'week8') loadWeek8();
   if (view === 'week9') loadWeek9();
+  if (view === 'week10') loadWeek10();
   if (view === 'reports') loadReports();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
@@ -2853,11 +2918,11 @@ function setAppRole(role) {
   document.querySelectorAll('#nav .side-link').forEach(btn => {
     const v = btn.dataset.view;
     if (isUser) {
-      if (['ask', 'library', 'week9'].includes(v)) {
+      if (USER_VIEWS.includes(v)) {
         btn.classList.remove('hidden');
-        if (v === 'ask') btn.innerHTML = '<span class="ic">✦</span> Customer AI Chat';
         if (v === 'library') btn.innerHTML = '<span class="ic">📄</span> Documents &amp; Uploads <span class="tail" id="navDocCount"></span>';
-        if (v === 'week9') btn.innerHTML = '<span class="ic">⧉</span> MCP Customer Bot <span class="tail" id="navW9Tools"></span>';
+        if (v === 'week9') btn.innerHTML = '<span class="ic">💬</span> Customer Chatbot <span class="tail" id="navW9Tools"></span>';
+        if (v === 'week10') btn.innerHTML = '<span class="ic">⋔</span> Agent Chatbot <span class="tail" id="navW10Score"></span>';
       } else {
         btn.classList.add('hidden');
       }
@@ -2866,9 +2931,16 @@ function setAppRole(role) {
       if (v === 'ask') btn.innerHTML = '<span class="ic">✦</span> Chat';
       if (v === 'library') btn.innerHTML = '<span class="ic">☰</span> Library <span class="tail" id="navDocCount"></span>';
       if (v === 'week9') btn.innerHTML = '<span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span>';
+      if (v === 'week10') btn.innerHTML = '<span class="ic">⋔</span> Multi-agent benchmark <span class="tail" id="navW10Score"></span>';
     }
   });
 
+  // A customer sees the chatbot, not the Week 9 architecture heading and its second role switch.
+  $('w9AdminHead')?.classList.toggle('hidden', isUser);
+  // Same for Week 10: the customer gets the agent chatbot, not the benchmark tabs.
+  $('w10AdminHead')?.classList.toggle('hidden', isUser);
+  $('w10Tabs')?.classList.toggle('hidden', isUser);
+  if (isUser && typeof w10Tab !== 'undefined') { w10Tab = 'chat'; if (typeof renderWeek10 === 'function' && week10) renderWeek10(); }
   const adminContainer = $('w9AdminContainer');
   const userContainer = $('w9UserContainer');
   if (adminContainer && userContainer) {
@@ -2885,7 +2957,7 @@ function setAppRole(role) {
 
   const activeViewEl = document.querySelector('.view.active');
   const curView = activeViewEl ? activeViewEl.id.replace('view-', '') : 'ask';
-  if (isUser && !['ask', 'library', 'week9'].includes(curView)) {
+  if (isUser && !USER_VIEWS.includes(curView)) {
     show('week9');
   }
 
@@ -3935,6 +4007,268 @@ document.addEventListener('click', async e => {
   } catch (err) { toast(err.message, true); }
   finally { w7Live.busy = null; if (!week7) { await loadWeek7(true); } else renderWeek7(); }
 });
+
+/* ------------------------------------------------------------------ week 10 */
+let week10 = null, w10Tab = 'chat', w10Busy = false;
+const w10Last = { single: null, multi: null, fault: null };
+const w10Sec = (ms) => ms == null ? '—' : `${(Number(ms) / 1000).toFixed(1)} s`;
+const w10Usd = (v) => v == null ? '—' : `$${Number(v).toFixed(6)}`;
+const w10StatePill = (s) => `<span class="pill ${s === 'COMPLETED' ? 'ok' : s === 'RUNNING' || s === 'ASSIGNED' || s === 'CREATED' ? 'info' : 'bad'}">${esc(s)}</span>`;
+
+async function loadWeek10(force = false) {
+  if (week10 && !force) { renderWeek10(); return; }
+  try {
+    week10 = await api('/api/week10');
+    const s = week10.comparison?.summary;
+    $('navW10Score').textContent = s ? `${s.single.passes}:${s.multi.passes}` : '';
+    renderWeek10();
+  } catch (err) {
+    $('w10Body').innerHTML = `<div class="muted">Failed to load: ${esc(err.message)}</div>`;
+    $('w10Examples').innerHTML = `<span class="muted">Examples unavailable: ${esc(err.message)}</span>`;
+  }
+}
+
+$('w10Tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-tab]');
+  if (!b) return;
+  w10Tab = b.dataset.tab;
+  document.querySelectorAll('#w10Tabs button').forEach(x => x.classList.toggle('active', x === b));
+  renderWeek10();
+});
+
+function renderWeek10() {
+  const d = week10;
+  if (!d) return;
+  $('w10ChatPanel').classList.toggle('hidden', w10Tab !== 'chat');
+  $('w10Body').classList.toggle('hidden', w10Tab === 'chat');
+  renderW10Examples(d);
+  if (w10Tab === 'chat') return;
+  const view = { cases: w10Cases, race: w10Race, handoffs: w10Handoffs, failure: w10Failure, verdict: w10Verdict, writeup: w10Writeup };
+  $('w10Body').innerHTML = (view[w10Tab] || w10Cases)(d);
+}
+
+function renderW10Examples(d) {
+  const ex = d.examples || [];
+  if (!ex.length) { $('w10Examples').innerHTML = '<span class="muted">No manifest yet: run <code>python main.py week10 manifest</code>.</span>'; return; }
+  $('w10Examples').innerHTML = ex.map((x, i) => `<button class="chip" data-w10ex="${i}" title="${esc(x.message)}">${esc(x.label)}</button>`).join('');
+}
+
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-w10ex]');
+  if (!c || !week10) return;
+  const x = week10.examples[+c.dataset.w10ex];
+  const t = x.ticket || {};
+  $('w10Msg').value = x.message;
+  $('w10TicketId').value = t.ticket_id || '';
+  $('w10Tier').value = t.tier || 'Standard';
+  $('w10Amount').value = t.charge_amount ?? '';
+  $('w10Days').value = t.days_since_charge ?? '';
+  $('w10Dup').value = t.duplicate_charge ? '1' : '0';
+  $('w10Refund').value = t.refund_requested ? '1' : '0';
+  $('w10Msg').focus();
+});
+
+function w10Ticket() {
+  return {
+    ticket_id: $('w10TicketId').value.trim() || null,
+    tier: $('w10Tier').value,
+    charge_amount: $('w10Amount').value.trim() || null,
+    days_since_charge: $('w10Days').value.trim() || null,
+    duplicate_charge: $('w10Dup').value === '1',
+    refund_requested: $('w10Refund').value === '1',
+  };
+}
+
+// Not api(): a degraded answer comes back as 503 with the routed reply inside,
+// and the view has to show that answer and the failure side by side.
+async function w10Post(body, timeoutMs = 20 * 60 * 1000) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeoutMs);
+  let res;
+  try {
+    res = await fetch('/api/week10/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body), signal: ctl.signal });
+  } catch (err) {
+    throw new Error(err.name === 'AbortError' ? `timed out after ${timeoutMs / 60000} min waiting for the server` : err.message);
+  } finally { clearTimeout(timer); }
+  const data = await res.json().catch(() => ({ status: 'error', error: res.statusText || `HTTP ${res.status}` }));
+  if (data.status === 'degraded') return { ...data, http_status: res.status };
+  if (!res.ok || data.status === 'error') throw new Error(data.error || `HTTP ${res.status}`);
+  return { ...data, http_status: res.status };
+}
+
+function w10SetBusy(on, text) {
+  w10Busy = on;
+  $('w10Send').disabled = on;
+  $('w10Send').innerHTML = on ? '<span class="spinner"></span> Running…' : 'Ask';
+  if (text != null) $('w10Status').textContent = text;
+}
+
+async function w10Ask(mode, message, ticket, extra = {}) {
+  const started = performance.now();
+  const r = await w10Post({ mode, message, ticket, ...extra });
+  r.client_ms = Math.round(performance.now() - started);
+  return r;
+}
+
+$('w10Clear').onclick = () => {
+  ['w10Msg', 'w10TicketId', 'w10Amount', 'w10Days'].forEach(id => $(id).value = '');
+  $('w10Tier').value = 'Standard'; $('w10Dup').value = '0'; $('w10Refund').value = '0';
+  $('w10Results').innerHTML = '<div class="muted" style="padding:1rem;">Cleared. Ask another question.</div>';
+};
+
+$('w10Send').onclick = async () => {
+  if (w10Busy) return;
+  const message = $('w10Msg').value.trim();
+  if (!message) { toast('Type a customer message first', true); $('w10Msg').focus(); return; }
+  const mode = $('w10Mode').value, ticket = w10Ticket();
+  const modes = mode === 'compare' ? ['single', 'multi'] : [mode];
+  const results = {};
+  try {
+    for (const m of modes) {
+      w10SetBusy(true, `Running the ${m === 'single' ? 'single agent' : 'multi-agent path'}… the first run of the session loads the model.`);
+      $('w10Results').innerHTML = w10Loading(m, results);
+      results[m] = await w10Ask(m, message, ticket);
+      w10Last[m] = results[m];
+      $('w10Results').innerHTML = w10Render(results, modes);
+      toast(`${m}: ${results[m].degraded ? 'DEGRADED — routed to a person' : results[m].refused ? 'not found in the sources' : 'answered'} in ${w10Sec(results[m].latency_ms)}`, !!results[m].degraded);
+    }
+    week10 = null;                                   // live_runs changed
+  } catch (err) {
+    $('w10Results').innerHTML = w10Render(results, modes) + `<div class="card" style="border-color:var(--danger);"><div class="eyebrow">Error</div><p style="margin:.3rem 0 0;">${esc(err.message)}</p><p class="help" style="margin:.3rem 0 0;">Nothing was answered for the failed step. A 409 means another model run holds the server; wait and try again.</p></div>`;
+    toast(err.message, true);
+  } finally {
+    w10SetBusy(false, '');
+  }
+};
+
+function w10Loading(mode, done) {
+  return w10Render(done, Object.keys(done)) + `<div class="card"><span class="spinner"></span> Running the <b>${mode === 'single' ? 'single agent' : 'multi-agent path'}</b>… retrieval, then ${mode === 'single' ? 'one model call' : 'triage, the specialists, and synthesis'}.</div>`;
+}
+
+function w10Render(results, modes) {
+  const cards = modes.filter(m => results[m]).map(m => w10ResultCard(results[m], m === 'single' ? 'Single agent' : 'Multi-agent'));
+  if (!cards.length) return '';
+  if (cards.length === 2) {
+    const s = results.single, m = results.multi;
+    const cmp = `<div class="card" style="margin-bottom:1rem;"><div class="eyebrow">Same question, both paths</div>
+      <table class="gs"><thead><tr><th></th><th>single agent</th><th>multi-agent</th></tr></thead><tbody>
+      <tr><td>outcome</td><td>${w10Outcome(s)}</td><td>${w10Outcome(m)}</td></tr>
+      <tr><td>latency (server)</td><td>${w10Sec(s.latency_ms)}</td><td>${w10Sec(m.latency_ms)}</td></tr>
+      <tr><td>model calls / hand-offs</td><td>${s.meter.model_calls} / ${s.meter.handoffs}</td><td>${m.meter.model_calls} / ${m.meter.handoffs}</td></tr>
+      <tr><td>tokens in / out</td><td>${s.meter.input_tokens} / ${s.meter.output_tokens}</td><td>${m.meter.input_tokens} / ${m.meter.output_tokens}</td></tr>
+      <tr><td>cost (stand-in rate card)</td><td>${w10Usd(s.meter.cost_usd)}</td><td>${w10Usd(m.meter.cost_usd)}</td></tr>
+      <tr><td>citations</td><td>${(s.citations || []).map(c => c.article_id).join(', ') || '—'}</td><td>${(m.citations || []).map(c => c.article_id).join(', ') || '—'}</td></tr>
+      </tbody></table></div>`;
+    return cmp + `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1rem;">${cards.join('')}</div>`;
+  }
+  return cards.join('');
+}
+
+const w10Outcome = (r) => r.degraded ? '<span class="pill bad">degraded · routed to a person</span>'
+  : r.refused ? '<span class="pill warn">not found in the sources</span>' : '<span class="pill ok">answered</span>';
+
+function w10ResultCard(r, title) {
+  const tasks = r.tasks || [], hand = r.handoffs || [];
+  const cites = (r.citations || []).length
+    ? `<ul style="margin:.3rem 0 0;padding-left:1.1rem;">${r.citations.map(c => `<li><code>[${c.marker}]</code> ${esc(c.article_id || '')} · ${esc(c.section || '')} <span class="cid">${esc(c.chunk_id || '')}</span></li>`).join('')}</ul>`
+    : `<div class="muted">no citation in the reply${r.refused ? ' (routed hand-off)' : ''}</div>`;
+  const routing = r.routing ? `<p style="margin:.4rem 0 0;"><b>Routing:</b> ${(r.routing.dispatch || []).map(x => `<code>${esc(x)}</code>`).join(' + ') || 'none'} · ${Object.entries(r.routing.decided_by || {}).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join('; ')}</p>` : '';
+  const taskRows = tasks.length ? `<table class="gs" style="margin-top:.5rem;"><thead><tr><th>task</th><th>agent</th><th>kind</th><th>lifecycle</th><th>tokens in/out</th><th>latency</th><th>attempts</th></tr></thead><tbody>
+    ${tasks.map(t => `<tr><td class="cid">${esc(t.id)}${t.parent_id ? `<br>↳ ${esc(t.parent_id)}` : ''}</td><td>${esc(t.agent)}</td><td>${esc(t.kind)}${t.transport ? ` <span class="pill mono">${esc(t.transport)}</span>` : ''}</td>
+      <td>${t.transitions.map(x => x.state).join(' → ')} ${w10StatePill(t.status)}${t.error ? `<div class="help" style="color:var(--danger);">${esc(t.error.message || JSON.stringify(t.error))}</div>` : ''}</td>
+      <td>${t.input_tokens} / ${t.output_tokens}</td><td>${w10Sec(t.latency_ms)}</td><td>${t.attempts || '—'}</td></tr>`).join('')}</tbody></table>` : '<p class="help" style="margin:.4rem 0 0;">One model call, no hand-offs: the single agent has no tasks to show.</p>';
+  const handRows = hand.length ? `<ul style="margin:.3rem 0 0;padding-left:1.1rem;font-size:.8rem;">${hand.map(h => `<li>${esc(h.direction)} <code>${esc(h.from_agent)}</code> → <code>${esc(h.to_agent)}</code> · <span class="pill ${h.status === 'completed' || h.status === 'sent' ? 'ok' : 'bad'}">${esc(h.status)}</span>${h.input_tokens != null ? ` · ${h.input_tokens}/${h.output_tokens} tok` : ''} · <span class="muted">${esc(h.summary)}</span></li>`).join('')}</ul>` : '';
+  const spec = Object.entries(r.specialists || {}).map(([k, v]) => `<details style="margin-top:.4rem;"><summary>${esc(k)} findings${v.evidence === false ? ' · <span class="pill warn">no evidence</span>' : ''}</summary>${w9Pre(v.findings || '(none)', 220)}${v.facts ? w9Pre(JSON.stringify(v.facts, null, 2), 200) : ''}</details>`).join('');
+  const resyn = (r.resynthesis || []).length ? `<details style="margin-top:.4rem;"><summary>Conflict resolution: ${r.resynthesis.length} re-synthesis</summary>${r.resynthesis.map(x => `<p class="help">${esc(x.reason)}</p>${w9Pre(x.rejected, 160)}`).join('')}</details>` : '';
+  const errs = (r.errors || []).length ? `<div class="card" style="border-color:var(--danger);margin-top:.6rem;"><div class="eyebrow">Errors (${r.errors.length}) · retries ${r.retries ?? r.meter?.retries ?? 0}</div>${r.errors.map(e => `<div class="help">${esc(e.agent)}: ${esc(e.message)}${e.status ? ` (HTTP ${e.status})` : ''}, ${e.attempts} attempt(s)</div>`).join('')}${r.http_status ? `<div class="help">API answered HTTP ${r.http_status} · status <code>${esc(r.status_text || 'degraded')}</code></div>` : ''}</div>` : '';
+  return `<div class="card" style="margin-bottom:1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+      <div class="eyebrow" style="margin:0;">${esc(title)} · <code>${esc(r.ticket?.ticket_id || '')}</code> · ${esc(r.ticket?.tier || '')}</div>
+      <div>${w10Outcome(r)}${r.fault ? ` <span class="pill bad">fault injected: ${esc(r.fault.specialist)}</span>` : ''}</div>
+    </div>
+    <pre class="w6-cmd" style="white-space:pre-wrap;margin-top:.6rem;">${esc(r.answer || '')}</pre>
+    ${r.refusal_reason ? `<p class="help" style="margin:.2rem 0 0;">reason: <code>${esc(r.refusal_reason)}</code></p>` : ''}
+    <div class="metric-row" style="margin-top:.6rem;">
+      ${w6Metric('Latency', w10Sec(r.latency_ms), `server, end to end · browser ${w10Sec(r.client_ms)}`)}
+      ${w6Metric('Model calls · hand-offs', `${r.meter.model_calls} · ${r.meter.handoffs}`, `${r.meter.specialist_calls || 0} specialist call(s)`)}
+      ${w6Metric('Tokens in / out', `${r.meter.input_tokens} / ${r.meter.output_tokens}`, r.meter.context_resend_multiplier ? `re-send ×${r.meter.context_resend_multiplier}` : 'one prompt')}
+      ${w6Metric('Cost', w10Usd(r.meter.cost_usd), 'stand-in rate card, not a provider charge')}
+    </div>
+    <div class="eyebrow" style="margin:.7rem 0 .2rem;">Citations</div>${cites}
+    ${routing}
+    ${tasks.length ? '<div class="eyebrow" style="margin:.7rem 0 .2rem;">Tasks and lifecycle</div>' : ''}${taskRows}
+    ${hand.length ? '<div class="eyebrow" style="margin:.7rem 0 .2rem;">Hand-offs</div>' + handRows : ''}
+    ${spec}${resyn}${errs}
+    <p class="help" style="margin:.6rem 0 0;">trace <code>${esc(r.trace_id || '—')}</code> · transport ${esc(r.transport || '')} · saved to <code>${esc(r.saved_to || '')}</code></p>
+  </div>`;
+}
+
+function w10Cases(d) {
+  const m = d.manifest;
+  if (!m) return w6Card('<div class="muted">No manifest yet: <code>python main.py week10 manifest</code>.</div>');
+  return w6Card(w6Eyebrow(`The 10 cases · from <code>${esc(m.source)}</code> (sha ${esc(m.source_sha)}) · build ${esc(m.app_version)}`) +
+    `<p class="help">${esc(m.selection_rule)} Excluded as the judge's few-shot examples: ${esc((m.excluded_few_shot_ids || []).join(', ') || 'none')}. Both arms read these ids from this file; the reference facts are never shown to either arm.</p>
+    <table class="gs"><thead><tr><th>case</th><th>mode</th><th>kind</th><th>ticket</th><th>message</th><th>reference articles</th></tr></thead><tbody>
+    ${m.cases.map(c => `<tr><td class="qid">${esc(c.id)}</td><td>${esc(c.mode)}</td><td>${c.policy_backed ? '<span class="pill violet">policy</span>' : '<span class="pill info">knowledge</span>'}${c.regression ? ' <span class="pill warn">regression</span>' : ''}</td><td class="cid">${esc(c.ticket_id)} · ${esc(c.tier)}</td><td class="qtext">${esc(c.message)}</td><td>${(c.reference_articles || []).join(', ')}</td></tr>`).join('')}</tbody></table>`);
+}
+
+function w10Race(d) {
+  const c = d.comparison;
+  if (!c) return w6Card('<div class="muted">No benchmark yet: <code>python main.py week10 all</code>.</div>');
+  const s = c.summary.single, m = c.summary.multi, j = c.judge?.agreement_with_blind_labels || {};
+  return `<div class="metric-row" style="margin-bottom:1rem;">
+      ${w6Metric('Pass rate', `${s.passes}/${s.n} <span class="arrow">vs</span> ${m.passes}/${m.n}`, 'single vs multi · assertions AND judge')}
+      ${w6Metric('p50 latency', `${w10Sec(s.latency_p50_ms)} <span class="arrow">vs</span> ${w10Sec(m.latency_p50_ms)}`, 'median, sequential, warm model')}
+      ${w6Metric('Tokens per case', `${s.mean_tokens_per_case} <span class="arrow">vs</span> ${m.mean_tokens_per_case}`, `cost/case ${w10Usd(s.cost_per_case_usd)} vs ${w10Usd(m.cost_per_case_usd)}`)}
+      ${w6Metric('Calls · hand-offs per case', `${s.mean_model_calls} · 0 <span class="arrow">vs</span> ${m.mean_model_calls} · ${m.mean_handoffs}`, `judge ${esc(c.judge?.version || '')}, agreement with blind labels ${j.after_pct ?? '—'}%`)}
+    </div>` + w6Card(md(d.race_table_md || ''));
+}
+
+function w10Handoffs(d) {
+  const rows = (d.results?.multi?.rows || []);
+  const lh = d.comparison?.largest_handoff;
+  return (lh ? w6Card(w6Eyebrow('Largest token-consuming hand-off') + `<p style="margin:0;"><b>${esc(lh.agent)}</b> (${esc(lh.kind)}) on <b>${esc(lh.case_id)}</b>: ${lh.tokens} tokens (in ${lh.input_tokens} / out ${lh.output_tokens}), ${w10Sec(lh.latency_ms)} · task <code>${esc(lh.task_id)}</code></p>`) : '')
+    + (rows.length ? w6Card(w6Eyebrow('Per case: tasks and hand-offs from the stored multi-agent run') + rows.map(r => `<details style="margin:.3rem 0;"><summary><b>${esc(r.case_id)}</b> · ${r.handoffs} hand-offs · ${r.model_calls} calls · ${r.tokens} tok · ×${r.context_resend_multiplier ?? '—'} · ${(r.routing?.dispatch || []).join(' + ')}</summary>${w10ResultCard({ ...r, meter: { model_calls: r.model_calls, handoffs: r.handoffs, specialist_calls: r.specialist_calls, input_tokens: r.input_tokens, output_tokens: r.output_tokens, cost_usd: r.cost_usd, context_resend_multiplier: r.context_resend_multiplier, retries: r.retries }, handoffs: r.handoff_records, ticket: { ticket_id: r.ticket_id }, specialists: {}, resynthesis: [] }, r.case_id)}</details>`).join('')) : '')
+    + w6Card(w6Eyebrow('handoffs.log') + (d.handoffs_log ? w9Pre(d.handoffs_log, 520) : '<div class="muted">Not generated yet.</div>'));
+}
+
+function w10Failure(d) {
+  const ex = (d.examples || []).filter(x => !x.id.startsWith('NF'));
+  const last = w10Last.fault;
+  return w6Card(w6Eyebrow('Trigger the failure experiment now') + `<div class="decision" style="margin-bottom:.8rem;">Starts the specialist worker in this server with an injected <b>HTTP 500</b> for one specialist on one ticket, runs the multi-agent path over HTTP against it, and shows what the manager did: bounded retries, a FAILED task, and a routed hand-off instead of an invented answer.</div>
+    <div style="display:flex;gap:.6rem;align-items:end;flex-wrap:wrap;">
+      <div class="field" style="min-width:220px;"><label>Specialist that fails</label><select id="w10FaultSpec">${(d.specialists || []).map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:260px;"><label>Case</label><select id="w10FaultCase">${ex.map((x, i) => `<option value="${i}" ${x.id === 'T07' ? 'selected' : ''}>${esc(x.label)} — ${esc(x.message.slice(0, 40))}</option>`).join('')}</select></div>
+      <button class="btn primary" id="w10FaultRun" ${w10Busy ? 'disabled' : ''}>${w10Busy ? '<span class="spinner"></span> ' : ''}Run with the fault</button>
+    </div>`)
+    + (last ? w10ResultCard(last, 'Multi-agent under the injected fault') : '')
+    + w6Card(w6Eyebrow('Stored failure case (benchmark run)') + (d.failure_md ? md(d.failure_md) : '<div class="muted">Not generated yet: <code>python main.py week10 failure --case T07</code>.</div>'));
+}
+
+document.addEventListener('click', async e => {
+  if (!e.target.closest('#w10FaultRun') || w10Busy) return;
+  const x = week10.examples.filter(y => !y.id.startsWith('NF'))[+$('w10FaultCase').value];
+  const spec = $('w10FaultSpec').value;
+  w10Busy = true; renderWeek10();
+  toast(`Running ${x.id} through the multi-agent path with ${spec} answering HTTP 500…`);
+  try {
+    const r = await w10Ask('multi', x.message, x.ticket, { inject_fault: spec });
+    w10Last.fault = r;
+    toast(r.degraded ? `Degraded as designed: ${r.errors.length} error, routed to a person (HTTP ${r.http_status})` : 'Unexpected: the fault did not bite', !r.degraded);
+  } catch (err) { toast(err.message, true); }
+  finally { w10Busy = false; renderWeek10(); }
+});
+
+function w10Verdict(d) {
+  return w6Card(w6Eyebrow('verdict.md · at most 10 lines') + (d.verdict_md ? md(d.verdict_md) : '<div class="muted">Not written yet.</div>'));
+}
+
+function w10Writeup(d) {
+  return w6Card(w6Eyebrow('week10/REPORT.md') + (d.report_md ? md(d.report_md) : '<div class="muted">Not written yet.</div>'))
+    + w6Card(w6Eyebrow('week10/checklist.md') + (d.checklist_md ? md(d.checklist_md) : '<div class="muted">Not written yet.</div>'))
+    + w6Card(w6Eyebrow('Tests · week10/test_output.txt') + (d.test_output ? w9Pre(d.test_output, 420) : '<div class="muted">Not recorded yet.</div>'));
+}
 
 /* ------------------------------------------------------------------ reports */
 let reportsData = null;

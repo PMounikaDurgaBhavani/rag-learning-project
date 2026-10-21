@@ -203,7 +203,26 @@ def _draft(ticket, retrieval_mode, top_k, strategy, threshold):
     result["prompt_messages"] = messages
 
     generate = get_ticket_pipeline()
+    # Prompt tokens, counted on the exact rendered chat template with the
+    # drafter's own tokenizer: Week 10 prices both arms per model call, and
+    # the ticket block alone is the base context the multiplier divides by.
+    try:
+        rendered = generate.tokenizer.apply_chat_template(
+            messages, add_generation_prompt=True, tokenize=False
+        )
+        result["input_tokens"] = len(
+            generate.tokenizer(rendered, add_special_tokens=False)["input_ids"]
+        )
+        result["base_context_tokens"] = len(
+            generate.tokenizer(ticket_block(ticket), add_special_tokens=False)["input_ids"]
+        )
+    except Exception:                 # counting must never block drafting
+        result["input_tokens"] = None
+        result["base_context_tokens"] = None
+    result["max_new_tokens"] = GENERATION_PARAMS["max_new_tokens"]
+    model_started = time.perf_counter()
     raw_answer = extract_text(generate(messages, **GENERATION_PARAMS))
+    result["model_latency_ms"] = round((time.perf_counter() - model_started) * 1000.0, 1)
     result["raw_answer"] = raw_answer
     # Counted with the drafter's own tokenizer; generator.count_tokens would
     # load the 0.5B model just to count.

@@ -1,0 +1,451 @@
+{
+  "ran_at": "2026-10-21T12:59:53+00:00",
+  "app_version": "7e44499",
+  "cold_start_ms": 100964.2,
+  "fault": {
+    "specialist": "ticket_specialist",
+    "ticket_id": "CD-10407"
+  },
+  "retry_policy": {
+    "max_attempts": 2,
+    "retry_on": [
+      500,
+      502,
+      503,
+      504
+    ],
+    "backoff_s": 0.2
+  },
+  "transport": "http",
+  "worker_requests": [
+    {
+      "at": "2026-10-21T12:57:46.494+00:00",
+      "specialist": "ticket_specialist",
+      "ticket_id": "CD-10407",
+      "case_id": "T07",
+      "status": 500,
+      "fault": true
+    },
+    {
+      "at": "2026-10-21T12:57:46.708+00:00",
+      "specialist": "ticket_specialist",
+      "ticket_id": "CD-10407",
+      "case_id": "T07",
+      "status": 500,
+      "fault": true
+    },
+    {
+      "at": "2026-10-21T12:57:46.710+00:00",
+      "specialist": "knowledge_specialist",
+      "ticket_id": "CD-10407",
+      "case_id": "T07",
+      "status": 200
+    },
+    {
+      "at": "2026-10-21T12:58:43.463+00:00",
+      "specialist": "knowledge_specialist",
+      "ticket_id": "CD-10401",
+      "case_id": "T01",
+      "status": 200
+    }
+  ],
+  "http_attempts": [
+    {
+      "name": "ticket_specialist",
+      "attempt": 1,
+      "status": 500
+    },
+    {
+      "name": "ticket_specialist",
+      "attempt": 2,
+      "status": 500
+    },
+    {
+      "name": "knowledge_specialist",
+      "attempt": 1,
+      "status": 200
+    },
+    {
+      "name": "knowledge_specialist",
+      "attempt": 1,
+      "status": 200
+    }
+  ],
+  "faulted_case": {
+    "case_id": "T07",
+    "ticket_id": "CD-10407",
+    "question": "refund??? charged twice $89 this month",
+    "status": "FAILED",
+    "degraded": true,
+    "refused": true,
+    "refusal_reason": "specialist_unavailable (ticket_specialist specialist returned HTTP 500 (2 attempts))",
+    "answer": "[ESCALATED-PRIORITY]\nCD-10407: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+    "errors": [
+      {
+        "task": "task-42c071034f",
+        "agent": "ticket_specialist",
+        "kind": "http_error",
+        "status": 500,
+        "message": "ticket_specialist specialist returned HTTP 500 (2 attempts)",
+        "attempts": 2
+      }
+    ],
+    "retries": 1,
+    "tasks": [
+      {
+        "id": "task-b3bddd4af8",
+        "parent_id": null,
+        "agent": "manager",
+        "role": "Manager / orchestrator",
+        "kind": "manager",
+        "status": "FAILED",
+        "transitions": [
+          {
+            "state": "CREATED",
+            "at": "2026-10-21T12:57:07.446+00:00"
+          },
+          {
+            "state": "ASSIGNED",
+            "at": "2026-10-21T12:57:07.448+00:00"
+          },
+          {
+            "state": "RUNNING",
+            "at": "2026-10-21T12:57:07.448+00:00"
+          },
+          {
+            "state": "FAILED",
+            "at": "2026-10-21T12:58:04.911+00:00"
+          }
+        ],
+        "input": "Ticket ID: CD-10407\nSupport tier: Priority\nCharge on account: $89.00, charged 3 days ago (a duplicate of an earlier charge on the same invoice)\nCustomer message: refund??? charged twice $89 this month",
+        "output": "[ESCALATED-PRIORITY]\nCD-10407: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+        "error": null,
+        "attempts": 0,
+        "transport": null,
+        "started_at": "2026-10-21T12:57:07.448+00:00",
+        "ended_at": "2026-10-21T12:58:04.911+00:00",
+        "latency_ms": 57463.7,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tokens": 0,
+        "tool_calls": 0
+      },
+      {
+        "id": "task-f2971964d5",
+        "parent_id": "task-b3bddd4af8",
+        "agent": "manager",
+        "role": "Manager / orchestrator",
+        "kind": "triage",
+        "status": "COMPLETED",
+        "transitions": [
+          {
+            "state": "CREATED",
+            "at": "2026-10-21T12:57:07.454+00:00"
+          },
+          {
+            "state": "ASSIGNED",
+            "at": "2026-10-21T12:57:07.454+00:00"
+          },
+          {
+            "state": "RUNNING",
+            "at": "2026-10-21T12:57:07.454+00:00"
+          },
+          {
+            "state": "COMPLETED",
+            "at": "2026-10-21T12:57:46.398+00:00"
+          }
+        ],
+        "input": "Ticket ID: CD-10407\nSupport tier: Priority\nCharge on account: $89.00, charged 3 days ago (a duplicate of an earlier charge on the same invoice)\nCustomer message: refund??? charged twice $89 this month",
+        "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+        "error": null,
+        "attempts": 0,
+        "transport": null,
+        "started_at": "2026-10-21T12:57:07.454+00:00",
+        "ended_at": "2026-10-21T12:57:46.398+00:00",
+        "latency_ms": 38944.4,
+        "model_calls": 1,
+        "input_tokens": 195,
+        "output_tokens": 39,
+        "tokens": 234,
+        "tool_calls": 0
+      },
+      {
+        "id": "task-42c071034f",
+        "parent_id": "task-b3bddd4af8",
+        "agent": "ticket_specialist",
+        "role": "Ticket / support specialist",
+        "kind": "specialist",
+        "status": "FAILED",
+        "transitions": [
+          {
+            "state": "CREATED",
+            "at": "2026-10-21T12:57:46.399+00:00"
+          },
+          {
+            "state": "ASSIGNED",
+            "at": "2026-10-21T12:57:46.400+00:00"
+          },
+          {
+            "state": "RUNNING",
+            "at": "2026-10-21T12:57:46.400+00:00"
+          },
+          {
+            "state": "FAILED",
+            "at": "2026-10-21T12:57:46.709+00:00"
+          }
+        ],
+        "input": "{\"ticket_id\": \"CD-10407\", \"message\": \"refund??? charged twice $89 this month\"}",
+        "output": null,
+        "error": {
+          "kind": "http_error",
+          "status": 500,
+          "message": "ticket_specialist specialist returned HTTP 500 (2 attempts)",
+          "attempts": 2
+        },
+        "attempts": 2,
+        "transport": "http",
+        "started_at": "2026-10-21T12:57:46.400+00:00",
+        "ended_at": "2026-10-21T12:57:46.709+00:00",
+        "latency_ms": 308.7,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "tokens": 0,
+        "tool_calls": 0
+      },
+      {
+        "id": "task-86058da7b8",
+        "parent_id": "task-b3bddd4af8",
+        "agent": "knowledge_specialist",
+        "role": "Knowledge / RAG specialist",
+        "kind": "specialist",
+        "status": "COMPLETED",
+        "transitions": [
+          {
+            "state": "CREATED",
+            "at": "2026-10-21T12:57:46.709+00:00"
+          },
+          {
+            "state": "ASSIGNED",
+            "at": "2026-10-21T12:57:46.709+00:00"
+          },
+          {
+            "state": "RUNNING",
+            "at": "2026-10-21T12:57:46.709+00:00"
+          },
+          {
+            "state": "COMPLETED",
+            "at": "2026-10-21T12:58:04.898+00:00"
+          }
+        ],
+        "input": "{\"ticket_id\": \"CD-10407\", \"message\": \"refund??? charged twice $89 this month\"}",
+        "output": "The customer has been charged twice for $89 this month. According to the policy:\n\n1. Every duplicate charge is refunded in full.\n2. A refund is always for the exact amount that was charged ($89).\n3. Approved refunds are returned to the orig\u2026",
+        "error": null,
+        "attempts": 1,
+        "transport": "http",
+        "started_at": "2026-10-21T12:57:46.709+00:00",
+        "ended_at": "2026-10-21T12:58:04.898+00:00",
+        "latency_ms": 18189.1,
+        "model_calls": 1,
+        "input_tokens": 547,
+        "output_tokens": 160,
+        "tokens": 707,
+        "tool_calls": 1
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "handoff-ed74b2840a",
+        "at": "2026-10-21T12:57:46.400+00:00",
+        "direction": "dispatch",
+        "from_task": "task-b3bddd4af8",
+        "from_agent": "manager",
+        "to_task": "task-42c071034f",
+        "to_agent": "ticket_specialist",
+        "summary": "{\"ticket\": {\"ticket_id\": \"CD-10407\", \"tier\": \"Priority\", \"message\": \"refund??? charged twice $89 this month\", \"charge_amount\": 89.0, \"days_since_charge\": 3, \"duplicate_charge\": true, \"refund_requested\": true}}",
+        "status": "sent",
+        "input_tokens": null,
+        "output_tokens": null,
+        "context_chars": 209
+      },
+      {
+        "id": "handoff-5dc91f092f",
+        "at": "2026-10-21T12:57:46.709+00:00",
+        "direction": "return",
+        "from_task": "task-42c071034f",
+        "from_agent": "ticket_specialist",
+        "to_task": "task-b3bddd4af8",
+        "to_agent": "manager",
+        "summary": "{\"error\": {\"kind\": \"http_error\", \"status\": 500, \"message\": \"ticket_specialist specialist returned HTTP 500 (2 attempts)\", \"attempts\": 2}}",
+        "status": "failed",
+        "input_tokens": null,
+        "output_tokens": null,
+        "context_chars": 137
+      },
+      {
+        "id": "handoff-67222fe8a2",
+        "at": "2026-10-21T12:57:46.709+00:00",
+        "direction": "dispatch",
+        "from_task": "task-b3bddd4af8",
+        "from_agent": "manager",
+        "to_task": "task-86058da7b8",
+        "to_agent": "knowledge_specialist",
+        "summary": "{\"ticket\": {\"ticket_id\": \"CD-10407\", \"tier\": \"Priority\", \"message\": \"refund??? charged twice $89 this month\", \"charge_amount\": 89.0, \"days_since_charge\": 3, \"duplicate_charge\": true, \"refund_requested\": true}}",
+        "status": "sent",
+        "input_tokens": null,
+        "output_tokens": null,
+        "context_chars": 209
+      },
+      {
+        "id": "handoff-09631c0aef",
+        "at": "2026-10-21T12:58:04.908+00:00",
+        "direction": "return",
+        "from_task": "task-86058da7b8",
+        "from_agent": "knowledge_specialist",
+        "to_task": "task-b3bddd4af8",
+        "to_agent": "manager",
+        "summary": "{\"findings\": \"The customer has been charged twice for $89 this month. According to the policy:\\n\\n1. Every duplicate charge is refunded in full.\\n2. A refund is always for the exact amount that was charged ($89).\\n3. Approved refunds are re\u2026",
+        "status": "completed",
+        "input_tokens": 547,
+        "output_tokens": 160,
+        "context_chars": 902
+      }
+    ],
+    "meter": {
+      "model_calls": 2,
+      "input_tokens": 742,
+      "output_tokens": 199,
+      "tokens": 941,
+      "cost_usd": 0.0002307,
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "handoffs": 4,
+      "specialist_calls": 2,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 56,
+      "context_resend_multiplier": 13.25,
+      "errors": 1,
+      "retries": 1
+    },
+    "latency_ms": 57468.5,
+    "trace_id": "959fdaaf7b4143cf",
+    "assertions": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-10407 found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": true,
+        "passed": false,
+        "detail": "expected 89.00; numbers in reply: none"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Priority, tag present"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      }
+    ],
+    "assertions_pass": false,
+    "failed_task": {
+      "id": "task-42c071034f",
+      "parent_id": "task-b3bddd4af8",
+      "agent": "ticket_specialist",
+      "role": "Ticket / support specialist",
+      "kind": "specialist",
+      "status": "FAILED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T12:57:46.399+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T12:57:46.400+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T12:57:46.400+00:00"
+        },
+        {
+          "state": "FAILED",
+          "at": "2026-10-21T12:57:46.709+00:00"
+        }
+      ],
+      "input": "{\"ticket_id\": \"CD-10407\", \"message\": \"refund??? charged twice $89 this month\"}",
+      "output": null,
+      "error": {
+        "kind": "http_error",
+        "status": 500,
+        "message": "ticket_specialist specialist returned HTTP 500 (2 attempts)",
+        "attempts": 2
+      },
+      "attempts": 2,
+      "transport": "http",
+      "started_at": "2026-10-21T12:57:46.400+00:00",
+      "ended_at": "2026-10-21T12:57:46.709+00:00",
+      "latency_ms": 308.7,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens": 0,
+      "tool_calls": 0
+    }
+  },
+  "control_case": {
+    "case_id": "T01",
+    "ticket_id": "CD-10401",
+    "status": "COMPLETED",
+    "degraded": false,
+    "refused": false,
+    "errors": [],
+    "answer": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Must be different from the previous password.\n\nPlease make sure your new password adheres to these guidelines before attempting to set it. If you continue to face issues, feel free to reach out to our support team for further assistance.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Agent",
+    "meter": {
+      "model_calls": 3,
+      "input_tokens": 1428,
+      "output_tokens": 225,
+      "tokens": 1653,
+      "cost_usd": 0.0003492,
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "handoffs": 2,
+      "specialist_calls": 1,
+      "tool_calls": 1,
+      "resynthesis": 0,
+      "base_context_tokens": 42,
+      "context_resend_multiplier": 34.0,
+      "errors": 0,
+      "retries": 0
+    },
+    "latency_ms": 102821.3,
+    "trace_id": "c1c32e12275e4ad3"
+  },
+  "judge": "not run: the reply is the routed hand-off, which the judge criterion itself calls FAIL whenever the reference facts answer the question"
+}

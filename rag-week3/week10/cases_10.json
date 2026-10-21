@@ -1,0 +1,147 @@
+{
+  "created_at": "2026-10-20T18:40:56+00:00",
+  "app_version": "7e44499",
+  "source": "week6/eval_cases.jsonl",
+  "source_sha": "4d76d0a69b8e6711",
+  "selection_rule": "For each Week 5 mode M1..M5 in order: (1) the first case in week6/eval_cases.jsonl file order whose id is not one of judge v2's few-shot examples; (2) the first policy-backed case in file order not already chosen and not a few-shot example, or, if the mode has none, the next case in file order. Two cases per mode, ten in all. Expected answers are untouched.",
+  "excluded_few_shot_ids": [
+    "T02",
+    "T13"
+  ],
+  "excluded_reason": "judge_v2.txt shows these cases with their human verdict as worked examples",
+  "n": 10,
+  "case_ids": [
+    "T01",
+    "T03",
+    "R02",
+    "T07",
+    "R03",
+    "T11",
+    "R04",
+    "T16",
+    "T18",
+    "T21"
+  ],
+  "cases": [
+    {
+      "id": "T01",
+      "mode": "M1",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10401",
+      "tier": "Standard",
+      "message": "My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+      "reference_articles": [
+        "HC-001"
+      ]
+    },
+    {
+      "id": "T03",
+      "mode": "M1",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10403",
+      "tier": "Standard",
+      "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+      "reference_articles": [
+        "HC-008"
+      ]
+    },
+    {
+      "id": "R02",
+      "mode": "M2",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90002",
+      "tier": "Standard",
+      "message": "billing",
+      "reference_articles": [
+        "HC-003"
+      ]
+    },
+    {
+      "id": "T07",
+      "mode": "M2",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10407",
+      "tier": "Priority",
+      "message": "refund??? charged twice $89 this month",
+      "reference_articles": [
+        "HC-008"
+      ]
+    },
+    {
+      "id": "R03",
+      "mode": "M3",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90003",
+      "tier": "Standard",
+      "message": "My card expired and the CloudDesk payment failed. What should I do?",
+      "reference_articles": [
+        "HC-003"
+      ]
+    },
+    {
+      "id": "T11",
+      "mode": "M3",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10411",
+      "tier": "Standard",
+      "message": "Can you walk me through resetting my password step by step? I've never done it before.",
+      "reference_articles": [
+        "HC-001"
+      ]
+    },
+    {
+      "id": "R04",
+      "mode": "M4",
+      "policy_backed": false,
+      "regression": true,
+      "ticket_id": "CD-90004",
+      "tier": "Standard",
+      "message": "Account locked. Help.",
+      "reference_articles": [
+        "HC-002"
+      ]
+    },
+    {
+      "id": "T16",
+      "mode": "M4",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10416",
+      "tier": "Priority",
+      "message": "I was charged $75 back on July 1st, 76 days ago. I want my money back, and a discount for the trouble.",
+      "reference_articles": [
+        "HC-008"
+      ]
+    },
+    {
+      "id": "T18",
+      "mode": "M5",
+      "policy_backed": false,
+      "regression": false,
+      "ticket_id": "CD-10418",
+      "tier": "Standard",
+      "message": "My account is locked, what should I do?",
+      "reference_articles": [
+        "HC-002"
+      ]
+    },
+    {
+      "id": "T21",
+      "mode": "M5",
+      "policy_backed": true,
+      "regression": false,
+      "ticket_id": "CD-10421",
+      "tier": "Standard",
+      "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+      "reference_articles": [
+        "HC-008"
+      ]
+    }
+  ]
+}

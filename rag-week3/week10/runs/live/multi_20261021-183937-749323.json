@@ -1,0 +1,238 @@
+{
+  "mode": "multi",
+  "ticket": {
+    "ticket_id": "CD-UI-401F8C",
+    "tier": "Standard",
+    "message": "Does CloudDesk integrate with Slack, and how do I turn it on?",
+    "charge_amount": null,
+    "days_since_charge": null,
+    "duplicate_charge": false,
+    "refund_requested": false
+  },
+  "answer": "CD-UI-401F8C: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+  "refused": true,
+  "refusal_reason": "no_evidence (distance_gate (0.8211 > 0.75))",
+  "not_found": true,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [],
+  "best_distance": 0.8210588480303964,
+  "lexical_anchors": [],
+  "gate_bypass": null,
+  "tasks": [
+    {
+      "id": "task-5848b8ce03",
+      "parent_id": null,
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "manager",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T13:09:37.741+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-UI-401F8C\nSupport tier: Standard\nCustomer message: Does CloudDesk integrate with Slack, and how do I turn it on?",
+      "output": "CD-UI-401F8C: Thanks for contacting CloudDesk support. I couldn't find the answer to this in our help centre, so I've passed your ticket to a specialist who will follow up.",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-10-21T13:09:33.463+00:00",
+      "ended_at": "2026-10-21T13:09:37.741+00:00",
+      "latency_ms": 4278.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens": 0,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-bfc148e31e",
+      "parent_id": "task-5848b8ce03",
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "triage",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T13:09:33.463+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T13:09:37.023+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-UI-401F8C\nSupport tier: Standard\nCustomer message: Does CloudDesk integrate with Slack, and how do I turn it on?",
+      "output": "[\"knowledge_specialist\"]",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-10-21T13:09:33.463+00:00",
+      "ended_at": "2026-10-21T13:09:37.024+00:00",
+      "latency_ms": 3560.8,
+      "model_calls": 1,
+      "input_tokens": 175,
+      "output_tokens": 27,
+      "tokens": 202,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-6fa61ea872",
+      "parent_id": "task-5848b8ce03",
+      "agent": "knowledge_specialist",
+      "role": "Knowledge / RAG specialist",
+      "kind": "specialist",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T13:09:37.024+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T13:09:37.024+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T13:09:37.024+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T13:09:37.740+00:00"
+        }
+      ],
+      "input": "{\"ticket_id\": \"CD-UI-401F8C\", \"message\": \"Does CloudDesk integrate with Slack, and how do I turn it on?\"}",
+      "output": "No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8211 > 0.75)).",
+      "error": null,
+      "attempts": 1,
+      "transport": "in-process",
+      "started_at": "2026-10-21T13:09:37.024+00:00",
+      "ended_at": "2026-10-21T13:09:37.740+00:00",
+      "latency_ms": 716.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens": 0,
+      "tool_calls": 1
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "handoff-64ea9cf06b",
+      "at": "2026-10-21T13:09:37.024+00:00",
+      "direction": "dispatch",
+      "from_task": "task-5848b8ce03",
+      "from_agent": "manager",
+      "to_task": "task-6fa61ea872",
+      "to_agent": "knowledge_specialist",
+      "summary": "{\"ticket\": {\"ticket_id\": \"CD-UI-401F8C\", \"tier\": \"Standard\", \"message\": \"Does CloudDesk integrate with Slack, and how do I turn it on?\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_charge\": false, \"refund_requested\": false}\u2026",
+      "status": "sent",
+      "input_tokens": null,
+      "output_tokens": null,
+      "context_chars": 241
+    },
+    {
+      "id": "handoff-702b5385a1",
+      "at": "2026-10-21T13:09:37.740+00:00",
+      "direction": "return",
+      "from_task": "task-6fa61ea872",
+      "from_agent": "knowledge_specialist",
+      "to_task": "task-5848b8ce03",
+      "to_agent": "manager",
+      "summary": "{\"findings\": \"No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8211 > 0.75)).\", \"chunks\": [\"HC-005-markdown-5\", \"HC-003-markdown-4\", \"HC-003-markdown-1\", \"HC-005-markdown-1\", \"HC-005-mark\u2026",
+      "status": "completed",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "context_chars": 250
+    }
+  ],
+  "routing": {
+    "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": true, \"reason\": \"The customer is asking about integration details.\"}",
+    "triage_parsed": {
+      "ticket_specialist": false,
+      "knowledge_specialist": true,
+      "reason": "The customer is asking about integration details."
+    },
+    "decided_by": {
+      "knowledge_specialist": "policy: always consulted",
+      "ticket_specialist": "triage: False"
+    },
+    "dispatch": [
+      "knowledge_specialist"
+    ]
+  },
+  "specialists": {
+    "knowledge_specialist": {
+      "specialist": "knowledge_specialist",
+      "best_distance": 0.8210588480303964,
+      "lexical_anchors": [],
+      "evidence": false,
+      "gate_reason": "distance_gate (0.8211 > 0.75)",
+      "findings": "No supporting evidence: the retrieved help-centre passages do not match the message (distance_gate (0.8211 > 0.75)).",
+      "model_cited": [],
+      "not_covered": [],
+      "calls": [],
+      "tool_calls": 1,
+      "chunk_ids": [
+        "HC-005-markdown-5",
+        "HC-003-markdown-4",
+        "HC-003-markdown-1",
+        "HC-005-markdown-1",
+        "HC-005-markdown-22"
+      ]
+    }
+  },
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 1,
+    "input_tokens": 175,
+    "output_tokens": 27,
+    "tokens": 202,
+    "cost_usd": 4.245e-05,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 2,
+    "specialist_calls": 1,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 37,
+    "context_resend_multiplier": 4.73,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 4278.2,
+  "trace_id": "d21788a8f26348c1",
+  "langfuse_trace_id": null,
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "week10-multi-v1.1",
+  "fault": null,
+  "ran_at": "2026-10-21T13:09:37+00:00"
+}

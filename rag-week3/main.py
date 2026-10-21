@@ -308,6 +308,12 @@ def command_race(args):
     return week7_race.race(args)
 
 
+def command_week10(args):
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments"))
+    import week10_benchmark
+    return week10_benchmark.main(args.rest)
+
+
 def command_demo(args):
     from generator import generate_answer, print_answer
     from retriever import retrieve_chunks, build_where, print_results
@@ -555,6 +561,16 @@ def build_parser():
     race.add_argument("--max-cost", type=float, default=0.01)
     race.add_argument("--max-seconds", type=float, default=120.0)
     race.set_defaults(func=command_race)
+
+    # week10 (single agent vs manager + two specialists on 10 Week 6 cases)
+    week10 = subparsers.add_parser(
+        "week10",
+        help="Week 10: manifest | run | judge | report | failure | all "
+             "(python main.py week10 all)"
+    )
+    week10.add_argument("rest", nargs=argparse.REMAINDER,
+                        help="arguments for experiments/week10_benchmark.py")
+    week10.set_defaults(func=command_week10)
 
     # demo
     demo = subparsers.add_parser(

@@ -1,0 +1,121 @@
+{
+  "mode": "single",
+  "ticket": {
+    "ticket_id": "CD-UI-833CCE",
+    "tier": "Standard",
+    "message": "How long is a password reset link valid for?",
+    "charge_amount": null,
+    "days_since_charge": null,
+    "duplicate_charge": false,
+    "refund_requested": false
+  },
+  "answer": "CD-UI-833CCE\n\nHello,\n\nThank you for your question about the validity of a password reset link. According to our documentation, a password reset link is valid for 30 minutes from the time it's created. \n\nIf you need any further assistance, please let us know.\n\nBest regards,\nCloudDesk Support Team",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-001-markdown-15",
+      "article_id": "HC-001",
+      "section": "Frequently Asked Questions",
+      "distance": 0.4537,
+      "bm25_score": null,
+      "rrf_score": 0.032522,
+      "rerank_score": 9.945127487182617,
+      "dense_rank": 2,
+      "bm25_rank": 1
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-001-markdown-5",
+      "article_id": "HC-001",
+      "section": "How to Reset Your Password",
+      "distance": 0.4517,
+      "bm25_score": null,
+      "rrf_score": 0.032522,
+      "rerank_score": 9.269668579101562,
+      "dense_rank": 1,
+      "bm25_rank": 2
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-001-markdown-11",
+      "article_id": "HC-001",
+      "section": "Troubleshooting",
+      "distance": 0.8038,
+      "bm25_score": null,
+      "rrf_score": 0.031025,
+      "rerank_score": 6.091675281524658,
+      "dense_rank": 6,
+      "bm25_rank": 3
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-001-markdown-7",
+      "article_id": "HC-001",
+      "section": "Reset Email Not Received",
+      "distance": 0.8712,
+      "bm25_score": null,
+      "rrf_score": 0.028624,
+      "rerank_score": 1.3268507719039917,
+      "dense_rank": 7,
+      "bm25_rank": 13
+    },
+    {
+      "rank": 5,
+      "chunk_id": "HC-001-markdown-9",
+      "article_id": "HC-001",
+      "section": "Reset Email Not Received",
+      "distance": 0.6845,
+      "bm25_score": null,
+      "rrf_score": 0.015385,
+      "rerank_score": -0.040321096777915955,
+      "dense_rank": 5,
+      "bm25_rank": null
+    }
+  ],
+  "best_distance": 0.4517,
+  "lexical_anchors": [
+    "link",
+    "long",
+    "valid"
+  ],
+  "gate_bypass": null,
+  "tasks": [],
+  "handoffs": [],
+  "routing": null,
+  "specialists": {},
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 1,
+    "input_tokens": 574,
+    "output_tokens": 69,
+    "tokens": 643,
+    "cost_usd": 0.000128,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 0,
+    "specialist_calls": 0,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 31,
+    "context_resend_multiplier": null,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 110538.2,
+  "trace_id": "754b131b99db4fb9",
+  "langfuse_trace_id": null,
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "ticket-v1.2",
+  "ran_at": "2026-10-21T13:05:52+00:00"
+}
