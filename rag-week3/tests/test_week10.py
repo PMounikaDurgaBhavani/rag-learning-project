@@ -441,6 +441,19 @@ try:
     check("GET / serves the Week 10 view and the chatbot controls", r.status == 200 and
           'data-view="week10"' in html and 'id="w10Mode"' in html and 'id="w10Send"' in html
           and "/api/week10/chat" in html and 'id="w10Examples"' in html)
+    check("the chat is a conversation with a mode selector, optional ticket context and a benchmark section",
+          "CloudDesk Support Assistant" in html and 'id="w10Thread"' in html and 'id="w10TicketCtx"' in html
+          and 'id="w10BenchTabs"' in html and "Benchmark &amp; Evaluation" in html
+          and 'value="single">Single Agent' in html and 'value="multi">Multi-Agent' in html)
+    check("the ticket fields and their ids survived the redesign (payload contract unchanged)",
+          all(f'id="{i}"' in html for i in ("w10TicketId", "w10Tier", "w10Amount", "w10Days", "w10Dup", "w10Refund")))
+    check("the page asks the backend whether the model is loaded instead of guessing", "/api/week10/status" in html)
+    check("no client-side request timeout is left that could call a running request failed",
+          "AbortController" not in html.split("week 10 */")[1].split("reports */")[0])
+    status, body = get("/api/week10/status")
+    check("GET /api/week10/status reports model state without loading anything",
+          status == 200 and body.get("model_loaded") is False and "embedder_loaded" in body
+          and "reranker_loaded" in body and "running" in body, (status, body))
     status, body = get("/api/week10")
     check("GET /api/week10 returns the artefacts and the examples",
           status == 200 and "examples" in body and "manifest" in body and "modes" in body, (status, list(body)[:6]))
@@ -484,6 +497,30 @@ try:
 finally:
     httpd.shutdown()
     httpd.server_close()
+
+# ===========================================================================
+print("\nUI backend — model state and the opt-in warm-up flag")
+
+import week10_ui as w10ui
+st = w10ui.status()
+check("status() reads the module caches and reports nothing loaded in a fresh process",
+      st["model_loaded"] is False and st["embedder_loaded"] is False and st["reranker_loaded"] is False
+      and st["model"], st)
+import ticket_reply
+check("status() did not load the drafter as a side effect", ticket_reply._PIPELINE is None)
+sys.path.insert(0, str(ROOT))
+import main as cli
+parsed = cli.build_parser().parse_args(["ui", "--warm", "--no-browser", "--port", "8123"])
+check("`python main.py ui --warm` is accepted and off by default",
+      parsed.warm is True and cli.build_parser().parse_args(["ui"]).warm is False)
+try:
+    w10ui.build_ticket("hi", {"tier": "Priority", "charge_amount": "89", "days_since_charge": "3",
+                              "duplicate_charge": True, "refund_requested": True})
+    check("build_ticket keeps every entered ticket field", True)
+    w10ui.build_ticket("hi", {"charge_amount": "89"})
+    check("a charge without days is rejected, not silently dropped", False)
+except ValueError:
+    check("a charge without days is rejected, not silently dropped", True)
 
 # ===========================================================================
 print("\nDeliverables — present and within their limits")

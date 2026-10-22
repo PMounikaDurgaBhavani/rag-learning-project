@@ -375,7 +375,7 @@ def command_status(args):
 
 def command_ui(args):
     from server import run_server
-    run_server(port=args.port, open_browser=not args.no_browser)
+    run_server(port=args.port, open_browser=not args.no_browser, warm=args.warm)
 
 
 # ============================================================
@@ -396,6 +396,9 @@ def build_parser():
     )
     ui.add_argument("--port", type=int, default=8000, help="server port (default: 8000)")
     ui.add_argument("--no-browser", action="store_true", help="do not auto-open browser")
+    ui.add_argument("--warm", action="store_true",
+                    help="load the ticket drafter and retrievers at startup (~70 s) so the "
+                         "first chat question in the browser does not pay for them")
     ui.set_defaults(func=command_ui)
 
     # ingest

@@ -467,7 +467,11 @@ def run_retrieval(query, active_query, top_k, strategy, where):
 
 class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # quieter console
-        if "/api/" in (args[0] if args else ""):
+        # send_error() logs ("code %d, message %s", 404, ...): the first
+        # argument is then an int, and `in` on it raised, which aborted every
+        # 404 (a browser's /favicon.ico probe) before the response was written.
+        first = args[0] if args else ""
+        if isinstance(first, str) and "/api/" in first:
             super().log_message(fmt, *args)
 
     def _send_json(self, data: Any, status: int = 200):
@@ -521,6 +525,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week9_module().ui_artefacts())
             elif parsed.path == "/api/week10":
                 self._send_json(week10_module().ui_artefacts())
+            elif parsed.path == "/api/week10/status":
+                self._send_json({**week10_module().status(), **runs_status()})
             elif parsed.path == "/api/reports":
                 self._send_json(reports())
             elif parsed.path == "/api/health":
@@ -770,13 +776,20 @@ class StudioServer(http.server.ThreadingHTTPServer):
     daemon_threads = True
 
 
-def run_server(port: int = 8000, open_browser: bool = True):
+def run_server(port: int = 8000, open_browser: bool = True, warm: bool = False):
     httpd = StudioServer(("", port), RAGRequestHandler)
     url = f"http://localhost:{port}"
 
     print("=" * 72)
     print("      CLOUDDESK KNOWLEDGE STUDIO — WEB UI")
     print("=" * 72)
+    if warm:
+        # Opt-in: load the ticket drafter and the retrievers now, through the
+        # same caches every request uses, so the first browser question does
+        # not pay ~70 s for them. Costs that time at startup instead.
+        print("  Warming the local models (ticket drafter, embedder, reranker)…")
+        seconds = week10_module().warm_models()
+        print(f"  Models loaded in {seconds:.0f} s.")
     print(f"  Server running locally at: {url}")
     print(f"  Store: {db.DATABASE_URL}")
     print("  Press Ctrl+C to stop the server.")

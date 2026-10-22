@@ -398,14 +398,20 @@ Open **MCP servers** (or `#week9/discovery`).
 Open **Multi-agent benchmark**. Numbers: `week10/race_table.md`; the verdict:
 `week10/verdict.md`; how it was measured: `week10/README.md`.
 
-- *Chatbot*: pick an example chip (the ten benchmark cases, plus two questions
-  the help centre cannot answer), choose **Compare both**, press **Ask**. The
-  single agent runs first, then the manager with its two specialists; the
-  comparison table and both cards show the answer, citations, routing, every
-  task's lifecycle, the hand-offs, tokens, cost and latency. Say: "Same model,
-  same retrieval, same reply rules. The only new capability is the ticket
-  specialist deciding refund eligibility in code." Try a *Not in the help
-  centre* chip to show the routed hand-off, with no invented policy.
+- *Support chat*: start the server with `python main.py ui --warm` so the first
+  question does not spend a minute loading the model. Leave **Agent mode** on
+  *Single Agent*, click **Password reset**, press Enter. The bubble shows an
+  elapsed clock while the local model works. When the answer arrives, open
+  **View execution details** to show the retrieved passages and the one model
+  call. Then press **Ask the same question with Multi-Agent**: the second answer
+  shows the flow line (`Manager → Knowledge Specialist → Manager → Answer`) and a
+  **Compare with the Single Agent answer** table with time, calls, hand-offs,
+  tokens and cost. Say: "Same model, same retrieval, same reply rules. The only
+  new capability is the ticket specialist deciding refund eligibility in code."
+  For that, click **Refund eligibility** (the ticket context opens with the $49,
+  12-day charge) in Multi-Agent mode: the flow now includes the Ticket
+  Specialist. Finish with **Slack integration (not in the help centre)**: a
+  *Not found in the help centre* notice and a routed hand-off, no invented policy.
 - *Race table*: pass rate (assertions AND judge v2), p50/p95/p99 with the n=10
   caveat, tokens in/out, cost on the stand-in rate card, calls and hand-offs,
   the pass rate per Week 5 mode, and the largest token-consuming hand-off.

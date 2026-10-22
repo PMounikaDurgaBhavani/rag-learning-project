@@ -139,11 +139,34 @@ from the reference answers: the specialist reads the ticket fields both arms see
 
 ## The UI
 
-`python main.py ui` → sidebar **Multi-agent benchmark**. The **Chatbot** tab has a
-mode selector (single, multi, compare both), the ticket fields the Week 6 tickets
-carry (tier, charge, days, duplicate, refund requested), the ten benchmark questions
-and two the help centre cannot answer as chips, and shows the answer, citations,
-routing, every task with its lifecycle, hand-offs, tokens, cost, latency, errors and
-the trace id. The **Failure experiment** tab runs a case against an injected HTTP 500
-live. The other tabs render the files above. In the **User** role the view is the
-agent chatbot alone.
+`python main.py ui` → sidebar **Multi-agent benchmark**. Two sections:
+
+- **Support chat**: the *CloudDesk Support Assistant*, a conversation with an
+  **Agent mode** selector (Single Agent / Multi-Agent) and a one-line explanation
+  of each. Suggested questions (password reset, refund eligibility, account lockout,
+  one the help centre cannot answer, plus the other benchmark cases under *More*)
+  fill the composer; nothing is pre-answered. A collapsible *Ticket context
+  (optional)* holds the Week 6 ticket fields (tier, charge, days, duplicate, refund
+  requested) for refund questions. Each answer shows the outcome (answered / not
+  found in the help centre / routed to a person), the sources consulted or cited,
+  and, for the multi-agent path, the flow the manager actually took
+  (`Manager → Knowledge Specialist → Manager → Answer`, built from the recorded
+  dispatches). *Ask the same question with …* runs the other mode on the same text
+  and adds a side-by-side comparison; *View execution details* opens the full trace
+  (routing, specialist findings, tasks and lifecycle, hand-offs, passages, tokens,
+  cost, trace id). While a question runs, the bubble shows an elapsed clock and
+  whether the server is still loading the local model (from `/api/week10/status`);
+  there is no client-side timeout, because a local model under memory pressure can
+  take minutes and the server keeps going. Errors, 409 (server busy) and 503
+  (degraded: a specialist failed, request routed to a person) are shown in the
+  conversation with a Retry that resubmits only when pressed.
+- **Benchmark & Evaluation**: the stored ten-case results (race table, the cases,
+  hand-offs, the failure experiment with a live *Run with the fault* button, the
+  verdict and the write-up), all read from the files above.
+
+In the **User** role only the support chat is shown.
+
+`python main.py ui --warm` loads the ticket drafter and the retrievers at startup
+(about 70 s), through the same caches every request uses, so the first chat question
+does not pay for them. It does not help a machine that is swapping: a model that has
+been paged out is slow whether it was loaded early or late.

@@ -124,6 +124,46 @@ def ui_artefacts():
 
 
 # ---------------------------------------------------------------------------
+# model state: loaded once per server process, never duplicated
+# ---------------------------------------------------------------------------
+
+def status():
+    """Which local models this process has already loaded.
+
+    Every model lives in one module-level cache (ticket_reply._PIPELINE,
+    embeddings._MODEL, reranker._RERANKER), so the first request of a server
+    session pays for loading them and later requests do not. The UI uses this
+    to say "loading the model" only when that is actually what is happening.
+    """
+    import embeddings
+    import reranker
+    import ticket_reply
+    return {
+        "model": ticket_reply.TICKET_MODEL_NAME,
+        "model_loaded": ticket_reply._PIPELINE is not None,
+        "embedder_loaded": embeddings._MODEL is not None,
+        "reranker_loaded": reranker._RERANKER is not None,
+    }
+
+
+def warm_models():
+    """Load the drafter, the embedder, the BM25 index and the cross-encoder
+    through their own caches, so the first question in the browser does not
+    pay for them. Returns the seconds it took. Does nothing about memory
+    pressure: a swapped-out model is slow whether it was loaded early or late."""
+    import time
+    from multi_agent import default_anchors, default_retriever
+    from ticket_reply import get_ticket_pipeline
+    started = time.perf_counter()
+    generate = get_ticket_pipeline()
+    generate([{"role": "user", "content": "ok"}], max_new_tokens=1, do_sample=False,
+             return_full_text=False)
+    chunks = default_retriever("warm up the retrievers", top_k=1)
+    default_anchors("warm up the retrievers", chunks)
+    return round(time.perf_counter() - started, 1)
+
+
+# ---------------------------------------------------------------------------
 # the live chat
 # ---------------------------------------------------------------------------
 
@@ -176,6 +216,7 @@ def run_chat(mode, message, ticket=None, inject_fault=None):
 
     ticket = build_ticket(message, ticket)
     from agent_runtime import RATE_CARD, cost_usd
+    cold_start = not status()["model_loaded"]       # this request will load the weights
 
     if mode == "single":
         from ticket_reply import draft_ticket_reply
@@ -238,5 +279,6 @@ def run_chat(mode, message, ticket=None, inject_fault=None):
                        "worker_requests": worker.requests} if worker is not None else None),
         }
     payload["ran_at"] = now_iso()
+    payload["cold_start"] = cold_start
     payload["saved_to"] = _save(payload)
     return payload
