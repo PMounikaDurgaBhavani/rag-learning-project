@@ -961,6 +961,39 @@
     .w10-stream { max-height: 55vh; padding: .9rem; }
     .w10-mode { max-width: 100%; }
   }
+  /* ---- Week 11: observability ---- */
+  .w11-legend { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; font-size: .72rem; color: var(--ink-3); margin: .3rem 0 .6rem; }
+  .w11-badge { display: inline-flex; align-items: center; gap: .3rem; font-size: .66rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .12rem .45rem; border-radius: 999px; border: 1px solid var(--line-strong); }
+  .w11-badge.real { color: var(--ok); border-color: var(--ok); background: var(--ok-soft); }
+  .w11-badge.fixture { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .w11-badge.estimate { color: var(--violet); border-color: var(--violet); background: var(--violet-soft); }
+  .w11-badge.missing { color: var(--ink-3); border-style: dashed; }
+  .w11-badge.measured { color: var(--info); border-color: var(--info); background: var(--info-soft); }
+  .w11-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .5rem .7rem; align-items: end; }
+  .w11-filters .field label { display: block; font-size: .68rem; color: var(--ink-3); margin-bottom: .15rem; }
+  .w11-filters input, .w11-filters select { width: 100%; padding: .38rem .5rem; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--bg); font-size: .8rem; }
+  .w11-table-wrap { overflow-x: auto; }
+  table.gs.w11 td { vertical-align: top; font-size: .76rem; }
+  table.gs.w11 tr.sel td { background: var(--accent-soft); }
+  table.gs.w11 tr[data-tid] { cursor: pointer; }
+  .w11-prev { max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+  .w11-timeline { position: relative; margin: .5rem 0; }
+  .w11-tl-row { display: grid; grid-template-columns: 190px 1fr 90px; gap: .5rem; align-items: center; font-size: .74rem; padding: .18rem 0; border-bottom: 1px dashed var(--line); }
+  .w11-tl-row .nm { font-family: var(--mono); font-size: .7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .w11-tl-row .bar { position: relative; height: 14px; background: var(--surface-2); border-radius: 4px; }
+  .w11-tl-row .bar i { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--accent); opacity: .85; min-width: 2px; }
+  .w11-tl-row .bar i.err { background: var(--danger); }
+  .w11-tl-row .bar i.derived { background: var(--ink-3); opacity: .55; }
+  .w11-tl-row .ms { font-family: var(--mono); font-size: .7rem; text-align: right; }
+  .w11-answer { white-space: pre-wrap; font-size: .82rem; line-height: 1.55; background: var(--surface-2); border-radius: 10px; padding: .7rem .9rem; border-left: 3px solid var(--danger); }
+  .w11-answer.ok { border-left-color: var(--ok); }
+  .w11-chat-stream { display: flex; flex-direction: column; gap: .8rem; margin: .8rem 0; }
+  .w11-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: .9rem; }
+  .w11-big { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; font-family: var(--mono); }
+  .w11-ticket { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .4rem .6rem; }
+  .w11-ticket .field label { display: block; font-size: .66rem; color: var(--ink-3); }
+  .w11-ticket input, .w11-ticket select { width: 100%; padding: .32rem .45rem; border-radius: 7px; border: 1px solid var(--line-strong); background: var(--bg); font-size: .78rem; }
+  @media (max-width: 760px) { .w11-tl-row { grid-template-columns: 110px 1fr 64px; } .w11-prev { max-width: 160px; } }
 </style>
 </head>
 <body>
@@ -992,6 +1025,7 @@
         <button class="side-link" data-view="week8"><span class="ic">⇢</span> Trajectory eval <span class="tail" id="navW8Gap"></span></button>
         <button class="side-link" data-view="week9"><span class="ic">⧉</span> MCP servers <span class="tail" id="navW9Tools"></span></button>
         <button class="side-link" data-view="week10"><span class="ic">⋔</span> Multi-agent benchmark <span class="tail" id="navW10Score"></span></button>
+        <button class="side-link" data-view="week11"><span class="ic">◉</span> Observability <span class="tail" id="navW11Count"></span></button>
         <button class="side-link" data-view="reports"><span class="ic">▣</span> Reports &amp; demo</button>
         <button class="side-link" data-view="console"><span class="ic">{}</span> Console</button>
       </nav>
@@ -1452,6 +1486,37 @@
     </section>
 
     <!-- ---------------- REPORTS ---------------- -->
+    <!-- ---------------- WEEK 11: OBSERVABILITY ---------------- -->
+    <section class="view" id="view-week11">
+      <div class="scroll">
+        <div class="measure wide">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem;">
+            <div>
+              <h1 style="margin:0 0 .2rem;">Week 11 — production observability</h1>
+              <p class="lede" style="margin:0;">
+                Every request this app answers is recorded with a request id, per-stage spans, token usage, an
+                estimated cost and a policy check, and indexed (SQLite + FTS5 over <b>input and output</b>) from the
+                same <code>traces/traces.jsonl</code> the earlier weeks write. Nothing on this page is typed in:
+                each number is read from a record, and a field a record never carried says so.
+              </p>
+            </div>
+            <div id="w11Health" class="help" style="text-align:right;min-width:200px;"></div>
+          </div>
+          <div class="metric-row" id="w11Tiles"></div>
+          <div class="w5-tabs" id="w11Tabs">
+            <button data-tab="chat" class="active">Live chat</button>
+            <button data-tab="traces">Trace explorer</button>
+            <button data-tab="drill">Support drill</button>
+            <button data-tab="fix">Failure → fix</button>
+            <button data-tab="cost">Cost &amp; usage</button>
+            <button data-tab="tenx">10× capacity</button>
+            <button data-tab="prompt">Prompt &amp; deployment</button>
+          </div>
+          <div id="w11Body"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+
     <section class="view" id="view-reports">
       <div class="scroll">
         <div class="measure wide">
@@ -1576,7 +1641,7 @@ async function api(path, body) {
 /* ------------------------------------------------------------------ shell */
 let appRole = 'admin';
 try { appRole = localStorage.getItem('clouddesk_role') || 'admin'; } catch {}
-const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week7: 'Agent vs workflow — Week 7', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', week10: 'Multi-agent benchmark — Week 10', reports: 'Reports & demo', console: 'Console' };
+const VIEW_TITLES = { ask: 'Chat', library: 'Library', inspect: 'Retrieval inspector', golden: 'Golden set — hit-rate@3', week5: 'Error analysis — failure taxonomy', week6: 'Judge validation — Week 6', week7: 'Agent vs workflow — Week 7', week8: 'Trajectory eval — Week 8', week9: 'MCP servers — Week 9', week10: 'Multi-agent benchmark — Week 10', week11: 'Observability — Week 11', reports: 'Reports & demo', console: 'Console' };
 
 // The user role is one chatbot (MCP tools + AI answer in one thread), the documents,
 // and the Week 10 agent chatbot (single vs multi-agent on the same question).
@@ -1605,6 +1670,7 @@ function show(view) {
   if (view === 'week8') loadWeek8();
   if (view === 'week9') loadWeek9();
   if (view === 'week10') loadWeek10();
+  if (view === 'week11') loadWeek11();
   if (view === 'reports') loadReports();
   if (window.innerWidth <= 760) $('sidebar').classList.add('collapsed');
 }
@@ -1831,6 +1897,7 @@ function addAnswer(p, gen, insp) {
         <button class="btn ghost sm" data-goto="inspect">Retrieval stages →</button>
         <button class="btn ghost sm" data-goto="console">Raw JSON</button>
         ${gen.trace_id ? `<button class="btn ghost sm" data-trace="${esc(gen.trace_id)}">Trace ${esc(gen.trace_id)} ↗</button>` : ''}
+        ${gen.trace_id ? `<button class="btn ghost sm" data-w11trace="${esc(gen.trace_id)}" title="Spans, tokens, cost and policy check for this request">View trace · observability ↗</button>` : ''}
         ${gen.model_name ? `<span class="muted" style="font-size:.7rem;align-self:center;">${esc(gen.model_name)} · prompt ${esc(gen.prompt_version || '')}</span>` : ''}
       </div>
     </div>`;
@@ -4555,7 +4622,7 @@ function w10ExecDetails(r, mode) {
     ['model calls · hand-offs', `${m.model_calls ?? 0} · ${m.handoffs ?? 0}`],
     ['time (server, end to end)', `${w10Sec(r.latency_ms)}${r.client_ms ? ` · browser ${w10Sec(r.client_ms)}` : ''}`],
     ['transport', esc(r.transport || '')],
-    ['trace id', r.trace_id ? `<code>${esc(r.trace_id)}</code>` : null],
+    ['trace id', r.trace_id ? `<code>${esc(r.trace_id)}</code> <a href="#" data-w11trace="${esc(r.trace_id)}">open in Observability ↗</a>` : null],
     ['saved to', r.saved_to ? `<code>${esc(r.saved_to)}</code>` : null],
     ['refusal reason', r.refusal_reason ? `<code>${esc(r.refusal_reason)}</code>` : null],
   ]);
@@ -4734,7 +4801,8 @@ function renderReports() {
 // #week8 or #week8/regression opens that view (and tab) directly — for demos.
 const TAB_STATE = { week6: ['w6Tabs', t => { w6Tab = t; }], week7: ['w7Tabs', t => { w7Tab = t; }],
                     week8: ['w8Tabs', t => { w8Tab = t; }], week9: ['w9Tabs', t => { w9Tab = t; }],
-                    week5: ['w5Tabs', t => { w5Tab = t; }], reports: ['repTabs', t => { repTab = t; }] };
+                    week5: ['w5Tabs', t => { w5Tab = t; }], reports: ['repTabs', t => { repTab = t; }],
+                    week11: ['w11Tabs', t => { w11Tab = t; }] };
 function openFromHash() {
   const [view, tab] = location.hash.slice(1).split('/');
   if (!VIEW_TITLES[view]) return false;
@@ -4753,6 +4821,641 @@ autoGrow();
 loadStatus();
 loadDocuments();
 loadGolden();
+
+/* ------------------------------------------------------------------ week 11: observability */
+// Every panel reads the Week 11 index (GET /api/week11/*) built from the real
+// trace log. The live chat posts to the SAME routes the Chat and Agent views
+// use, then shows the telemetry by re-reading the record that was written.
+// var, not let/const: the boot code at the end of the earlier script section
+// can open #week11 before this block has run, and a hoisted var is the only
+// binding that is already defined at that point.
+var week11 = week11 || null, w11Tab = w11Tab || 'chat';   // keep a tab set by #week11/<tab> at boot
+var w11 = {
+  traces: { filters: {}, page: 0, limit: 25, result: null, selected: null, detail: null, loading: false },
+  drills: { slices: null, indexed: null, running: false },
+  chat: [], chatBusy: false,
+  cost: null, costDays: '30', costFixtures: true,
+  tenx: null, tenxDays: '30',
+  evalRunning: false, evalLast: null, plantBusy: null,
+};
+const w11Local = (ts) => ts ? new Date(ts).toLocaleString(undefined, { hour12: false }) : '—';
+const w11Ms = (ms) => ms == null ? '—' : Number(ms) >= 1000 ? `${(Number(ms) / 1000).toFixed(2)} s` : `${Number(ms).toFixed(1)} ms`;
+const w11Usd = (v) => v == null ? '—' : `$${Number(v).toFixed(6)}`;
+const w11Num = (v, d = 0) => v == null ? '—' : Number(v).toLocaleString(undefined, { maximumFractionDigits: d });
+const w11Badge = (kind, text, title) => `<span class="w11-badge ${kind}"${title ? ` title="${esc(title)}"` : ''}>${esc(text)}</span>`;
+const w11Missing = (text) => w11Badge('missing', text || 'not recorded', 'This record never carried this field; nothing was back-filled');
+const w11Status = (s) => `<span class="pill ${s === 'ok' ? 'ok' : s === 'refused' ? 'warn' : 'bad'}">${esc(s || '—')}</span>`;
+const w11Verdict = (v) => !v ? '—' : `<span class="pill ${v === 'contradicts' ? 'bad' : v === 'consistent' ? 'ok' : ''}">${esc(v)}</span>`;
+const w11Kv = (pairs) => `<dl class="w10-kv">${pairs.filter(p => p[1] != null && p[1] !== '').map(p => `<dt>${esc(p[0])}</dt><dd>${p[1]}</dd>`).join('')}</dl>`;
+const w11Qs = (obj) => Object.entries(obj).filter(([, v]) => v != null && v !== '' && v !== false).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v === true ? 1 : v)}`).join('&');
+
+async function loadWeek11(force) {
+  if (week11 && !force) { renderW11(); return; }
+  $('w11Body').innerHTML = '<div class="muted">Loading the request index…</div>';
+  try { week11 = await api('/api/week11'); }
+  catch (err) { $('w11Body').innerHTML = `<div class="w10-note bad"><b>Could not load the Week 11 index</b>${esc(err.message)}</div>`; return; }
+  renderW11();
+}
+
+function renderW11() {
+  const d = week11; if (!d) return;
+  const s = d.stats || {};
+  const tail = $('navW11Count'); if (tail) tail.textContent = s.requests ? `${s.requests}` : '';
+  $('w11Health').innerHTML = `index <code>${esc(s.db || '')}</code> · FTS5 ${s.fts ? 'on' : 'off'}<br>${esc(w11Local(s.first_ts))} → ${esc(w11Local(s.last_ts))}`;
+  const contradicts = (s.by_policy_verdict || {}).contradicts || 0;
+  $('w11Tiles').innerHTML = [
+    ['Requests indexed', w11Num(s.requests), `${w11Num(s.with_request_id)} with a request id · ${w11Num(s.with_spans)} with spans`],
+    ['Span rows', w11Num(s.span_rows), 'recorded or derived from task lifecycles'],
+    ['Policy contradictions', w11Num(contradicts), 'answers that disagree with HC-008 for their ticket'],
+    ['Prompt versions in the log', w11Num(Object.keys(s.by_prompt_version || {}).length), Object.keys(s.by_prompt_version || {}).join(' · ')],
+    ['Controlled incidents', w11Num(s.fixtures), 'labelled fixtures, kept apart from traffic'],
+  ].map(([k, v, note]) => `<div class="metric"><div class="k">${esc(k)}</div><div class="v">${v}</div><div class="help">${esc(note)}</div></div>`).join('');
+  document.querySelectorAll('#w11Tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === w11Tab));
+  const render = { chat: w11RenderChat, traces: w11RenderTraces, drill: w11RenderDrill, fix: w11RenderFix, cost: w11RenderCost, tenx: w11RenderTenx, prompt: w11RenderPrompt }[w11Tab];
+  render();
+}
+$('w11Tabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (!b) return; w11Tab = b.dataset.tab; renderW11(); });
+
+/* ---- live chat ---- */
+const W11_PRESETS = [
+  { label: 'Refund policy question (chat path)', path: 'ask', q: 'Can I get a refund for a charge made 45 days ago?' },
+  { label: 'Eligible refund ticket (14 days, $120)', path: 'ticket', q: 'I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.', ticket: { tier: 'Standard', charge_amount: 120, days_since_charge: 14, duplicate_charge: false, refund_requested: true } },
+  { label: 'Out-of-window ticket (45 days, $1,200)', path: 'ticket', q: 'We were billed $1,200 for our annual renewal 45 days ago and nobody on the team uses CloudDesk any more. Please refund it.', ticket: { tier: 'Priority', charge_amount: 1200, days_since_charge: 45, duplicate_charge: false, refund_requested: true } },
+  { label: 'Password reset link (chat path)', path: 'ask', q: 'How long is a CloudDesk password reset link valid?' },
+];
+
+function w11RenderChat() {
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:1rem 1.1rem;">
+      <div class="eyebrow">Submit a real support query</div>
+      <div class="help" style="margin:.2rem 0 .6rem;">Both paths are the application's own routes. The telemetry card under each answer is read back from the record the request wrote (<code>GET /api/week11/trace</code>), not from the response.</div>
+      <div class="w11-filters" style="margin-bottom:.5rem;">
+        <div class="field" style="grid-column:1/-1;"><label for="w11Path">Path</label>
+          <select id="w11Path">
+            <option value="ask">Chat answer — POST /api/ask · Qwen2.5-0.5B · three refusal gates · verified citations</option>
+            <option value="ticket">Ticket reply — POST /api/week10/chat (single agent) · Qwen2.5-1.5B drafter · Week 6 assertions run live</option>
+          </select></div>
+      </div>
+      <textarea id="w11Q" rows="2" placeholder="Type a customer question…" style="width:100%;padding:.55rem .7rem;border-radius:10px;border:1px solid var(--line-strong);background:var(--bg);resize:vertical;"></textarea>
+      <details id="w11TicketCtx" class="src-peek" style="margin-top:.5rem;"><summary>Ticket context (used by the ticket path; the policy check needs the charge facts)</summary>
+        <div class="w11-ticket" style="margin-top:.5rem;">
+          <div class="field"><label>Ticket id</label><input id="w11TId" placeholder="auto"></div>
+          <div class="field"><label>Tier</label><select id="w11TTier"><option>Standard</option><option>Priority</option></select></div>
+          <div class="field"><label>Charge $</label><input id="w11TAmt" inputmode="decimal" placeholder="none"></div>
+          <div class="field"><label>Days since charge</label><input id="w11TDays" inputmode="numeric" placeholder="—"></div>
+          <div class="field"><label>Duplicate charge</label><select id="w11TDup"><option value="0">no</option><option value="1">yes</option></select></div>
+          <div class="field"><label>Refund requested</label><select id="w11TRef"><option value="0">no</option><option value="1">yes</option></select></div>
+        </div></details>
+      <div class="chip-row" id="w11Presets" style="margin-top:.6rem;">${W11_PRESETS.map((p, i) => `<button class="chip" data-i="${i}">${esc(p.label)}</button>`).join('')}</div>
+      <div style="display:flex;gap:.6rem;align-items:center;margin-top:.6rem;flex-wrap:wrap;">
+        <button class="btn primary" id="w11Send" ${w11.chatBusy ? 'disabled' : ''}>${w11.chatBusy ? '<span class="spinner"></span> ' : ''}Send</button>
+        <span class="help" id="w11ChatStatus">${w11.chatBusy ? 'Waiting for the server (a local model may be loading)…' : 'One model-backed request at a time; a second one gets HTTP 409.'}</span>
+      </div>
+    </div>
+    <div class="w11-chat-stream" id="w11Stream">${w11.chat.map(w11ChatItem).join('')}</div>`;
+  $('w11Presets').onclick = (e) => { const c = e.target.closest('.chip'); if (!c) return; const p = W11_PRESETS[+c.dataset.i];
+    $('w11Path').value = p.path; $('w11Q').value = p.q; w11FillTicket(p.ticket); $('w11TicketCtx').open = !!p.ticket; };
+  $('w11Send').onclick = w11SendChat;
+  $('w11Q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); w11SendChat(); } });
+}
+function w11FillTicket(t) {
+  t = t || {};
+  $('w11TId').value = t.ticket_id || ''; $('w11TTier').value = t.tier || 'Standard';
+  $('w11TAmt').value = t.charge_amount ?? ''; $('w11TDays').value = t.days_since_charge ?? '';
+  $('w11TDup').value = t.duplicate_charge ? '1' : '0'; $('w11TRef').value = t.refund_requested ? '1' : '0';
+}
+function w11Ticket() {
+  const amt = $('w11TAmt').value.trim(), days = $('w11TDays').value.trim();
+  return { ticket_id: $('w11TId').value.trim() || null, tier: $('w11TTier').value,
+    charge_amount: amt === '' ? null : Number(amt), days_since_charge: days === '' ? null : Number(days),
+    duplicate_charge: $('w11TDup').value === '1', refund_requested: $('w11TRef').value === '1' };
+}
+async function w11SendChat() {
+  if (w11.chatBusy) return;
+  const q = $('w11Q').value.trim(); if (!q) { $('w11Q').focus(); return; }
+  const path = $('w11Path').value, ticket = path === 'ticket' ? w11Ticket() : null;
+  const item = { id: Date.now(), q, path, ticket, pending: true, started: Date.now() };
+  w11.chat.unshift(item); w11.chatBusy = true; w11RenderChat();
+  const tick = setInterval(() => { const s = $('w11ChatStatus'); if (s) s.textContent = `Working… ${Math.round((Date.now() - item.started) / 1000)} s elapsed (the first request of a session loads the model)`; }, 1000);
+  try {
+    let res;
+    if (path === 'ask') {
+      res = await fetch('/api/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: q, mode: 'hybrid_rerank', top_k: 5 }) });
+    } else {
+      res = await fetch('/api/week10/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: 'single', message: q, ticket }) });
+    }
+    const data = await res.json().catch(() => ({ status: 'error', error: res.statusText }));
+    item.http = res.status;
+    if (!res.ok && data.status !== 'degraded') throw new Error(data.error || `HTTP ${res.status}`);
+    item.result = data;
+    item.trace_id = data.trace_id;
+    item.client_ms = Date.now() - item.started;
+    if (data.trace_id) {
+      try { item.record = await api(`/api/week11/trace?trace_id=${encodeURIComponent(data.trace_id)}`); }
+      catch (err) { item.record_error = err.message; }
+    }
+  } catch (err) { item.error = err.message; }
+  finally { clearInterval(tick); item.pending = false; w11.chatBusy = false; w11RenderChat(); }
+}
+function w11ChatItem(m) {
+  const head = `<div class="mcp-msg user"><div class="mcp-bubble"><div class="help" style="margin-bottom:.2rem;">${m.path === 'ask' ? 'POST /api/ask' : 'POST /api/week10/chat · single'}${m.ticket && m.ticket.charge_amount != null ? ` · ticket: $${m.ticket.charge_amount}, ${m.ticket.days_since_charge} days${m.ticket.duplicate_charge ? ', duplicate' : ''}` : ''}</div>${esc(m.q)}</div></div>`;
+  if (m.pending) return `<div class="card" style="padding:.9rem 1rem;">${head}<div class="help"><span class="spinner"></span> waiting for the server…</div></div>`;
+  if (m.error) return `<div class="card" style="padding:.9rem 1rem;">${head}<div class="w10-note bad"><b>Request failed${m.http ? ` (HTTP ${m.http})` : ''}</b>${esc(m.error)}</div></div>`;
+  const r = m.result || {};
+  const answer = m.path === 'ask' ? esc(r.answer || '').replace(/\[(\d+)\]/g, '<span class="cite">[$1]</span>') : md(r.answer || '');
+  return `<div class="card" style="padding:.9rem 1rem;">${head}
+    <div class="mcp-msg bot"><div class="mcp-avatar bot">◆</div><div class="mcp-bubble" style="max-width:100%;">
+      <div class="w10-meta">${r.refused ? '<span class="pill warn">refused / routed</span>' : '<span class="pill ok">answered</span>'}${r.gate_bypass ? `<span class="pill ok">${esc(r.gate_bypass)}</span>` : ''}${m.http === 503 ? '<span class="pill bad">degraded</span>' : ''}</div>
+      <div class="w10-answer">${answer}</div>
+      ${w11TelemetryCard(m)}
+    </div></div></div>`;
+}
+function w11TelemetryCard(m) {
+  const rec = m.record, r = m.result || {};
+  if (!m.trace_id) return `<div class="w10-note warn" style="margin-top:.6rem;"><b>No trace id on this response</b>The request was answered but nothing was recorded (tracing off, or the write failed). Nothing to show.</div>`;
+  if (!rec) return `<div class="w10-note warn" style="margin-top:.6rem;"><b>Trace ${esc(m.trace_id)} not readable yet</b>${esc(m.record_error || '')}</div>`;
+  const s = rec.summary, u = rec.usage || {}, c = rec.cost || {}, ev = rec.trace.evaluation, pc = rec.policy_check || {};
+  const spanTotal = (rec.spans || []).reduce((a, x) => a + (x.duration_ms || 0), 0);
+  return `<div style="margin-top:.7rem;border-top:1px solid var(--line);padding-top:.6rem;">
+    <div class="eyebrow">Request telemetry <span class="help">(read back from the record)</span></div>
+    ${w11Kv([
+      ['request id', s.request_id ? `<code>${esc(s.request_id)}</code>` : w11Missing()],
+      ['trace id', `<code>${esc(s.trace_id)}</code>`],
+      ['status', `${w11Status(s.status)}${s.refusal_reason ? ` <code>${esc(s.refusal_reason)}</code>` : ''}`],
+      ['total latency', `${w11Ms(s.latency_ms)} <span class="help">pipeline · browser round trip ${w11Ms(m.client_ms)} · spans sum ${w11Ms(spanTotal)}</span>`],
+      ['model / provider', `${esc(s.model || '—')} <span class="help">· ${esc(s.provider || '')}</span>`],
+      ['prompt version', `<code>${esc(s.prompt_version || '—')}</code>`],
+      ['tokens in / out', `${u.input_tokens ?? '—'} / ${u.output_tokens ?? '—'} <span class="help">${esc(u.basis || '')}</span>`],
+      ['cost', c.total_usd != null ? `${w11Usd(c.total_usd)} ${w11Badge('estimate', 'estimate', c.basis)}` : `${w11Missing('not computable')} <span class="help">${esc(c.basis || '')}</span>`],
+      ['retrieved context ids', (s.context_ids || []).length ? s.context_ids.map(x => `<code>${esc(x)}</code>`).join(' ') : '—'],
+      ['evaluation', ev ? `<span class="pill ${ev.verdict === 'pass' ? 'ok' : 'bad'}">${esc(ev.verdict)}</span> ${esc(ev.suite || '')}: ${ev.passed}/${ev.applicable} applicable assertions passed${(ev.failed_names || []).length ? ` · failed: <code>${esc(ev.failed_names.join(', '))}</code>` : ''}` : w11Missing('not evaluated')],
+      ['policy check (HC-008)', `${w11Verdict(pc.verdict)} <span class="help">${esc(pc.reason || '')}</span>`],
+    ])}
+    <div class="w10-actions"><button class="btn sm" data-w11trace="${esc(s.trace_id)}">View trace ↗</button></div>
+  </div>`;
+}
+
+/* ---- trace explorer ---- */
+function w11RenderTraces() {
+  const s = week11.stats || {}, f = w11.traces.filters;
+  const opts = (obj, cur) => `<option value="">any</option>` + Object.keys(obj || {}).sort().map(k => `<option ${k === cur ? 'selected' : ''}>${esc(k)}</option>`).join('');
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:1rem 1.1rem;">
+      <div class="eyebrow">Search the recorded requests</div>
+      <div class="help" style="margin:.2rem 0 .6rem;">Text search runs over the <b>generated output as well as the input</b> (FTS5). A complaint describes the answer, not the question.</div>
+      <div class="w11-filters">
+        <div class="field" style="grid-column:span 2;"><label>Text (input and/or output)</label><input id="w11fQ" value="${esc(f.q || '')}" placeholder="e.g. outside the eligibility window"></div>
+        <div class="field"><label>Search in</label><select id="w11fField"><option value="both" ${f.field === 'both' || !f.field ? 'selected' : ''}>input and output</option><option value="input" ${f.field === 'input' ? 'selected' : ''}>input only</option><option value="output" ${f.field === 'output' ? 'selected' : ''}>output only</option></select></div>
+        <div class="field"><label>Words</label><select id="w11fMode"><option value="and" ${f.mode !== 'or' ? 'selected' : ''}>all words</option><option value="or" ${f.mode === 'or' ? 'selected' : ''}>any word</option></select></div>
+        <div class="field"><label>From (local)</label><input type="datetime-local" id="w11fFrom" value="${esc(f.from_local || '')}"></div>
+        <div class="field"><label>To (local)</label><input type="datetime-local" id="w11fTo" value="${esc(f.to_local || '')}"></div>
+        <div class="field"><label>Prompt version</label><select id="w11fPrompt">${opts(s.by_prompt_version, f.prompt_version)}</select></div>
+        <div class="field"><label>Request type</label><select id="w11fKind">${opts(s.by_kind, f.kind)}</select></div>
+        <div class="field"><label>Status</label><select id="w11fStatus"><option value="">any</option>${['ok', 'refused', 'error'].map(x => `<option ${f.status === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+        <div class="field"><label>Policy check</label><select id="w11fVerdict"><option value="">any</option>${['contradicts', 'consistent', 'unverifiable'].map(x => `<option ${f.policy_verdict === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
+        <div class="field"><label>Trace / request id</label><input id="w11fTid" value="${esc(f.trace_id || '')}" placeholder="prefix"></div>
+        <div class="field"><label>Fixtures</label><select id="w11fFix"><option value="all" ${!f.fixtures || f.fixtures === 'all' ? 'selected' : ''}>include</option><option value="exclude" ${f.fixtures === 'exclude' ? 'selected' : ''}>exclude</option><option value="only" ${f.fixtures === 'only' ? 'selected' : ''}>only fixtures</option></select></div>
+        <div class="field"><label><input type="checkbox" id="w11fOut" ${f.outliers ? 'checked' : ''}> cost outliers only (above p95)</label></div>
+        <div class="field" style="display:flex;gap:.4rem;"><button class="btn primary sm" id="w11fGo">Search</button><button class="btn ghost sm" id="w11fReset">Reset</button></div>
+      </div>
+    </div>
+    <div id="w11TraceList" style="margin-top:.8rem;">${w11TraceTable()}</div>
+    <div id="w11TraceDetail" style="margin-top:.8rem;">${w11.traces.detail ? w11TraceDetail(w11.traces.detail) : ''}</div>`;
+  $('w11fGo').onclick = () => { w11ReadFilters(); w11.traces.page = 0; w11Search(); };
+  $('w11fReset').onclick = () => { w11.traces.filters = {}; w11.traces.page = 0; w11.traces.result = null; w11.traces.detail = null; w11RenderTraces(); w11Search(); };
+  document.querySelectorAll('#w11Body .w11-filters input').forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') { w11ReadFilters(); w11.traces.page = 0; w11Search(); } }));
+  if (!w11.traces.result && !w11.traces.loading) w11Search();
+}
+function w11ReadFilters() {
+  const toIso = (v) => v ? new Date(v).toISOString() : '';
+  w11.traces.filters = { q: $('w11fQ').value.trim(), field: $('w11fField').value, mode: $('w11fMode').value,
+    from_local: $('w11fFrom').value, to_local: $('w11fTo').value, from: toIso($('w11fFrom').value), to: toIso($('w11fTo').value),
+    prompt_version: $('w11fPrompt').value, kind: $('w11fKind').value, status: $('w11fStatus').value, policy_verdict: $('w11fVerdict').value,
+    trace_id: $('w11fTid').value.trim(), fixtures: $('w11fFix').value, outliers: $('w11fOut').checked };
+}
+async function w11Search() {
+  const f = w11.traces.filters, t = w11.traces;
+  t.loading = true; const list = $('w11TraceList'); if (list) list.innerHTML = '<div class="muted"><span class="spinner"></span> searching…</div>';
+  const params = { q: f.q, field: f.field, mode: f.mode, from: f.from, to: f.to, prompt_version: f.prompt_version, kind: f.kind,
+    status: f.status, policy_verdict: f.policy_verdict, trace_id: f.trace_id, outliers: f.outliers,
+    no_fixtures: f.fixtures === 'exclude', fixtures_only: f.fixtures === 'only', limit: t.limit, offset: t.page * t.limit };
+  try { t.result = await api('/api/week11/requests?' + w11Qs(params)); }
+  catch (err) { t.result = { error: err.message, rows: [], total: 0 }; }
+  t.loading = false;
+  if ($('w11TraceList')) $('w11TraceList').innerHTML = w11TraceTable();
+}
+function w11TraceTable() {
+  const t = w11.traces, r = t.result;
+  if (!r) return '<div class="muted">No search yet.</div>';
+  if (r.error) return `<div class="w10-note bad"><b>Search failed</b>${esc(r.error)}</div>`;
+  if (!r.rows.length) return `<div class="card" style="padding:1.2rem;text-align:center;color:var(--ink-3);">No recorded request matches these filters.${r.cost_outlier_threshold_usd === null && t.filters.outliers ? ' (Fewer than 5 requests carry a complete cost, so no outlier threshold exists.)' : ''}</div>`;
+  const pages = Math.ceil(r.total / t.limit);
+  return `<div class="help" style="margin-bottom:.3rem;">${w11Num(r.total)} match${r.total === 1 ? '' : 'es'} · page ${t.page + 1} of ${pages}${r.cost_outlier_threshold_usd != null && t.filters.outliers ? ` · outlier threshold p95 = ${w11Usd(r.cost_outlier_threshold_usd)}` : ''} · click a row to inspect its spans</div>
+    <div class="w11-table-wrap card" style="padding:0;"><table class="gs w11"><thead><tr><th>time (local)</th><th>type · source</th><th>prompt</th><th>status</th><th>latency</th><th>tokens in/out</th><th>cost</th><th>policy</th><th>input</th><th>output</th><th>ids</th></tr></thead><tbody>
+    ${r.rows.map(x => `<tr data-tid="${esc(x.trace_id)}" class="${t.selected === x.trace_id ? 'sel' : ''}">
+      <td style="white-space:nowrap;">${esc(w11Local(x.ts))}</td>
+      <td style="white-space:nowrap;">${esc(x.kind)}<br><span class="help">${esc(x.source || '')}</span>${x.fixture ? '<br>' + w11Badge('fixture', 'fixture') : ''}</td>
+      <td><code>${esc(x.prompt_version || '—')}</code></td>
+      <td>${w11Status(x.status)}</td>
+      <td style="white-space:nowrap;">${w11Ms(x.latency_ms)}</td>
+      <td style="white-space:nowrap;">${x.input_tokens ?? '—'} / ${x.output_tokens ?? '—'}</td>
+      <td style="white-space:nowrap;">${x.cost_usd != null ? w11Usd(x.cost_usd) : w11Missing('n/a')}</td>
+      <td>${w11Verdict(x.policy_verdict)}</td>
+      <td><span class="w11-prev" title="${esc(x.input_preview)}">${esc(x.input_preview)}</span></td>
+      <td><span class="w11-prev" title="${esc(x.output_preview)}">${esc(x.output_preview)}</span></td>
+      <td><code style="font-size:.66rem;">${esc(x.trace_id)}</code><br>${x.request_id ? `<code style="font-size:.66rem;">${esc(x.request_id)}</code>` : w11Missing('no request id')}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;">
+      <button class="btn ghost sm" id="w11Prev" ${t.page === 0 ? 'disabled' : ''}>← newer</button>
+      <button class="btn ghost sm" id="w11Next" ${t.page + 1 >= pages ? 'disabled' : ''}>older →</button>
+    </div>`;
+}
+document.addEventListener('click', async e => {
+  if (e.target.closest('#w11Prev')) { w11.traces.page--; w11Search(); return; }
+  if (e.target.closest('#w11Next')) { w11.traces.page++; w11Search(); return; }
+  const row = e.target.closest('#w11TraceList tr[data-tid]');
+  if (row) { w11SelectTrace(row.dataset.tid); return; }
+  const open = e.target.closest('[data-w11trace]');
+  if (open) { e.preventDefault(); w11OpenTrace(open.dataset.w11trace); }
+});
+async function w11SelectTrace(tid) {
+  w11.traces.selected = tid;
+  const box = $('w11TraceDetail'); if (box) box.innerHTML = '<div class="muted"><span class="spinner"></span> loading the record…</div>';
+  try { w11.traces.detail = await api(`/api/week11/trace?trace_id=${encodeURIComponent(tid)}`); }
+  catch (err) { w11.traces.detail = { error: err.message }; }
+  if ($('w11TraceList')) $('w11TraceList').innerHTML = w11TraceTable();
+  if ($('w11TraceDetail')) { $('w11TraceDetail').innerHTML = w11TraceDetail(w11.traces.detail); $('w11TraceDetail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+function w11OpenTrace(tid) {
+  show('week11'); w11Tab = 'traces';
+  w11.traces.filters = { trace_id: tid, fixtures: 'all' }; w11.traces.page = 0; w11.traces.result = null;
+  const go = async () => { renderW11(); await w11Search(); w11SelectTrace(tid); };
+  if (!week11) loadWeek11().then(go); else go();
+}
+function w11Timeline(spans) {
+  if (!spans || !spans.length) return `<div class="help">${w11Missing('no spans')} This record was written before Week 11 and carries only its end-to-end latency.</div>`;
+  const starts = spans.map(s => s.start_ts ? new Date(s.start_ts).getTime() : null).filter(Boolean);
+  const ends = spans.map(s => s.end_ts ? new Date(s.end_ts).getTime() : null).filter(Boolean);
+  const t0 = Math.min(...starts), t1 = Math.max(...ends, t0 + 1), total = Math.max(t1 - t0, 1);
+  return `<div class="w11-timeline">${spans.map(s => {
+    const st = s.start_ts ? new Date(s.start_ts).getTime() : t0, dur = s.duration_ms || 0;
+    const left = Math.max(0, Math.min(100, (st - t0) / total * 100)), width = Math.max(0.6, Math.min(100 - left, dur / total * 100));
+    const derived = s.attrs && s.attrs.derived_from;
+    return `<div class="w11-tl-row"><span class="nm" title="${esc(s.name)}">${esc(s.name)}${derived ? ' <span class="help">(derived)</span>' : ''}</span><div class="bar"><i class="${s.status === 'error' ? 'err' : ''} ${derived ? 'derived' : ''}" style="left:${left}%;width:${width}%"></i></div><span class="ms">${w11Ms(dur)}</span></div>`; }).join('')}
+    <div class="help" style="margin-top:.3rem;">bars are placed by UTC start time; total window ${w11Ms(total)}</div></div>`;
+}
+function w11SpanTable(spans) {
+  if (!spans || !spans.length) return '';
+  const attrs = (a) => Object.entries(a || {}).filter(([k]) => !['derived_from'].includes(k)).map(([k, v]) => `<span class="help"><b>${esc(k)}</b>: ${esc(Array.isArray(v) ? v.join(', ') : typeof v === 'object' ? JSON.stringify(v) : String(v))}</span>`).join(' · ');
+  return `<div class="w11-table-wrap"><table class="gs w11"><thead><tr><th>span</th><th>start (UTC)</th><th>end (UTC)</th><th>duration</th><th>status</th><th>details (tokens, context ids, outcome)</th></tr></thead><tbody>
+    ${spans.map(s => `<tr><td><code>${esc(s.name)}</code></td><td style="white-space:nowrap;">${esc((s.start_ts || '—').replace('T', ' ').slice(0, 23))}</td><td style="white-space:nowrap;">${esc((s.end_ts || '—').replace('T', ' ').slice(0, 23))}</td><td style="white-space:nowrap;">${w11Ms(s.duration_ms)}</td><td>${w11Status(s.status)}${s.error ? `<div class="help" style="color:var(--danger);">${esc(s.error)}</div>` : ''}</td><td>${attrs(s.attrs)}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+function w11TraceDetail(d) {
+  if (!d) return '';
+  if (d.error) return `<div class="w10-note bad"><b>Could not load the record</b>${esc(d.error)}</div>`;
+  const s = d.summary, tr = d.trace, u = d.usage || {}, c = d.cost || {}, pc = d.policy_check || {}, ev = tr.evaluation;
+  const fixture = s.fixture;
+  return `<div class="card" style="padding:1rem 1.1rem;">
+    <div style="display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;align-items:center;">
+      <h2>Trace <code>${esc(s.trace_id)}</code> ${fixture ? w11Badge('fixture', 'controlled incident', fixture.note) : w11Badge('real', 'recorded request')}</h2>
+      <span class="help">${esc(w11Local(s.ts))} local · ${esc(s.ts)}</span>
+    </div>
+    ${d.missing_fields && d.missing_fields.length ? `<div class="w10-note warn" style="margin-top:.6rem;"><b>Not recorded on this request</b>${d.missing_fields.map(m => `<div class="help">${esc(m)}</div>`).join('')}</div>` : ''}
+    <div class="w11-grid2" style="margin-top:.6rem;">
+      <div>${w11Kv([
+        ['request id', s.request_id ? `<code>${esc(s.request_id)}</code>` : w11Missing()],
+        ['type · source · route', `${esc(s.kind)} · ${esc(s.source || '—')}${tr.http && tr.http.route ? ` · <code>${esc(tr.http.route)}</code>` : ''}`],
+        ['status', `${w11Status(s.status)}${s.refusal_reason ? ` <code>${esc(s.refusal_reason)}</code>` : ''}${s.error ? `<div class="help" style="color:var(--danger);">${esc(s.error)}</div>` : ''}`],
+        ['prompt', `<code>${esc(s.prompt_version || '—')}</code>${tr.prompt && tr.prompt.sha ? ` <span class="help">sha ${esc(tr.prompt.sha)}</span>` : ''}`],
+        ['model / provider', `${esc(s.model || '—')} <span class="help">· ${esc(s.provider || '')}</span>`],
+        ['build', `<code>${esc(s.app_version || '—')}</code>`],
+        ['latency (end to end)', w11Ms(s.latency_ms)],
+        ['retries', s.retries != null ? String(s.retries) : w11Missing()],
+      ])}</div>
+      <div>${w11Kv([
+        ['tokens in / out', `${u.input_tokens ?? '—'} / ${u.output_tokens ?? '—'}${u.model_calls != null ? ` · ${u.model_calls} model call${u.model_calls === 1 ? '' : 's'}` : ''}<div class="help">${esc(u.basis || '')}</div>`],
+        ['generation cost', c.generation_usd != null ? `${w11Usd(c.generation_usd)} ${w11Badge('estimate', 'estimate')}` : w11Missing('not computable')],
+        ['retrieval cost', `${w11Missing('unmetered')} <span class="help">${esc(c.retrieval_basis || '')}</span>`],
+        ['tools cost', c.tools_usd != null ? `${w11Usd(c.tools_usd)} <span class="help">${esc(c.tools_basis || '')}</span>` : '— <span class="help">no tool calls on this request</span>'],
+        ['total attributable', c.total_usd != null ? `${w11Usd(c.total_usd)} USD <div class="help">${esc(c.formula || '')}</div>` : w11Missing('not computable')],
+        ['retrieved context ids', (s.context_ids || []).length ? s.context_ids.map(x => `<code>${esc(x)}</code>`).join(' ') : '—'],
+        ['policy check (HC-008)', `${w11Verdict(pc.verdict)}<div class="help">${esc(pc.reason || '')}${pc.expected ? ` · expected: ${esc(pc.expected)}` : ''}</div>`],
+        ['evaluation', ev ? `<span class="pill ${ev.verdict === 'pass' ? 'ok' : 'bad'}">${esc(ev.verdict)}</span> ${ev.passed}/${ev.applicable} applicable assertions${(ev.failed_names || []).length ? ` · failed <code>${esc(ev.failed_names.join(', '))}</code>` : ''}` : w11Missing('not evaluated')],
+      ])}</div>
+    </div>
+    <div class="eyebrow" style="margin:.8rem 0 .2rem;">Timeline</div>${w11Timeline(d.spans)}
+    ${w11SpanTable(d.spans)}
+    <div class="w11-grid2" style="margin-top:.8rem;">
+      <div><div class="eyebrow">Input</div><div class="w11-answer ok" style="border-left-color:var(--accent);">${esc(tr.query || '')}</div>${tr.ticket ? `<div class="help" style="margin-top:.3rem;">ticket ${esc(tr.ticket.ticket_id || '')} · ${esc(tr.ticket.tier || '')}${tr.ticket.charge_amount != null ? ` · $${tr.ticket.charge_amount} charged ${tr.ticket.days_since_charge} days ago${tr.ticket.duplicate_charge ? ' (duplicate)' : ''}` : ''}</div>` : ''}</div>
+      <div><div class="eyebrow">Generated output</div><div class="w11-answer ${pc.verdict === 'contradicts' ? '' : 'ok'}">${esc((tr.outcome || {}).answer || '')}</div></div>
+    </div>
+    <details class="src-peek" style="margin-top:.6rem;"><summary>Full record (JSON)</summary><pre class="console" style="max-height:420px;overflow:auto;">${esc(JSON.stringify(tr, null, 2))}</pre></details>
+  </div>`;
+}
+
+/* ---- support drill ---- */
+function w11RenderDrill() {
+  const d = week11, inc = d.incidents || {}, fx = d.fixtures || {};
+  const today = new Date(); const asOfDefault = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const last = w11.drills.last;
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:1rem 1.1rem;">
+      <div class="eyebrow">The complaint</div>
+      <textarea id="w11Complaint" rows="2" style="width:100%;margin:.3rem 0 .5rem;padding:.55rem .7rem;border-radius:10px;border:1px solid var(--line-strong);background:var(--bg);">${esc(w11.drills.complaint || d.default_complaint)}</textarea>
+      <div class="w11-filters">
+        <div class="field"><label>Complaint handled on (as-of date; "yesterday" is resolved from it)</label><input type="date" id="w11AsOf" value="${esc(w11.drills.asOf || asOfDefault)}"></div>
+        <div class="field"><label>Procedure</label><select id="w11Proc"><option value="slices" ${w11.drills.proc !== 'indexed' ? 'selected' : ''}>1 · slices: time → topic in input/output (FTS) → classify each answer</option><option value="indexed" ${w11.drills.proc === 'indexed' ? 'selected' : ''}>2 · indexed: time → policy_verdict column (the field added after drill 1)</option></select></div>
+        <div class="field"><button class="btn primary" id="w11DrillRun" ${w11.drills.running ? 'disabled' : ''}>${w11.drills.running ? '<span class="spinner"></span> ' : ''}Find incident</button></div>
+      </div>
+      <div class="help" style="margin-top:.4rem;">No ticket id, trace id or timestamp is asked for. The search is the same procedure every time, and the time shown is the measured wall-clock of that procedure on this server (not a five-minute claim).</div>
+    </div>
+    <div id="w11DrillOut" style="margin-top:.8rem;">${last ? w11DrillResult(last) : ''}</div>
+    ${w11DrillCompare()}
+    <div class="card" style="padding:1rem 1.1rem;margin-top:.8rem;">
+      <div class="eyebrow">Controlled test incidents ${w11Badge('fixture', 'fixture')}</div>
+      <div class="help" style="margin:.2rem 0 .5rem;">Each one is a real request through the real drafter (<code>src/ticket_reply.py</code>) under the prompt version active at the time; the ticket is chosen so the known defect shows, and the record is labelled a fixture. Nothing is injected into the answer and nothing is written into customer traffic.</div>
+      ${Object.entries(fx).map(([id, f]) => { const p = inc[id]; return `<div style="border-top:1px solid var(--line);padding:.5rem 0;">
+        <div style="display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;align-items:center;"><b>${esc(f.title)}</b>
+          ${p ? `<span>${p.wrong_as_expected ? '<span class="pill bad">wrong answer recorded</span>' : '<span class="pill ok">answer consistent with policy</span>'} <button class="btn sm" data-w11trace="${esc(p.trace_id)}">View trace ${esc(p.trace_id)}</button></span>` : `<button class="btn sm primary" data-w11plant="${esc(id)}" ${w11.plantBusy ? 'disabled' : ''}>${w11.plantBusy === id ? '<span class="spinner"></span> ' : ''}Plant incident (runs the model)</button>`}</div>
+        <div class="help">ticket ${esc(f.ticket.ticket_id)} · $${f.ticket.charge_amount} · ${f.ticket.days_since_charge} days${f.ticket.duplicate_charge ? ' · duplicate' : ''} · "${esc(f.ticket.message)}"</div>
+        <div class="help">expected: ${esc(f.expected)}${f.regression_case_id ? ` · regression case <code>${esc(f.regression_case_id)}</code>` : ''}</div>
+        ${p ? `<div class="help">planted ${esc(w11Local(p.planted_at))} under prompt <code>${esc(p.prompt_version_at_planting)}</code> · request ${p.request_id ? `<code>${esc(p.request_id)}</code>` : '—'} · policy check: ${esc((p.policy_check || {}).verdict || '—')}</div>` : ''}
+      </div>`; }).join('')}
+    </div>
+    ${d.docs && d.docs.drill_md ? `<details class="src-peek" style="margin-top:.8rem;"><summary>week11/drill.md (the written drill record)</summary><div class="md" style="padding:.6rem .2rem;">${md(d.docs.drill_md)}</div></details>` : ''}`;
+  $('w11DrillRun').onclick = w11RunDrill;
+}
+async function w11RunDrill() {
+  if (w11.drills.running) return;
+  w11.drills.complaint = $('w11Complaint').value.trim(); w11.drills.asOf = $('w11AsOf').value; w11.drills.proc = $('w11Proc').value;
+  if (!w11.drills.complaint) return;
+  w11.drills.running = true; w11RenderDrill();
+  const clientStart = performance.now();
+  try {
+    const r = await api('/api/week11/drill', { complaint: w11.drills.complaint, as_of: w11.drills.asOf || null, procedure: w11.drills.proc });
+    r.client_ms = Math.round(performance.now() - clientStart);
+    w11.drills[w11.drills.proc] = r; w11.drills.last = r;
+  } catch (err) { w11.drills.last = { error: err.message }; }
+  finally { w11.drills.running = false; w11RenderDrill(); }
+}
+function w11DrillResult(r) {
+  if (r.error) return `<div class="w10-note bad"><b>Drill failed</b>${esc(r.error)}</div>`;
+  const w = r.window || {};
+  return `<div class="card" style="padding:1rem 1.1rem;">
+    <div class="w11-grid2">
+      <div><div class="eyebrow">Time to find ${w11Badge('measured', 'measured')}</div><div class="w11-big">${esc(r.time_to_find)}</div><div class="help">${r.time_to_find_ms} ms on the server (procedure ${esc(r.procedure)}) · ${r.client_ms} ms including the browser round trip<br>started ${esc(r.started_at)} · completed ${esc(r.completed_at)}</div></div>
+      <div><div class="eyebrow">Search slice</div>${w11Kv([
+        ['time phrase', `"${esc(w.phrase)}" → ${esc(w.local_start)} to ${esc(w.local_end)} (${esc(w.tz)})`],
+        ['window actually used', `${esc(r.window_used || 'none')}${r.widened_to ? ` · <span class="pill warn">widened: ${esc(r.widened_to)}</span>` : ''}`],
+        ['topic', r.topic ? `${esc(r.topic)} (${esc((r.topic_terms || []).join(', '))})` : 'none detected'],
+        ['user slice', w11Missing('no customer field in the log')],
+        ['fields used', (r.fields_used || []).map(f => `<code>${esc(f)}</code>`).join(' ')],
+        ['candidates classified', String(r.candidates_classified)],
+      ])}</div>
+    </div>
+    <div class="eyebrow" style="margin:.7rem 0 .2rem;">Slices, in order</div>
+    <div class="w11-table-wrap"><table class="gs w11"><thead><tr><th>#</th><th>slice</th><th>filter</th><th>hits</th><th>time</th><th>note</th></tr></thead><tbody>
+      ${(r.slices || []).map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.slice)}</td><td><code style="font-size:.68rem;">${esc(s.filter)}</code></td><td>${s.count}</td><td>${w11Ms(s.ms)}</td><td class="help">${esc(s.note || '')}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="eyebrow" style="margin:.8rem 0 .2rem;">Matches: ${r.match_count} ${r.real_vs_fixture ? `<span class="help">(${r.real_vs_fixture.real} recorded in normal use · ${r.real_vs_fixture.fixture} controlled)</span>` : ''}</div>
+    ${r.match_count === 0 ? `<div class="w10-note warn"><b>No historical incident matches</b>No recorded answer in the searched windows contradicts HC-008 for its ticket. Plant a controlled test incident below to run the drill against a known case; it is labelled as a fixture.</div>` : ''}
+    ${(r.matches || []).map(m => `<div class="card" style="padding:.8rem 1rem;margin-top:.6rem;border-left:3px solid ${m.fixture ? 'var(--warn)' : 'var(--danger)'};">
+      <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center;">
+        <div>${m.fixture ? w11Badge('fixture', 'controlled incident') : w11Badge('real', 'recorded in normal use')} <b>${esc(w11Local(m.ts))}</b> <span class="help">${esc(m.ts)}</span></div>
+        <button class="btn sm" data-w11trace="${esc(m.trace_id)}">View trace ↗</button></div>
+      ${w11Kv([
+        ['trace / request id', `<code>${esc(m.trace_id)}</code> · ${m.request_id ? `<code>${esc(m.request_id)}</code>` : w11Missing('no request id')}`],
+        ['path · prompt version', `${esc(m.kind)} · ${esc(m.source || '')} · <code>${esc(m.prompt_version || '—')}</code> · ${esc(m.model || '')}`],
+        ['ticket facts', m.ticket && m.ticket.charge_amount != null ? `${esc(m.ticket.ticket_id)} · $${m.ticket.charge_amount} charged ${m.ticket.days_since_charge} days ago${m.ticket.duplicate_charge ? ' · duplicate' : ''} · ${esc(m.ticket.tier)}` : '—'],
+        ['policy check', `${w11Verdict((m.policy_check || {}).verdict)} <span class="help">${esc((m.policy_check || {}).reason || '')}</span>`],
+        ['retrieved context ids', (m.context_ids || []).map(x => `<code>${esc(x)}</code>`).join(' ') || '—'],
+        ['discoverable through', (m.discovered_by || []).map(x => `<code>${esc(x)}</code>`).join(' ')],
+        ['cost · latency', `${m.cost_usd != null ? w11Usd(m.cost_usd) + ' (estimate)' : 'cost n/a'} · ${w11Ms(m.latency_ms)}`],
+      ])}
+      <div class="w11-grid2" style="margin-top:.5rem;">
+        <div><div class="eyebrow">The incorrect generated answer</div><div class="w11-answer">${esc(m.answer || '')}</div></div>
+        <div><div class="eyebrow">Reference policy facts</div><ul style="margin:.3rem 0 0 1rem;padding:0;font-size:.8rem;line-height:1.5;">${(m.reference_policy || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      </div></div>`).join('')}
+    <div class="w11-grid2" style="margin-top:.8rem;">
+      <div><div class="eyebrow">Missing fields</div><ul style="margin:.3rem 0 0 1rem;padding:0;font-size:.78rem;line-height:1.5;">${(r.missing_fields || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div><div class="eyebrow">Limitations</div><ul style="margin:.3rem 0 0 1rem;padding:0;font-size:.78rem;line-height:1.5;">${(r.limitations || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    </div>
+  </div>`;
+}
+function w11DrillCompare() {
+  const a = w11.drills.slices, b = w11.drills.indexed;
+  if (!a || !b || a.error || b.error) return '';
+  return `<div class="card" style="padding:1rem 1.1rem;margin-top:.8rem;">
+    <div class="eyebrow">Drill 1 vs drill 2 (both measured in this session)</div>
+    <table class="gs w11"><thead><tr><th></th><th>procedure 1 · slices</th><th>procedure 2 · indexed field</th></tr></thead><tbody>
+      <tr><td>time to find (server)</td><td>${esc(a.time_to_find)} · ${a.time_to_find_ms} ms</td><td>${esc(b.time_to_find)} · ${b.time_to_find_ms} ms</td></tr>
+      <tr><td>answers read and classified</td><td>${a.candidates_classified}</td><td>${b.candidates_classified} (verdict read from the column)</td></tr>
+      <tr><td>slices run</td><td>${a.slices.length}</td><td>${b.slices.length}</td></tr>
+      <tr><td>matches</td><td>${a.match_count}</td><td>${b.match_count}</td></tr>
+    </tbody></table>
+    <div class="help" style="margin-top:.4rem;">Field responsible: <code>policy_verdict</code> (indexed, decided by code at write time from the ticket facts and the answer). Procedure 1 had to read every topical answer and classify it; procedure 2 reads the verdict. Both times are small on this log; the saving grows with the number of candidates.</div>
+  </div>`;
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-w11plant]'); if (!b || w11.plantBusy) return;
+  const id = b.dataset.w11plant;
+  if (!confirm(`Plant controlled incident "${id}"?\n\nThis runs the real drafter once (loads the 1.5B model if needed, ~1-2 minutes) and records the result as a labelled fixture.`)) return;
+  w11.plantBusy = id; w11RenderDrill();
+  try { await api('/api/week11/incident/plant', { fixture_id: id }); week11 = await api('/api/week11'); toast('Controlled incident recorded'); }
+  catch (err) { toast('Could not plant the incident: ' + err.message, true); }
+  finally { w11.plantBusy = null; w11RenderDrill(); }
+});
+
+/* ---- failure -> evaluation -> fix ---- */
+function w11RunCard(title, run, tone) {
+  if (!run) return `<div class="card" style="padding:.9rem 1rem;border-top:3px solid var(--line-strong);"><div class="eyebrow">${esc(title)}</div><div class="help" style="margin-top:.4rem;">${w11Missing('not run yet')} No saved result with this label under <code>week11/test_results/</code>.</div></div>`;
+  const s = run.summary || {};
+  const r05 = (s.regression || {}).R05;
+  return `<div class="card" style="padding:.9rem 1rem;border-top:3px solid ${tone};">
+    <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center;"><div class="eyebrow">${esc(title)}</div><span class="pill ${s.failed === 0 ? 'ok' : 'bad'}">${s.passed ?? '—'} passed · ${s.failed ?? '—'} failed of ${s.n_cases ?? '—'}</span></div>
+    ${w11Kv([
+      ['command', `<code>${esc(run.command || '')}</code>`],
+      ['ran at', `${esc(run.ran_at || '')} · ${run.seconds != null ? run.seconds + ' s' : ''} · exit ${run.exit_code}`],
+      ['prompt under test', `<code>${esc(s.ticket_prompt_version || '—')}</code> <span class="help">sha ${esc(s.ticket_prompt_sha || '—')}</span>`],
+      ['replies', `${esc(s.replies || '')}${(s.fresh_cases || []).length ? ` · drafted live: ${esc((s.fresh_cases || []).join(', '))}` : ''} · judge ${esc(s.judge || 'none')}`],
+      ['R05 (new regression case)', r05 ? `<span class="pill ${r05.pass ? 'ok' : 'bad'}">${r05.pass ? 'PASS' : 'FAIL'}</span>${r05.failed_assertions && r05.failed_assertions.length ? ` failed: <code>${esc(r05.failed_assertions.join(', '))}</code>` : ''}${r05.judge ? ` · judge ${esc(r05.judge)}` : ''}` : w11Missing('R05 not in this run')],
+      ['failing cases', (s.failing_cases || []).length ? s.failing_cases.map(c => `<code>${esc(c)}</code>`).join(' ') : 'none'],
+      ['failures by assertion', Object.keys(s.assertion_failures || {}).length ? Object.entries(s.assertion_failures).map(([k, v]) => `<div><code>${esc(k)}</code>: ${esc(v.join(', '))}</div>`).join('') : 'none'],
+      ['files', `<code>${esc(run.run_file || '')}</code> · <code>${esc(run.stdout_file || '')}</code>`],
+    ])}
+    <details class="src-peek"><summary>Suite output (last 80 lines)</summary><pre class="console" style="max-height:360px;overflow:auto;">${esc(run.stdout_tail || run.stdout || '')}</pre></details>
+  </div>`;
+}
+function w11RenderFix() {
+  const ev = week11.evidence || {}, nc = ev.new_case, lw = ev.latest_week6_run, pv = ev.prompt_versions || {};
+  const runs = ev.saved_runs || [];
+  $('w11Body').innerHTML = `
+    <div class="w11-grid2">
+      <div class="card" style="padding:.9rem 1rem;"><div class="eyebrow">Existing evaluation suite</div>
+        ${w11Kv([
+          ['suite', 'Week 6 · <code>python main.py eval</code> · 25 mode-tagged cases + regression cases · 7 deterministic assertions · judge v2 (gated)'],
+          ['latest run', lw ? `<code>${esc(lw.file)}</code> · ${esc(lw.ran_at)} · <span class="pill ${lw.failed === 0 ? 'ok' : 'bad'}">${lw.passed}/${lw.n_cases} pass</span> · prompt <code>${esc(lw.ticket_prompt_version || 'not recorded')}</code>` : w11Missing('no run')],
+          ['baseline failures (pre-existing, unrelated)', lw ? (lw.failing_cases || []).filter(c => c !== 'R05').map(c => `<code>${esc(c)}</code>`).join(' ') || 'none' : '—'],
+        ])}
+        <div class="help">Pre-existing failures (missing escalation tag, cut-off replies) are reported as they are; the before/after comparison is per case, not a single average.</div>
+      </div>
+      <div class="card" style="padding:.9rem 1rem;"><div class="eyebrow">New regression case + assertion</div>
+        ${nc ? w11Kv([
+          ['case', `<code>${esc(nc.id)}</code> · mode ${esc(nc.mode)} · ticket ${esc(nc.ticket.ticket_id)} · $${nc.ticket.charge_amount} · ${nc.ticket.days_since_charge} days`],
+          ['message (verbatim from the incident trace)', `"${esc(nc.ticket.message)}"`],
+          ['source trace', nc.regression ? `<button class="btn sm" data-w11trace="${esc(nc.regression.source_trace_id)}">${esc(nc.regression.source_trace_id)} ↗</button>` : '—'],
+          ['original outcome', nc.regression ? esc(nc.regression.original_outcome) : '—'],
+          ['reference', `<ul style="margin:.2rem 0 0 1rem;padding:0;">${(nc.reference || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>`],
+          ['assertion added', `<code>${esc((ev.assertion_added || {}).name || '')}</code> in <code>${esc((ev.assertion_added || {}).file || '')}</code> — the eligible side of criterion 4 (the six Week 6 checks only caught a refund <i>promised</i> outside the window, not one <i>refused</i> inside it)`],
+        ]) : `<div class="help">${w11Missing('R05 not added yet')}</div>`}
+      </div>
+    </div>
+    <div class="w11-grid2" style="margin-top:.8rem;">
+      ${w11RunCard('RED — before the fix (full suite, every reply drafted fresh)', ev.red, 'var(--danger)')}
+      ${w11RunCard('GREEN — after the fix (full suite, every reply drafted fresh)', ev.green, 'var(--ok)')}
+    </div>
+    <div class="card" style="padding:.9rem 1rem;margin-top:.8rem;">
+      <div class="eyebrow">Run the evaluation suite now</div>
+      <div class="help" style="margin:.2rem 0 .5rem;">Fixed command, nothing from this page reaches a shell: <code>${esc(ev.suite_command || '')}</code>. The 25 labelled replies stay frozen; R05 is drafted live with the current prompt (loads the 1.5B model, about 1–2 minutes). One run at a time (HTTP 409 otherwise). Output is saved under <code>week11/test_results/</code> and read back below.</div>
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
+        <select id="w11EvalJudge" style="padding:.35rem .5rem;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);"><option value="none">assertions only (fast)</option><option value="auto">assertions + judge v2 (several minutes)</option></select>
+        <button class="btn primary" id="w11EvalRun" ${w11.evalRunning ? 'disabled' : ''}>${w11.evalRunning ? '<span class="spinner"></span> running…' : 'Run evaluation suite'}</button>
+        <span class="help" id="w11EvalStatus"></span>
+      </div>
+      <div id="w11EvalOut" style="margin-top:.6rem;">${w11.evalLast ? (w11.evalLast.error ? `<div class="w10-note bad"><b>Run failed</b>${esc(w11.evalLast.error)}</div>` : w11RunCard('This run', w11.evalLast, 'var(--accent)')) : ''}</div>
+    </div>
+    ${runs.length ? `<details class="src-peek" style="margin-top:.8rem;"><summary>All saved suite runs (${runs.length})</summary><table class="gs w11"><thead><tr><th>label</th><th>ran at</th><th>prompt</th><th>passed</th><th>failed</th><th>R05</th><th>file</th></tr></thead><tbody>${runs.map(r => { const s = r.summary || {}; const r05 = (s.regression || {}).R05; return `<tr><td>${esc(r.label || '')}</td><td>${esc(r.ran_at || '')}</td><td><code>${esc(s.ticket_prompt_version || '')}</code></td><td>${s.passed ?? '—'}</td><td>${s.failed ?? '—'}</td><td>${r05 ? (r05.pass ? 'PASS' : 'FAIL') : '—'}</td><td><code>${esc(r.file)}</code></td></tr>`; }).join('')}</tbody></table></details>` : ''}
+    <div class="card" style="padding:.9rem 1rem;margin-top:.8rem;"><div class="eyebrow">Prompt change</div>${w11PromptTable(pv)}</div>`;
+  $('w11EvalRun').onclick = w11RunEval;
+}
+async function w11RunEval() {
+  if (w11.evalRunning) return;
+  const judge = $('w11EvalJudge').value;
+  w11.evalRunning = true; w11RenderFix();
+  const t0 = Date.now(); const tick = setInterval(() => { const s = $('w11EvalStatus'); if (s) s.textContent = `running for ${Math.round((Date.now() - t0) / 1000)} s…`; }, 1000);
+  try { w11.evalLast = await api('/api/week11/eval/run', { judge }); week11 = await api('/api/week11'); }
+  catch (err) { w11.evalLast = { error: err.message }; }
+  finally { clearInterval(tick); w11.evalRunning = false; w11RenderFix(); }
+}
+function w11PromptTable(pv) {
+  const hist = pv.history || [];
+  return `<table class="gs w11"><thead><tr><th>path</th><th>active version</th><th>sha</th><th>model</th></tr></thead><tbody>${(pv.active || []).map(a => `<tr><td>${esc(a.path)}</td><td><code>${esc(a.version)}</code></td><td><code>${esc(a.sha)}</code></td><td>${esc(a.model || '')}${a.note ? `<div class="help">${esc(a.note)}</div>` : ''}</td></tr>`).join('')}</tbody></table>
+    ${hist.length ? `<div class="eyebrow" style="margin:.6rem 0 .2rem;">Version history (week11/prompt_history.json)</div><table class="gs w11"><thead><tr><th>version</th><th>date</th><th>change</th><th>why</th></tr></thead><tbody>${hist.map(h => `<tr><td><code>${esc(h.version)}</code></td><td>${esc(h.date || '')}</td><td>${esc(h.change || '')}</td><td class="help">${esc(h.why || '')}</td></tr>`).join('')}</tbody></table>` : ''}`;
+}
+
+/* ---- cost & usage ---- */
+function w11RenderCost() {
+  const c = w11.cost;
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:.9rem 1rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;">
+      <span class="eyebrow">Measurement window</span>
+      <select id="w11CostDays" style="padding:.35rem .5rem;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);">${[['7', 'last 7 days'], ['30', 'last 30 days'], ['90', 'last 90 days'], ['all', 'all recorded']].map(([v, l]) => `<option value="${v}" ${w11.costDays === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      <label class="help"><input type="checkbox" id="w11CostFx" ${w11.costFixtures ? 'checked' : ''}> include controlled incidents</label>
+      <span class="help">${w11Badge('estimate', 'estimate')} = tokens × stand-in rate card · ${w11Badge('measured', 'measured')} = recorded by the application · ${w11Badge('missing', 'not recorded')} = the record never had it</span>
+    </div>
+    <div id="w11CostOut" style="margin-top:.8rem;">${c ? w11CostBody(c) : '<div class="muted"><span class="spinner"></span> computing from the index…</div>'}</div>
+    ${week11.docs && week11.docs.cost_md ? `<details class="src-peek" style="margin-top:.8rem;"><summary>week11/cost_by_stage.md</summary><div class="md" style="padding:.6rem .2rem;">${md(week11.docs.cost_md)}</div></details>` : ''}`;
+  $('w11CostDays').onchange = () => { w11.costDays = $('w11CostDays').value; w11LoadCost(); };
+  $('w11CostFx').onchange = () => { w11.costFixtures = $('w11CostFx').checked; w11LoadCost(); };
+  if (!c) w11LoadCost();
+}
+async function w11LoadCost() {
+  try { w11.cost = await api('/api/week11/cost?' + w11Qs({ days: w11.costDays, no_fixtures: !w11.costFixtures })); }
+  catch (err) { w11.cost = { error: err.message }; }
+  if ($('w11CostOut')) $('w11CostOut').innerHTML = w11CostBody(w11.cost);
+}
+function w11CostBody(c) {
+  if (c.error) return `<div class="w10-note bad"><b>Could not compute</b>${esc(c.error)}</div>`;
+  const w = c.window, pq = c.per_query, st = c.stages;
+  const stat = (o, fmt) => o && o.n ? `${fmt(o.mean)} <span class="help">mean · p50 ${fmt(o.p50)} · p95 ${fmt(o.p95)} · n=${o.n}</span>` : w11Missing('no data');
+  const grp = (title, g) => `<div class="eyebrow" style="margin:.8rem 0 .2rem;">${esc(title)}</div><div class="w11-table-wrap"><table class="gs w11"><thead><tr><th></th><th>requests</th><th>with usage</th><th>cost mean</th><th>cost p95</th><th>cost total</th><th>tokens in / out</th><th>latency p50</th><th>latency p95</th></tr></thead><tbody>${Object.entries(g || {}).map(([k, v]) => `<tr><td><code>${esc(k)}</code></td><td>${v.requests}</td><td>${v.with_cost}</td><td>${v.cost_usd.n ? w11Usd(v.cost_usd.mean) : '—'}</td><td>${v.cost_usd.n ? w11Usd(v.cost_usd.p95) : '—'}</td><td>${v.cost_usd.n ? w11Usd(v.cost_usd.sum) : '—'}</td><td>${w11Num(v.input_tokens)} / ${w11Num(v.output_tokens)}</td><td>${v.latency_ms.n ? w11Ms(v.latency_ms.p50) : '—'}</td><td>${v.latency_ms.n ? w11Ms(v.latency_ms.p95) : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+  return `
+    <div class="metric-row">
+      <div class="metric"><div class="k">Requests in window</div><div class="v">${w11Num(w.requests)}</div><div class="help">${w11Num(w.requests_with_complete_cost)} with full token usage · ${w11Num(w.requests_without_usage)} without (not priced)</div></div>
+      <div class="metric"><div class="k">Cost per query</div><div class="v">${pq.cost_usd.n ? w11Usd(pq.cost_usd.mean) : '—'} ${w11Badge('estimate', 'est.')}</div><div class="help">${pq.cost_usd.n ? `p50 ${w11Usd(pq.cost_usd.p50)} · p95 ${w11Usd(pq.cost_usd.p95)} · max ${w11Usd(pq.cost_usd.max)}` : 'no priced requests'}</div></div>
+      <div class="metric"><div class="k">Total attributable</div><div class="v">${w11Usd(st.total_attributable_usd)}</div><div class="help">generation only; retrieval and tools are unmetered</div></div>
+      <div class="metric"><div class="k">Tokens in / out</div><div class="v"><span class="nb">${w11Num(st.generation.input_tokens)}</span><span class="arrow">/</span><span class="nb">${w11Num(st.generation.output_tokens)}</span></div><div class="help">per query mean ${pq.input_tokens.n ? w11Num(pq.input_tokens.mean) : '—'} / ${pq.output_tokens.n ? w11Num(pq.output_tokens.mean) : '—'}</div></div>
+      <div class="metric"><div class="k">Latency per request</div><div class="v">${pq.latency_ms.n ? w11Ms(pq.latency_ms.p50) : '—'}</div><div class="help">p50 · p95 ${pq.latency_ms.n ? w11Ms(pq.latency_ms.p95) : '—'} · p99 ${pq.latency_ms.n ? w11Ms(pq.latency_ms.p99) : '—'} · n=${pq.latency_ms.n}</div></div>
+      <div class="metric"><div class="k">Retry overhead</div><div class="v">${w11Num(c.retries.total)}</div><div class="help">${esc(c.retries.note)}</div></div>
+    </div>
+    <div class="card" style="padding:.9rem 1rem;">
+      <div class="eyebrow">Cost by stage</div>
+      <div class="w11-table-wrap"><table class="gs w11"><thead><tr><th>stage</th><th>cost (USD)</th><th>basis</th><th>time (from spans)</th></tr></thead><tbody>
+        <tr><td>retrieval (embed · pgvector · BM25 · rerank)</td><td>${w11Missing('unmetered')} → counted as $0</td><td class="help">${esc(st.retrieval.basis)}</td><td>${w11Ms(st.retrieval.time_ms_total)} over ${st.retrieval.spans || 0} spans</td></tr>
+        <tr><td>generation (model call)</td><td>${w11Usd(st.generation.cost_usd)} ${w11Badge('estimate', 'estimate')}</td><td class="help">${esc(st.generation.basis)}</td><td>${w11Ms(st.generation.time_ms_total)}</td></tr>
+        <tr><td>validation (gates · grounding · assertions)</td><td>$0 ${w11Badge('measured', 'code only')}</td><td class="help">${esc(st.validation.basis)}</td><td>${w11Ms(st.validation.time_ms_total)}</td></tr>
+        <tr><td>tools (policy lookup · MCP)</td><td>$0 ${w11Badge('measured', 'no charge')}</td><td class="help">${esc(st.tools.basis)}</td><td>${w11Ms(st.tools.time_ms_total)}</td></tr>
+        <tr><td><b>total attributable</b></td><td><b>${w11Usd(st.total_attributable_usd)}</b></td><td class="help">${esc(st.formula)}</td><td></td></tr>
+      </tbody></table></div>
+      <div class="help" style="margin-top:.4rem;">${esc(c.spans_coverage.note)} (${c.spans_coverage.requests_with_spans} with spans, ${c.spans_coverage.requests_without_spans} without). Stage times are sums over those spans; a request's end-to-end latency can exceed its span sum (model loading on the first request, HTTP handling).</div>
+    </div>
+    ${grp('By model / provider', c.by_model)}
+    ${grp('By request type', c.by_kind)}
+    ${grp('By prompt version', c.by_prompt_version)}
+    <div class="card" style="padding:.9rem 1rem;margin-top:.8rem;"><div class="eyebrow">Pricing assumptions and window</div>${w11Kv([
+      ['rate card', `$${c.pricing.rate_card.input_per_mtok} per M input tokens · $${c.pricing.rate_card.output_per_mtok} per M output tokens (${esc(c.pricing.currency)})`],
+      ['basis', esc(c.pricing.basis)],
+      ['provider usage', esc(c.pricing.provider_usage)],
+      ['window', `${esc(w11Local(w.from))} → ${esc(w11Local(w.to))}${w.days ? ` (last ${w.days} days)` : ' (all recorded)'} · fixtures ${w.fixtures_included ? 'included' : 'excluded'}`],
+      ['cost outlier threshold', c.pricing.outlier_threshold_usd != null ? `${w11Usd(c.pricing.outlier_threshold_usd)} (p95 of complete costs)` : 'fewer than 5 priced requests'],
+    ])}</div>`;
+}
+
+/* ---- 10x capacity ---- */
+function w11RenderTenx() {
+  const t = w11.tenx;
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:.9rem 1rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;">
+      <span class="eyebrow">Observed window</span>
+      <select id="w11TenxDays" style="padding:.35rem .5rem;border-radius:8px;border:1px solid var(--line-strong);background:var(--bg);">${[['7', 'last 7 days'], ['30', 'last 30 days'], ['90', 'last 90 days'], ['3650', 'all recorded']].map(([v, l]) => `<option value="${v}" ${w11.tenxDays === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      <span class="help">controlled incidents are excluded from the workload</span>
+    </div>
+    <div id="w11TenxOut" style="margin-top:.8rem;">${t ? w11TenxBody(t) : '<div class="muted"><span class="spinner"></span> computing…</div>'}</div>
+    ${week11.docs && week11.docs.tenx_md ? `<details class="src-peek" style="margin-top:.8rem;"><summary>week11/tenx.md</summary><div class="md" style="padding:.6rem .2rem;">${md(week11.docs.tenx_md)}</div></details>` : ''}`;
+  $('w11TenxDays').onchange = () => { w11.tenxDays = $('w11TenxDays').value; w11LoadTenx(); };
+  if (!t) w11LoadTenx();
+}
+async function w11LoadTenx() {
+  try { w11.tenx = await api('/api/week11/tenx?' + w11Qs({ days: w11.tenxDays })); } catch (err) { w11.tenx = { error: err.message }; }
+  if ($('w11TenxOut')) $('w11TenxOut').innerHTML = w11TenxBody(w11.tenx);
+}
+function w11TenxBody(t) {
+  if (t.error) return `<div class="w10-note bad"><b>Could not compute</b>${esc(t.error)}</div>`;
+  const cur = t.current, p = t.projected_10x, cap = t.capacity, lat = cur.latency_ms || {};
+  return `
+    ${t.conditional ? `<div class="w10-note warn"><b>Conditional conclusion</b>${esc(t.conditional_note)}</div>` : ''}
+    <div class="metric-row">
+      <div class="metric"><div class="k">Current workload</div><div class="v">${w11Num(cur.requests_per_day, 1)} <span class="arrow">req/day</span></div><div class="help">${w11Num(t.window.requests)} requests over ${t.window.span_days} days (${esc(w11Local(t.window.first_request))} → ${esc(w11Local(t.window.last_request))})</div></div>
+      <div class="metric"><div class="k">Projected at 10×</div><div class="v">${w11Num(p.requests_per_day, 1)} <span class="arrow">req/day</span></div><div class="help">peak hour ${cur.peak_hour_requests} → ${p.peak_hour_requests} requests (${esc(cur.peak_hour_utc || '')}Z)</div></div>
+      <div class="metric"><div class="k">Cost over the window → 10×</div><div class="v"><span class="nb">${w11Usd(cur.cost_usd)}</span><span class="arrow">→</span><span class="nb">${w11Usd(p.cost_usd)}</span></div><div class="help">${w11Badge('estimate', 'estimate')} tokens ${w11Num(cur.tokens_total)} → ${w11Num(p.tokens_total)}</div></div>
+      <div class="metric"><div class="k">Latency (answered, model-backed)</div><div class="v">${lat.n ? w11Ms(lat.p50) : '—'}</div><div class="help">p50 · p95 ${lat.n ? w11Ms(lat.p95) : '—'} · p99 ${lat.n ? w11Ms(lat.p99) : '—'} · n=${lat.n || 0}</div></div>
+      <div class="metric"><div class="k">Throughput ceiling</div><div class="v">${w11Num(cap.requests_per_hour_ceiling, 1)} <span class="arrow">req/hour</span></div><div class="help">serial at mean ${cap.mean_latency_s} s · utilisation now ${cap.utilisation_now != null ? (cap.utilisation_now * 100).toFixed(2) + '%' : '—'} → 10× ${cap.utilisation_10x != null ? (cap.utilisation_10x * 100).toFixed(2) + '%' : '—'}</div></div>
+    </div>
+    <div class="decision"><b>What breaks first: ${esc(t.bottleneck || 'insufficient data')}</b><div style="margin-top:.3rem;">${esc(t.conclusion)}</div></div>
+    <div class="w11-grid2" style="margin-top:.8rem;">
+      <div class="card" style="padding:.9rem 1rem;"><div class="eyebrow">Numeric evidence</div><ul style="margin:.3rem 0 0 1rem;padding:0;font-size:.8rem;line-height:1.55;">${(t.evidence || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+        ${w11Kv([['provider request / token limits', esc(cap.provider_limits)], ['capacity model', esc(cap.model)]])}</div>
+      <div class="card" style="padding:.9rem 1rem;"><div class="eyebrow">Assumptions</div><ul style="margin:.3rem 0 0 1rem;padding:0;font-size:.8rem;line-height:1.55;">${(t.assumptions || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+        <div class="eyebrow" style="margin-top:.6rem;">Mitigation</div><div style="font-size:.84rem;margin-top:.2rem;">${esc(t.mitigation)}</div></div>
+    </div>`;
+}
+
+/* ---- prompt & deployment safety ---- */
+function w11RenderPrompt() {
+  const pv = week11.prompt_versions || {}, hist = pv.history || [], plan = (week11.evidence || {}).deployment_plan || (hist.find(h => h.deployment_plan) || {}).deployment_plan;
+  const seen = pv.seen_in_log || [];
+  $('w11Body').innerHTML = `
+    <div class="card" style="padding:.9rem 1rem;"><div class="eyebrow">Active prompt versions (read from the code at request time)</div>${w11PromptTable(pv)}</div>
+    <div class="card" style="padding:.9rem 1rem;margin-top:.8rem;"><div class="eyebrow">Versions as recorded on traces</div>
+      <div class="w11-table-wrap"><table class="gs w11"><thead><tr><th>prompt version</th><th>requests</th><th>first seen</th><th>last seen</th><th>policy contradictions</th></tr></thead><tbody>${seen.map(s => `<tr><td><code>${esc(s.prompt_version || 'none')}</code></td><td>${s.n}</td><td>${esc(w11Local(s.first_seen))}</td><td>${esc(w11Local(s.last_seen))}</td><td>${s.contradicts ? `<span class="pill bad">${s.contradicts}</span>` : '0'}</td></tr>`).join('')}</tbody></table></div>
+      <div class="help" style="margin-top:.3rem;">Every trace carries the prompt version and sha it was produced under, so a trace from before the fix and one from after are never confused. Open any trace in the explorer to see its version.</div>
+    </div>
+    <div class="card" style="padding:.9rem 1rem;margin-top:.8rem;"><div class="eyebrow">Canary / rollback plan</div>
+      ${plan ? `<ol style="margin:.3rem 0 0 1.1rem;padding:0;font-size:.84rem;line-height:1.6;"><li><b>Canary:</b> ${esc(plan.canary)}</li><li><b>Rollback:</b> ${esc(plan.rollback)}</li></ol><div class="help" style="margin-top:.4rem;">${esc(plan.status || '')}</div>` : `<div class="help">${w11Missing('no plan recorded')} Add <code>deployment_plan</code> to week11/prompt_history.json.</div>`}
+    </div>`;
+}
+
 </script>
 </body>
 </html>

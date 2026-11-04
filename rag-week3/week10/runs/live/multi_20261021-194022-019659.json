@@ -1,0 +1,324 @@
+{
+  "mode": "multi",
+  "ticket": {
+    "ticket_id": "CD-10401",
+    "tier": "Standard",
+    "message": "My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+    "charge_amount": null,
+    "days_since_charge": null,
+    "duplicate_charge": false,
+    "refund_requested": false
+  },
+  "answer": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Must be different from the previous password.\n\nPlease make sure your new password adheres to these guidelines before attempting to set it. If you continue to face issues, feel free to reach out to our support team for further assistance.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Agent",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-001-markdown-6",
+      "article_id": "HC-001",
+      "section": "Password Requirements",
+      "distance": 0.37869079367030967
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-001-markdown-1",
+      "article_id": "HC-001",
+      "section": "Overview",
+      "distance": 0.6912777467866473
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-001-markdown-14",
+      "article_id": "HC-001",
+      "section": "Security Information",
+      "distance": 0.640211586914353
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-002-markdown-17",
+      "article_id": "HC-002",
+      "section": "Password Manager Considerations",
+      "distance": 0.6732780537986169
+    },
+    {
+      "rank": 5,
+      "chunk_id": "HC-002-markdown-9",
+      "article_id": "HC-002",
+      "section": "How to Recover a Locked Account",
+      "distance": 0.8547876390688185
+    }
+  ],
+  "best_distance": 0.37869079367030967,
+  "lexical_anchors": [],
+  "gate_bypass": null,
+  "tasks": [
+    {
+      "id": "task-9730d4fc49",
+      "parent_id": null,
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "manager",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T14:10:21.918+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-10401\nSupport tier: Standard\nCustomer message: My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+      "output": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at le\u2026",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-10-21T14:09:21.237+00:00",
+      "ended_at": "2026-10-21T14:10:21.918+00:00",
+      "latency_ms": 60681.9,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens": 0,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-e8c074befe",
+      "parent_id": "task-9730d4fc49",
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "triage",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T14:09:21.237+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T14:09:25.823+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-10401\nSupport tier: Standard\nCustomer message: My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?",
+      "output": "[\"knowledge_specialist\"]",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-10-21T14:09:21.237+00:00",
+      "ended_at": "2026-10-21T14:09:25.823+00:00",
+      "latency_ms": 4586.3,
+      "model_calls": 1,
+      "input_tokens": 180,
+      "output_tokens": 33,
+      "tokens": 213,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-0aa7a56fda",
+      "parent_id": "task-9730d4fc49",
+      "agent": "knowledge_specialist",
+      "role": "Knowledge / RAG specialist",
+      "kind": "specialist",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T14:09:25.828+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T14:09:25.829+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T14:09:25.831+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T14:09:37.374+00:00"
+        }
+      ],
+      "input": "{\"ticket_id\": \"CD-10401\", \"message\": \"My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?\"}",
+      "output": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from \u2026",
+      "error": null,
+      "attempts": 1,
+      "transport": "in-process",
+      "started_at": "2026-10-21T14:09:25.831+00:00",
+      "ended_at": "2026-10-21T14:09:37.374+00:00",
+      "latency_ms": 11542.7,
+      "model_calls": 1,
+      "input_tokens": 542,
+      "output_tokens": 60,
+      "tokens": 602,
+      "tool_calls": 1
+    },
+    {
+      "id": "task-358f3dacc5",
+      "parent_id": "task-9730d4fc49",
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "synthesis",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-21T14:09:37.376+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-10-21T14:09:37.376+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-10-21T14:09:37.376+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-10-21T14:10:21.915+00:00"
+        }
+      ],
+      "input": "{\"sources\": [\"HC-001-markdown-6\", \"HC-001-markdown-1\", \"HC-001-markdown-14\", \"HC-002-markdown-17\", \"HC-002-markdown-9\"], \"findings\": [\"[knowledge specialist]\\nTo set a new password on CloudDesk, it needs to meet these requirements:\\n\\n- At \u2026",
+      "output": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. To ensure your password meets the necessary criteria, here\u2019s what it should include:\n\n- At least 8 characters long.\n- Contains at le\u2026",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-10-21T14:09:37.376+00:00",
+      "ended_at": "2026-10-21T14:10:21.916+00:00",
+      "latency_ms": 44540.5,
+      "model_calls": 1,
+      "input_tokens": 706,
+      "output_tokens": 132,
+      "tokens": 838,
+      "tool_calls": 0
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "handoff-54938cf5ba",
+      "at": "2026-10-21T14:09:25.830+00:00",
+      "direction": "dispatch",
+      "from_task": "task-9730d4fc49",
+      "from_agent": "manager",
+      "to_task": "task-0aa7a56fda",
+      "to_agent": "knowledge_specialist",
+      "summary": "{\"ticket\": {\"ticket_id\": \"CD-10401\", \"tier\": \"Standard\", \"message\": \"My new password keeps getting rejected when I try to set it. What does a CloudDesk password need to have?\", \"charge_amount\": null, \"days_since_charge\": null, \"duplicate_ch\u2026",
+      "status": "sent",
+      "input_tokens": null,
+      "output_tokens": null,
+      "context_chars": 281
+    },
+    {
+      "id": "handoff-4f1772b8fb",
+      "at": "2026-10-21T14:09:37.375+00:00",
+      "direction": "return",
+      "from_task": "task-0aa7a56fda",
+      "from_agent": "knowledge_specialist",
+      "to_task": "task-9730d4fc49",
+      "to_agent": "manager",
+      "summary": "{\"findings\": \"To set a new password on CloudDesk, it needs to meet these requirements:\\n\\n- At least 8 characters long.\\n- Contains at least one uppercase letter.\\n- Contains at least one lowercase letter.\\n- Contains at least one number.\\n\u2026",
+      "status": "completed",
+      "input_tokens": 542,
+      "output_tokens": 60,
+      "context_chars": 418
+    }
+  ],
+  "routing": {
+    "triage_raw": "{\"ticket_specialist\": false, \"knowledge_specialist\": true, \"reason\": \"The customer is asking about setting up a password that requires specific criteria.\"}",
+    "triage_parsed": {
+      "ticket_specialist": false,
+      "knowledge_specialist": true,
+      "reason": "The customer is asking about setting up a password that requires specific criteria."
+    },
+    "decided_by": {
+      "knowledge_specialist": "policy: always consulted",
+      "ticket_specialist": "triage: False"
+    },
+    "dispatch": [
+      "knowledge_specialist"
+    ]
+  },
+  "specialists": {
+    "knowledge_specialist": {
+      "specialist": "knowledge_specialist",
+      "best_distance": 0.37869079367030967,
+      "lexical_anchors": [],
+      "evidence": true,
+      "gate_reason": null,
+      "findings": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from the previous password.\n\nSource: [1]",
+      "model_cited": [
+        1
+      ],
+      "not_covered": [],
+      "calls": [
+        {
+          "text": "To set a new password on CloudDesk, it needs to meet these requirements:\n\n- At least 8 characters long.\n- Contains at least one uppercase letter.\n- Contains at least one lowercase letter.\n- Contains at least one number.\n- Is different from the previous password.\n\nSource: [1]",
+          "input_tokens": 542,
+          "output_tokens": 60,
+          "latency_ms": 11104.9,
+          "max_new_tokens": 160
+        }
+      ],
+      "tool_calls": 1,
+      "findings_cite_sources": true,
+      "chunk_ids": [
+        "HC-001-markdown-6",
+        "HC-001-markdown-1",
+        "HC-001-markdown-14",
+        "HC-002-markdown-17",
+        "HC-002-markdown-9"
+      ]
+    }
+  },
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 3,
+    "input_tokens": 1428,
+    "output_tokens": 225,
+    "tokens": 1653,
+    "cost_usd": 0.0003492,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 2,
+    "specialist_calls": 1,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 42,
+    "context_resend_multiplier": 34.0,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 60682.6,
+  "trace_id": "3f61521509d9462e",
+  "langfuse_trace_id": "3641e62bca4c5e4469cc3be9e4d7cf98",
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "week10-multi-v1.1",
+  "fault": null,
+  "ran_at": "2026-10-21T14:10:22+00:00"
+}

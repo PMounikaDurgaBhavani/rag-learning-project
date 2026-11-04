@@ -153,6 +153,12 @@ def build_trace(result, latency_ms, source="cli", trace_id=None):
             # Re-tokenised length of the output: a count at the
             # max_new_tokens limit is a reply that was cut off.
             "output_tokens": result.get("output_tokens"),
+            # Week 11: prompt tokens counted on the rendered chat template
+            # with the model's own tokenizer, and the model call's own time.
+            # None in records written before this field existed.
+            "input_tokens": result.get("input_tokens"),
+            "max_new_tokens": result.get("max_new_tokens"),
+            "model_latency_ms": result.get("model_latency_ms"),
         },
         "outcome": {
             "answer": result.get("answer"),
@@ -175,6 +181,16 @@ def build_trace(result, latency_ms, source="cli", trace_id=None):
     }
 
 
+def _observability():
+    """The Week 11 request index, or None if it cannot be imported."""
+    try:
+        import observability
+        return observability
+    except Exception as error:
+        print(f"  [tracing] observability unavailable: {error}")
+        return None
+
+
 def append(trace, session_id=None, tags=None):
     """Write one trace to every configured sink. Never raises.
 
@@ -193,12 +209,25 @@ def append(trace, session_id=None, tags=None):
     if langfuse_client() is not None:
         trace.setdefault("langfuse_trace_id", langfuse_trace_id(trace["trace_id"]))
 
+    # Week 11: request id, spans, usage, cost, status and the policy verdict
+    # go onto the record BEFORE it is written, so the JSONL stays the one
+    # source of truth and the index below can always be rebuilt from it.
+    observability = _observability()
+    if observability is not None:
+        observability.attach(trace)
+
     try:
         TRACE_DIR.mkdir(parents=True, exist_ok=True)
         with open(TRACE_FILE, "a", encoding="utf-8") as handle:
             handle.write(json.dumps(trace, default=str) + "\n")
     except Exception as error:            # tracing must never break answering
         print(f"  [tracing] could not write JSONL: {error}")
+
+    if observability is not None:
+        try:
+            observability.index_trace(trace)
+        except Exception as error:        # the index is a mirror; the answer stands
+            print(f"  [observability] could not index trace {trace.get('trace_id')}: {error}")
 
     if TRACE_DB:
         try:

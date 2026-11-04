@@ -1,0 +1,1893 @@
+{
+  "as_of": "2026-10-25",
+  "slices": {
+    "complaint": "A customer said it gave a wrong answer about refunds yesterday afternoon.",
+    "procedure": "slices",
+    "topic": "refund",
+    "topic_terms": [
+      "refund",
+      "refunds",
+      "refunded",
+      "refundable"
+    ],
+    "started_at": "2026-10-25T11:05:04.900+00:00",
+    "completed_at": "2026-10-25T11:05:04.938+00:00",
+    "time_to_find_ms": 35.11,
+    "time_to_find": "00:00",
+    "measured": true,
+    "window": {
+      "phrase": "yesterday afternoon",
+      "as_of_local": "2026-10-25T00:00:00+05:30",
+      "local_start": "2026-10-24T12:00:00+05:30",
+      "local_end": "2026-10-24T18:00:00+05:30",
+      "utc_start": "2026-10-24T06:30:00+00:00",
+      "utc_end": "2026-10-24T12:30:00+00:00",
+      "tz": "IST"
+    },
+    "window_used": "widened: 7 days before as_of, up to now",
+    "widened_to": "widened: 7 days before as_of, up to now",
+    "slices": [
+      {
+        "slice": "time: complaint window",
+        "filter": "ts in [2026-10-24T06:30:00+00:00, 2026-10-24T12:30:00+00:00]",
+        "count": 0,
+        "ms": 0.41,
+        "note": "no requests recorded in this window"
+      },
+      {
+        "slice": "time: widened: 7 days before as_of, up to now",
+        "filter": "ts in [2026-10-17T18:30:00+00:00, now]",
+        "count": 140,
+        "ms": 0.34,
+        "note": null
+      },
+      {
+        "slice": "topic in input OR output (widened: 7 days before as_of, up to now)",
+        "filter": "FTS5 MATCH '\"refund\"* OR \"refunds\"* OR \"refunded\"* OR \"refundable\"*' AND ts in window",
+        "count": 50,
+        "ms": 7.24,
+        "note": null
+      },
+      {
+        "slice": "classify answers against HC-008 (widened: 7 days before as_of, up to now)",
+        "filter": "for each candidate: eligible -> must not deny; ineligible -> must not promise",
+        "count": 16,
+        "ms": 26.88,
+        "note": "50 candidate answers read and classified"
+      }
+    ],
+    "candidates_classified": 50,
+    "matches": [
+      {
+        "trace_id": "c6885e014a464c22",
+        "request_id": null,
+        "ts": "2026-10-20T18:51:09.072+00:00",
+        "ts_local": "2026-10-21T00:21:09+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 73771.41,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "482c2814d6cb445a",
+        "request_id": null,
+        "ts": "2026-10-20T19:01:52.163+00:00",
+        "ts_local": "2026-10-21T00:31:52+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 125538.56,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "fc94918f71df466f",
+        "request_id": null,
+        "ts": "2026-10-21T02:57:03.832+00:00",
+        "ts_local": "2026-10-21T08:27:03+05:30",
+        "source": "week10-multi",
+        "kind": "week10_multi_agent",
+        "prompt_version": "week10-multi-v1.1",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.\n\nHowever, please note that if you have duplicate charges due to an error, those charges will be refunded in full. In your case, since you were charged $49.00 for a subscription you had already cancelled, this situation does not meet the conditions for a refund.\n\nWe understand that this may cause inconvenience, but based on the current policy, we cannot process a refund for the charge you received.\n\nPlease rest assured that we will keep your details",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0005754,
+        "latency_ms": 81418.4,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "12b3c24bd1c0417f",
+        "request_id": null,
+        "ts": "2026-10-21T03:12:23.105+00:00",
+        "ts_local": "2026-10-21T08:42:23+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 102151.87,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "9a51ab3e3ba443e9",
+        "request_id": null,
+        "ts": "2026-10-21T03:21:20.502+00:00",
+        "ts_local": "2026-10-21T08:51:20+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 73569.1,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "0d893b1f15b74d8d",
+        "request_id": null,
+        "ts": "2026-10-22T10:56:23.216+00:00",
+        "ts_local": "2026-10-22T16:26:23+05:30",
+        "source": "week10-ui-multi",
+        "kind": "week10_multi_agent",
+        "prompt_version": "week10-multi-v1.1",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.\n\nHowever, please note that if you have duplicate charges due to an error, those charges will be refunded in full. In your case, since you were charged $49.00 for a subscription you had already cancelled, this situation does not meet the conditions for a refund.\n\nWe understand that this may cause inconvenience, but based on the current policy, we cannot process a refund for the charge you received.\n\nPlease rest assured that we will keep your details",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0005754,
+        "latency_ms": 1004228.9,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "2fa07536c6a74c3a",
+        "request_id": "req-9bf81bba51ab",
+        "ts": "2026-10-25T09:06:33.812+00:00",
+        "ts_local": "2026-10-25T14:36:33+05:30",
+        "source": "week11-incident",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 222904.52,
+        "fixture": {
+          "id": "refund-window-inverted",
+          "title": "Controlled incident 1 \u2014 eligible 14-day charge refused",
+          "planted_at": "2026-10-25T09:02:50.880+00:00",
+          "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+          "expected": "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008)."
+        },
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "4561826fb7084e8d",
+        "request_id": "req-a5cf1f7bda88",
+        "ts": "2026-10-25T09:08:58.666+00:00",
+        "ts_local": "2026-10-25T14:38:58+05:30",
+        "source": "week11-incident",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11902",
+          "tier": "Standard",
+          "message": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+          "charge_amount": 89.0,
+          "days_since_charge": 40,
+          "duplicate_charge": true,
+          "refund_requested": true
+        },
+        "input": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+        "answer": "CD-11902: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your duplicate charge issue. According to our policy, duplicate charges are the only exceptions where a refund may be processed. Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.\n\nWe apologize for any inconvenience caused by this situation. However, based on our policy, we cannot process a refund for this charge due to its age.\n\nPlease note that approved refunds are typically returned to the original payment method within 5 to 10 business days. You may check your bank statements or contact your financial institution directly if you need further assistance.\n\nIf you have any questions about your billing or would like to discuss other options, please don't hesitate to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+        },
+        "reference_policy": [
+          "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-6",
+          "HC-008-markdown-2",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0002004,
+        "latency_ms": 143678.2,
+        "fixture": {
+          "id": "duplicate-charge-denied",
+          "title": "Controlled incident 2 \u2014 duplicate charge at 40 days refused",
+          "planted_at": "2026-10-25T09:06:34.962+00:00",
+          "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+          "expected": "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008)."
+        },
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "94e2674ba16a46cf",
+        "request_id": "req-6ac0aa603f25",
+        "ts": "2026-10-25T09:26:39.004+00:00",
+        "ts_local": "2026-10-25T14:56:39+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001965,
+        "latency_ms": 30455.56,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "a5c4b9b01dbf4a98",
+        "request_id": "req-165f41b839d9",
+        "ts": "2026-10-25T09:33:10.617+00:00",
+        "ts_local": "2026-10-25T15:03:10+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10413",
+          "tier": "Standard",
+          "message": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+          "charge_amount": 19.99,
+          "days_since_charge": 5,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+        "answer": "CD-10413: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be refunded in full.\n\nFor your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.\n\nThe entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.\n\nPlease note that duplicate charges are handled differently; if you have any questions about those, feel free to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'For your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-6",
+          "HC-008-markdown-3",
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13"
+        ],
+        "cost_usd": 0.00020025,
+        "latency_ms": 53414.55,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "0d94fa7275524212",
+        "request_id": "req-ee8983831563",
+        "ts": "2026-10-25T09:37:41.297+00:00",
+        "ts_local": "2026-10-25T15:07:41+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001989,
+        "latency_ms": 39905.89,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "d255432b39eb4fed",
+        "request_id": "req-c6bcbe494a29",
+        "ts": "2026-10-25T09:38:16.084+00:00",
+        "ts_local": "2026-10-25T15:08:16+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 34705.13,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "d2163b7c10694165",
+        "request_id": "req-e3e1e4c4839e",
+        "ts": "2026-10-25T10:28:21.588+00:00",
+        "ts_local": "2026-10-25T15:58:21+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001965,
+        "latency_ms": 35421.25,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "9e45fd94f5e04638",
+        "request_id": "req-53071a19a4dd",
+        "ts": "2026-10-25T10:33:51.895+00:00",
+        "ts_local": "2026-10-25T16:03:51+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10413",
+          "tier": "Standard",
+          "message": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+          "charge_amount": 19.99,
+          "days_since_charge": 5,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+        "answer": "CD-10413: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be refunded in full.\n\nFor your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.\n\nThe entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.\n\nPlease note that duplicate charges are handled differently; if you have any questions about those, feel free to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'For your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-6",
+          "HC-008-markdown-3",
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13"
+        ],
+        "cost_usd": 0.00020025,
+        "latency_ms": 38102.97,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "d96c722bd40244ea",
+        "request_id": "req-5e9017b6c127",
+        "ts": "2026-10-25T10:37:35.396+00:00",
+        "ts_local": "2026-10-25T16:07:35+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001989,
+        "latency_ms": 33349.74,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      },
+      {
+        "trace_id": "a17bd88545494477",
+        "request_id": "req-8840fa279498",
+        "ts": "2026-10-25T10:38:07.479+00:00",
+        "ts_local": "2026-10-25T16:08:07+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 32037.09,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "outcome.answer (full text)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "ticket.duplicate_charge"
+        ]
+      }
+    ],
+    "match_count": 16,
+    "fields_used": [
+      "ts (indexed)",
+      "input + output text (FTS5)",
+      "ticket.charge_amount / days_since_charge / duplicate_charge",
+      "prompt_version",
+      "source"
+    ],
+    "missing_fields": [
+      "customer / user id: the log has no customer field, so the 'a customer said' slice cannot be used; only time, topic, ticket facts and prompt version were available",
+      "complaint timestamp: 'yesterday afternoon' is the complainant's recollection; the window is derived from as_of, not recorded",
+      "policy_verdict: not an indexed field in the first procedure \u2014 every candidate answer had to be read and classified (closed by the indexed procedure)",
+      "request_id and spans: absent on records written before Week 11 (shown as 'not recorded', never back-filled)"
+    ],
+    "limitations": [
+      "The classifier is the same code as the Week 6 assertion no_denial_inside_window / no_refund_outside_window: a wrong answer phrased in a way neither regex covers would be missed.",
+      "Only tickets with charge facts can be checked against the policy; a plain question about refunds has nothing to compare and is reported as unverifiable.",
+      "Log coverage: 364 requests from 2026-09-07T13:12:00.765+00:00 to 2026-10-25T11:04:47.687+00:00."
+    ],
+    "real_vs_fixture": {
+      "real": 14,
+      "fixture": 2
+    }
+  },
+  "indexed": {
+    "complaint": "A customer said it gave a wrong answer about refunds yesterday afternoon.",
+    "procedure": "indexed",
+    "topic": "refund",
+    "topic_terms": [
+      "refund",
+      "refunds",
+      "refunded",
+      "refundable"
+    ],
+    "started_at": "2026-10-25T11:05:04.938+00:00",
+    "completed_at": "2026-10-25T11:05:04.946+00:00",
+    "time_to_find_ms": 7.13,
+    "time_to_find": "00:00",
+    "measured": true,
+    "window": {
+      "phrase": "yesterday afternoon",
+      "as_of_local": "2026-10-25T00:00:00+05:30",
+      "local_start": "2026-10-24T12:00:00+05:30",
+      "local_end": "2026-10-24T18:00:00+05:30",
+      "utc_start": "2026-10-24T06:30:00+00:00",
+      "utc_end": "2026-10-24T12:30:00+00:00",
+      "tz": "IST"
+    },
+    "window_used": "widened: 7 days before as_of, up to now",
+    "widened_to": "widened: 7 days before as_of, up to now",
+    "slices": [
+      {
+        "slice": "time: complaint window",
+        "filter": "ts in [2026-10-24T06:30:00+00:00, 2026-10-24T12:30:00+00:00]",
+        "count": 0,
+        "ms": 0.39,
+        "note": "no requests recorded in this window"
+      },
+      {
+        "slice": "time: widened: 7 days before as_of, up to now",
+        "filter": "ts in [2026-10-17T18:30:00+00:00, now]",
+        "count": 140,
+        "ms": 0.32,
+        "note": null
+      },
+      {
+        "slice": "policy_verdict = contradicts (widened: 7 days before as_of, up to now)",
+        "filter": "policy_verdict = 'contradicts' AND ts in window (indexed column, no text scan)",
+        "count": 16,
+        "ms": 0.66,
+        "note": null
+      }
+    ],
+    "candidates_classified": 16,
+    "matches": [
+      {
+        "trace_id": "c6885e014a464c22",
+        "request_id": null,
+        "ts": "2026-10-20T18:51:09.072+00:00",
+        "ts_local": "2026-10-21T00:21:09+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 73771.41,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "482c2814d6cb445a",
+        "request_id": null,
+        "ts": "2026-10-20T19:01:52.163+00:00",
+        "ts_local": "2026-10-21T00:31:52+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 125538.56,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "fc94918f71df466f",
+        "request_id": null,
+        "ts": "2026-10-21T02:57:03.832+00:00",
+        "ts_local": "2026-10-21T08:27:03+05:30",
+        "source": "week10-multi",
+        "kind": "week10_multi_agent",
+        "prompt_version": "week10-multi-v1.1",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.\n\nHowever, please note that if you have duplicate charges due to an error, those charges will be refunded in full. In your case, since you were charged $49.00 for a subscription you had already cancelled, this situation does not meet the conditions for a refund.\n\nWe understand that this may cause inconvenience, but based on the current policy, we cannot process a refund for the charge you received.\n\nPlease rest assured that we will keep your details",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0005754,
+        "latency_ms": 81418.4,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "12b3c24bd1c0417f",
+        "request_id": null,
+        "ts": "2026-10-21T03:12:23.105+00:00",
+        "ts_local": "2026-10-21T08:42:23+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 102151.87,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "9a51ab3e3ba443e9",
+        "request_id": null,
+        "ts": "2026-10-21T03:21:20.502+00:00",
+        "ts_local": "2026-10-21T08:51:20+05:30",
+        "source": "week10-single",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "7e44499",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": null,
+        "latency_ms": 73569.1,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "0d893b1f15b74d8d",
+        "request_id": null,
+        "ts": "2026-10-22T10:56:23.216+00:00",
+        "ts_local": "2026-10-22T16:26:23+05:30",
+        "source": "week10-ui-multi",
+        "kind": "week10_multi_agent",
+        "prompt_version": "week10-multi-v1.1",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.\n\nHowever, please note that if you have duplicate charges due to an error, those charges will be refunded in full. In your case, since you were charged $49.00 for a subscription you had already cancelled, this situation does not meet the conditions for a refund.\n\nWe understand that this may cause inconvenience, but based on the current policy, we cannot process a refund for the charge you received.\n\nPlease rest assured that we will keep your details",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Based on our review of the policy and the information provided, your charge of $49.00, which was made 12 days ago, falls outside the eligibility criteria for a refund as per the established policy.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0005754,
+        "latency_ms": 1004228.9,
+        "fixture": null,
+        "has_request_id": false,
+        "has_spans": false,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "2fa07536c6a74c3a",
+        "request_id": "req-9bf81bba51ab",
+        "ts": "2026-10-25T09:06:33.812+00:00",
+        "ts_local": "2026-10-25T14:36:33+05:30",
+        "source": "week11-incident",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 222904.52,
+        "fixture": {
+          "id": "refund-window-inverted",
+          "title": "Controlled incident 1 \u2014 eligible 14-day charge refused",
+          "planted_at": "2026-10-25T09:02:50.880+00:00",
+          "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+          "expected": "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008)."
+        },
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "4561826fb7084e8d",
+        "request_id": "req-a5cf1f7bda88",
+        "ts": "2026-10-25T09:08:58.666+00:00",
+        "ts_local": "2026-10-25T14:38:58+05:30",
+        "source": "week11-incident",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11902",
+          "tier": "Standard",
+          "message": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+          "charge_amount": 89.0,
+          "days_since_charge": 40,
+          "duplicate_charge": true,
+          "refund_requested": true
+        },
+        "input": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+        "answer": "CD-11902: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your duplicate charge issue. According to our policy, duplicate charges are the only exceptions where a refund may be processed. Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.\n\nWe apologize for any inconvenience caused by this situation. However, based on our policy, we cannot process a refund for this charge due to its age.\n\nPlease note that approved refunds are typically returned to the original payment method within 5 to 10 business days. You may check your bank statements or contact your financial institution directly if you need further assistance.\n\nIf you have any questions about your billing or would like to discuss other options, please don't hesitate to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+        },
+        "reference_policy": [
+          "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-6",
+          "HC-008-markdown-2",
+          "HC-008-markdown-3"
+        ],
+        "cost_usd": 0.0002004,
+        "latency_ms": 143678.2,
+        "fixture": {
+          "id": "duplicate-charge-denied",
+          "title": "Controlled incident 2 \u2014 duplicate charge at 40 days refused",
+          "planted_at": "2026-10-25T09:06:34.962+00:00",
+          "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+          "expected": "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008)."
+        },
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "94e2674ba16a46cf",
+        "request_id": "req-6ac0aa603f25",
+        "ts": "2026-10-25T09:26:39.004+00:00",
+        "ts_local": "2026-10-25T14:56:39+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001965,
+        "latency_ms": 30455.56,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "a5c4b9b01dbf4a98",
+        "request_id": "req-165f41b839d9",
+        "ts": "2026-10-25T09:33:10.617+00:00",
+        "ts_local": "2026-10-25T15:03:10+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10413",
+          "tier": "Standard",
+          "message": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+          "charge_amount": 19.99,
+          "days_since_charge": 5,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+        "answer": "CD-10413: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be refunded in full.\n\nFor your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.\n\nThe entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.\n\nPlease note that duplicate charges are handled differently; if you have any questions about those, feel free to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'For your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-6",
+          "HC-008-markdown-3",
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13"
+        ],
+        "cost_usd": 0.00020025,
+        "latency_ms": 53414.55,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "0d94fa7275524212",
+        "request_id": "req-ee8983831563",
+        "ts": "2026-10-25T09:37:41.297+00:00",
+        "ts_local": "2026-10-25T15:07:41+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001989,
+        "latency_ms": 39905.89,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "d255432b39eb4fed",
+        "request_id": "req-c6bcbe494a29",
+        "ts": "2026-10-25T09:38:16.084+00:00",
+        "ts_local": "2026-10-25T15:08:16+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 34705.13,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "d2163b7c10694165",
+        "request_id": "req-e3e1e4c4839e",
+        "ts": "2026-10-25T10:28:21.588+00:00",
+        "ts_local": "2026-10-25T15:58:21+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10403",
+          "tier": "Standard",
+          "message": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+          "charge_amount": 49.0,
+          "days_since_charge": 12,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $49 twelve days ago for a subscription we had already cancelled. Can I get that refunded?",
+        "answer": "CD-10403: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. According to our policy, subscriptions cannot be fully refunded if they were canceled before the 30-day eligibility period has elapsed. In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.\n\nHowever, there is an exception to this rule: if you have received duplicate charges due to incorrect billing, those duplicates would be refunded in full. Please note that duplicate charges occur when the same invoice is charged multiple times, which is covered by our FAQs.\n\nFor your specific situation, please understand that the charge of $49.00 was incurred prior to any cancellation of the subscription. Therefore, based on our current policy",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In this case, since the charge was made 12 days ago, it falls outside the eligible timeframe for a full refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-1",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001965,
+        "latency_ms": 35421.25,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "9e45fd94f5e04638",
+        "request_id": "req-53071a19a4dd",
+        "ts": "2026-10-25T10:33:51.895+00:00",
+        "ts_local": "2026-10-25T16:03:51+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10413",
+          "tier": "Standard",
+          "message": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+          "charge_amount": 19.99,
+          "days_since_charge": 5,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I'd like a refund for the $19.99 charge from 5 days ago. Please also explain the whole refund process and how long it takes.",
+        "answer": "CD-10413: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your refund request. According to our policy, charges made more than 30 days prior cannot be refunded. However, if there were any duplicate charges due to an error, they would be refunded in full.\n\nFor your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time. We recommend checking your billing history for any other duplicate charges.\n\nThe entire refund process typically takes approximately 5 to 10 business days. Once we receive your request, we will initiate the refund process and notify you via email when it has been processed.\n\nPlease note that duplicate charges are handled differently; if you have any questions about those, feel free to",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'For your specific case, since the charge was made less than 30 days ago, we cannot provide a refund at this time.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-6",
+          "HC-008-markdown-3",
+          "HC-008-markdown-2",
+          "HC-008-markdown-5",
+          "HC-008-markdown-13"
+        ],
+        "cost_usd": 0.00020025,
+        "latency_ms": 38102.97,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "d96c722bd40244ea",
+        "request_id": "req-5e9017b6c127",
+        "ts": "2026-10-25T10:37:35.396+00:00",
+        "ts_local": "2026-10-25T16:07:35+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-10421",
+          "tier": "Standard",
+          "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+          "charge_amount": 30.0,
+          "days_since_charge": 29,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+        "answer": "CD-10421: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that an error occurred, and we apologize for any inconvenience this may have caused.\n\nAccording to our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. However, if the same invoice was charged multiple times, each duplicate charge would be refunded in full.\n\nIn your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund. However, based on the information provided, there were no duplicates involved in this transaction.\n\nTo proceed, please provide us with your billing details so we can verify the correct amount and ensure proper processing. Once verified, we will initiate the",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'In your case, since the charge was made exactly 30 days ago, it falls outside the eligibility window for a standard refund.'"
+        },
+        "reference_policy": [
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-13",
+          "HC-008-markdown-3",
+          "HC-008-markdown-5",
+          "HC-008-markdown-2",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001989,
+        "latency_ms": 33349.74,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      },
+      {
+        "trace_id": "a17bd88545494477",
+        "request_id": "req-8840fa279498",
+        "ts": "2026-10-25T10:38:07.479+00:00",
+        "ts_local": "2026-10-25T16:08:07+05:30",
+        "source": "week6-eval",
+        "kind": "ticket_reply",
+        "prompt_version": "ticket-v1.2",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "app_version": "76af145",
+        "ticket": {
+          "ticket_id": "CD-11901",
+          "tier": "Standard",
+          "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+          "charge_amount": 120.0,
+          "days_since_charge": 14,
+          "duplicate_charge": false,
+          "refund_requested": true
+        },
+        "input": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+        "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+        "policy_check": {
+          "verdict": "contradicts",
+          "expected": "eligible: full refund of the exact amount",
+          "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        },
+        "reference_policy": [
+          "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+          "A charge is refundable in full only when the refund is requested within 30 days of the charge date (HC-008, Refund Eligibility Window).",
+          "A charge older than 30 days is not eligible; agents must not promise or process a refund for it. The customer can turn off automatic renewal in Organization Settings > Billing.",
+          "Duplicate charges on the same invoice are refunded in full regardless of the 30-day window (HC-008, Duplicate Charges).",
+          "A refund is always for the exact amount charged and returns to the original payment method within 5 to 10 business days.",
+          "CloudDesk does not offer discounts, credits or partial refunds in place of a refund."
+        ],
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ],
+        "cost_usd": 0.0001872,
+        "latency_ms": 32037.09,
+        "fixture": null,
+        "has_request_id": true,
+        "has_spans": true,
+        "discovered_by": [
+          "ts",
+          "policy_verdict (indexed)",
+          "ticket.charge_amount",
+          "ticket.days_since_charge",
+          "outcome.answer"
+        ]
+      }
+    ],
+    "match_count": 16,
+    "fields_used": [
+      "ts (indexed)",
+      "policy_verdict (indexed)",
+      "ticket.charge_amount / days_since_charge / duplicate_charge",
+      "prompt_version",
+      "source"
+    ],
+    "missing_fields": [
+      "customer / user id: the log has no customer field, so the 'a customer said' slice cannot be used; only time, topic, ticket facts and prompt version were available",
+      "complaint timestamp: 'yesterday afternoon' is the complainant's recollection; the window is derived from as_of, not recorded",
+      "request_id and spans: absent on records written before Week 11 (shown as 'not recorded', never back-filled)"
+    ],
+    "limitations": [
+      "The classifier is the same code as the Week 6 assertion no_denial_inside_window / no_refund_outside_window: a wrong answer phrased in a way neither regex covers would be missed.",
+      "Only tickets with charge facts can be checked against the policy; a plain question about refunds has nothing to compare and is reported as unverifiable.",
+      "Log coverage: 364 requests from 2026-09-07T13:12:00.765+00:00 to 2026-10-25T11:04:47.687+00:00."
+    ],
+    "real_vs_fixture": {
+      "real": 14,
+      "fixture": 2
+    }
+  }
+}

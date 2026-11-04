@@ -1,0 +1,183 @@
+{
+ "label": "SIMULATED second-contact evaluation (not production reopen data)",
+ "ran_at": "2026-11-04T12:10:03Z",
+ "run": "week12/runs/v1.1_20261104-143011.json",
+ "seed": 20261104,
+ "n": 10,
+ "deflected_in_run": 31,
+ "n_cases_in_run": 40,
+ "deflection_rate_pct": 77.5,
+ "simulated_reopen_rate_pct": 80.0,
+ "reopened": 8,
+ "preventable": 2,
+ "preventable_rate_pct": 20.0,
+ "method": "the drafter model (Qwen2.5-1.5B) role-plays the customer and writes one follow-up to the first reply; code checks whether the concern it raises (timing, amount, next step, confirmation, payment method) was already covered by the first reply. Preventable = the follow-up asks for something the first reply could have included.",
+ "results": [
+  {
+   "id": "W6-R05",
+   "ticket_id": "CD-11901",
+   "trace_id": "c1642c7bd16f430d",
+   "decision": "refund_approved",
+   "first_reply": "CD-11901: Thank you for reaching out regarding your recent charges. We understand your situation and appreciate your prompt communication. Based on our verification, the charge for the CloudDesk Team plan was indeed made 14 days ago, which falls within the 30-day refund eligibility window for your account. Therefore, the charge is eligible for a full refund of $120.00. You have already requested this refund from Billing, and it should reach your original payment method within the expected timeframe. If there's anything else you need assistance with, please don't hesitate to ask.",
+   "simulated_follow_up": "Thank you for the quick response and confirming that my charge can be refunded. I will proceed with the refund now.",
+   "reopened": false,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 24,
+   "latency_ms": 49617.2
+  },
+  {
+   "id": "W6-T19",
+   "ticket_id": "CD-10419",
+   "trace_id": "3b724d9589c14b04",
+   "decision": "knowledge_answer",
+   "first_reply": "[ESCALATED-PRIORITY]\nCD-10419: Notifications stopped working for our whole team yesterday.\n\nDear Customer,\n\nThank you for reaching out regarding your notifications issue. We understand this has caused inconvenience.\n\nBased on the information provided, it seems like there might have been changes made to organization settings which could have affected all users. To resolve this, please contact the CloudDesk administrator immediately to discuss the situation and ensure everything is set back to normal.\n\nWe appreciate your patience while we work through this matter.\n\nBest regards,\nCloudDesk Support Team",
+   "simulated_follow_up": "Could you please provide more details on how to escalate this issue with the CloudDesk administrator?",
+   "reopened": true,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 19,
+   "latency_ms": 7975.7
+  },
+  {
+   "id": "W6-T06",
+   "ticket_id": "CD-10406",
+   "trace_id": "7941c177ebbb44bf",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-10406: Hi there,\n\nThank you for reaching out. The reason why you're unable to see the Upload File button might be due to your user role not having the necessary permissions. Please ensure that your role includes the ability to upload files.\n\nFor further assistance, feel free to contact our support team at [support-email]. We'll review your request and provide guidance accordingly.\n\nBest regards,\n[Your Name]\nCloudDesk Support Team",
+   "simulated_follow_up": "Hi [Support Rep],\n\nThanks for the quick response! Could you please confirm if there's any way to temporarily disable this feature until we resolve the issue with my colleague's role?\n\nBest regards,\n[Your Full Name]",
+   "reopened": true,
+   "concerns": [
+    {
+     "concern": "amount",
+     "covered_in_first_reply": false
+    },
+    {
+     "concern": "confirmation",
+     "covered_in_first_reply": false
+    }
+   ],
+   "missing_information": [
+    "amount",
+    "confirmation"
+   ],
+   "preventable": true,
+   "follow_up_tokens": 45,
+   "latency_ms": 111835.9
+  },
+  {
+   "id": "W6-T10",
+   "ticket_id": "CD-10410",
+   "trace_id": "13bd0514cefe4493",
+   "decision": "knowledge_answer",
+   "first_reply": "[ESCALATED-PRIORITY]\nCD-10",
+   "simulated_follow_up": "Could you please resend the reset link? I'm unable to access my account due to the expiration of the link and the payment issue is unresolved.",
+   "reopened": true,
+   "concerns": [
+    {
+     "concern": "method",
+     "covered_in_first_reply": false
+    }
+   ],
+   "missing_information": [
+    "method"
+   ],
+   "preventable": true,
+   "follow_up_tokens": 30,
+   "latency_ms": 245720.2
+  },
+  {
+   "id": "W6-R03",
+   "ticket_id": "CD-90003",
+   "trace_id": "3b3df55cb08041ad",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-90003: Customer inquiry regarding payment failure due to card expiration\n\nDear Customer,\n\nThank you for reaching out. We understand that your card has expired, which may have caused the payment to fail. To resolve this issue, we recommend following these steps:\n\n1. Contact your bank immediately to update your card details and ensure it's still active.\n2. Reset your password using the \"Forgot Password\" feature if you've forgotten it.\n3. If the account remains locked after attempting these actions, please contact our support team at [support-email].\n\nWe apologize for any inconvenience this may cause. Your account security is important to us, and we'll assist you promptly.\n\nBest regards,\n[Your Name]\nCloudDesk Support Team",
+   "simulated_follow_up": "Could you please provide me with the new card details so I can proceed?",
+   "reopened": true,
+   "concerns": [
+    {
+     "concern": "method",
+     "covered_in_first_reply": true
+    }
+   ],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 16,
+   "latency_ms": 2456.5
+  },
+  {
+   "id": "W6-T14",
+   "ticket_id": "CD-10414",
+   "trace_id": "d77fa23436ca414a",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-10414: Hi there! To",
+   "simulated_follow_up": "Thank you for your prompt response. Could you please provide me with more detailed steps on how to add a new payment method?",
+   "reopened": true,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 26,
+   "latency_ms": 2531.5
+  },
+  {
+   "id": "W6-T16",
+   "ticket_id": "CD-10416",
+   "trace_id": "3e87969dbaac4b0f",
+   "decision": "refund_denied",
+   "first_reply": "[ESCALATED-PRIORITY]\nCD-10416: Thank you for reaching out regarding your recent charge. After reviewing the details, we found that the charge of $75.00 on August 20th, 2026, is more than 30 days old and thus does not meet the eligibility criteria for a refund according to our current refund policy. We apologize for any inconvenience caused. Please note that we cannot process a partial refund or issue one at this time. For future reference, please ensure charges are made within the 30-day window to avoid such situations.",
+   "simulated_follow_up": "Thank you for clarifying the situation. I understand that the charge has already expired, but I am still interested in understanding if there's any possibility of getting a discount for the inconvenience caused by this error.",
+   "reopened": false,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 42,
+   "latency_ms": 4754.6
+  },
+  {
+   "id": "W6-T01",
+   "ticket_id": "CD-10401",
+   "trace_id": "2f396d0892194862",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-10401: Hello,\n\nThank you for reaching out regarding your issue with setting a new password on CloudDesk. Based on our verified facts, a new CloudDesk password should meet the following requirements:\n\n- Must contain at least 8 characters.\n- Should include at least one uppercase letter.\n- Should include at least one lowercase letter.\n- Should include at least one number.\n- Cannot be identical to the previous password.\n\nTo proceed, please ensure your password meets these criteria before attempting to set it again. If you continue to experience issues, we recommend resetting your password using the process outlined in our article titled \"Password Reset\" [1]. This should help resolve any problems you're encountering.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+   "simulated_follow_up": "Could you provide more details on how to reset my password if I'm unable to meet all the required criteria?",
+   "reopened": true,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 23,
+   "latency_ms": 3421.5
+  },
+  {
+   "id": "W6-R02",
+   "ticket_id": "CD-90002",
+   "trace_id": "5c64a0d6b3d84f84",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-90002: Hi there,\n\nThank you for reaching out. To assist you further, I need more details about your request regarding billing. Could you please provide me with your user name and password? Once I have this information, I'll guide you through viewing your billing information.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+   "simulated_follow_up": "Sure, could you please provide my user name and password so I can view my billing information?",
+   "reopened": true,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 20,
+   "latency_ms": 2139.3
+  },
+  {
+   "id": "W6-T11",
+   "ticket_id": "CD-10411",
+   "trace_id": "f9ce7a58ca2246aa",
+   "decision": "knowledge_answer",
+   "first_reply": "CD-10411: Hello,\n\nThank you for reaching out. To help you reset your password, please follow these steps:\n\n1. Go to the login page of your CloudDesk account.\n2. Click on the \"Forgot Password\" link.\n3. Enter your email address associated with your account.\n4. Follow the prompts to generate a new password.\n\nYour password reset link is valid for 30 minutes. Please ensure you complete this process within this time frame to avoid any issues.\n\nBest regards,\nCloudDesk Support Team",
+   "simulated_follow_up": "Could you provide more details on how to actually enter the generated password after clicking \"Generate New Password\"?",
+   "reopened": true,
+   "concerns": [],
+   "missing_information": [],
+   "preventable": false,
+   "follow_up_tokens": 21,
+   "latency_ms": 2402.3
+  }
+ ],
+ "reopen_rule": "reopened = the follow-up asks something (a question mark or a timing/amount/next-step/confirmation/payment-method concern); a thank-you or acknowledgement is not a second contact",
+ "rescored_at": "2026-11-04T12:10:40Z"
+}

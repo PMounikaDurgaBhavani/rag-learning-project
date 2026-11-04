@@ -14,3 +14,9 @@ export/
 # Commit the WEEK 5 ARTEFACTS (week5/*.md, week5/sample.json) instead —
 # those are the evidence; the log behind them is working data.
 traces/
+
+# Week 12 runtime state (the seed under data/capstone/seed/ IS committed)
+data/capstone/state/*
+!data/capstone/state/.gitkeep
+week12/logs/
+frontend/node_modules/

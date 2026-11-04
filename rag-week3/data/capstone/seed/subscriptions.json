@@ -1,0 +1,870 @@
+{
+  "_note": "Demo entitlement records: plan, refund policy version and shipping entitlement.",
+  "as_of": "2026-11-04",
+  "subscriptions": [
+    {
+      "customer_id": "CUS-10401",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10402",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10403",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10404",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10405",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-90001",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10406",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-90002",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10407",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10408",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10409",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10410",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-90003",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10411",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10412",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10413",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10414",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-90004",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10415",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10416",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10417",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10418",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10419",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10420",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-10421",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-11901",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-201",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-202",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-203",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-204",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-205",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-206",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-207",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-208",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-209",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-210",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-401",
+      "plan": "Partner (legacy terms)",
+      "tier": "Standard",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-01-03",
+      "refund_policy_version": "legacy-14-day",
+      "refund_window_days": 14,
+      "policy_article_id": "HC-009",
+      "policy_terms_effective": "2024-01-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "not_available",
+        "replacement": "per_partner_agreement"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-402",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-403",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": true
+    },
+    {
+      "customer_id": "CUS-404",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": true
+    },
+    {
+      "customer_id": "CUS-405",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-406",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-407",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-408",
+      "plan": "Partner (legacy terms)",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-01-03",
+      "refund_policy_version": "legacy-14-day",
+      "refund_window_days": 14,
+      "policy_article_id": "HC-009",
+      "policy_terms_effective": "2024-01-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "not_available",
+        "replacement": "per_partner_agreement"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-409",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": true
+    },
+    {
+      "customer_id": "CUS-410",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-411",
+      "plan": "Priority",
+      "tier": "Priority",
+      "status": "active",
+      "term": "annual",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "included",
+        "replacement": "included_expedited"
+      },
+      "hardware_included": false
+    },
+    {
+      "customer_id": "CUS-412",
+      "plan": "Standard",
+      "tier": "Standard",
+      "status": "active",
+      "term": "monthly",
+      "renewal_date": "2027-03-04",
+      "refund_policy_version": "current-30-day",
+      "refund_window_days": 30,
+      "policy_article_id": "HC-008",
+      "policy_terms_effective": "2026-09-15",
+      "shipping_entitlement": {
+        "standard": "included",
+        "expedited": "paid_upgrade",
+        "replacement": "included_for_dead_on_arrival"
+      },
+      "hardware_included": false
+    }
+  ]
+}

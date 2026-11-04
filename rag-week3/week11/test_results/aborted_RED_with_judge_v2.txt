@@ -1,0 +1,73 @@
+Week 6 eval · 26 cases · 5 regression · modes {'M1': 8, 'M2': 5, 'M3': 5, 'M4': 4, 'M5': 4}
+Replies: drafting fresh (Langfuse session week6-eval-20261025-145448)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7298.26it/s]
+Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]Loading weights: 100%|██████████| 105/105 [00:00<00:00, 6299.56it/s]
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:02<14:45,  2.63s/it]Loading weights:  51%|█████     | 171/338 [00:02<00:01, 86.29it/s]Loading weights:  72%|███████▏  | 243/338 [00:03<00:01, 74.08it/s]Loading weights:  84%|████████▍ | 285/338 [00:04<00:00, 78.69it/s]Loading weights:  93%|█████████▎| 315/338 [00:04<00:00, 75.51it/s]Loading weights: 100%|█████████▉| 337/338 [00:05<00:00, 76.83it/s]Loading weights: 100%|██████████| 338/338 [00:05<00:00, 66.00it/s]
+[transformers] Passing `generation_config` together with generation-related arguments=({'max_new_tokens', 'do_sample'}) is deprecated and will be removed in future versions. Please pass either a `generation_config` object OR all generation parameters explicitly, but not both.
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer Qwen2Tokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+   1/26 T01  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   2/26 T02  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   3/26 T03  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   4/26 T04  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   5/26 T05  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   6/26 R01  M1  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   7/26 T06  M1  drafted
+   8/26 R02  M2  refused:distance_gate
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   9/26 T07  M2  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  10/26 T08  M2  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  11/26 T09  M2  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  12/26 T10  M2  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  13/26 R03  M3  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  14/26 T11  M3  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  15/26 T12  M3  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  16/26 T13  M3  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  17/26 T14  M3  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  18/26 R04  M4  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  19/26 T15  M4  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  20/26 T16  M4  drafted
+  21/26 T17  M4  refused:distance_gate
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  22/26 T18  M5  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  23/26 T19  M5  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  24/26 T20  M5  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  25/26 T21  M5  drafted
+[transformers] Both `max_new_tokens` (=160) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+  26/26 R05  M1  drafted
+
+Judging with judge_v2.txt…
+Loading weights:   0%|          | 0/218 [00:00<?, ?it/s]Loading weights:   0%|          | 1/218 [00:00<03:05,  1.17it/s]Loading weights:  21%|██        | 45/218 [00:00<00:02, 63.76it/s]Loading weights:  33%|███▎      | 71/218 [00:01<00:02, 49.10it/s]Loading weights:  40%|███▉      | 87/218 [00:02<00:03, 39.87it/s]Loading weights:  45%|████▍     | 98/218 [00:02<00:03, 38.83it/s]Loading weights:  49%|████▉     | 107/218 [00:02<00:02, 37.26it/s]Loading weights:  52%|█████▏    | 114/218 [00:03<00:03, 33.37it/s]Loading weights:  55%|█████▌    | 120/218 [00:03<00:03, 32.13it/s]Loading weights:  59%|█████▉    | 129/218 [00:03<00:02, 35.40it/s]Loading weights:  63%|██████▎   | 138/218 [00:03<00:02, 33.58it/s]Loading weights:  67%|██████▋   | 147/218 [00:04<00:02, 31.78it/s]Loading weights:  72%|███████▏  | 156/218 [00:04<00:02, 30.04it/s]Loading weights:  76%|███████▌  | 165/218 [00:04<00:01, 28.65it/s]Loading weights:  80%|███████▉  | 174/218 [00:05<00:01, 27.06it/s]Loading weights:  84%|████████▍ | 183/218 [00:05<00:01, 27.16it/s]Loading weights:  88%|████████▊ | 192/218 [00:05<00:00, 27.83it/s]Loading weights:  91%|█████████▏| 199/218 [00:05<00:00, 31.04it/s]Loading weights:  93%|█████████▎| 203/218 [00:06<00:00, 30.30it/s]Loading weights:  96%|█████████▋| 210/218 [00:06<00:00, 28.29it/s]Loading weights: 100%|██████████| 218/218 [00:06<00:00, 33.57it/s]
+[transformers] Both `max_new_tokens` (=80) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer GPT2Tokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+   1/26 T01  judge PASS
+[transformers] Both `max_new_tokens` (=80) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+   2/26 T02  judge PASS
+[transformers] Both `max_new_tokens` (=80) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+
+[aborted by the operator after ~35 minutes: all 26 replies were drafted under ticket-v1.2, but judge v2 (SmolLM2-1.7B)
+ had scored 2 of 26 with 12 GB of swap in use on this 8 GB machine. No run file was written. The RED and GREEN
+ evidence was then produced with `--judge none` (the seven deterministic assertions), which is the layer the new
+ regression case R05 and the new assertion no_denial_inside_window exercise. The judge can be added with
+ `python main.py eval` on a machine with memory for both models.]

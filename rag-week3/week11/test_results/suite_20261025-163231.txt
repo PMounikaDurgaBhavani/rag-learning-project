@@ -1,0 +1,41 @@
+Week 6 eval · 26 cases · 5 regression · modes {'M1': 8, 'M2': 5, 'M3': 5, 'M4': 4, 'M5': 4}
+Replies: frozen week6/replies_25.json for 25 labelled cases; drafting ['R05'] live (regression cases added after the freeze)
+   1/1 R05  M1  drafted
+
+Judge: not run (labels not committed yet, or --judge none). Assertions only.
+
+============================================================================================
+PASS RATE BY MODE   case passes = every applicable assertion passes  (judge not run)
+============================================================================================
+mode  Week 5 failure mode                        n  assertions      judge    pass    rate
+--------------------------------------------------------------------------------------------
+M1    refuses a question the articles answer     8         5/8          -     5/8   62.5%
+M2    not one direct question -> refusal         5         3/5          -     3/5   60.0%
+M3    reply stops mid-sentence                   5         3/5          -     3/5   60.0%
+M4    non-answer text / invented steps           4         3/4          -     3/4   75.0%
+M5    'what should I do' without steps           4         1/4          -     1/4   25.0%
+--------------------------------------------------------------------------------------------
+ALL                                             26       15/26          -   15/26   57.7%
+
+ASSERTIONS (deterministic)          applies  pass  fail  failing cases
+  ticket_id_echoed                      26    26     0  -
+  refund_amount_numeric                  5     4     1  T13
+  escalation_tag_iff_priority           26    19     7  T02, T04, T07, T10, T12, T16, T19
+  no_refund_outside_window               3     3     0  -
+  not_cut_off                           24    16     8  T03, T07, T10, T12, T13, T16, T20, T21
+  no_prompt_scaffolding                 26    26     0  -
+  no_denial_inside_window                5     2     3  T03, T13, T21
+
+REGRESSION CASES (replayed verbatim from failed Week 5 traces)
+  R01 <- 5a50d54f665441d4  M1  was: refused: distance_gate (0.7659 > 0.75)     now: assertions PASS (resolution not judged)
+  R02 <- a7051c474be5456e  M2  was: refused: distance_gate (0.8849 > 0.75)     now: assertions PASS (resolution not judged)
+  R03 <- 59b27d3b9fdd4225  M3  was: refused: ungrounded_answer                 now: assertions PASS (resolution not judged)
+  R04 <- 7fe81eaa6cdf466a  M4  was: refused: ungrounded_answer                 now: assertions PASS (resolution not judged)
+  R05 <- 2fa07536c6a74c3a  M1  was: answered, but denied an eligible refund (policy_check: contradicts HC-008) now: assertions PASS (resolution not judged)
+
+CRITERIA SPLIT: 7 deterministic assertions · 1 judged criterion (resolution)
+  removed from the judge (judge_v0_presplit.txt -> judge_v1.txt): 1. Ticket ID, 2. Refund amount, 3. Escalation, 4. Refund window, 5. Complete, 6. Clean, 4. Refund window (eligible side)
+
+agreement_before (judge v1): 56.0%   agreement_after (judge v2): 76.0%
+
+Saved week6/runs/run_20261025-163231.json

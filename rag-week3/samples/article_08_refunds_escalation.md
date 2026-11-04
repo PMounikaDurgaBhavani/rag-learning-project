@@ -1,7 +1,13 @@
 ---
 article_id: HC-008
+slug: refund-returns-current-30-day
+title: Refunds, Support Tiers and Escalation
 product_area: Billing
 last_updated: 2026-09-15
+status: current
+policy_version: current-30-day
+effective_from: 2026-09-15
+supersedes: HC-009
 ---
 
 # Refunds, Support Tiers and Escalation

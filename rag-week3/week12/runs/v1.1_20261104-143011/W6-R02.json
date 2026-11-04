@@ -1,0 +1,790 @@
+{
+ "ticket_id": "CD-90002",
+ "customer_id": "CUS-90002",
+ "trace_id": "5c64a0d6b3d84f84",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "knowledge_answer",
+ "answer": "CD-90002: Hi there,\n\nThank you for reaching out. To assist you further, I need more details about your request regarding billing. Could you please provide me with your user name and password? Once I have this information, I'll guide you through viewing your billing information.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+ "intent": "billing_question",
+ "understanding": {
+  "intent": "billing_question",
+  "sensitive": false,
+  "needs_account_evidence": false,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [],
+   "days": []
+  },
+  "required_evidence": [
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": null,
+ "policy_label": null,
+ "verification": {
+  "entitlement_verified": false,
+  "policy_version": null,
+  "policy_label": null,
+  "tier": "Standard",
+  "plan": "Standard",
+  "refund_assessment": null,
+  "shipping_entitlement": null,
+  "order_found": false,
+  "order": null,
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 5
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "billing-and-payment-management",
+    "article_id": "HC-003",
+    "title": "Billing and Payment Management",
+    "section": "Viewing Billing Information",
+    "last_updated": "2026-08-03",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-003-markdown-3",
+    "url": "/app/help-centre/billing-and-payment-management"
+   },
+   {
+    "marker": 2,
+    "slug": "billing-and-payment-management",
+    "article_id": "HC-003",
+    "title": "Billing and Payment Management",
+    "section": "Overview",
+    "last_updated": "2026-08-03",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-003-markdown-1",
+    "url": "/app/help-centre/billing-and-payment-management"
+   },
+   {
+    "marker": 3,
+    "slug": "billing-and-payment-management",
+    "article_id": "HC-003",
+    "title": "Billing and Payment Management",
+    "section": "Viewing Billing Information",
+    "last_updated": "2026-08-03",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-003-markdown-2",
+    "url": "/app/help-centre/billing-and-payment-management"
+   },
+   {
+    "marker": 4,
+    "slug": "billing-and-payment-management",
+    "article_id": "HC-003",
+    "title": "Billing and Payment Management",
+    "section": "Updating a Payment Method",
+    "last_updated": "2026-08-03",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-003-markdown-9",
+    "url": "/app/help-centre/billing-and-payment-management"
+   },
+   {
+    "marker": 5,
+    "slug": "billing-and-payment-management",
+    "article_id": "HC-003",
+    "title": "Billing and Payment Management",
+    "section": "Updating a Payment Method",
+    "last_updated": "2026-08-03",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-003-markdown-8",
+    "url": "/app/help-centre/billing-and-payment-management"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 11.2,
+   "span_id": "c0532035d6",
+   "kind": "code",
+   "summary": "intent billing_question"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 269.1,
+   "span_id": "bab44e7c1e",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 9807.7,
+   "span_id": "33d688bb28",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "billing",
+    "top_k": 5
+   },
+   "corrections": [],
+   "summary": "5 passages"
+  },
+  {
+   "step": 4,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 9815.0,
+   "span_id": "5ecd1aa8a9",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 5,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 0.4,
+   "span_id": "3a69419f7e",
+   "kind": "code",
+   "summary": "answered: knowledge_answer"
+  },
+  {
+   "step": 6,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 31347.5,
+   "span_id": "5e5ffc2e02",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 679,
+   "output_tokens": 72,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00014505,
+   "summary": "CD-90002: Hi there,\n\nThank you for reaching out. To assist you further, I need more details about your request regarding"
+  },
+  {
+   "step": 7,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "5b6cc3aba7",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [],
+   "hard_failures": [],
+   "summary": "0 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "billing",
+    "top_k": 5
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "query": "billing",
+    "dropped": [],
+    "policy_version_filter": null,
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 9754.8,
+    "trace_id": "5c64a0d6b3d84f84",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "knowledge_answer",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 679,
+  "output_tokens": 72,
+  "model_calls": 1,
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 1,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "search_help_centre": 1
+  },
+  "tokens": 751,
+  "cost_usd": 0.00014505
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "5c64a0d6b3d84f84",
+  "calls": 1,
+  "latency_ms": 9807.7,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 41902.9,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-90002 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "72 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": [],
+  "measured_on": "the raw draft, before any post-processing"
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 8,
+  "passed": 8,
+  "failed": 0,
+  "failed_names": [],
+  "hard_failures": [],
+  "verdict": "pass",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-90002 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "72 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "post_processing": [],
+ "log": [
+  "[agent]   FORCED tool search_help_centre({\"query\": \"billing\", \"top_k\": 5}) -> {\"query\": \"billing\", \"results\": [{\"article_id\": \"HC-003\", \"slug\": \"billing-and-payment-management\", \"title\": \"Billing and Payment Management\", \"section\": \"Viewi"
+ ],
+ "generation": {
+  "raw": "CD-90002: Hi there,\n\nThank you for reaching out. To assist you further, I need more details about your request regarding billing. Could you please provide me with your user name and password? Once I have this information, I'll guide you through viewing your billing information.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+  "input_tokens": 679,
+  "output_tokens": 72,
+  "latency_ms": 31347.5,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": false
+ },
+ "request_id": "req-949dd6f3698d",
+ "observability": {
+  "request_id": "req-949dd6f3698d",
+  "spans": [
+   {
+    "span_id": "c0532035d6",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T09:10:18.032+00:00",
+    "end": "2026-11-04T09:10:18.043+00:00",
+    "duration_ms": 11.2,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "billing_question",
+     "injection": false,
+     "required": [
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "bab44e7c1e",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T09:10:18.043+00:00",
+    "end": "2026-11-04T09:10:18.312+00:00",
+    "duration_ms": 269.04,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "33d688bb28",
+    "parent_id": "5ecd1aa8a9",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T09:10:18.313+00:00",
+    "end": "2026-11-04T09:10:28.122+00:00",
+    "duration_ms": 9811.3,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "billing",
+      "top_k": 5
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "5c64a0d6b3d84f84",
+     "trace_id_echoed": "5c64a0d6b3d84f84",
+     "results": 5,
+     "server_latency_ms": 9754.8,
+     "outcome": "ok",
+     "latency_ms": 9807.7
+    }
+   },
+   {
+    "span_id": "5ecd1aa8a9",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T09:10:18.313+00:00",
+    "end": "2026-11-04T09:10:28.127+00:00",
+    "duration_ms": 9814.94,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 1,
+     "forced": 1,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "3a69419f7e",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T09:10:28.128+00:00",
+    "end": "2026-11-04T09:10:28.128+00:00",
+    "duration_ms": 0.37,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "knowledge_answer",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "5e5ffc2e02",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T09:10:28.132+00:00",
+    "end": "2026-11-04T09:10:59.871+00:00",
+    "duration_ms": 31741.62,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 679,
+     "output_tokens": 72,
+     "model_latency_ms": 31347.5,
+     "cost_usd": 0.00014505
+    }
+   },
+   {
+    "span_id": "5b6cc3aba7",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T09:10:59.914+00:00",
+    "end": "2026-11-04T09:10:59.930+00:00",
+    "duration_ms": 16.04,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 679,
+   "output_tokens": 72,
+   "model_calls": 1,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00014505,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00014505,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "unverifiable",
+   "reason": "no charge facts on the request",
+   "expected": null
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 8,
+   "passed": 8,
+   "failed": 0,
+   "failed_names": [],
+   "hard_failures": [],
+   "verdict": "pass",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-90002 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": true,
+     "detail": "tier=Standard, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "72 tokens of 160"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

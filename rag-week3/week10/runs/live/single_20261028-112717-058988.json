@@ -1,0 +1,344 @@
+{
+  "mode": "single",
+  "ticket": {
+    "ticket_id": "CD-UI-96DE6B",
+    "tier": "Standard",
+    "message": "How long is a CloudDesk password reset link valid?",
+    "charge_amount": null,
+    "days_since_charge": null,
+    "duplicate_charge": false,
+    "refund_requested": false
+  },
+  "answer": "CD-UI-96DE6B\n\nHello,\n\nThank you for reaching out. According to our documentation, a password reset link is valid for 30 minutes. This means you should use the link within 30 minutes of receiving it to ensure it remains active.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-001-markdown-15",
+      "article_id": "HC-001",
+      "section": "Frequently Asked Questions",
+      "distance": 0.375,
+      "bm25_score": null,
+      "rrf_score": 0.032787,
+      "rerank_score": 9.278919219970703,
+      "dense_rank": 1,
+      "bm25_rank": 1
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-001-markdown-5",
+      "article_id": "HC-001",
+      "section": "How to Reset Your Password",
+      "distance": 0.7066,
+      "bm25_score": null,
+      "rrf_score": 0.030835,
+      "rerank_score": 6.0807647705078125,
+      "dense_rank": 8,
+      "bm25_rank": 2
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-001-markdown-11",
+      "article_id": "HC-001",
+      "section": "Troubleshooting",
+      "distance": null,
+      "bm25_score": 12.699980352445474,
+      "rrf_score": 0.015873,
+      "rerank_score": 3.21640944480896,
+      "dense_rank": null,
+      "bm25_rank": 3
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-001-markdown-4",
+      "article_id": "HC-001",
+      "section": "How to Reset Your Password",
+      "distance": 0.7541,
+      "bm25_score": null,
+      "rrf_score": 0.029199,
+      "rerank_score": 2.3517303466796875,
+      "dense_rank": 9,
+      "bm25_rank": 8
+    },
+    {
+      "rank": 5,
+      "chunk_id": "HC-001-markdown-3",
+      "article_id": "HC-001",
+      "section": "How to Reset Your Password",
+      "distance": 0.6982,
+      "bm25_score": null,
+      "rrf_score": 0.03031,
+      "rerank_score": 2.069159746170044,
+      "dense_rank": 7,
+      "bm25_rank": 5
+    }
+  ],
+  "best_distance": 0.375,
+  "lexical_anchors": [
+    "link",
+    "long",
+    "valid"
+  ],
+  "gate_bypass": null,
+  "tasks": [],
+  "handoffs": [],
+  "routing": null,
+  "specialists": {},
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 1,
+    "input_tokens": 743,
+    "output_tokens": 67,
+    "tokens": 810,
+    "cost_usd": 0.000152,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 0,
+    "specialist_calls": 0,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 32,
+    "context_resend_multiplier": null,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 73431.8,
+  "trace_id": "b145e5fe4a3b4ab7",
+  "langfuse_trace_id": "4516468cb8eecc35a7255c9d1f3cb6d8",
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "ticket-v1.3",
+  "observability": {
+    "request_id": "req-53438221a1e7",
+    "spans": [
+      {
+        "span_id": "bce1f6d74d",
+        "parent_id": null,
+        "name": "retrieval",
+        "start": "2026-10-28T05:56:03.627+00:00",
+        "end": "2026-10-28T05:56:12.660+00:00",
+        "duration_ms": 9033.33,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "mode": "hybrid_rerank",
+          "strategy": "markdown",
+          "top_k": 5,
+          "n_chunks": 5,
+          "context_ids": [
+            "HC-001-markdown-15",
+            "HC-001-markdown-5",
+            "HC-001-markdown-11",
+            "HC-001-markdown-4",
+            "HC-001-markdown-3"
+          ]
+        }
+      },
+      {
+        "span_id": "a4757931e0",
+        "parent_id": null,
+        "name": "validation.distance_gate",
+        "start": "2026-10-28T05:56:12.668+00:00",
+        "end": "2026-10-28T05:56:12.671+00:00",
+        "duration_ms": 2.88,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "threshold": 0.75,
+          "mode": "hybrid_rerank",
+          "best_distance": 0.375,
+          "outcome": "passed",
+          "lexical_anchors": [
+            "link",
+            "long",
+            "valid"
+          ]
+        }
+      },
+      {
+        "span_id": "9d6f37410b",
+        "parent_id": null,
+        "name": "generation",
+        "start": "2026-10-28T05:56:12.671+00:00",
+        "end": "2026-10-28T05:57:16.510+00:00",
+        "duration_ms": 63845.55,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "provider": "local (transformers, in-process)",
+          "prompt_version": "ticket-v1.3",
+          "prompt_sha": "ad02129f8ca417fc",
+          "model_loaded_during_span": false,
+          "max_new_tokens": 160,
+          "input_tokens": 743,
+          "output_tokens": 67,
+          "model_latency_ms": 63157.6
+        }
+      },
+      {
+        "span_id": "3eff26c91c",
+        "parent_id": null,
+        "name": "validation.assertions",
+        "start": "2026-10-28T05:57:16.553+00:00",
+        "end": "2026-10-28T05:57:16.568+00:00",
+        "duration_ms": 15.36,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "suite": "week6 assertions",
+          "verdict": "pass",
+          "applicable": 4
+        }
+      }
+    ],
+    "usage": {
+      "input_tokens": 743,
+      "output_tokens": 67,
+      "model_calls": 1,
+      "basis": "application-counted with the model's own tokenizer; no provider usage field exists for a local model"
+    },
+    "cost": {
+      "currency": "USD",
+      "generation_usd": 0.00015165,
+      "retrieval_usd": null,
+      "tools_usd": null,
+      "total_usd": 0.00015165,
+      "complete": true,
+      "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+      "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+      "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+    },
+    "status": "ok",
+    "provider": "local (transformers, in-process)",
+    "policy_check": {
+      "verdict": "unverifiable",
+      "reason": "no charge facts on the request",
+      "expected": null
+    },
+    "evaluation": {
+      "suite": "week6 assertions (src/ticket_assertions.py)",
+      "n_assertions": 7,
+      "applicable": 4,
+      "passed": 4,
+      "failed": 0,
+      "failed_names": [],
+      "verdict": "pass",
+      "results": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-UI-96DE6B found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "67 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+    }
+  },
+  "evaluation": {
+    "suite": "week6 assertions (src/ticket_assertions.py)",
+    "n_assertions": 7,
+    "applicable": 4,
+    "passed": 4,
+    "failed": 0,
+    "failed_names": [],
+    "verdict": "pass",
+    "results": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-UI-96DE6B found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Standard, tag absent"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": true,
+        "passed": true,
+        "detail": "67 tokens of 160"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      },
+      {
+        "name": "no_denial_inside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      }
+    ],
+    "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+  },
+  "ran_at": "2026-10-28T05:57:17+00:00",
+  "cold_start": false
+}

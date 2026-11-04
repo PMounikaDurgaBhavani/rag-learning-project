@@ -1,6 +1,6 @@
 # Week 6 — protocol evidence
 
-Generated 2026-10-20T18:08:20+00:00 by `python experiments/week6_eval.py status`.
+Generated 2026-10-20T18:10:51+00:00 by `python experiments/week6_eval.py status`.
 
 | file | what | first commit | committed at | commits | on disk matches HEAD |
 |---|---|---|---|---|---|

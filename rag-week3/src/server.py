@@ -22,6 +22,18 @@ Serves the single-page UI from ``src/static/index.html`` and a small JSON API:
   POST /api/week9/discover    live initialize + tools/list (no model) for one config
   POST /api/week9/wire        live initialize -> tools/list -> tools/call against server two (no model)
   POST /api/week9/chat        customer chat query via MCP servers with server attribution
+  GET  /api/week11            observability view: index stats, prompt versions, fixtures, saved evidence, docs
+  GET  /api/week11/requests   search recorded requests (q over input AND output, time, prompt, status, cost outliers; paginated)
+  GET  /api/week11/trace      one request: the record, its spans, usage, cost, what it never recorded
+  GET  /api/week11/cost       cost & usage by stage / model / prompt version over a window
+  GET  /api/week11/tenx       the tenfold capacity assessment from recorded volume and latency
+  GET  /api/week11/evidence   RED-before / GREEN-after suite runs, the new case, prompt versions
+  POST /api/week11/drill      find the incident behind a vague complaint; measured time-to-find and slices
+  POST /api/week11/eval/run   the fixed Week 6 command (judge none|auto), output saved under week11/test_results/
+  POST /api/week11/incident/plant   one of the two controlled incidents through the real drafter
+  GET  /app/...               Week 12 React dashboard (frontend/dist), SPA fallback
+  *    /api/capstone/...       Week 12 routes: health, dashboard, tickets (+analyse, action), chat,
+                              conversations, traces, trace, articles, escalations, mcp, evaluation (src/capstone/api.py)
   GET  /api/reports           the markdown deliverables (DEMO_GUIDE, READMEs, results) for the UI
   GET  /api/health            store reachable, index counts, build, what is running
   GET  /api/runs              which long-running action holds the model lock right now
@@ -294,6 +306,84 @@ def week10_module():
     return week10_ui
 
 
+def week11_module():
+    """experiments/week11_ui.py: the drill, cost, 10x and evidence over the Week 11 index."""
+    experiments = str(Path(SRC_DIR).parent / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    import week11_ui
+    return week11_ui
+
+
+def capstone_module():
+    """src/capstone/api.py: the Week 12 routes (dashboard, inbox, chat, traces, evaluation)."""
+    import capstone.api as capstone_api
+    return capstone_api
+
+
+CAPSTONE_DIST = Path(SRC_DIR).parent / "frontend" / "dist"
+CAPSTONE_TYPES = {".js": "application/javascript", ".css": "text/css", ".svg": "image/svg+xml",
+                  ".png": "image/png", ".ico": "image/x-icon", ".json": "application/json",
+                  ".woff2": "font/woff2", ".woff": "font/woff", ".map": "application/json", ".txt": "text/plain"}
+
+
+def week11_requests(query):
+    """GET /api/week11/requests: validated, bounded search parameters."""
+    import observability
+
+    def one(name, default=None):
+        values = query.get(name)
+        return values[0].strip() if values and values[0].strip() != "" else default
+
+    def flag(name):
+        return one(name, "0") in ("1", "true", "yes")
+
+    try:
+        limit = int(one("limit", 50))
+        offset = int(one("offset", 0))
+    except ValueError:
+        raise ValueError("limit and offset must be integers")
+    min_cost = one("min_cost")
+    if min_cost is not None:
+        try:
+            min_cost = float(min_cost)
+        except ValueError:
+            raise ValueError("min_cost must be a number")
+    q_field = one("field", "both")
+    if q_field not in ("both", "input", "output"):
+        raise ValueError("field must be both, input or output")
+    for name in ("from", "to"):
+        value = one(name)
+        if value is not None:
+            try:
+                datetime.fromisoformat(value.replace("Z", "+00:00"))
+            except ValueError:
+                raise ValueError(f"{name} must be an ISO-8601 timestamp")
+    return observability.search(
+        q=one("q"), q_mode="or" if one("mode") == "or" else "and", q_field=q_field,
+        trace_id=one("trace_id"), request_id=one("request_id"),
+        ts_from=one("from"), ts_to=one("to"), prompt_version=one("prompt_version"),
+        kind=one("kind"), source=one("source"), status=one("status"),
+        policy_verdict_filter=one("policy_verdict"), ticket_id=one("ticket_id"),
+        min_cost=min_cost, outliers=flag("outliers"),
+        include_fixtures=not flag("no_fixtures"), fixtures_only=flag("fixtures_only"),
+        limit=limit, offset=offset, order="asc" if one("order") == "asc" else "desc",
+    )
+
+
+def week11_window_days(query):
+    value = (query.get("days") or [None])[0]
+    if value in (None, "", "all"):
+        return None
+    try:
+        days = float(value)
+    except ValueError:
+        raise ValueError("days must be a number or 'all'")
+    if not 0 < days <= 3650:
+        raise ValueError("days must be between 0 and 3650")
+    return days
+
+
 ROOT_DIR = Path(SRC_DIR).parent
 
 # The markdown deliverables the Reports view renders. Paths are relative to
@@ -315,6 +405,10 @@ REPORT_FILES = [
     ("week9_demo", "Week 9 demo notes", "week9/DEMO.md"),
     ("week10", "Week 10 README", "week10/README.md"),
     ("week10_report", "Week 10 report", "week10/REPORT.md"),
+    ("week11", "Week 11 README (observability)", "week11/README.md"),
+    ("week11_drill", "Week 11 support drill", "week11/drill.md"),
+    ("week11_cost", "Week 11 cost by stage", "week11/cost_by_stage.md"),
+    ("week11_tenx", "Week 11 10x capacity", "week11/tenx.md"),
     ("database", "Database notes", "DATABASE.md"),
     ("setup_db", "Postgres setup", "SETUP_DB.md"),
 ]
@@ -495,6 +589,39 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_capstone_app(self, path):
+        """GET /app/... : the Week 12 dashboard (frontend/dist). Unknown paths fall back to index.html."""
+        rel = path[len("/app"):].lstrip("/")
+        candidate = (CAPSTONE_DIST / rel) if rel else CAPSTONE_DIST / "index.html"
+        try:
+            candidate = candidate.resolve()
+            inside = str(candidate).startswith(str(CAPSTONE_DIST.resolve()))
+        except Exception:
+            inside = False
+        if not (CAPSTONE_DIST / "index.html").exists():
+            body = ("<!doctype html><html lang='en'><meta charset='utf-8'><title>Deflection Assistant</title>"
+                    "<body style='font-family:system-ui;max-width:640px;margin:4rem auto;line-height:1.5'>"
+                    "<h1>Dashboard not built yet</h1><p>The Week 12 React dashboard is served from "
+                    "<code>frontend/dist</code>. Build it once:</p><pre>cd frontend && npm install && npm run build</pre>"
+                    "<p>or run <code>python main.py capstone up</code>, which builds it when missing. "
+                    "The legacy studio UI is at <a href='/'>/</a>.</p></body></html>").encode("utf-8")
+            self.send_response(503)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        if not inside or not candidate.is_file():
+            candidate = CAPSTONE_DIST / "index.html"
+        body = candidate.read_bytes()
+        content_type = CAPSTONE_TYPES.get(candidate.suffix.lower(), "text/html; charset=utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store" if candidate.name == "index.html" else "public, max-age=31536000, immutable")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -509,6 +636,11 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         try:
             if parsed.path in ("/", "/index.html"):
                 self._send_html(INDEX_HTML)
+            elif parsed.path == "/app" or parsed.path.startswith("/app/"):
+                self._send_capstone_app(parsed.path)
+            elif parsed.path.startswith("/api/capstone/"):
+                if not capstone_module().handle(self, "GET", parsed, {}, exclusive, Busy):
+                    self.send_error(404, "Unknown capstone route")
             elif parsed.path == "/api/documents":
                 self._send_json(document_list())
             elif parsed.path == "/api/status":
@@ -527,6 +659,33 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 self._send_json(week10_module().ui_artefacts())
             elif parsed.path == "/api/week10/status":
                 self._send_json({**week10_module().status(), **runs_status()})
+            elif parsed.path == "/api/week11":
+                self._send_json(week11_module().ui_artefacts())
+            elif parsed.path == "/api/week11/requests":
+                self._send_json({"status": "ok", **week11_requests(urllib.parse.parse_qs(parsed.query))})
+            elif parsed.path == "/api/week11/trace":
+                import observability
+                trace_id = (urllib.parse.parse_qs(parsed.query).get("trace_id") or [""])[0].strip()
+                if not trace_id:
+                    raise ValueError("Missing trace_id")
+                found = observability.get(trace_id)
+                if found is None:
+                    self._send_json({"status": "error", "error": f"No trace {trace_id}"}, status=404)
+                else:
+                    self._send_json({"status": "ok", **found})
+            elif parsed.path == "/api/week11/cost":
+                query = urllib.parse.parse_qs(parsed.query)
+                self._send_json({"status": "ok", **week11_module().cost_summary(
+                    days=week11_window_days(query), kind=(query.get("kind") or [None])[0] or None,
+                    include_fixtures=(query.get("no_fixtures") or ["0"])[0] not in ("1", "true"))})
+            elif parsed.path == "/api/week11/tenx":
+                query = urllib.parse.parse_qs(parsed.query)
+                days = week11_window_days(query)
+                self._send_json({"status": "ok", **week11_module().tenx(
+                    days=days if days is not None else 30,
+                    include_fixtures=(query.get("fixtures") or ["0"])[0] in ("1", "true"))})
+            elif parsed.path == "/api/week11/evidence":
+                self._send_json({"status": "ok", **week11_module().evidence()})
             elif parsed.path == "/api/reports":
                 self._send_json(reports())
             elif parsed.path == "/api/health":
@@ -543,6 +702,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 })
             else:
                 self.send_error(404, "Not Found")
+        except ValueError as e:
+            self._send_json({"status": "error", "error": str(e)}, status=400)
         except Exception as e:
             traceback.print_exc()
             self._send_json({"status": "error", "error": str(e)}, status=500)
@@ -558,9 +719,43 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
         except json.JSONDecodeError:
             self._send_json({"status": "error", "error": "Body must be JSON"}, status=400)
             return
+        if not isinstance(payload, dict):
+            self._send_json({"status": "error", "error": "Body must be a JSON object"}, status=400)
+            return
 
+        import observability as obs
         try:
-            if parsed.path == "/api/upload":
+            if parsed.path.startswith("/api/capstone/"):
+                if not capstone_module().handle(self, "POST", parsed, payload, exclusive, Busy):
+                    self.send_error(404, "Unknown capstone route")
+            elif parsed.path == "/api/week11/drill":
+                complaint = (payload.get("complaint") or "").strip()
+                if not complaint or len(complaint) > 500:
+                    raise ValueError("complaint must be 1-500 characters")
+                procedure = payload.get("procedure") or "slices"
+                if procedure not in ("slices", "indexed"):
+                    raise ValueError("procedure must be slices or indexed")
+                as_of = (payload.get("as_of") or "").strip() or None
+                if as_of:
+                    try:
+                        datetime.fromisoformat(as_of)
+                    except ValueError:
+                        raise ValueError("as_of must be an ISO date (YYYY-MM-DD)")
+                self._send_json({"status": "ok", **week11_module().drill(complaint, as_of=as_of, procedure=procedure)})
+            elif parsed.path == "/api/week11/eval/run":
+                judge = payload.get("judge") or "none"
+                if judge not in ("none", "auto"):
+                    raise ValueError("judge must be none or auto")
+                with exclusive("week 11 evaluation suite" + (" + judge" if judge == "auto" else " (assertions)")):
+                    self._send_json({"status": "ok", **week11_module().run_suite(judge=judge)})
+            elif parsed.path == "/api/week11/incident/plant":
+                fixture_id = payload.get("fixture_id") or ""
+                if fixture_id not in week11_module().FIXTURES:
+                    raise ValueError(f"fixture_id must be one of {sorted(week11_module().FIXTURES)}")
+                with exclusive(f"week 11 controlled incident ({fixture_id})"):
+                    self._send_json({"status": "ok", **week11_module().plant_incident(
+                        fixture_id, force=bool(payload.get("force")))})
+            elif parsed.path == "/api/upload":
                 with exclusive("upload + re-index"):
                     self._handle_upload(payload)
             elif parsed.path == "/api/trace":
@@ -597,12 +792,17 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 which = payload.get("which", "server_two")
                 query = payload.get("query", "")
                 top_k = payload.get("top_k", 3)
-                with exclusive("week 9 mcp customer chat"):
+                # Week 11: every chat route opens a request context so the
+                # stages inside report their spans to one request id.
+                with exclusive("week 9 mcp customer chat"), obs.request(
+                        "mcp_chat", source="ui", input_text=query, route="/api/week9/chat"):
                     self._send_json(handle_mcp_chat(query=query, which_config=which, top_k=top_k))
             elif parsed.path == "/api/week10/chat":
                 mode = payload.get("mode") or "single"
                 fault = payload.get("inject_fault") or None
-                with exclusive(f"week 10 {mode}-agent chat" + (f" (fault: {fault})" if fault else "")):
+                with exclusive(f"week 10 {mode}-agent chat" + (f" (fault: {fault})" if fault else "")), \
+                        obs.request(f"week10_{mode}", source="ui", input_text=payload.get("message"),
+                                    route="/api/week10/chat"):
                     result = week10_module().run_chat(mode, payload.get("message"),
                                                       payload.get("ticket"), inject_fault=fault)
                 # A reply written after a specialist failed is still safe (a
@@ -631,7 +831,8 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
                 with exclusive("delete + re-index"):
                     self._handle_delete(payload)
             elif parsed.path in ("/api/ask", "/api/inspect"):
-                with exclusive("chat question"):
+                with exclusive("chat question"), obs.request(
+                        "answer", source="ui", input_text=payload.get("query"), route=parsed.path):
                     self._handle_query(parsed.path, payload)
             else:
                 self.send_error(404, "Unknown API route")
@@ -740,7 +941,10 @@ class RAGRequestHandler(http.server.BaseHTTPRequestHandler):
             hyde_doc = generate_hypothetical_document(query)
             active_query = hyde_doc
 
-        stages = run_retrieval(query, active_query, top_k, strategy, where)
+        import observability as obs
+        with obs.span("ui.inspect_retrieval",
+                      note="the inspector's four-stage view; the answer path retrieves again inside generate_answer"):
+            stages = run_retrieval(query, active_query, top_k, strategy, where)
         generation = generate_answer(
             query=query,
             top_k=top_k,
@@ -776,13 +980,23 @@ class StudioServer(http.server.ThreadingHTTPServer):
     daemon_threads = True
 
 
-def run_server(port: int = 8000, open_browser: bool = True, warm: bool = False):
+def run_server(port: int = 8000, open_browser: bool = True, warm: bool = False, open_path: str = "/",
+               banner: str = "CLOUDDESK KNOWLEDGE STUDIO — WEB UI"):
     httpd = StudioServer(("", port), RAGRequestHandler)
     url = f"http://localhost:{port}"
 
     print("=" * 72)
-    print("      CLOUDDESK KNOWLEDGE STUDIO — WEB UI")
+    print(f"      {banner}")
     print("=" * 72)
+    try:
+        # Week 11: the request index mirrors traces/traces.jsonl; bring it up
+        # to date once so the first dashboard call does not pay for it.
+        import observability
+        filled = observability.ensure_index()
+        print(f"  Observability index: {observability.OBS_DB} "
+              f"({filled.get('indexed', 0)} records added, {filled.get('skipped', 0)} already indexed)")
+    except Exception as error:
+        print(f"  Observability index unavailable: {error}")
     if warm:
         # Opt-in: load the ticket drafter and the retrievers now, through the
         # same caches every request uses, so the first browser question does
@@ -790,14 +1004,15 @@ def run_server(port: int = 8000, open_browser: bool = True, warm: bool = False):
         print("  Warming the local models (ticket drafter, embedder, reranker)…")
         seconds = week10_module().warm_models()
         print(f"  Models loaded in {seconds:.0f} s.")
-    print(f"  Server running locally at: {url}")
+    print(f"  Server running locally at: {url}{open_path if open_path != '/' else ''}")
+    print(f"  Week 12 dashboard: {url}/app/   (legacy studio: {url}/)")
     print(f"  Store: {db.DATABASE_URL}")
     print("  Press Ctrl+C to stop the server.")
     print("=" * 72 + "\n")
 
     if open_browser:
         try:
-            webbrowser.open(url)
+            webbrowser.open(url + (open_path if open_path != "/" else ""))
         except Exception:
             pass
 

@@ -12,6 +12,7 @@ Usage
     python main.py evaluate-hybrid
     python main.py eval                 # Week 6: pass rate by mode
     python main.py race                 # Week 7: agent vs fixed workflow
+    python main.py week11 drill         # Week 11: find the incident behind a vague complaint, timed
 """
 
 import argparse
@@ -314,6 +315,176 @@ def command_week10(args):
     return week10_benchmark.main(args.rest)
 
 
+def command_week11(args):
+    """Week 11 from the terminal: the drill, the artefacts, a controlled incident."""
+    import json
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "experiments"))
+    import week11_ui
+
+    if args.week11_action == "drill":
+        result = week11_ui.drill(args.complaint, as_of=args.as_of, procedure=args.procedure)
+        print(f"Complaint : {result['complaint']}")
+        print(f"Window    : {result['window']['local_start']} -> {result['window']['local_end']} "
+              f"({result['window']['tz']}); used: {result['window_used']}"
+              + (f"; widened: {result['widened_to']}" if result["widened_to"] else ""))
+        print(f"Time to find: {result['time_to_find']} ({result['time_to_find_ms']} ms, measured, "
+              f"procedure {result['procedure']})")
+        for i, s in enumerate(result["slices"], 1):
+            print(f"  {i}. {s['slice']:<58} hits {s['count']:>4}  {s['ms']:>8} ms  {s.get('note') or ''}")
+        print(f"Matches: {result['match_count']}")
+        for m in result["matches"]:
+            tag = "FIXTURE" if m["fixture"] else "REAL"
+            print(f"  [{tag}] {m['trace_id']}  {m['ts_local']}  {m['source']}  {m['prompt_version']}  "
+                  f"{(m['ticket'] or {}).get('ticket_id')}  -> {m['policy_check']['verdict']}")
+        print("Missing fields:")
+        for line in result["missing_fields"]:
+            print(f"  - {line}")
+        return 0
+    if args.week11_action == "report":
+        import week11_report
+        week11_report.main()
+        return 0
+    if args.week11_action == "plant":
+        saved = week11_ui.plant_incident(args.fixture, force=args.force)
+        print(json.dumps({k: saved[k] for k in ("fixture_id", "trace_id", "request_id", "planted_at",
+                                                 "prompt_version_at_planting", "wrong_as_expected",
+                                                 "policy_check", "already_planted") if k in saved},
+                         indent=2, default=str))
+        print("\nAnswer:\n" + (saved.get("answer") or ""))
+        return 0
+    if args.week11_action == "eval":
+        record = week11_ui.run_suite(judge=args.judge, label=args.label, frozen=not args.fresh)
+        if not args.fresh:
+            print(record["stdout"])
+        print(f"saved: {record['stdout_file']}  exit {record['exit_code']}")
+        return record["exit_code"]
+    return 1
+
+
+def command_capstone(args):
+    """Week 12: the Tier-1 deflection assistant as one application.
+
+        python main.py capstone up        seed data, start the MCP server (HTTP), build the dashboard
+                                          if missing, serve everything at http://localhost:8000/app/
+        python main.py capstone seed      (re)build data/capstone/seed/*.json from the Week 6/7 artefacts
+        python main.py capstone mcp       run the help-centre MCP server alone (HTTP, for other squads)
+        python main.py capstone build-ui  build frontend/dist (needs node + npm)
+        python main.py capstone eval ...  the integrated evaluation (experiments/week12_eval.py)
+    """
+    import json
+    import shutil
+    import signal
+    import subprocess
+    import time
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent
+    experiments = str(root / "experiments")
+    if experiments not in sys.path:
+        sys.path.insert(0, experiments)
+    from capstone import config as cfg
+    from capstone import seed as seed_module
+
+    action = args.capstone_action
+
+    def ensure_seed():
+        if not (cfg.SEED_DIR / "tickets.json").exists() or args.reseed:
+            counts = seed_module.write()
+            print(f"  demo data: {counts} -> {cfg.SEED_DIR.relative_to(root)}/")
+        else:
+            print(f"  demo data: present in {cfg.SEED_DIR.relative_to(root)}/ (use --reseed to rebuild)")
+
+    def build_ui(force=False):
+        dist = cfg.FRONTEND_DIST / "index.html"
+        if dist.exists() and not force:
+            print(f"  dashboard: built ({dist.relative_to(root)})")
+            return True
+        npm = shutil.which("npm")
+        if not npm:
+            print("  dashboard: npm not found; the API still runs, /app/ will explain how to build the UI")
+            return False
+        frontend = root / "frontend"
+        if not (frontend / "node_modules").exists():
+            print("  dashboard: npm install (first time, ~1 min)…")
+            subprocess.run([npm, "install", "--no-audit", "--no-fund"], cwd=frontend, check=False)
+        print("  dashboard: npm run build…")
+        result = subprocess.run([npm, "run", "build"], cwd=frontend, check=False)
+        print(f"  dashboard: {'built' if result.returncode == 0 else 'BUILD FAILED (exit %d)' % result.returncode}")
+        return result.returncode == 0
+
+    def start_mcp():
+        from capstone import mcp_session
+        if mcp_session.http_server_up():
+            print(f"  MCP server: already answering at {cfg.MCP_HTTP_URL}")
+            return None
+        log = cfg.WEEK12_DIR / "logs" / "mcp_helpcentre_server.log"
+        log.parent.mkdir(parents=True, exist_ok=True)
+        handle = open(log, "a", encoding="utf-8")
+        proc = subprocess.Popen([sys.executable, str(root / "mcp_servers" / "helpcentre_server.py"),
+                                 "--http", str(cfg.MCP_HTTP_PORT)], cwd=root, stdout=handle, stderr=handle)
+        for _ in range(60):
+            if mcp_session.http_server_up():
+                break
+            if proc.poll() is not None:
+                print(f"  MCP server: exited early (see {log.relative_to(root)})")
+                return None
+            time.sleep(0.5)
+        print(f"  MCP server: pid {proc.pid} at {cfg.MCP_HTTP_URL} (log {log.relative_to(root)})")
+        return proc
+
+    if action == "seed":
+        args.reseed = True
+        ensure_seed()
+        return 0
+    if action == "build-ui":
+        return 0 if build_ui(force=True) else 1
+    if action == "mcp":
+        import runpy
+        sys.argv = ["helpcentre_server.py", "--http", str(args.port or cfg.MCP_HTTP_PORT)]
+        runpy.run_path(str(root / "mcp_servers" / "helpcentre_server.py"), run_name="__main__")
+        return 0
+    if action in ("eval", "trajectory", "taxonomy", "reopen", "cost", "sample", "report"):
+        import week12_eval
+        return week12_eval.main([action] + list(args.rest or []))
+    if action == "up":
+        import db
+        print("=" * 72)
+        print("      CLOUDDESK TIER-1 DEFLECTION ASSISTANT — WEEK 12")
+        print("=" * 72)
+        if not db.server_reachable(db.DATABASE_URL):
+            print(f"  Postgres is not reachable at {db.safe_url(db.DATABASE_URL)}.")
+            print("  Start it (see README 'Prerequisites'), e.g.:")
+            print('    LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 pg_ctl -D ~/pgdata/clouddesk -o "-p 5433" -l ~/pgdata/clouddesk/server.log start')
+            return 1
+        stats = db.stats()
+        print(f"  corpus: {stats.get('documents')} documents, chunks {stats.get('chunks')}")
+        if (stats.get("documents") or 0) < 13:
+            print("  corpus is incomplete; importing samples/helpcentre, HC-008 and samples/capstone, then re-indexing…")
+            db.import_directory(root / "samples" / "helpcentre")
+            db.import_file(root / "samples" / "article_08_refunds_escalation.md")
+            db.import_directory(root / "samples" / "capstone")
+            from vector_store import build_all_indexes
+            build_all_indexes()
+        ensure_seed()
+        if not args.no_ui:
+            build_ui()
+        mcp_proc = None if args.no_mcp else start_mcp()
+        from server import run_server
+        try:
+            run_server(port=args.port, open_browser=not args.no_browser, warm=args.warm, open_path="/app/",
+                       banner="CLOUDDESK TIER-1 DEFLECTION ASSISTANT — WEEK 12")
+        finally:
+            if mcp_proc is not None and mcp_proc.poll() is None:
+                mcp_proc.send_signal(signal.SIGTERM)
+                try:
+                    mcp_proc.wait(timeout=5)
+                except Exception:
+                    mcp_proc.kill()
+                print("  MCP server stopped.")
+        return 0
+    return 1
+
+
 def command_demo(args):
     from generator import generate_answer, print_answer
     from retriever import retrieve_chunks, build_where, print_results
@@ -575,6 +746,58 @@ def build_parser():
                         help="arguments for experiments/week10_benchmark.py")
     week10.set_defaults(func=command_week10)
 
+    # week11 (observability: the drill, the artefacts, the controlled incidents, the suite)
+    week11 = subparsers.add_parser(
+        "week11",
+        help="Week 11: drill | report | plant | eval (see week11/README.md)"
+    )
+    w11_actions = week11.add_subparsers(dest="week11_action", required=True)
+    w11_drill = w11_actions.add_parser("drill", help="find the incident behind a vague complaint, timed")
+    w11_drill.add_argument("--complaint",
+                           default="A customer said it gave a wrong answer about refunds yesterday afternoon.")
+    w11_drill.add_argument("--as-of", default=None, help="the day the complaint is handled (YYYY-MM-DD; default today)")
+    w11_drill.add_argument("--procedure", choices=["slices", "indexed"], default="slices")
+    w11_actions.add_parser("report", help="write week11/drill.md, cost_by_stage.md, tenx.md, trace.json")
+    w11_plant = w11_actions.add_parser("plant", help="run one controlled incident through the real drafter")
+    w11_plant.add_argument("fixture", choices=["refund-window-inverted", "duplicate-charge-denied"])
+    w11_plant.add_argument("--force", action="store_true", help="re-run even if already planted")
+    w11_eval = w11_actions.add_parser("eval", help="the Week 6 suite (frozen 25 + R05 live), output saved under week11/test_results/")
+    w11_eval.add_argument("--judge", choices=["none", "auto"], default="none")
+    w11_eval.add_argument("--label", default=None, help="label for the saved record (e.g. RED, GREEN)")
+    w11_eval.add_argument("--fresh", action="store_true",
+                          help="the full suite with every reply drafted fresh (python main.py eval), saved the same way")
+    week11.set_defaults(func=command_week11)
+
+    # capstone (Week 12: the whole application from one command)
+    capstone = subparsers.add_parser(
+        "capstone",
+        help="Week 12: up | seed | mcp | build-ui | eval | trajectory | taxonomy | reopen | cost | sample | report"
+    )
+    cap_actions = capstone.add_subparsers(dest="capstone_action", required=True)
+    cap_up = cap_actions.add_parser("up", help="start everything: MCP server, backend, dashboard at /app/")
+    cap_up.add_argument("--port", type=int, default=8000)
+    cap_up.add_argument("--no-browser", action="store_true")
+    cap_up.add_argument("--no-mcp", action="store_true", help="do not start the HTTP MCP server (stdio fallback)")
+    cap_up.add_argument("--no-ui", action="store_true", help="skip the frontend build check")
+    cap_up.add_argument("--warm", action="store_true", help="load the local models at startup")
+    cap_up.add_argument("--reseed", action="store_true", help="rebuild the demo data first")
+    cap_seed = cap_actions.add_parser("seed", help="(re)build data/capstone/seed/*.json")
+    cap_seed.set_defaults(reseed=True)
+    cap_mcp = cap_actions.add_parser("mcp", help="run the help-centre MCP server alone over HTTP")
+    cap_mcp.add_argument("--port", type=int, default=None)
+    cap_actions.add_parser("build-ui", help="build the React dashboard into frontend/dist")
+    for name, help_text in (("eval", "integrated Week 6 suite: run | judge | report"),
+                            ("trajectory", "Week 8 trajectory eval on integrated cases"),
+                            ("taxonomy", "re-score the Week 5 error taxonomy from failed traces"),
+                            ("reopen", "simulated second-contact evaluation"),
+                            ("cost", "cost per deflected ticket and the 10x plan"),
+                            ("sample", "draw the uncurated random sample of tickets"),
+                            ("report", "write every reports/*.md from the week12/*.json results")):
+        sub = cap_actions.add_parser(name, help=help_text)
+        sub.add_argument("rest", nargs=argparse.REMAINDER)
+    capstone.set_defaults(func=command_capstone, reseed=False, no_ui=False, no_mcp=False, no_browser=False,
+                          warm=False, port=8000, rest=[])
+
     # demo
     demo = subparsers.add_parser(
         "demo",
@@ -586,6 +809,14 @@ def build_parser():
 
 
 if __name__ == "__main__":
-    parsed = build_parser().parse_args()
+    _parser = build_parser()
+    parsed, _extra = _parser.parse_known_args()
+    if _extra and parsed.command == "capstone":
+        # `python main.py capstone eval run --label x`: everything after the action belongs to
+        # experiments/week12_eval.py, in the order it was typed.
+        _idx = sys.argv.index(parsed.capstone_action)
+        parsed.rest = sys.argv[_idx + 1:]
+    elif _extra:
+        _parser.error(f"unrecognized arguments: {' '.join(_extra)}")
     sys.exit(parsed.func(parsed) or 0)
 

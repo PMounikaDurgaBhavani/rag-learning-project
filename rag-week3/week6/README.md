@@ -51,7 +51,7 @@ What the tool refuses:
 
 ## Assertions vs judged criteria
 
-**6 deterministic assertions · 1 judged criterion.**
+**7 deterministic assertions (6 from Week 6, 1 added in Week 11) · 1 judged criterion.**
 
 | Assertion (`src/ticket_assertions.py`) | Replaces v0 criterion | Applies when |
 |---|---|---|
@@ -61,8 +61,17 @@ What the tool refuses:
 | `no_refund_outside_window` | 4. Refund window | refund requested, > 30 days, not a duplicate charge |
 | `not_cut_off` | 5. Complete | the model produced a reply (token count vs `max_new_tokens`) |
 | `no_prompt_scaffolding` | 6. Clean | always |
+| `no_denial_inside_window` (Week 11) | 4. Refund window, eligible side | refund requested, ≤ 30 days or a duplicate charge |
 
 Diff: `git diff --no-index week6/judge_v0_presplit.txt week6/judge_v1.txt`
+
+**Week 11 addition.** The support drill (`week11/drill.md`) found that under prompt `ticket-v1.2` the drafter told
+in-window charges they fell *outside* the 30-day window (T03, T13, T21 — all hand-labelled FAIL), and none of the
+six assertions caught it: they check that an amount is stated and that nothing is *promised* outside the window.
+`no_denial_inside_window` is the mirror image of `no_refund_outside_window`. Regression case **R05** (verbatim from
+the controlled incident trace) was added to `eval_cases.jsonl` before the fix; `python main.py eval --frozen` keeps
+the 25 labelled replies frozen and drafts R05 live, because a regression test has to exercise the current prompt.
+The RED-before / GREEN-after runs are under `week11/test_results/`.
 
 ## What changed in the app for this week
 

@@ -1,0 +1,335 @@
+{
+  "mode": "single",
+  "ticket": {
+    "ticket_id": "CD-10418",
+    "tier": "Standard",
+    "message": "My account is locked, what should I do?",
+    "charge_amount": null,
+    "days_since_charge": null,
+    "duplicate_charge": false,
+    "refund_requested": false
+  },
+  "answer": "CD-10418: Your account is currently locked due to multiple failed login attempts. Please try logging in again within 15 minutes. If you still cannot access your account, please contact our CloudDesk administrator for further assistance. Thank you for your patience. Refund check: Follow up with the administrator to ensure your account is unlocked before proceeding.",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-002-markdown-8",
+      "article_id": "HC-002",
+      "section": "How to Recover a Locked Account",
+      "distance": 0.5802,
+      "bm25_score": null,
+      "rrf_score": 0.016129,
+      "rerank_score": 5.609854698181152,
+      "dense_rank": 2,
+      "bm25_rank": null
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-002-markdown-9",
+      "article_id": "HC-002",
+      "section": "How to Recover a Locked Account",
+      "distance": 0.791,
+      "bm25_score": null,
+      "rrf_score": 0.029469,
+      "rerank_score": 4.374882698059082,
+      "dense_rank": 5,
+      "bm25_rank": 11
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-002-markdown-21",
+      "article_id": "HC-002",
+      "section": "Frequently Asked Questions",
+      "distance": 0.8639,
+      "bm25_score": null,
+      "rrf_score": 0.029469,
+      "rerank_score": 4.197843074798584,
+      "dense_rank": 11,
+      "bm25_rank": 5
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-002-markdown-4",
+      "article_id": "HC-002",
+      "section": "Why an Account Becomes Locked",
+      "distance": 0.7486,
+      "bm25_score": null,
+      "rrf_score": 0.015625,
+      "rerank_score": 3.541287899017334,
+      "dense_rank": 4,
+      "bm25_rank": null
+    },
+    {
+      "rank": 5,
+      "chunk_id": "HC-002-markdown-6",
+      "article_id": "HC-002",
+      "section": "What Happens When an Account Is Locked",
+      "distance": 0.8888,
+      "bm25_score": null,
+      "rrf_score": 0.028219,
+      "rerank_score": 3.3413619995117188,
+      "dense_rank": 14,
+      "bm25_rank": 8
+    }
+  ],
+  "best_distance": 0.5802,
+  "lexical_anchors": [],
+  "gate_bypass": null,
+  "tasks": [],
+  "handoffs": [],
+  "routing": null,
+  "specialists": {},
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 1,
+    "input_tokens": 696,
+    "output_tokens": 73,
+    "tokens": 769,
+    "cost_usd": 0.000148,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 0,
+    "specialist_calls": 0,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 29,
+    "context_resend_multiplier": null,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 53194.4,
+  "trace_id": "61e9a637e3c04cb1",
+  "langfuse_trace_id": "f3dcb0c46a1badda0573a326d46ff620",
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "ticket-v1.3",
+  "observability": {
+    "request_id": "req-b0abe505412b",
+    "spans": [
+      {
+        "span_id": "7987604d98",
+        "parent_id": null,
+        "name": "retrieval",
+        "start": "2026-10-28T06:02:44.170+00:00",
+        "end": "2026-10-28T06:02:57.636+00:00",
+        "duration_ms": 13466.17,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "mode": "hybrid_rerank",
+          "strategy": "markdown",
+          "top_k": 5,
+          "n_chunks": 5,
+          "context_ids": [
+            "HC-002-markdown-8",
+            "HC-002-markdown-9",
+            "HC-002-markdown-21",
+            "HC-002-markdown-4",
+            "HC-002-markdown-6"
+          ]
+        }
+      },
+      {
+        "span_id": "cd31b280c7",
+        "parent_id": null,
+        "name": "validation.distance_gate",
+        "start": "2026-10-28T06:02:57.642+00:00",
+        "end": "2026-10-28T06:02:57.644+00:00",
+        "duration_ms": 2.1,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "threshold": 0.75,
+          "mode": "hybrid_rerank",
+          "best_distance": 0.5802,
+          "outcome": "passed"
+        }
+      },
+      {
+        "span_id": "5725cd386f",
+        "parent_id": null,
+        "name": "generation",
+        "start": "2026-10-28T06:02:57.644+00:00",
+        "end": "2026-10-28T06:03:36.907+00:00",
+        "duration_ms": 39264.19,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "provider": "local (transformers, in-process)",
+          "prompt_version": "ticket-v1.3",
+          "prompt_sha": "ad02129f8ca417fc",
+          "model_loaded_during_span": false,
+          "max_new_tokens": 160,
+          "input_tokens": 696,
+          "output_tokens": 73,
+          "model_latency_ms": 39064.9
+        }
+      },
+      {
+        "span_id": "5949e5873d",
+        "parent_id": null,
+        "name": "validation.assertions",
+        "start": "2026-10-28T06:03:36.911+00:00",
+        "end": "2026-10-28T06:03:36.913+00:00",
+        "duration_ms": 2.31,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "suite": "week6 assertions",
+          "verdict": "pass",
+          "applicable": 4
+        }
+      }
+    ],
+    "usage": {
+      "input_tokens": 696,
+      "output_tokens": 73,
+      "model_calls": 1,
+      "basis": "application-counted with the model's own tokenizer; no provider usage field exists for a local model"
+    },
+    "cost": {
+      "currency": "USD",
+      "generation_usd": 0.0001482,
+      "retrieval_usd": null,
+      "tools_usd": null,
+      "total_usd": 0.0001482,
+      "complete": true,
+      "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+      "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+      "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+    },
+    "status": "ok",
+    "provider": "local (transformers, in-process)",
+    "policy_check": {
+      "verdict": "unverifiable",
+      "reason": "no charge facts on the request",
+      "expected": null
+    },
+    "evaluation": {
+      "suite": "week6 assertions (src/ticket_assertions.py)",
+      "n_assertions": 7,
+      "applicable": 4,
+      "passed": 4,
+      "failed": 0,
+      "failed_names": [],
+      "verdict": "pass",
+      "results": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10418 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "73 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+    }
+  },
+  "evaluation": {
+    "suite": "week6 assertions (src/ticket_assertions.py)",
+    "n_assertions": 7,
+    "applicable": 4,
+    "passed": 4,
+    "failed": 0,
+    "failed_names": [],
+    "verdict": "pass",
+    "results": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-10418 found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Standard, tag absent"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": true,
+        "passed": true,
+        "detail": "73 tokens of 160"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      },
+      {
+        "name": "no_denial_inside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      }
+    ],
+    "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+  },
+  "ran_at": "2026-10-28T06:03:37+00:00",
+  "cold_start": false
+}

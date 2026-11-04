@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "clouddesk-helpcentre": {
+      "command": "venv/bin/python",
+      "args": ["mcp_servers/helpcentre_server.py"]
+    }
+  }
+}

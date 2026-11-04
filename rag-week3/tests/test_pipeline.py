@@ -45,7 +45,9 @@ print("Loader")
 documents = load_articles()
 
 # 6 help-centre articles + HC-008 (refunds and escalation, added in Week 6)
-check("loads 7 articles", len(documents) == 7, f"got {len(documents)}")
+# + 6 Week 12 capstone seed documents (HC-009 retired policy, HC-010 shipping
+# SLA, HC-011 changelog, MACRO-001..003), imported from samples/capstone/.
+check("loads 13 articles", len(documents) == 13, f"got {len(documents)}")
 
 check(
     "every article has the required metadata",

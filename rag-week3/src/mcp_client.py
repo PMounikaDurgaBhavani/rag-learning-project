@@ -187,8 +187,14 @@ class MCPConnection:
             if not cursor:
                 return items
 
-    def call_tool(self, name, arguments):
-        return self.request("tools/call", {"name": name, "arguments": arguments or {}})
+    def call_tool(self, name, arguments, meta=None):
+        """tools/call. `meta` goes into params._meta (MCP's request metadata
+        slot): the Week 12 host puts the request's trace_id there so the
+        server can log and echo it, and one id spans client and server."""
+        params = {"name": name, "arguments": arguments or {}}
+        if meta:
+            params["_meta"] = dict(meta)
+        return self.request("tools/call", params)
 
     def read_resource(self, uri):
         return self.request("resources/read", {"uri": uri})

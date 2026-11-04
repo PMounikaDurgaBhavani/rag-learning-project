@@ -1,0 +1,31 @@
+[
+  {
+    "version": "ticket-v1.0",
+    "date": "2026-09-15",
+    "change": "First ticket-reply system prompt; the ticket fields ended the user turn.",
+    "why": "The 0.5B model echoed the fields back or emitted NOT_IN_SOURCES on 20 of 25 tickets (see src/ticket_reply.py version notes)."
+  },
+  {
+    "version": "ticket-v1.1",
+    "date": "2026-09-15",
+    "change": "Instruction moved last, 'do not repeat the fields', narrower sentinel.",
+    "why": "Sentinel still taken on 5 of 5 trial tickets: any escape hatch wins."
+  },
+  {
+    "version": "ticket-v1.2",
+    "date": "2026-09-15",
+    "change": "No sentinel; refusal left to the distance gate. The prompt every Week 6-10 ticket reply was drafted under.",
+    "why": "The model always drafts, so its failures show in the reply text where assertions can see them."
+  },
+  {
+    "version": "ticket-v1.3",
+    "date": "2026-10-25",
+    "change": "Two changes, versioned together. (1) System prompt: states the HC-008 refund rule (30 days or less, or any duplicate, is eligible; only an older non-duplicate charge is not) and tells the model to follow the ticket's 'Refund check' line. (2) Prompt construction: refund_check_line() makes the comparison with 30 in code and appends one line to the user turn, e.g. 'Refund check: the charge is 14 days old, which is within the 30-day window, so it IS eligible for a full refund of $120.00.' ticket_block() is unchanged, so the labeller and the judge still see the ticket as before. Prompt sha ad02129f8ca417fc.",
+    "why": "Week 11 support drill: under ticket-v1.2 the drafter told in-window charges (5, 12, 14, 29 days) that they fell OUTSIDE the 30-day window and refused a 40-day duplicate - wrong refund answers no Week 6 assertion caught. Stating the rule alone was probed first and was NOT enough (the 1.5B model still wrote '14 days ... falls outside'), so the one comparison it kept inverting was moved into code, the same decision the Week 10 ticket specialist already makes. Regression case R05 + assertion no_denial_inside_window were added before the fix; the RED and GREEN full-suite runs are under week11/test_results/.",
+    "deployment_plan": {
+      "canary": "Route 10% of ticket-reply traffic (or the next 50 live ticket requests, whichever comes first) to ticket-v1.3 while ticket-v1.2 keeps the rest; the monitored signal is the per-request policy_check on the Week 11 index (GET /api/week11/requests?prompt_version=ticket-v1.3&policy_verdict=contradicts) plus the live assertion no_denial_inside_window. Threshold: 0 contradictions on refund tickets with charge facts, and the seven-assertion pass rate on the canary slice at or above ticket-v1.2's rate over the same window (baseline failures: escalation tag, cut-off replies).",
+      "rollback": "If any ticket-v1.3 request in the canary slice records policy_verdict = contradicts, or the canary pass rate drops below the ticket-v1.2 baseline, set TICKET_SYSTEM_PROMPT back to the ticket-v1.2 text and TICKET_PROMPT_VERSION to 'ticket-v1.2' (one constant each in src/ticket_reply.py), restart the server, and confirm the next traces carry prompt_version ticket-v1.2 in the explorer. Every trace records its prompt version and sha, so the canary and the rollback are both verifiable from the log.",
+      "status": "ticket-v1.3 has been tested locally (RED/GREEN suite runs and live requests on this machine). No production deployment has occurred; this plan is what a deployment would follow."
+    }
+  }
+]

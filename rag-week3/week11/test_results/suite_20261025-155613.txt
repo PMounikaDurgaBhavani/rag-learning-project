@@ -1,0 +1,68 @@
+Week 6 eval · 26 cases · 5 regression · modes {'M1': 8, 'M2': 5, 'M3': 5, 'M4': 4, 'M5': 4}
+Replies: drafting fresh (Langfuse session week6-eval-20261025-155613)
+   1/26 T01  M1  drafted
+   2/26 T02  M1  drafted
+   3/26 T03  M1  drafted
+   4/26 T04  M1  drafted
+   5/26 T05  M1  drafted
+   6/26 R01  M1  drafted
+   7/26 T06  M1  drafted
+   8/26 R02  M2  refused:distance_gate
+   9/26 T07  M2  drafted
+  10/26 T08  M2  drafted
+  11/26 T09  M2  drafted
+  12/26 T10  M2  drafted
+  13/26 R03  M3  drafted
+  14/26 T11  M3  drafted
+  15/26 T12  M3  drafted
+  16/26 T13  M3  drafted
+  17/26 T14  M3  drafted
+  18/26 R04  M4  drafted
+  19/26 T15  M4  drafted
+  20/26 T16  M4  drafted
+  21/26 T17  M4  refused:distance_gate
+  22/26 T18  M5  drafted
+  23/26 T19  M5  drafted
+  24/26 T20  M5  drafted
+  25/26 T21  M5  drafted
+  26/26 R05  M1  drafted
+
+Judge: not run (labels not committed yet, or --judge none). Assertions only.
+
+============================================================================================
+PASS RATE BY MODE   case passes = every applicable assertion passes  (judge not run)
+============================================================================================
+mode  Week 5 failure mode                        n  assertions      judge    pass    rate
+--------------------------------------------------------------------------------------------
+M1    refuses a question the articles answer     8         4/8          -     4/8   50.0%
+M2    not one direct question -> refusal         5         3/5          -     3/5   60.0%
+M3    reply stops mid-sentence                   5         3/5          -     3/5   60.0%
+M4    non-answer text / invented steps           4         2/4          -     2/4   50.0%
+M5    'what should I do' without steps           4         1/4          -     1/4   25.0%
+--------------------------------------------------------------------------------------------
+ALL                                             26       13/26          -   13/26   50.0%
+
+ASSERTIONS (deterministic)          applies  pass  fail  failing cases
+  ticket_id_echoed                      26    26     0  -
+  refund_amount_numeric                  5     3     2  T13, R05
+  escalation_tag_iff_priority           26    19     7  T02, T04, T07, T10, T12, T16, T19
+  no_refund_outside_window               3     3     0  -
+  not_cut_off                           24    15     9  T03, T07, T10, T12, T13, R04, T16, T20, T21
+  no_prompt_scaffolding                 26    26     0  -
+  no_denial_inside_window                5     1     4  T03, T13, T21, R05
+
+REGRESSION CASES (replayed verbatim from failed Week 5 traces)
+  R01 <- 5a50d54f665441d4  M1  was: refused: distance_gate (0.7659 > 0.75)     now: assertions PASS (resolution not judged)
+  R02 <- a7051c474be5456e  M2  was: refused: distance_gate (0.8849 > 0.75)     now: assertions PASS (resolution not judged)
+  R03 <- 59b27d3b9fdd4225  M3  was: refused: ungrounded_answer                 now: assertions PASS (resolution not judged)
+  R04 <- 7fe81eaa6cdf466a  M4  was: refused: ungrounded_answer                 now: assertions FAIL (resolution not judged)
+  R05 <- 2fa07536c6a74c3a  M1  was: answered, but denied an eligible refund (policy_check: contradicts HC-008) now: assertions FAIL (resolution not judged)
+
+CRITERIA SPLIT: 7 deterministic assertions · 1 judged criterion (resolution)
+  removed from the judge (judge_v0_presplit.txt -> judge_v1.txt): 1. Ticket ID, 2. Refund amount, 3. Escalation, 4. Refund window, 5. Complete, 6. Clean, 4. Refund window (eligible side)
+
+Replies identical to the labelled frozen set: 21/25  (differ: T05, T09, T13, R04)
+
+agreement_before (judge v1): 56.0%   agreement_after (judge v2): 76.0%
+
+Saved week6/runs/run_20261025-155613.json

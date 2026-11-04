@@ -52,7 +52,15 @@ class BM25Index:
                 if not self._matches_filter(chunk["metadata"], where):
                     continue
                     
+            # Week 12: carry the document-level extras (slug, title,
+            # policy_version, status, superseded_by, doc_type...) so a chunk
+            # that only BM25 found is cited with the same metadata as a dense
+            # hit. The named keys below keep their position for older callers.
+            extras = {k: v for k, v in chunk["metadata"].items()
+                      if k not in ("chunk_id", "article_id", "product_area", "last_updated",
+                                   "source_file", "section", "is_table", "strategy", "chunk_index")}
             scored_chunks.append({
+                **extras,
                 "chunk_id": chunk["metadata"].get("chunk_id"),
                 "article_id": chunk["metadata"].get("article_id"),
                 "product_area": chunk["metadata"].get("product_area"),

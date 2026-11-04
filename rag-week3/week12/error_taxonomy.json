@@ -1,0 +1,753 @@
+{
+ "ran_at": "2026-11-04T12:32:15Z",
+ "runs": [
+  {
+   "label": "v1.1",
+   "file": "week12/runs/v1.1_20261104-143011.json",
+   "n": 40
+  },
+  {
+   "label": "v1.0-before",
+   "file": "week12/runs/v1.0-before_20261104-135632.json",
+   "n": 12
+  },
+  {
+   "label": "v1.1-model",
+   "file": "week12/runs/v1.1-model_20261104-160849.json",
+   "n": 12
+  }
+ ],
+ "n_runs": 64,
+ "n_failed": 40,
+ "n_with_any_mode": 44,
+ "modes": [
+  {
+   "name": "reply_cut_off_or_scaffolding",
+   "description": "the reply hit the token limit or leaked prompt scaffolding",
+   "severity": "embarrasses the client",
+   "severity_rank": 3,
+   "new_in_integration": false,
+   "count": 20,
+   "frequency_pct": 31.2,
+   "example_trace_id": "fcc93099aee54209",
+   "example_case": "W6-T03",
+   "example_run": "v1.1",
+   "trace_ids": [
+    "fcc93099aee54209",
+    "6ac708c8353c4916",
+    "13bd0514cefe4493",
+    "5aaf4fe21ba04b49",
+    "182aa120d78c4309",
+    "d77fa23436ca414a",
+    "2ecf6d116c5a489e",
+    "e4b93feef326418c",
+    "3198e363c77542a7",
+    "9f868d6f3bd64663",
+    "127ad596b5164528",
+    "256a9d0ec3fd45e0"
+   ],
+   "cases": [
+    {
+     "id": "W6-T03",
+     "run": "v1.1",
+     "trace_id": "fcc93099aee54209",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.1",
+     "trace_id": "6ac708c8353c4916",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T10",
+     "run": "v1.1",
+     "trace_id": "13bd0514cefe4493",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "ticket_id_echoed",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T12",
+     "run": "v1.1",
+     "trace_id": "5aaf4fe21ba04b49",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T13",
+     "run": "v1.1",
+     "trace_id": "182aa120d78c4309",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T14",
+     "run": "v1.1",
+     "trace_id": "d77fa23436ca414a",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-R04",
+     "run": "v1.1",
+     "trace_id": "2ecf6d116c5a489e",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T20",
+     "run": "v1.1",
+     "trace_id": "e4b93feef326418c",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T21",
+     "run": "v1.1",
+     "trace_id": "3198e363c77542a7",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12001",
+     "run": "v1.1",
+     "trace_id": "9f868d6f3bd64663",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12002",
+     "run": "v1.1",
+     "trace_id": "127ad596b5164528",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12003",
+     "run": "v1.1",
+     "trace_id": "256a9d0ec3fd45e0",
+     "decision": "late_carrier_trace",
+     "expected": "late_carrier_trace",
+     "assertions_failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "escalation_tag_wrong",
+   "description": "Priority tag missing, or present on a Standard ticket",
+   "severity": "pages Tier 2 for nothing / misses a Priority SLA",
+   "severity_rank": 3,
+   "new_in_integration": false,
+   "count": 18,
+   "frequency_pct": 28.1,
+   "example_trace_id": "d1472e0fc32d45e3",
+   "example_case": "W6-T02",
+   "example_run": "v1.1",
+   "trace_ids": [
+    "d1472e0fc32d45e3",
+    "05f1e5efb59c441b",
+    "6ac708c8353c4916",
+    "13bd0514cefe4493",
+    "5aaf4fe21ba04b49",
+    "3e87969dbaac4b0f",
+    "3b724d9589c14b04",
+    "256a9d0ec3fd45e0",
+    "6ca83befd6354363",
+    "6597740f2b8a4d59",
+    "bbd93123c1764d4f",
+    "6b113994ef03457d"
+   ],
+   "cases": [
+    {
+     "id": "W6-T02",
+     "run": "v1.1",
+     "trace_id": "d1472e0fc32d45e3",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T04",
+     "run": "v1.1",
+     "trace_id": "05f1e5efb59c441b",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.1",
+     "trace_id": "6ac708c8353c4916",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T10",
+     "run": "v1.1",
+     "trace_id": "13bd0514cefe4493",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "ticket_id_echoed",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T12",
+     "run": "v1.1",
+     "trace_id": "5aaf4fe21ba04b49",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T16",
+     "run": "v1.1",
+     "trace_id": "3e87969dbaac4b0f",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T19",
+     "run": "v1.1",
+     "trace_id": "3b724d9589c14b04",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "C-12003",
+     "run": "v1.1",
+     "trace_id": "256a9d0ec3fd45e0",
+     "decision": "late_carrier_trace",
+     "expected": "late_carrier_trace",
+     "assertions_failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12010",
+     "run": "v1.1",
+     "trace_id": "6ca83befd6354363",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "C-12013",
+     "run": "v1.1",
+     "trace_id": "6597740f2b8a4d59",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T04",
+     "run": "v1.0-before",
+     "trace_id": "bbd93123c1764d4f",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.0-before",
+     "trace_id": "6b113994ef03457d",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "wrong_policy_version_in_prompt",
+   "description": "a passage of the other refund-policy version (vs the verified entitlement) reached the model",
+   "severity": "wrong answer to the customer (money)",
+   "severity_rank": 1,
+   "new_in_integration": true,
+   "count": 10,
+   "frequency_pct": 15.6,
+   "example_trace_id": "614be377162f496f",
+   "example_case": "W6-T03",
+   "example_run": "v1.0-before",
+   "trace_ids": [
+    "614be377162f496f",
+    "bbd93123c1764d4f",
+    "6b113994ef03457d",
+    "b4be714ff8764435",
+    "41097b496f2d4cdb",
+    "1a04bcd5befd47c5",
+    "da2afdd908214060",
+    "bbdd1c8a2da54e4c",
+    "35698d23c2864835",
+    "7b6056faa5be458c"
+   ],
+   "cases": [
+    {
+     "id": "W6-T03",
+     "run": "v1.0-before",
+     "trace_id": "614be377162f496f",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-T04",
+     "run": "v1.0-before",
+     "trace_id": "bbd93123c1764d4f",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.0-before",
+     "trace_id": "6b113994ef03457d",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T13",
+     "run": "v1.0-before",
+     "trace_id": "b4be714ff8764435",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-T16",
+     "run": "v1.0-before",
+     "trace_id": "41097b496f2d4cdb",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-R05",
+     "run": "v1.0-before",
+     "trace_id": "1a04bcd5befd47c5",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12001",
+     "run": "v1.0-before",
+     "trace_id": "da2afdd908214060",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12002",
+     "run": "v1.0-before",
+     "trace_id": "bbdd1c8a2da54e4c",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric"
+     ]
+    },
+    {
+     "id": "C-12005",
+     "run": "v1.0-before",
+     "trace_id": "35698d23c2864835",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": []
+    },
+    {
+     "id": "C-12010",
+     "run": "v1.0-before",
+     "trace_id": "7b6056faa5be458c",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "missing_amount_or_ticket_id",
+   "description": "the reply omits the exact amount or the ticket id the policy requires",
+   "severity": "annoys the user",
+   "severity_rank": 4,
+   "new_in_integration": false,
+   "count": 8,
+   "frequency_pct": 12.5,
+   "example_trace_id": "6ac708c8353c4916",
+   "example_case": "W6-T07",
+   "example_run": "v1.1",
+   "trace_ids": [
+    "6ac708c8353c4916",
+    "13bd0514cefe4493",
+    "182aa120d78c4309",
+    "127ad596b5164528",
+    "6b298664edba4dd8",
+    "bbdd1c8a2da54e4c",
+    "323b51d6b94d4655",
+    "495b35dd7d5d4b51"
+   ],
+   "cases": [
+    {
+     "id": "W6-T07",
+     "run": "v1.1",
+     "trace_id": "6ac708c8353c4916",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T10",
+     "run": "v1.1",
+     "trace_id": "13bd0514cefe4493",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": [
+      "ticket_id_echoed",
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-T13",
+     "run": "v1.1",
+     "trace_id": "182aa120d78c4309",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12002",
+     "run": "v1.1",
+     "trace_id": "127ad596b5164528",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "C-12012",
+     "run": "v1.1",
+     "trace_id": "6b298664edba4dd8",
+     "decision": "escalated",
+     "expected": "escalated",
+     "assertions_failed": [
+      "refund_amount_numeric"
+     ]
+    },
+    {
+     "id": "C-12002",
+     "run": "v1.0-before",
+     "trace_id": "bbdd1c8a2da54e4c",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric"
+     ]
+    },
+    {
+     "id": "W6-T03",
+     "run": "v1.1-model",
+     "trace_id": "323b51d6b94d4655",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    },
+    {
+     "id": "W6-R05",
+     "run": "v1.1-model",
+     "trace_id": "495b35dd7d5d4b51",
+     "decision": "escalated",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "wrong_decision_or_outcome",
+   "description": "the decision or outcome differs from the expected one for the case",
+   "severity": "wrong answer or an unnecessary escalation",
+   "severity_rank": 2,
+   "new_in_integration": false,
+   "count": 5,
+   "frequency_pct": 7.8,
+   "example_trace_id": "382905cdb3f749a8",
+   "example_case": "W6-T09",
+   "example_run": "v1.1",
+   "trace_ids": [
+    "382905cdb3f749a8",
+    "50f43af3449f41e1",
+    "78f911db5de24870",
+    "d7eb34edaeea44a7",
+    "495b35dd7d5d4b51"
+   ],
+   "cases": [
+    {
+     "id": "W6-T09",
+     "run": "v1.1",
+     "trace_id": "382905cdb3f749a8",
+     "decision": "not_found",
+     "expected": "refund_denied",
+     "assertions_failed": []
+    },
+    {
+     "id": "C-12011",
+     "run": "v1.1",
+     "trace_id": "50f43af3449f41e1",
+     "decision": "escalated",
+     "expected": "replacement_doa",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-T09",
+     "run": "v1.0-before",
+     "trace_id": "78f911db5de24870",
+     "decision": "not_found",
+     "expected": "refund_denied",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-T09",
+     "run": "v1.1-model",
+     "trace_id": "d7eb34edaeea44a7",
+     "decision": "not_found",
+     "expected": "refund_denied",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-R05",
+     "run": "v1.1-model",
+     "trace_id": "495b35dd7d5d4b51",
+     "decision": "escalated",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "decision_contradicted_by_draft",
+   "description": "the verified decision was right but the drafted text denied an eligible refund or promised an ineligible one; the guardrail rejected or escalated it",
+   "severity": "embarrasses the client / blocks a deflection",
+   "severity_rank": 2,
+   "new_in_integration": true,
+   "count": 3,
+   "frequency_pct": 4.7,
+   "example_trace_id": "be7ca2a27c944f78",
+   "example_case": "W6-T18",
+   "example_run": "v1.1",
+   "trace_ids": [
+    "be7ca2a27c944f78",
+    "50f43af3449f41e1",
+    "323b51d6b94d4655"
+   ],
+   "cases": [
+    {
+     "id": "W6-T18",
+     "run": "v1.1",
+     "trace_id": "be7ca2a27c944f78",
+     "decision": "knowledge_answer",
+     "expected": "knowledge_answer",
+     "assertions_failed": []
+    },
+    {
+     "id": "C-12011",
+     "run": "v1.1",
+     "trace_id": "50f43af3449f41e1",
+     "decision": "escalated",
+     "expected": "replacement_doa",
+     "assertions_failed": []
+    },
+    {
+     "id": "W6-T03",
+     "run": "v1.1-model",
+     "trace_id": "323b51d6b94d4655",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "refund_amount_numeric",
+      "not_cut_off"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "guard_forced_tool_call",
+   "description": "the model did not call a required tool and the evidence guard ran it",
+   "severity": "cost and latency; not a customer-visible error",
+   "severity_rank": 5,
+   "new_in_integration": true,
+   "count": 2,
+   "frequency_pct": 3.1,
+   "example_trace_id": "d1c0f93c315747ba",
+   "example_case": "W6-T04",
+   "example_run": "v1.1-model",
+   "trace_ids": [
+    "d1c0f93c315747ba",
+    "c656fd42a80d4414"
+   ],
+   "cases": [
+    {
+     "id": "W6-T04",
+     "run": "v1.1-model",
+     "trace_id": "d1c0f93c315747ba",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.1-model",
+     "trace_id": "c656fd42a80d4414",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "wall_clock_or_budget",
+   "description": "the agent loop ended on a budget rather than on complete evidence",
+   "severity": "latency; partial evidence",
+   "severity_rank": 5,
+   "new_in_integration": true,
+   "count": 2,
+   "frequency_pct": 3.1,
+   "example_trace_id": "d1c0f93c315747ba",
+   "example_case": "W6-T04",
+   "example_run": "v1.1-model",
+   "trace_ids": [
+    "d1c0f93c315747ba",
+    "c656fd42a80d4414"
+   ],
+   "cases": [
+    {
+     "id": "W6-T04",
+     "run": "v1.1-model",
+     "trace_id": "d1c0f93c315747ba",
+     "decision": "refund_denied",
+     "expected": "refund_denied",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    },
+    {
+     "id": "W6-T07",
+     "run": "v1.1-model",
+     "trace_id": "c656fd42a80d4414",
+     "decision": "refund_approved",
+     "expected": "refund_approved",
+     "assertions_failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   ]
+  }
+ ],
+ "method": "rule-based detectors over the stored rows (assertion names, decision vs expected, forced calls, MCP errors, budgets); every count points at real trace ids in traces/traces.jsonl. The reading of each trace is in reports/error_taxonomy.md"
+}

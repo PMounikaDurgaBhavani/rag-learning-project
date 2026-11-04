@@ -1,0 +1,1370 @@
+{
+  "ran_at": "2026-10-25T10:54:09+00:00",
+  "app_version": "76af145",
+  "judge": "none",
+  "replies": "fresh",
+  "session_id": "week6-eval-20261025-160909",
+  "fresh_cases": [
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T05",
+    "R01",
+    "T06",
+    "R02",
+    "T07",
+    "T08",
+    "T09",
+    "T10",
+    "R03",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "R04",
+    "T15",
+    "T16",
+    "T17",
+    "T18",
+    "T19",
+    "T20",
+    "T21",
+    "R05"
+  ],
+  "ticket_prompt_version": "ticket-v1.3",
+  "ticket_prompt_sha": "ad02129f8ca417fc",
+  "n_cases": 26,
+  "passed": 16,
+  "failed": 10,
+  "reply_trace_ids": {
+    "T01": "c371d3b1ca374165",
+    "T02": "100c73151464488a",
+    "T03": "017e65b968be4854",
+    "T04": "bb6308e2b905440f",
+    "T05": "77d3be0ead87476c",
+    "R01": "202e9bd3f1bb4626",
+    "T06": "17da16cfc49a4372",
+    "R02": "a6771c8c6c954f62",
+    "T07": "10f7abf8ce2e461b",
+    "T08": "dc3da5bc738c4651",
+    "T09": "bfd3e6f3777343f6",
+    "T10": "ed4d400c26ca4b43",
+    "R03": "56185196d21c4c03",
+    "T11": "1d6bba14edb44966",
+    "T12": "7995f0ed28cf423b",
+    "T13": "964101545b8349cc",
+    "T14": "0d90b0bda1bc4eb2",
+    "R04": "b632d47d00f54d7f",
+    "T15": "e43aa836695a43a7",
+    "T16": "d77c34cd00c946b6",
+    "T17": "53dd874f38c248b3",
+    "T18": "f0d4a2f778cf4ba0",
+    "T19": "b9a681cd20b8441a",
+    "T20": "417dc114e8374ac9",
+    "T21": "212a02f73a3b44af",
+    "R05": "7b132b88906e4b09"
+  },
+  "results": {
+    "T01": {
+      "id": "T01",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10401 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "117 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T02": {
+      "id": "T02",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10402 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "134 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T03": {
+      "id": "T03",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10403 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 49.00; numbers in reply: [30.0, 12.0, 49.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "119 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (12 days <= 30)"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T04": {
+      "id": "T04",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10404 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no refund promised (45 days > 30)"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "87 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T05": {
+      "id": "T05",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10405 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "59 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "R01": {
+      "id": "R01",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-90001 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "88 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T06": {
+      "id": "T06",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10406 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "99 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "R02": {
+      "id": "R02",
+      "mode": "M2",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-90002 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T07": {
+      "id": "T07",
+      "mode": "M2",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10407 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 89.00; numbers in reply: [89.0, 89.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "136 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (duplicate charge)"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T08": {
+      "id": "T08",
+      "mode": "M2",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10408 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "160 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T09": {
+      "id": "T09",
+      "mode": "M2",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10409 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no refund promised (40 days > 30)"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "124 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T10": {
+      "id": "T10",
+      "mode": "M2",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10410 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "164 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "R03": {
+      "id": "R03",
+      "mode": "M3",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-90003 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "92 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T11": {
+      "id": "T11",
+      "mode": "M3",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10411 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "153 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T12": {
+      "id": "T12",
+      "mode": "M3",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10412 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "160 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T13": {
+      "id": "T13",
+      "mode": "M3",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10413 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 19.99; numbers in reply: [19.99, 5.0, 30.0, 19.99, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "158 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (5 days <= 30)"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T14": {
+      "id": "T14",
+      "mode": "M3",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10414 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "126 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "R04": {
+      "id": "R04",
+      "mode": "M4",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-90004 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "160 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T15": {
+      "id": "T15",
+      "mode": "M4",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10415 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "85 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T16": {
+      "id": "T16",
+      "mode": "M4",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10416 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no refund promised (76 days > 30)"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "151 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T17": {
+      "id": "T17",
+      "mode": "M4",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10417 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T18": {
+      "id": "T18",
+      "mode": "M5",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10418 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "73 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T19": {
+      "id": "T19",
+      "mode": "M5",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10419 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": false,
+          "detail": "tier=Priority, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "158 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": false,
+      "pass": false
+    },
+    "T20": {
+      "id": "T20",
+      "mode": "M5",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10420 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "115 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "T21": {
+      "id": "T21",
+      "mode": "M5",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-10421 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 30.00; numbers in reply: [30.0, 29.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "135 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (29 days <= 30)"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    },
+    "R05": {
+      "id": "R05",
+      "mode": "M1",
+      "assertions": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-11901 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 120.00; numbers in reply: [30.0, 14.0, 120.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "129 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (14 days <= 30)"
+        }
+      ],
+      "assertions_pass": true,
+      "pass": true
+    }
+  }
+}

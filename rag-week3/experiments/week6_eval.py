@@ -683,13 +683,27 @@ def cmd_run(args):
     frozen = read_json(REPLIES) if REPLIES.exists() else None
     frozen_by_id = {reply["id"]: reply for reply in (frozen or {}).get("replies", [])}
 
+    fresh_cases = []
     if args.frozen:
         missing = [case["id"] for case in cases if case["id"] not in frozen_by_id]
-        if missing:
-            print(f"--frozen needs replies for every case; missing {missing}")
+        # A regression case added after the freeze (Week 11: R05) has no
+        # frozen reply and must not get one: a regression test exercises the
+        # CURRENT prompt. The 25 labelled replies stay frozen; the late
+        # regression cases are drafted live.
+        late = [case["id"] for case in cases if case["id"] in missing and case.get("regression")]
+        if set(missing) - set(late):
+            print(f"--frozen needs replies for every labelled case; missing {sorted(set(missing) - set(late))}")
             return 1
-        replies_by_id = frozen_by_id
-        print("Replies: frozen week6/replies_25.json")
+        replies_by_id = dict(frozen_by_id)
+        if late:
+            fresh_cases = late
+            print(f"Replies: frozen week6/replies_25.json for {len(frozen_by_id)} labelled cases; "
+                  f"drafting {late} live (regression cases added after the freeze)")
+            for reply in draft_replies([c for c in cases if c["id"] in late], "week6-eval", session_id):
+                replies_by_id[reply["id"]] = reply
+            release_generator()
+        else:
+            print("Replies: frozen week6/replies_25.json")
     else:
         print(f"Replies: drafting fresh (Langfuse session {session_id})")
         replies_by_id = {reply["id"]: reply
@@ -760,9 +774,16 @@ def cmd_run(args):
               f"agreement_after (judge v2): {summary.get('agreement_after', 'not run yet')}"
               f"{'%' if 'agreement_after' in summary else ''}")
 
+    from ticket_reply import TICKET_PROMPT_VERSION, TICKET_SYSTEM_PROMPT
     write_json(RUNS / f"run_{stamp}.json", {
         "ran_at": now_iso(), "app_version": tracing.app_version(), "judge": version,
         "replies": "frozen" if args.frozen else "fresh", "session_id": session_id,
+        "fresh_cases": fresh_cases if args.frozen else [case["id"] for case in cases],
+        "ticket_prompt_version": TICKET_PROMPT_VERSION,
+        "ticket_prompt_sha": tracing.sha256(TICKET_SYSTEM_PROMPT),
+        "n_cases": len(cases), "passed": sum(1 for r in results.values() if r["pass"]),
+        "failed": sum(1 for r in results.values() if not r["pass"]),
+        "reply_trace_ids": {cid: replies_by_id[cid].get("trace_id") for cid in results},
         "results": results,
     })
     print(f"\nSaved week6/runs/run_{stamp}.json")

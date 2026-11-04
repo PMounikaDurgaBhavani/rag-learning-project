@@ -1,0 +1,462 @@
+{
+  "_note": "Demo orders; charge_date = AS_OF - days_since_charge from the source case. Addresses exist to exercise PII masking and never leave the order adapter.",
+  "as_of": "2026-11-04",
+  "orders": [
+    {
+      "order_id": "ORD-10403",
+      "customer_id": "CUS-10403",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 49.0,
+      "currency": "USD",
+      "charge_date": "2026-10-23",
+      "order_status": "charged",
+      "invoice_id": "INV-10403",
+      "billing_address": {
+        "line1": "16 Harbour Street",
+        "city": "Manchester",
+        "country": "GB",
+        "postcode": "10074"
+      }
+    },
+    {
+      "order_id": "ORD-10404",
+      "customer_id": "CUS-10404",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 1200.0,
+      "currency": "USD",
+      "charge_date": "2026-09-20",
+      "order_status": "charged",
+      "invoice_id": "INV-10404",
+      "billing_address": {
+        "line1": "19 Harbour Street",
+        "city": "Berlin",
+        "country": "DE",
+        "postcode": "10111"
+      }
+    },
+    {
+      "order_id": "ORD-10407",
+      "customer_id": "CUS-10407",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 89.0,
+      "currency": "USD",
+      "charge_date": "2026-11-01",
+      "order_status": "duplicate",
+      "invoice_id": "INV-10407",
+      "billing_address": {
+        "line1": "34 Harbour Street",
+        "city": "Denver",
+        "country": "US",
+        "postcode": "10296"
+      }
+    },
+    {
+      "order_id": "ORD-10409",
+      "customer_id": "CUS-10409",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 250.0,
+      "currency": "USD",
+      "charge_date": "2026-09-25",
+      "order_status": "charged",
+      "invoice_id": "INV-10409",
+      "billing_address": {
+        "line1": "40 Harbour Street",
+        "city": "Austin",
+        "country": "US",
+        "postcode": "10370"
+      }
+    },
+    {
+      "order_id": "ORD-10413",
+      "customer_id": "CUS-10413",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 19.99,
+      "currency": "USD",
+      "charge_date": "2026-10-30",
+      "order_status": "charged",
+      "invoice_id": "INV-10413",
+      "billing_address": {
+        "line1": "55 Harbour Street",
+        "city": "Melbourne",
+        "country": "AU",
+        "postcode": "10555"
+      }
+    },
+    {
+      "order_id": "ORD-10416",
+      "customer_id": "CUS-10416",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 75.0,
+      "currency": "USD",
+      "charge_date": "2026-08-20",
+      "order_status": "charged",
+      "invoice_id": "INV-10416",
+      "billing_address": {
+        "line1": "67 Harbour Street",
+        "city": "Madrid",
+        "country": "ES",
+        "postcode": "10703"
+      }
+    },
+    {
+      "order_id": "ORD-10421",
+      "customer_id": "CUS-10421",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 30.0,
+      "currency": "USD",
+      "charge_date": "2026-10-06",
+      "order_status": "charged",
+      "invoice_id": "INV-10421",
+      "billing_address": {
+        "line1": "82 Harbour Street",
+        "city": "Lyon",
+        "country": "FR",
+        "postcode": "10888"
+      }
+    },
+    {
+      "order_id": "ORD-11901",
+      "customer_id": "CUS-11901",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 120.0,
+      "currency": "USD",
+      "charge_date": "2026-10-21",
+      "order_status": "charged",
+      "invoice_id": "INV-11901",
+      "billing_address": {
+        "line1": "85 Harbour Street",
+        "city": "Melbourne",
+        "country": "AU",
+        "postcode": "10925"
+      }
+    },
+    {
+      "order_id": "ORD-5001",
+      "customer_id": "CUS-201",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 49.0,
+      "currency": "USD",
+      "charge_date": "2026-10-23",
+      "order_status": "charged",
+      "invoice_id": "INV-5001",
+      "billing_address": {
+        "line1": "88 Harbour Street",
+        "city": "Auckland",
+        "country": "NZ",
+        "postcode": "10962"
+      }
+    },
+    {
+      "order_id": "ORD-5002",
+      "customer_id": "CUS-202",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 120.0,
+      "currency": "USD",
+      "charge_date": "2026-09-20",
+      "order_status": "charged",
+      "invoice_id": "INV-5002",
+      "billing_address": {
+        "line1": "91 Harbour Street",
+        "city": "Dublin",
+        "country": "IE",
+        "postcode": "10999"
+      }
+    },
+    {
+      "order_id": "ORD-5003",
+      "customer_id": "CUS-203",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 480.0,
+      "currency": "USD",
+      "charge_date": "2026-09-20",
+      "order_status": "charged",
+      "invoice_id": "INV-5003",
+      "billing_address": {
+        "line1": "94 Harbour Street",
+        "city": "Denver",
+        "country": "US",
+        "postcode": "11036"
+      }
+    },
+    {
+      "order_id": "ORD-5004",
+      "customer_id": "CUS-204",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 960.0,
+      "currency": "USD",
+      "charge_date": "2026-08-06",
+      "order_status": "charged",
+      "invoice_id": "INV-5004",
+      "billing_address": {
+        "line1": "97 Harbour Street",
+        "city": "Madrid",
+        "country": "ES",
+        "postcode": "11073"
+      }
+    },
+    {
+      "order_id": "ORD-5005",
+      "customer_id": "CUS-205",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 75.0,
+      "currency": "USD",
+      "charge_date": "2026-10-15",
+      "order_status": "refunded",
+      "invoice_id": "INV-5005",
+      "billing_address": {
+        "line1": "100 Harbour Street",
+        "city": "Austin",
+        "country": "US",
+        "postcode": "11110"
+      }
+    },
+    {
+      "order_id": "ORD-5006",
+      "customer_id": "CUS-206",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 89.0,
+      "currency": "USD",
+      "charge_date": "2026-04-18",
+      "order_status": "duplicate",
+      "invoice_id": "INV-5006",
+      "billing_address": {
+        "line1": "103 Harbour Street",
+        "city": "Toronto",
+        "country": "CA",
+        "postcode": "11147"
+      }
+    },
+    {
+      "order_id": "ORD-5009",
+      "customer_id": "CUS-209",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 310.0,
+      "currency": "USD",
+      "charge_date": "2026-10-18",
+      "order_status": "cancelled",
+      "invoice_id": "INV-5009",
+      "billing_address": {
+        "line1": "112 Harbour Street",
+        "city": "Lyon",
+        "country": "FR",
+        "postcode": "11258"
+      }
+    },
+    {
+      "order_id": "ORD-5010",
+      "customer_id": "CUS-210",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 19.99,
+      "currency": "USD",
+      "charge_date": "2026-10-06",
+      "order_status": "charged",
+      "invoice_id": "INV-5010",
+      "billing_address": {
+        "line1": "115 Harbour Street",
+        "city": "Melbourne",
+        "country": "AU",
+        "postcode": "11295"
+      }
+    },
+    {
+      "order_id": "ORD-12001",
+      "customer_id": "CUS-401",
+      "product": "CloudDesk Team plan (annual, partner-billed)",
+      "kind": "subscription",
+      "amount": 240.0,
+      "currency": "USD",
+      "charge_date": "2026-10-15",
+      "order_status": "charged",
+      "invoice_id": "INV-12001",
+      "billing_address": {
+        "line1": "121 Harbour Street",
+        "city": "Dublin",
+        "country": "IE",
+        "postcode": "11369"
+      }
+    },
+    {
+      "order_id": "ORD-12002",
+      "customer_id": "CUS-402",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 240.0,
+      "currency": "USD",
+      "charge_date": "2026-10-15",
+      "order_status": "charged",
+      "invoice_id": "INV-12002",
+      "billing_address": {
+        "line1": "124 Harbour Street",
+        "city": "Denver",
+        "country": "US",
+        "postcode": "11406"
+      }
+    },
+    {
+      "order_id": "ORD-12003",
+      "customer_id": "CUS-403",
+      "product": "CloudDesk Desk Phone x4",
+      "kind": "hardware",
+      "amount": 0.0,
+      "currency": "USD",
+      "charge_date": "2026-10-19",
+      "order_status": "charged",
+      "invoice_id": "INV-12003",
+      "billing_address": {
+        "line1": "127 Harbour Street",
+        "city": "Madrid",
+        "country": "ES",
+        "postcode": "11443"
+      },
+      "shipping": {
+        "status": "shipped",
+        "service": "standard",
+        "carrier": "EuroParcel",
+        "shipped_at": "2026-10-22",
+        "delivered_at": null,
+        "region": "UK/EU",
+        "tracking": "EP-449021-GB",
+        "eta_business_days": 8,
+        "address": {
+          "line1": "127 Harbour Street",
+          "city": "Madrid",
+          "country": "ES",
+          "postcode": "11443"
+        }
+      }
+    },
+    {
+      "order_id": "ORD-12004",
+      "customer_id": "CUS-404",
+      "product": "CloudDesk Badge Reader x2",
+      "kind": "hardware",
+      "amount": 0.0,
+      "currency": "USD",
+      "charge_date": "2026-11-02",
+      "order_status": "charged",
+      "invoice_id": "INV-12004",
+      "billing_address": {
+        "line1": "130 Harbour Street",
+        "city": "Austin",
+        "country": "US",
+        "postcode": "11480"
+      },
+      "shipping": {
+        "status": "processing",
+        "service": "standard",
+        "carrier": "NorthPost",
+        "shipped_at": null,
+        "delivered_at": null,
+        "region": "US/CA",
+        "tracking": null,
+        "eta_business_days": 7,
+        "address": {
+          "line1": "130 Harbour Street",
+          "city": "Austin",
+          "country": "US",
+          "postcode": "11480"
+        }
+      }
+    },
+    {
+      "order_id": "ORD-12006",
+      "customer_id": "CUS-405",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 600.0,
+      "currency": "USD",
+      "charge_date": "2026-09-15",
+      "order_status": "charged",
+      "invoice_id": "INV-12006",
+      "billing_address": {
+        "line1": "133 Harbour Street",
+        "city": "Toronto",
+        "country": "CA",
+        "postcode": "11517"
+      }
+    },
+    {
+      "order_id": "ORD-12010",
+      "customer_id": "CUS-408",
+      "product": "CloudDesk Team plan (annual, partner-billed)",
+      "kind": "subscription",
+      "amount": 180.0,
+      "currency": "USD",
+      "charge_date": "2026-10-05",
+      "order_status": "duplicate",
+      "invoice_id": "INV-12010",
+      "billing_address": {
+        "line1": "142 Harbour Street",
+        "city": "Lyon",
+        "country": "FR",
+        "postcode": "11628"
+      }
+    },
+    {
+      "order_id": "ORD-12011",
+      "customer_id": "CUS-409",
+      "product": "CloudDesk Desk Phone x1",
+      "kind": "hardware",
+      "amount": 0.0,
+      "currency": "USD",
+      "charge_date": "2026-10-23",
+      "order_status": "charged",
+      "invoice_id": "INV-12011",
+      "billing_address": {
+        "line1": "145 Harbour Street",
+        "city": "Melbourne",
+        "country": "AU",
+        "postcode": "11665"
+      },
+      "shipping": {
+        "status": "delivered",
+        "service": "standard",
+        "carrier": "NorthPost",
+        "shipped_at": "2026-10-24",
+        "delivered_at": "2026-10-30",
+        "region": "US/CA",
+        "tracking": "NP-77120-US",
+        "eta_business_days": 7,
+        "address": {
+          "line1": "145 Harbour Street",
+          "city": "Melbourne",
+          "country": "AU",
+          "postcode": "11665"
+        }
+      }
+    },
+    {
+      "order_id": "ORD-12012",
+      "customer_id": "CUS-410",
+      "product": "CloudDesk Team plan (monthly)",
+      "kind": "subscription",
+      "amount": 95.0,
+      "currency": "USD",
+      "charge_date": "2026-10-26",
+      "order_status": "charged",
+      "invoice_id": "INV-12012",
+      "billing_address": {
+        "line1": "148 Harbour Street",
+        "city": "Auckland",
+        "country": "NZ",
+        "postcode": "11702"
+      }
+    }
+  ]
+}

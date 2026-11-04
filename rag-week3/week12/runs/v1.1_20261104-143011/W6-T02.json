@@ -1,0 +1,801 @@
+{
+ "ticket_id": "CD-10402",
+ "customer_id": "CUS-10402",
+ "trace_id": "d1472e0fc32d45e3",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "knowledge_answer",
+ "answer": "[ESCALATED-PRIORITY]\nCD-10402: Hello,\n\nThank you for reaching out regarding your password reset issue. According to our system, the password reset link is valid for 30 minutes. Please try using the link again within this time frame.\n\nIf the problem persists, please ensure that you have followed all the steps correctly and that there are no issues with your internet connection or email settings.\n\nWe appreciate your patience and understanding during this process.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+ "intent": "account_access",
+ "understanding": {
+  "intent": "account_access",
+  "sensitive": false,
+  "needs_account_evidence": false,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [],
+   "days": []
+  },
+  "required_evidence": [
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": null,
+ "policy_label": null,
+ "verification": {
+  "entitlement_verified": false,
+  "policy_version": null,
+  "policy_label": null,
+  "tier": "Priority",
+  "plan": "Priority",
+  "refund_assessment": null,
+  "shipping_entitlement": null,
+  "order_found": false,
+  "order": null,
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 5
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "password-reset",
+    "article_id": "HC-001",
+    "title": "Password Reset",
+    "section": "Frequently Asked Questions",
+    "last_updated": "2026-08-01",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-001-markdown-15",
+    "url": "/app/help-centre/password-reset"
+   },
+   {
+    "marker": 2,
+    "slug": "password-reset",
+    "article_id": "HC-001",
+    "title": "Password Reset",
+    "section": "How to Reset Your Password",
+    "last_updated": "2026-08-01",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-001-markdown-5",
+    "url": "/app/help-centre/password-reset"
+   },
+   {
+    "marker": 3,
+    "slug": "password-reset",
+    "article_id": "HC-001",
+    "title": "Password Reset",
+    "section": "Troubleshooting",
+    "last_updated": "2026-08-01",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-001-markdown-11",
+    "url": "/app/help-centre/password-reset"
+   },
+   {
+    "marker": 4,
+    "slug": "product-changelog",
+    "article_id": "HC-011",
+    "title": "CloudDesk Product Changelog",
+    "section": "2026-07-30 \u2014 Authentication",
+    "last_updated": "2026-10-28",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-011-markdown-8",
+    "url": "/app/help-centre/product-changelog"
+   },
+   {
+    "marker": 5,
+    "slug": "password-reset",
+    "article_id": "HC-001",
+    "title": "Password Reset",
+    "section": "Reset Email Not Received",
+    "last_updated": "2026-08-01",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-001-markdown-7",
+    "url": "/app/help-centre/password-reset"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 23.3,
+   "span_id": "6a2cb9ed24",
+   "kind": "code",
+   "summary": "intent account_access"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 1746.2,
+   "span_id": "49e2f32d74",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 5649.6,
+   "span_id": "cf911885c9",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "The password reset link you sent me this morning doesn't work anymore. How long is it valid for?",
+    "top_k": 5
+   },
+   "corrections": [],
+   "summary": "5 passages"
+  },
+  {
+   "step": 4,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 5657.7,
+   "span_id": "63362b8f6b",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 5,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 14.4,
+   "span_id": "17b80e7d4d",
+   "kind": "code",
+   "summary": "answered: knowledge_answer"
+  },
+  {
+   "step": 6,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 32424.0,
+   "span_id": "fa18429d19",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 711,
+   "output_tokens": 100,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00016665,
+   "summary": "CD-10402: Hello,\n\nThank you for reaching out regarding your password reset issue. According to our system, the password "
+  },
+  {
+   "step": 7,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "c99a8ed1bd",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "summary": "1 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "The password reset link you sent me this morning doesn't work anymore. How long is it valid for?",
+    "top_k": 5
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "query": "The password reset link you sent me this morning doesn't work anymore. How long is it valid for?",
+    "dropped": [],
+    "policy_version_filter": null,
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 5383.7,
+    "trace_id": "d1472e0fc32d45e3",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "knowledge_answer",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 711,
+  "output_tokens": 100,
+  "model_calls": 1,
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 1,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "search_help_centre": 1
+  },
+  "tokens": 811,
+  "cost_usd": 0.00016665
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "d1472e0fc32d45e3",
+  "calls": 1,
+  "latency_ms": 5649.6,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 41671.9,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10402 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "100 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": [],
+  "measured_on": "the raw draft, before any post-processing"
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 8,
+  "passed": 7,
+  "failed": 1,
+  "failed_names": [
+   "escalation_tag_iff_priority"
+  ],
+  "hard_failures": [],
+  "verdict": "fail",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10402 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "100 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "post_processing": [
+  "escalation_tag_added"
+ ],
+ "log": [
+  "[agent]   FORCED tool search_help_centre({\"query\": \"The password reset link you sent me this morning doesn't work anymore. How long is it valid for?\", \"top_k\": 5}) -> {\"query\": \"The password reset link you sent me this morning doesn't work anymore. How long is it valid for?\", \"results\": [{\"article_id\": \"HC-001\", \"slug\": \"pass"
+ ],
+ "generation": {
+  "raw": "CD-10402: Hello,\n\nThank you for reaching out regarding your password reset issue. According to our system, the password reset link is valid for 30 minutes. Please try using the link again within this time frame.\n\nIf the problem persists, please ensure that you have followed all the steps correctly and that there are no issues with your internet connection or email settings.\n\nWe appreciate your patience and understanding during this process.\n\nBest regards,\n[Your Name]\nCloudDesk Support Agent",
+  "input_tokens": 711,
+  "output_tokens": 100,
+  "latency_ms": 32424.0,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": false
+ },
+ "request_id": "req-3dda265d34ec",
+ "observability": {
+  "request_id": "req-3dda265d34ec",
+  "spans": [
+   {
+    "span_id": "6a2cb9ed24",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T09:02:28.106+00:00",
+    "end": "2026-11-04T09:02:28.131+00:00",
+    "duration_ms": 23.22,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "account_access",
+     "injection": false,
+     "required": [
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "49e2f32d74",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T09:02:28.132+00:00",
+    "end": "2026-11-04T09:02:29.876+00:00",
+    "duration_ms": 1746.26,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "cf911885c9",
+    "parent_id": "63362b8f6b",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T09:02:29.885+00:00",
+    "end": "2026-11-04T09:02:35.534+00:00",
+    "duration_ms": 5649.69,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "The password reset link you sent me this morning doesn't work anymore. How long is it valid for?",
+      "top_k": 5
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "d1472e0fc32d45e3",
+     "trace_id_echoed": "d1472e0fc32d45e3",
+     "results": 5,
+     "server_latency_ms": 5383.7,
+     "outcome": "ok",
+     "latency_ms": 5649.6
+    }
+   },
+   {
+    "span_id": "63362b8f6b",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T09:02:29.880+00:00",
+    "end": "2026-11-04T09:02:35.538+00:00",
+    "duration_ms": 5657.66,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 1,
+     "forced": 1,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "17b80e7d4d",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T09:02:35.538+00:00",
+    "end": "2026-11-04T09:02:35.552+00:00",
+    "duration_ms": 14.35,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "knowledge_answer",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "fa18429d19",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T09:02:35.626+00:00",
+    "end": "2026-11-04T09:03:09.732+00:00",
+    "duration_ms": 34108.2,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 711,
+     "output_tokens": 100,
+     "model_latency_ms": 32424.0,
+     "cost_usd": 0.00016665
+    }
+   },
+   {
+    "span_id": "c99a8ed1bd",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T09:03:09.753+00:00",
+    "end": "2026-11-04T09:03:09.773+00:00",
+    "duration_ms": 19.07,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 711,
+   "output_tokens": 100,
+   "model_calls": 1,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00016665,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00016665,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "unverifiable",
+   "reason": "no charge facts on the request",
+   "expected": null
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 8,
+   "passed": 7,
+   "failed": 1,
+   "failed_names": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "verdict": "fail",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-10402 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": false,
+     "detail": "tier=Priority, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "100 tokens of 160"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

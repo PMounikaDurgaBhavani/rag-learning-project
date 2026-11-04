@@ -1,0 +1,452 @@
+{
+ "summary": {
+  "n": 12,
+  "run": "week12/runs/v1.1-model_20261104-160849.json",
+  "planner": "model",
+  "scored_at": "2026-11-04T12:32:11Z",
+  "tool_choices": 32,
+  "correct_tool_choices": 31,
+  "tool_choice_accuracy_pct": 96.9,
+  "correct_order_pct": 100.0,
+  "path_complete_pct": 91.7,
+  "outcome_pass_rate_pct": 83.3,
+  "trajectory_pass_rate_pct": 66.7,
+  "gap_pp": 16.6,
+  "right_answer_wrong_path": 2,
+  "wrong_answer_right_path": 0,
+  "model_chosen_steps": 32,
+  "forced_steps": 4,
+  "mode_totals": {
+   "forced_by_guard": 4,
+   "prose_instead_of_action": 2,
+   "budget_exhausted": 2,
+   "wrong_or_out_of_order": 1
+  },
+  "definitions": {
+   "tool_choice_accuracy": "model-chosen tool calls that were the next step of an accepted sequence given what was already done; guard-forced calls are not the model's choices and are excluded from numerator and denominator",
+   "trajectory_pass": "the completed tools form an accepted sequence, nothing was out of order, and no required tool had to be forced by the guard",
+   "outcome_pass": "decision and outcome equal the expected ones in week12/eval_cases.jsonl",
+   "gap": "outcome pass rate minus trajectory pass rate (Week 8 definition)"
+  }
+ },
+ "cases": [
+  {
+   "id": "W6-T03",
+   "ticket_id": "CD-10403",
+   "trace_id": "323b51d6b94d4655",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "W6-T04",
+   "ticket_id": "CD-10404",
+   "trace_id": "d1c0f93c315747ba",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre*"
+   ],
+   "model_chosen_steps": 2,
+   "forced_steps": 1,
+   "tool_choices": 2,
+   "correct_tool_choices": 2,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": false,
+   "right_answer_wrong_path": true,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {
+    "forced_by_guard": 1,
+    "prose_instead_of_action": 1,
+    "budget_exhausted": 1
+   },
+   "events": [
+    "lap 3: search_help_centre forced (guard:budget:max_wall_seconds)"
+   ],
+   "terminated_by": "max_wall_seconds",
+   "loop_end": "budget max_wall_seconds; missing evidence forced by the guard"
+  },
+  {
+   "id": "W6-T07",
+   "ticket_id": "CD-10407",
+   "trace_id": "c656fd42a80d4414",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre*"
+   ],
+   "model_chosen_steps": 2,
+   "forced_steps": 1,
+   "tool_choices": 2,
+   "correct_tool_choices": 2,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": false,
+   "right_answer_wrong_path": true,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {
+    "forced_by_guard": 1,
+    "prose_instead_of_action": 1,
+    "budget_exhausted": 1
+   },
+   "events": [
+    "lap 3: search_help_centre forced (guard:budget:max_wall_seconds)"
+   ],
+   "terminated_by": "max_wall_seconds",
+   "loop_end": "budget max_wall_seconds; missing evidence forced by the guard"
+  },
+  {
+   "id": "W6-T09",
+   "ticket_id": "CD-10409",
+   "trace_id": "d7eb34edaeea44a7",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "search_help_centre",
+    "escalate_ticket*"
+   ],
+   "model_chosen_steps": 1,
+   "forced_steps": 1,
+   "tool_choices": 1,
+   "correct_tool_choices": 0,
+   "tool_choice_accuracy_pct": 0.0,
+   "path_complete": false,
+   "order_correct": true,
+   "outcome_correct": false,
+   "trajectory_pass": false,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 1,
+   "modes": {
+    "wrong_or_out_of_order": 1,
+    "forced_by_guard": 1
+   },
+   "events": [
+    "lap 1: search_help_centre when ['lookup_order'] expected",
+    "lap 1: escalate_ticket forced (decision)"
+   ],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "W6-T13",
+   "ticket_id": "CD-10413",
+   "trace_id": "783d049e0ccc4b36",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "W6-T16",
+   "ticket_id": "CD-10416",
+   "trace_id": "5e9e8a75b9c04e57",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "W6-T21",
+   "ticket_id": "CD-10421",
+   "trace_id": "069c44ecbcbd4d2c",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "W6-R05",
+   "ticket_id": "CD-11901",
+   "trace_id": "495b35dd7d5d4b51",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre",
+    "escalate_ticket*"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 1,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": false,
+   "trajectory_pass": false,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {
+    "forced_by_guard": 1
+   },
+   "events": [
+    "lap 3: escalate_ticket forced (decision)"
+   ],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "C-12001",
+   "ticket_id": "CD-12001",
+   "trace_id": "bc4fe48ba9d74efe",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "C-12002",
+   "ticket_id": "CD-12002",
+   "trace_id": "8e6106f07f8c4d56",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "C-12005",
+   "ticket_id": "CD-12005",
+   "trace_id": "e1cef0ea5e004ef4",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  },
+  {
+   "id": "C-12010",
+   "ticket_id": "CD-12010",
+   "trace_id": "fef6f82b792e43db",
+   "expected_sequences": [
+    [
+     "lookup_order",
+     "check_entitlement",
+     "search_help_centre"
+    ]
+   ],
+   "actual_sequence": [
+    "lookup_order",
+    "check_entitlement",
+    "search_help_centre"
+   ],
+   "model_chosen_steps": 3,
+   "forced_steps": 0,
+   "tool_choices": 3,
+   "correct_tool_choices": 3,
+   "tool_choice_accuracy_pct": 100.0,
+   "path_complete": true,
+   "order_correct": true,
+   "outcome_correct": true,
+   "trajectory_pass": true,
+   "right_answer_wrong_path": false,
+   "wrong_answer_right_path": false,
+   "laps": 3,
+   "modes": {},
+   "events": [],
+   "terminated_by": null,
+   "loop_end": "required evidence complete"
+  }
+ ]
+}

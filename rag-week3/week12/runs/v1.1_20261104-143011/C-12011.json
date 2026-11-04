@@ -1,0 +1,1198 @@
+{
+ "ticket_id": "CD-12011",
+ "customer_id": "CUS-409",
+ "trace_id": "50f43af3449f41e1",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "escalated",
+ "decision": "escalated",
+ "answer": "CD-12011: Thanks for contacting CloudDesk support. I've passed your ticket to a specialist who will review it and reply directly (escalation reference ESC-20261104-0009). You do not need to resend any information.",
+ "intent": "hardware_doa",
+ "understanding": {
+  "intent": "hardware_doa",
+  "sensitive": false,
+  "needs_account_evidence": true,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [
+    "ORD-12011"
+   ],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [],
+   "days": [
+    5
+   ]
+  },
+  "required_evidence": [
+   "lookup_order",
+   "check_entitlement",
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": "current-30-day",
+ "policy_label": "Current 30-Day",
+ "verification": {
+  "entitlement_verified": true,
+  "policy_version": "current-30-day",
+  "policy_label": "Current 30-Day",
+  "tier": "Standard",
+  "plan": "Standard",
+  "refund_assessment": {
+   "order_id": "ORD-12011",
+   "assessable": true,
+   "days_since_charge": 12,
+   "window_days": 30,
+   "policy_version": "current-30-day",
+   "policy_article_id": "HC-008",
+   "order_status": "charged",
+   "duplicate_charge": false,
+   "amount": 0.0,
+   "eligible": true,
+   "rule": "refund_if_within_window",
+   "reason": "charged 12 days ago, within the 30-day window of the current-30-day policy"
+  },
+  "shipping_entitlement": {
+   "standard": "included",
+   "expedited": "paid_upgrade",
+   "replacement": "included_for_dead_on_arrival",
+   "hardware_included": true
+  },
+  "order_found": true,
+  "order": {
+   "found": true,
+   "order_id": "ORD-12011",
+   "customer_id": "CUS-409",
+   "product": "CloudDesk Desk Phone x1",
+   "kind": "hardware",
+   "amount": 0.0,
+   "currency": "USD",
+   "charge_date": "2026-10-23",
+   "days_since_charge": 12,
+   "order_status": "charged",
+   "invoice_id": "INV-12011",
+   "shipping": {
+    "status": "delivered",
+    "service": "standard",
+    "carrier": "NorthPost",
+    "shipped_at": "2026-10-24",
+    "delivered_at": "2026-10-30",
+    "region": "US/CA",
+    "tracking": "NP-77120-US",
+    "eta_business_days": 7,
+    "destination": "Melbourne, AU"
+   },
+   "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+  },
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 5,
+  "shipping_assessment": {
+   "assessable": true,
+   "status": "delivered",
+   "service": "standard",
+   "carrier": "NorthPost",
+   "region": "US/CA",
+   "shipped_at": "2026-10-24",
+   "delivered_at": "2026-10-30",
+   "eta_business_days": 7,
+   "entitlement": {
+    "standard": "included",
+    "expedited": "paid_upgrade",
+    "replacement": "included_for_dead_on_arrival",
+    "hardware_included": true
+   },
+   "decision": "replacement_doa",
+   "days_since_delivery": 5,
+   "reason": "delivered 5 days ago, inside the 14-day dead-on-arrival window: replaced at no charge on every plan"
+  },
+  "escalation_reason": "output guardrail: draft failed policy_version_consistent",
+  "escalation_priority": "normal",
+  "guardrail_blocked_decision": "replacement_doa"
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "shipping-sla-matrix",
+    "article_id": "HC-010",
+    "title": "Hardware Shipping SLA Matrix",
+    "section": "Dead-on-Arrival Hardware",
+    "last_updated": "2026-08-20",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-010-markdown-12",
+    "url": "/app/help-centre/shipping-sla-matrix"
+   },
+   {
+    "marker": 2,
+    "slug": "shipping-sla-matrix",
+    "article_id": "HC-010",
+    "title": "Hardware Shipping SLA Matrix",
+    "section": "Lost or Damaged Shipments",
+    "last_updated": "2026-08-20",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-010-markdown-11",
+    "url": "/app/help-centre/shipping-sla-matrix"
+   },
+   {
+    "marker": 3,
+    "slug": "shipping-sla-matrix",
+    "article_id": "HC-010",
+    "title": "Hardware Shipping SLA Matrix",
+    "section": "Frequently Asked Questions",
+    "last_updated": "2026-08-20",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-010-markdown-16",
+    "url": "/app/help-centre/shipping-sla-matrix"
+   },
+   {
+    "marker": 4,
+    "slug": "shipping-sla-matrix",
+    "article_id": "HC-010",
+    "title": "Hardware Shipping SLA Matrix",
+    "section": "Dead-on-Arrival Hardware",
+    "last_updated": "2026-08-20",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-010-markdown-13",
+    "url": "/app/help-centre/shipping-sla-matrix"
+   },
+   {
+    "marker": 5,
+    "slug": "shipping-sla-matrix",
+    "article_id": "HC-010",
+    "title": "Hardware Shipping SLA Matrix",
+    "section": "Late Shipments",
+    "last_updated": "2026-08-20",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-010-markdown-10",
+    "url": "/app/help-centre/shipping-sla-matrix"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": {
+  "escalated": true,
+  "reference": "ESC-20261104-0009",
+  "queue": "billing",
+  "assigned_to": "tier2-billing",
+  "status": "open",
+  "integration": "DEMO ADAPTER: persistent local escalation queue (data/capstone/state/escalations.jsonl); production would create a ticket in the helpdesk"
+ },
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 7.4,
+   "span_id": "105b40b060",
+   "kind": "code",
+   "summary": "intent hardware_doa"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 523.6,
+   "span_id": "f083bec1e5",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "lookup_order",
+   "status": "ok",
+   "duration_ms": 6.0,
+   "span_id": "ebb1942150",
+   "kind": "tool",
+   "server": null,
+   "forced_by": "planner:code",
+   "arguments": {
+    "order_id": "ORD-12011",
+    "customer_id": "CUS-409"
+   },
+   "corrections": [],
+   "summary": "charged"
+  },
+  {
+   "step": 4,
+   "name": "check_entitlement",
+   "status": "ok",
+   "duration_ms": 3.5,
+   "span_id": "0a6fbf3ac5",
+   "kind": "tool",
+   "server": null,
+   "forced_by": "planner:code",
+   "arguments": {
+    "customer_id": "CUS-409",
+    "order_id": "ORD-12011"
+   },
+   "corrections": [
+    "order_id ORD-12011 added from the evidence so the assessment covers this order"
+   ],
+   "summary": "Standard"
+  },
+  {
+   "step": 5,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 10493.7,
+   "span_id": "b158f00fec",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?",
+    "top_k": 5,
+    "product_area": "Shipping",
+    "policy_version": "current-30-day"
+   },
+   "corrections": [
+    "product_area Shipping added for a hardware_doa ticket",
+    "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "summary": "5 passages"
+  },
+  {
+   "step": 6,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 10538.8,
+   "span_id": "305d5dbba0",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 7,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 15.5,
+   "span_id": "843ced7adf",
+   "kind": "code",
+   "summary": "answered: replacement_doa"
+  },
+  {
+   "step": 8,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 190590.4,
+   "span_id": "c20c5a3600",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 899,
+   "output_tokens": 160,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00023085,
+   "summary": "CD-12011: Hello,\n\nThank you for reaching out regarding your order. We understand that your CloudDesk Desk Phone did not "
+  },
+  {
+   "step": 9,
+   "name": "validation.assertions",
+   "status": "error",
+   "duration_ms": null,
+   "span_id": "d070b89475",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "not_cut_off",
+    "policy_version_consistent"
+   ],
+   "hard_failures": [
+    "policy_version_consistent"
+   ],
+   "summary": "2 failed, hard: ['policy_version_consistent']"
+  },
+  {
+   "step": 10,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 73373.7,
+   "span_id": "69e948f63a",
+   "kind": "model",
+   "attempt": 2,
+   "input_tokens": 936,
+   "output_tokens": 160,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.0002364,
+   "summary": "CD-12011: Hello,\n\nThank you for reaching out regarding your CloudDesk Desk Phone order. We understand that your device d"
+  },
+  {
+   "step": 11,
+   "name": "validation.assertions",
+   "status": "error",
+   "duration_ms": null,
+   "span_id": "991e16d3ee",
+   "kind": "validation",
+   "attempt": 2,
+   "failed": [
+    "not_cut_off",
+    "policy_version_consistent"
+   ],
+   "hard_failures": [
+    "policy_version_consistent"
+   ],
+   "summary": "2 failed, hard: ['policy_version_consistent']"
+  },
+  {
+   "step": 12,
+   "name": "escalate_ticket",
+   "status": "ok",
+   "duration_ms": 27.7,
+   "span_id": "ea30c87aa9",
+   "kind": "tool",
+   "server": "in-process escalation adapter",
+   "summary": "ESC-20261104-0009 -> billing"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "lookup_order",
+   "arguments": {
+    "order_id": "ORD-12011",
+    "customer_id": "CUS-409"
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "found": true,
+    "order_id": "ORD-12011",
+    "customer_id": "CUS-409",
+    "product": "CloudDesk Desk Phone x1",
+    "kind": "hardware",
+    "amount": 0.0,
+    "currency": "USD",
+    "charge_date": "2026-10-23",
+    "days_since_charge": 12,
+    "order_status": "charged",
+    "invoice_id": "INV-12011",
+    "shipping": {
+     "status": "delivered",
+     "service": "standard",
+     "carrier": "NorthPost",
+     "shipped_at": "2026-10-24",
+     "delivered_at": "2026-10-30",
+     "region": "US/CA",
+     "tracking": "NP-77120-US",
+     "eta_business_days": 7,
+     "destination": "Melbourne, AU"
+    },
+    "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "check_entitlement",
+   "arguments": {
+    "customer_id": "CUS-409",
+    "order_id": "ORD-12011"
+   },
+   "forced_by": "planner:code",
+   "corrections": [
+    "order_id ORD-12011 added from the evidence so the assessment covers this order"
+   ],
+   "result": {
+    "verified": true,
+    "customer_id": "CUS-409",
+    "plan": "Standard",
+    "tier": "Standard",
+    "subscription_status": "active",
+    "term": "monthly",
+    "renewal_date": "2027-03-04",
+    "refund_policy": {
+     "version": "current-30-day",
+     "label": "Current 30-Day",
+     "article_id": "HC-008",
+     "window_days": 30,
+     "duplicate_charge_rule": "a duplicate charge is refunded in full at any age",
+     "terms_effective": "2026-09-15"
+    },
+    "shipping_entitlement": {
+     "standard": "included",
+     "expedited": "paid_upgrade",
+     "replacement": "included_for_dead_on_arrival",
+     "hardware_included": true
+    },
+    "integration": "DEMO ADAPTER: local subscription store (data/capstone/seed/subscriptions.json); production would call the billing/entitlement service",
+    "refund_assessment": {
+     "order_id": "ORD-12011",
+     "assessable": true,
+     "days_since_charge": 12,
+     "window_days": 30,
+     "policy_version": "current-30-day",
+     "policy_article_id": "HC-008",
+     "order_status": "charged",
+     "duplicate_charge": false,
+     "amount": 0.0,
+     "eligible": true,
+     "rule": "refund_if_within_window",
+     "reason": "charged 12 days ago, within the 30-day window of the current-30-day policy"
+    }
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?",
+    "top_k": 5,
+    "product_area": "Shipping",
+    "policy_version": "current-30-day"
+   },
+   "forced_by": "planner:code",
+   "corrections": [
+    "product_area Shipping added for a hardware_doa ticket",
+    "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "result": {
+    "query": "The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?",
+    "dropped": [],
+    "policy_version_filter": "current-30-day",
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 10398.9,
+    "trace_id": "50f43af3449f41e1",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "escalate_ticket",
+   "arguments": {
+    "reason": "output guardrail: draft failed policy_version_consistent"
+   },
+   "forced_by": "decision",
+   "result": {
+    "escalated": true,
+    "reference": "ESC-20261104-0009",
+    "queue": "billing",
+    "assigned_to": "tier2-billing",
+    "status": "open",
+    "integration": "DEMO ADAPTER: persistent local escalation queue (data/capstone/state/escalations.jsonl); production would create a ticket in the helpdesk"
+   }
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "escalated",
+   "outcome": "escalated"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 1835,
+  "output_tokens": 320,
+  "model_calls": 2,
+  "tool_calls": 4,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 3,
+  "regenerations": 1,
+  "calls_by_tool": {
+   "lookup_order": 1,
+   "check_entitlement": 1,
+   "search_help_centre": 1,
+   "escalate_ticket": 1
+  },
+  "tokens": 2155,
+  "cost_usd": 0.00046725
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "50f43af3449f41e1",
+  "calls": 1,
+  "latency_ms": 10493.7,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 275674.7,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12011 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   }
+  ],
+  "hard_failures": [
+   "policy_version_consistent"
+  ]
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 6,
+  "passed": 6,
+  "failed": 0,
+  "failed_names": [],
+  "hard_failures": [
+   "policy_version_consistent"
+  ],
+  "verdict": "pass",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12011 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": {
+  "attempt": 2,
+  "reply": "CD-12011: Hello,\n\nThank you for reaching out regarding your CloudDesk Desk Phone order. We understand that your device did not arrive as expected and is not functioning properly. Based on our hardware shipping SLA matrix, since your order was shipped on October 24th and arrived 5 days later, it falls outside the 14-day dead-on-arrival window. Therefore, we can proceed with replacing your faulty unit at no charge on every plan.\n\nPlease note that the replacement process involves returning the faulty unit along with the prepaid label provided in the replacement package. Once we receive the returned unit, we will initiate the replacement procedure immediately.\n\nWe appreciate your patience while we handle this situation. Should you have any further questions or concerns, please don't hesitate to reach out",
+  "hard_failures": [
+   "policy_version_consistent"
+  ]
+ },
+ "post_processing": [],
+ "log": [
+  "[agent]   FORCED tool lookup_order({\"order_id\": \"ORD-12011\", \"customer_id\": \"CUS-409\"}) -> {\"found\": true, \"order_id\": \"ORD-12011\", \"customer_id\": \"CUS-409\", \"product\": \"CloudDesk Desk Phone x1\", \"kind\": \"hardware\", \"amount\": 0.0, \"currency\": \"USD\", \"",
+  "[agent]   FORCED tool check_entitlement({\"customer_id\": \"CUS-409\", \"order_id\": \"ORD-12011\"}) -> {\"verified\": true, \"customer_id\": \"CUS-409\", \"plan\": \"Standard\", \"tier\": \"Standard\", \"subscription_status\": \"active\", \"term\": \"monthly\", \"renewal_date\": \"2027-0",
+  "[agent]   FORCED tool search_help_centre({\"query\": \"The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?\", \"top_k\": 5, \"product_area\": \"Shipping\", \"policy_version\": \"current-30-day\"}) -> {\"query\": \"The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?\", \"results\": [{\"article_id\": \"HC-010\", \"s",
+  "[agent] draft rejected by the output guardrail (['policy_version_consistent']); regenerating once",
+  "[agent] GUARDRAIL: second draft still fails ['policy_version_consistent']; escalating"
+ ],
+ "generation": {
+  "raw": "CD-12011: Hello,\n\nThank you for reaching out regarding your CloudDesk Desk Phone order. We understand that your device did not arrive as expected and is not functioning properly. Based on our hardware shipping SLA matrix, since your order was shipped on October 24th and arrived 5 days later, it falls outside the 14-day dead-on-arrival window. Therefore, we can proceed with replacing your faulty unit at no charge on every plan.\n\nPlease note that the replacement process involves returning the faulty unit along with the prepaid label provided in the replacement package. Once we receive the returned unit, we will initiate the replacement procedure immediately.\n\nWe appreciate your patience while we handle this situation. Should you have any further questions or concerns, please don't hesitate to reach out",
+  "input_tokens": 936,
+  "output_tokens": 160,
+  "latency_ms": 73373.7,
+  "attempt": 2,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": false
+ },
+ "request_id": "req-3c59e0606990",
+ "observability": {
+  "request_id": "req-3c59e0606990",
+  "spans": [
+   {
+    "span_id": "105b40b060",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T10:33:11.775+00:00",
+    "end": "2026-11-04T10:33:11.783+00:00",
+    "duration_ms": 7.38,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "hardware_doa",
+     "injection": false,
+     "required": [
+      "lookup_order",
+      "check_entitlement",
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "f083bec1e5",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T10:33:11.783+00:00",
+    "end": "2026-11-04T10:33:12.302+00:00",
+    "duration_ms": 521.11,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "ebb1942150",
+    "parent_id": "305d5dbba0",
+    "name": "tool:lookup_order",
+    "start": "2026-11-04T10:33:12.316+00:00",
+    "end": "2026-11-04T10:33:12.322+00:00",
+    "duration_ms": 6.71,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "order_id": "ORD-12011",
+      "customer_id": "CUS-409"
+     },
+     "forced_by": "planner:code",
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 6.0
+    }
+   },
+   {
+    "span_id": "0a6fbf3ac5",
+    "parent_id": "305d5dbba0",
+    "name": "tool:check_entitlement",
+    "start": "2026-11-04T10:33:12.332+00:00",
+    "end": "2026-11-04T10:33:12.336+00:00",
+    "duration_ms": 3.64,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "customer_id": "CUS-409",
+      "order_id": "ORD-12011"
+     },
+     "forced_by": "planner:code",
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 3.5,
+     "corrections": [
+      "order_id ORD-12011 added from the evidence so the assessment covers this order"
+     ]
+    }
+   },
+   {
+    "span_id": "b158f00fec",
+    "parent_id": "305d5dbba0",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T10:33:12.336+00:00",
+    "end": "2026-11-04T10:33:22.831+00:00",
+    "duration_ms": 10495.56,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "The desk phone from order ORD-12011 arrived 5 days ago and will not power on at all. Can I get it replaced?",
+      "top_k": 5,
+      "product_area": "Shipping",
+      "policy_version": "current-30-day"
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "50f43af3449f41e1",
+     "trace_id_echoed": "50f43af3449f41e1",
+     "results": 5,
+     "policy_version": "current-30-day",
+     "server_latency_ms": 10398.9,
+     "outcome": "ok",
+     "latency_ms": 10493.7,
+     "corrections": [
+      "product_area Shipping added for a hardware_doa ticket",
+      "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+     ]
+    }
+   },
+   {
+    "span_id": "305d5dbba0",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T10:33:12.308+00:00",
+    "end": "2026-11-04T10:33:22.846+00:00",
+    "duration_ms": 10538.55,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 3,
+     "forced": 3,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "843ced7adf",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T10:33:22.847+00:00",
+    "end": "2026-11-04T10:33:22.863+00:00",
+    "duration_ms": 15.5,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "replacement_doa",
+     "policy_version": "current-30-day",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "c20c5a3600",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T10:33:22.869+00:00",
+    "end": "2026-11-04T10:36:33.868+00:00",
+    "duration_ms": 191003.09,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 899,
+     "output_tokens": 160,
+     "model_latency_ms": 190590.4,
+     "cost_usd": 0.00023085
+    }
+   },
+   {
+    "span_id": "d070b89475",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T10:36:33.879+00:00",
+    "end": "2026-11-04T10:36:33.891+00:00",
+    "duration_ms": 11.57,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "hard_failures": [
+      "policy_version_consistent"
+     ],
+     "failed": [
+      "not_cut_off",
+      "policy_version_consistent"
+     ]
+    }
+   },
+   {
+    "span_id": "69e948f63a",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T10:36:33.898+00:00",
+    "end": "2026-11-04T10:37:47.399+00:00",
+    "duration_ms": 73502.73,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 2,
+     "max_new_tokens": 160,
+     "input_tokens": 936,
+     "output_tokens": 160,
+     "model_latency_ms": 73373.7,
+     "cost_usd": 0.0002364
+    }
+   },
+   {
+    "span_id": "991e16d3ee",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T10:37:47.407+00:00",
+    "end": "2026-11-04T10:37:47.413+00:00",
+    "duration_ms": 6.55,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 2,
+     "hard_failures": [
+      "policy_version_consistent"
+     ],
+     "failed": [
+      "not_cut_off",
+      "policy_version_consistent"
+     ]
+    }
+   },
+   {
+    "span_id": "ea30c87aa9",
+    "parent_id": null,
+    "name": "decision.escalation",
+    "start": "2026-11-04T10:37:47.416+00:00",
+    "end": "2026-11-04T10:37:47.444+00:00",
+    "duration_ms": 27.66,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "reason": "output guardrail: draft failed policy_version_consistent",
+     "reference": "ESC-20261104-0009",
+     "queue": "billing"
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 1835,
+   "output_tokens": 320,
+   "model_calls": 2,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00046725,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00046725,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "refused",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "unverifiable",
+   "reason": "no charge facts on the request",
+   "expected": null
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 6,
+   "passed": 6,
+   "failed": 0,
+   "failed_names": [],
+   "hard_failures": [
+    "policy_version_consistent"
+   ],
+   "verdict": "pass",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-12011 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": true,
+     "detail": "tier=Standard, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "consistent with current-30-day",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

@@ -1,0 +1,118 @@
+{
+ "ran_at": "2026-11-04T12:32:21Z",
+ "run": "week12/runs/v1.1_20261104-143011.json",
+ "n_requests": 40,
+ "deflected_clean": 12,
+ "clean_deflection_rate_pct": 30.0,
+ "measured": {
+  "latency_ms": {
+   "n": 40,
+   "mean": 145538.1,
+   "p50": 96159.2,
+   "p95": 381689.0,
+   "max": 395309.0,
+   "min": 3.2
+  },
+  "generation_latency_ms": {
+   "n": 32,
+   "mean": 165557.0,
+   "p50": 123837.4,
+   "p95": 377679.8,
+   "max": 386001.2,
+   "min": 19604.0
+  },
+  "mcp_latency_ms": {
+   "n": 36,
+   "mean": 7215.2,
+   "p50": 7356.8,
+   "p95": 10493.7,
+   "max": 22723.4,
+   "min": 176.0
+  },
+  "tokens_in": 24245,
+  "tokens_out": 3375,
+  "tokens_per_request": 690.5,
+  "model_calls_per_request": 0.85,
+  "machine": "8 GB Apple M1 laptop, MPS fp16, one request at a time; drafter + embedder + reranker in process"
+ },
+ "assumptions": {
+  "machine_usd_per_hour": 0.35,
+  "machine_note": "0.35 USD/h stands in for an on-prem Apple-silicon box or a small GPU VM (A10-class spot ~0.3-0.6 USD/h); the measured latency is from an 8 GB M1 laptop, which is slower than either",
+  "api_rate_card": {
+   "input_per_mtok": 0.15,
+   "output_per_mtok": 0.6,
+   "note": "GPT-4o-mini class stand-in; used since Week 7"
+  },
+  "embedding_api_per_mtok": 0.02,
+  "embedding_tokens_per_query": 60,
+  "postgres_usd_per_month": 15.0,
+  "mcp_server_usd_per_month": 10.0,
+  "observability_usd_per_month": 5.0,
+  "agent_hourly_loaded_cost_usd": 28.0,
+  "tier1_handle_minutes": 8,
+  "peak_factor": 3.0
+ },
+ "cost_per_request_usd": {
+  "local_compute_basis": 0.02915,
+  "api_rate_card_basis": 0.01514,
+  "breakdown_local": {
+   "compute": 0.01415,
+   "embedding": 1e-06,
+   "fixed_infra_share": 0.015,
+   "tools_mcp": 0.0,
+   "tools_note": "order/entitlement/escalation are local calls (<5 ms); the MCP server is in the fixed share"
+  }
+ },
+ "per_deflected_ticket_usd": 0.09717,
+ "per_deflected_ticket_usd_api_basis": 0.05048,
+ "basis_short": "local compute at 0.35 USD/h x measured latency + infra share; clean deflections only",
+ "human_cost_per_ticket_usd": 3.73,
+ "load": {
+  "current": {
+   "label": "current: 2,000 tickets/month",
+   "tickets": 2000,
+   "window_seconds": 2592000,
+   "requests_per_second_avg": 0.0008,
+   "requests_per_second_peak": 0.0023,
+   "concurrent_requests_avg": 0.11,
+   "concurrent_requests_peak": 0.34,
+   "concurrent_at_p95_peak": 0.88
+  },
+  "black_friday": {
+   "label": "Black Friday: 20,000 tickets/week",
+   "tickets": 20000,
+   "window_seconds": 604800,
+   "requests_per_second_avg": 0.0331,
+   "requests_per_second_peak": 0.0992,
+   "concurrent_requests_avg": 4.81,
+   "concurrent_requests_peak": 14.44,
+   "concurrent_at_p95_peak": 37.87
+  }
+ },
+ "capacity": {
+  "model": "one in-process model behind the server's single lock (serial)",
+  "mean_latency_s": 145.5,
+  "p95_latency_s": 381.7,
+  "serial_requests_per_hour": 24.7,
+  "serial_requests_per_day": 594.0,
+  "current_peak_needs_workers": 0.33,
+  "black_friday_peak_needs_workers": 14.44,
+  "black_friday_workers_recommended": 22,
+  "retrieval": {
+   "pgvector": "13 docs / 189 chunks: exact scan < 10 ms; at 10x corpus still < 50 ms with HNSW",
+   "bm25": "in-memory index rebuilt per process",
+   "reranker": "cross-encoder ~100-300 ms per query on CPU"
+  },
+  "mcp_server": "one uvicorn process; the embedder and reranker load once; one search ~0.2-1 s warm; stateless HTTP scales horizontally",
+  "rate_limits": "none for local models; on the API basis 20k tickets/week x ~1.3k tokens = ~26M tokens/week, inside typical tier limits but needs retries/backoff",
+  "first_failure_point": "the serial model lock: at the Black Friday peak the queue grows faster than one worker drains it"
+ },
+ "tenx_plan": [
+  "Run the drafter as a worker pool (N = peak RPS x mean latency x 1.5) behind a queue; the server already returns 409 instead of queueing, so add a job queue (Redis/RQ or Celery) and poll for the result",
+  "Move generation off the 1.5B local model to a hosted endpoint or a GPU box; measured mean latency is the lever, not token cost",
+  "Keep the MCP help-centre server stateless and run 2+ replicas; cache search results per (query, policy_version) for 5 minutes",
+  "Postgres: HNSW index on chunks.embedding, pooled connections, read replica for retrieval",
+  "Observability: rotate traces.jsonl daily; the SQLite index becomes Postgres once >1 writer exists",
+  "Pre-check the cheap deterministic paths (sensitive intents escalate in <50 ms with no model) so they never wait behind generation"
+ ]
+}

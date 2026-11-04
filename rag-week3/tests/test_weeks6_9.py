@@ -44,6 +44,8 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "experiments"))
 os.chdir(ROOT)
 os.environ.setdefault("RAG_LANGFUSE", "0")
+# Week 11 traces the MCP chat too; keep this suite's API calls out of traces/.
+os.environ.setdefault("RAG_TRACE", "0")
 
 failures = []
 
@@ -67,8 +69,11 @@ import week6_eval as w6
 v0 = (ROOT / "week6" / "judge_v0_presplit.txt").read_text(encoding="utf-8").lower()
 v1 = (ROOT / "week6" / "judge_v1.txt").read_text(encoding="utf-8").lower()
 
-check("6 deterministic assertions, 1 judged criterion",
-      len(ta.ASSERTIONS) == 6 and len(w6.JUDGED_CRITERIA) == 1,
+# Week 6 split six deterministic criteria out of the judge; Week 11 added a
+# seventh (no_denial_inside_window, the eligible side of the refund window)
+# after the support drill found the gap. The judge still grades ONE criterion.
+check("7 deterministic assertions (6 from Week 6 + 1 from Week 11), 1 judged criterion",
+      len(ta.ASSERTIONS) == 7 and len(w6.JUDGED_CRITERIA) == 1,
       f"{len(ta.ASSERTIONS)} / {len(w6.JUDGED_CRITERIA)}")
 
 # The six deterministic criteria are numbered lines in the pre-split judge;

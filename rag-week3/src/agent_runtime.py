@@ -47,6 +47,17 @@ def load_model():
     global _MODEL, _TOKENIZER
 
     if _MODEL is None:
+        # Week 12: the ticket drafter (ticket_reply) may already hold these
+        # exact weights. On an 8 GB machine a second copy means swapping, so
+        # the two caches share one model object.
+        try:
+            import ticket_reply
+            cached = ticket_reply._PIPELINE
+            if cached is not None and ticket_reply.TICKET_MODEL_NAME == MODEL_NAME:
+                _MODEL, _TOKENIZER = cached.model, cached.tokenizer
+                return _MODEL, _TOKENIZER
+        except Exception:
+            pass
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 

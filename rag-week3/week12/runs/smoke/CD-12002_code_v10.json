@@ -1,0 +1,999 @@
+{
+ "ticket_id": "CD-12002",
+ "customer_id": "CUS-402",
+ "trace_id": "fcb640115c0c465d",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": false,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "refund_approved",
+ "answer": "CD-12002: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that you may have concerns about eligibility for a refund due to the time elapsed since the charge.\n\nAccording to our verified facts:\n\n- Your charge was made on [phone redacted] (2",
+ "intent": "refund",
+ "understanding": {
+  "intent": "refund",
+  "sensitive": false,
+  "needs_account_evidence": true,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [
+    "ORD-12002"
+   ],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [
+    240.0
+   ],
+   "days": [
+    14
+   ]
+  },
+  "required_evidence": [
+   "lookup_order",
+   "check_entitlement",
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": "current-30-day",
+ "policy_label": "Current 30-Day",
+ "verification": {
+  "entitlement_verified": true,
+  "policy_version": "current-30-day",
+  "policy_label": "Current 30-Day",
+  "tier": "Standard",
+  "plan": "Standard",
+  "refund_assessment": {
+   "order_id": "ORD-12002",
+   "assessable": true,
+   "days_since_charge": 20,
+   "window_days": 30,
+   "policy_version": "current-30-day",
+   "policy_article_id": "HC-008",
+   "order_status": "charged",
+   "duplicate_charge": false,
+   "amount": 240.0,
+   "eligible": true,
+   "rule": "refund_if_within_window",
+   "reason": "charged 20 days ago, within the 30-day window of the current-30-day policy"
+  },
+  "shipping_entitlement": {
+   "standard": "included",
+   "expedited": "paid_upgrade",
+   "replacement": "included_for_dead_on_arrival",
+   "hardware_included": false
+  },
+  "order_found": true,
+  "order": {
+   "found": true,
+   "order_id": "ORD-12002",
+   "customer_id": "CUS-402",
+   "product": "CloudDesk Team plan (monthly)",
+   "kind": "subscription",
+   "amount": 240.0,
+   "currency": "USD",
+   "charge_date": "[phone redacted]",
+   "days_since_charge": 20,
+   "order_status": "charged",
+   "invoice_id": "INV-12002",
+   "shipping": null,
+   "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+  },
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 5
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Refund Amount and Timing",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-8",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 2,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Refund Eligibility Window",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-5",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 3,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Refund Eligibility Window",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-4",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 4,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Duplicate Charges",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-7",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 5,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Frequently Asked Questions",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-12",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 23.5,
+   "span_id": "682348a37f",
+   "kind": "code",
+   "summary": "intent refund"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 1153.1,
+   "span_id": "4db14d0c84",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "lookup_order",
+   "status": "ok",
+   "duration_ms": 2.1,
+   "span_id": "3bb196f9d6",
+   "kind": "tool",
+   "server": null,
+   "forced_by": "planner:code",
+   "arguments": {
+    "order_id": "ORD-12002",
+    "customer_id": "CUS-402"
+   },
+   "corrections": [],
+   "summary": "charged"
+  },
+  {
+   "step": 4,
+   "name": "check_entitlement",
+   "status": "ok",
+   "duration_ms": 1.8,
+   "span_id": "35b4867d42",
+   "kind": "tool",
+   "server": null,
+   "forced_by": "planner:code",
+   "arguments": {
+    "customer_id": "CUS-402",
+    "order_id": "ORD-12002"
+   },
+   "corrections": [
+    "order_id ORD-12002 added from the evidence so the assessment covers this order"
+   ],
+   "summary": "Standard"
+  },
+  {
+   "step": 5,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 26787.4,
+   "span_id": "36eefe6cc5",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get this refunded?",
+    "top_k": 5
+   },
+   "corrections": [],
+   "summary": "5 passages"
+  },
+  {
+   "step": 6,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 26796.3,
+   "span_id": "c697a19e97",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 7,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 102.3,
+   "span_id": "d1c1b69ab6",
+   "kind": "code",
+   "summary": "answered: refund_approved"
+  },
+  {
+   "step": 8,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 296231.6,
+   "span_id": "c60647a04f",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 1025,
+   "output_tokens": 64,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00019215,
+   "summary": "CD-12002: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that "
+  },
+  {
+   "step": 9,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "31a293305e",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "refund_amount_numeric"
+   ],
+   "hard_failures": [],
+   "summary": "1 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "lookup_order",
+   "arguments": {
+    "order_id": "ORD-12002",
+    "customer_id": "CUS-402"
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "found": true,
+    "order_id": "ORD-12002",
+    "customer_id": "CUS-402",
+    "product": "CloudDesk Team plan (monthly)",
+    "kind": "subscription",
+    "amount": 240.0,
+    "currency": "USD",
+    "charge_date": "[phone redacted]",
+    "days_since_charge": 20,
+    "order_status": "charged",
+    "invoice_id": "INV-12002",
+    "shipping": null,
+    "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "check_entitlement",
+   "arguments": {
+    "customer_id": "CUS-402",
+    "order_id": "ORD-12002"
+   },
+   "forced_by": "planner:code",
+   "corrections": [
+    "order_id ORD-12002 added from the evidence so the assessment covers this order"
+   ],
+   "result": {
+    "verified": true,
+    "customer_id": "CUS-402",
+    "plan": "Standard",
+    "tier": "Standard",
+    "subscription_status": "active",
+    "term": "monthly",
+    "renewal_date": "[phone redacted]",
+    "refund_policy": {
+     "version": "current-30-day",
+     "label": "Current 30-Day",
+     "article_id": "HC-008",
+     "window_days": 30,
+     "duplicate_charge_rule": "a duplicate charge is refunded in full at any age",
+     "terms_effective": "[phone redacted]"
+    },
+    "shipping_entitlement": {
+     "standard": "included",
+     "expedited": "paid_upgrade",
+     "replacement": "included_for_dead_on_arrival",
+     "hardware_included": false
+    },
+    "integration": "DEMO ADAPTER: local subscription store (data/capstone/seed/subscriptions.json); production would call the billing/entitlement service",
+    "refund_assessment": {
+     "order_id": "ORD-12002",
+     "assessable": true,
+     "days_since_charge": 20,
+     "window_days": 30,
+     "policy_version": "current-30-day",
+     "policy_article_id": "HC-008",
+     "order_status": "charged",
+     "duplicate_charge": false,
+     "amount": 240.0,
+     "eligible": true,
+     "rule": "refund_if_within_window",
+     "reason": "charged 20 days ago, within the 30-day window of the current-30-day policy"
+    }
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get this refunded?",
+    "top_k": 5
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "query": "I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get this refunded?",
+    "dropped": [],
+    "policy_version_filter": null,
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 26744.6,
+    "trace_id": "fcb640115c0c465d",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "refund_approved",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 1025,
+  "output_tokens": 64,
+  "model_calls": 1,
+  "tool_calls": 3,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 3,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "lookup_order": 1,
+   "check_entitlement": 1,
+   "search_help_centre": 1
+  },
+  "tokens": 1089,
+  "cost_usd": 0.00019215
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "fcb640115c0c465d",
+  "calls": 1,
+  "latency_ms": 26787.4,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 324829.7,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12002 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": true,
+    "passed": false,
+    "detail": "expected 240.00; numbers in reply: [2.0]"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "64 tokens of 200"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no denial (20 days <= 30)"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "eligible, not denied",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no free expedited offer (entitlement: paid_upgrade)",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": []
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 13,
+  "passed": 12,
+  "failed": 1,
+  "failed_names": [
+   "refund_amount_numeric"
+  ],
+  "hard_failures": [],
+  "verdict": "fail",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12002 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": true,
+    "passed": false,
+    "detail": "expected 240.00; numbers in reply: [2.0]"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "64 tokens of 200"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no denial (20 days <= 30)"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "eligible, not denied",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no free expedited offer (entitlement: paid_upgrade)",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "log": [
+  "[agent]   FORCED tool lookup_order({\"order_id\": \"ORD-12002\", \"customer_id\": \"CUS-402\"}) -> {\"found\": true, \"order_id\": \"ORD-12002\", \"customer_id\": \"CUS-402\", \"product\": \"CloudDesk Team plan (monthly)\", \"kind\": \"subscription\", \"amount\": 240.0, \"currenc",
+  "[agent]   FORCED tool check_entitlement({\"customer_id\": \"CUS-402\", \"order_id\": \"ORD-12002\"}) -> {\"verified\": true, \"customer_id\": \"CUS-402\", \"plan\": \"Standard\", \"tier\": \"Standard\", \"subscription_status\": \"active\", \"term\": \"monthly\", \"renewal_date\": \"[phone",
+  "[agent]   FORCED tool search_help_centre({\"query\": \"I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get this refunded?\", \"top_k\": 5}) -> {\"query\": \"I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get "
+ ],
+ "generation": {
+  "raw": "CD-12002: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge. We understand that you may have concerns about eligibility for a refund due to the time elapsed since the charge.\n\nAccording to our verified facts:\n\n- Your charge was made on [phone redacted] (2",
+  "input_tokens": 1025,
+  "output_tokens": 64,
+  "latency_ms": 296231.6,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct"
+ },
+ "request_id": "req-c49c939a2c2b",
+ "observability": {
+  "request_id": "req-c49c939a2c2b",
+  "spans": [
+   {
+    "span_id": "682348a37f",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T07:57:58.408+00:00",
+    "end": "2026-11-04T07:57:58.434+00:00",
+    "duration_ms": 25.53,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "refund",
+     "injection": false,
+     "required": [
+      "lookup_order",
+      "check_entitlement",
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "4db14d0c84",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T07:57:58.434+00:00",
+    "end": "2026-11-04T07:57:59.587+00:00",
+    "duration_ms": 1153.06,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "3bb196f9d6",
+    "parent_id": "c697a19e97",
+    "name": "tool:lookup_order",
+    "start": "2026-11-04T07:57:59.588+00:00",
+    "end": "2026-11-04T07:57:59.590+00:00",
+    "duration_ms": 2.11,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "order_id": "ORD-12002",
+      "customer_id": "CUS-402"
+     },
+     "forced_by": "planner:code",
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 2.1
+    }
+   },
+   {
+    "span_id": "35b4867d42",
+    "parent_id": "c697a19e97",
+    "name": "tool:check_entitlement",
+    "start": "2026-11-04T07:57:59.590+00:00",
+    "end": "2026-11-04T07:57:59.592+00:00",
+    "duration_ms": 1.8,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "customer_id": "CUS-402",
+      "order_id": "ORD-12002"
+     },
+     "forced_by": "planner:code",
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 1.8,
+     "corrections": [
+      "order_id ORD-12002 added from the evidence so the assessment covers this order"
+     ]
+    }
+   },
+   {
+    "span_id": "36eefe6cc5",
+    "parent_id": "c697a19e97",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T07:57:59.592+00:00",
+    "end": "2026-11-04T07:58:26.379+00:00",
+    "duration_ms": 26787.49,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "I was charged $240 twenty days ago for a seat we never used. I read somewhere that refunds are only possible within 14 days, so am I too late to get this refunded?",
+      "top_k": 5
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "fcb640115c0c465d",
+     "trace_id_echoed": "fcb640115c0c465d",
+     "results": 5,
+     "server_latency_ms": 26744.6,
+     "outcome": "ok",
+     "latency_ms": 26787.4
+    }
+   },
+   {
+    "span_id": "c697a19e97",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T07:57:59.587+00:00",
+    "end": "2026-11-04T07:58:26.383+00:00",
+    "duration_ms": 26796.24,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 3,
+     "forced": 3,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "d1c1b69ab6",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T07:58:26.383+00:00",
+    "end": "2026-11-04T07:58:26.485+00:00",
+    "duration_ms": 102.24,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "refund_approved",
+     "policy_version": "current-30-day",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "c60647a04f",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T07:58:26.492+00:00",
+    "end": "2026-11-04T08:03:23.181+00:00",
+    "duration_ms": 296699.71,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 200,
+     "input_tokens": 1025,
+     "output_tokens": 64,
+     "model_latency_ms": 296231.6,
+     "cost_usd": 0.00019215
+    }
+   },
+   {
+    "span_id": "31a293305e",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T08:03:23.200+00:00",
+    "end": "2026-11-04T08:03:23.215+00:00",
+    "duration_ms": 15.66,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "failed": [
+      "refund_amount_numeric"
+     ]
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 1025,
+   "output_tokens": 64,
+   "model_calls": 1,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00019215,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00019215,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "consistent",
+   "expected": "eligible: full refund of the exact amount",
+   "reason": "no denial of an eligible refund"
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 13,
+   "passed": 12,
+   "failed": 1,
+   "failed_names": [
+    "refund_amount_numeric"
+   ],
+   "hard_failures": [],
+   "verdict": "fail",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-12002 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": true,
+     "passed": false,
+     "detail": "expected 240.00; numbers in reply: [2.0]"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": true,
+     "detail": "tier=Standard, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "64 tokens of 200"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": true,
+     "passed": true,
+     "detail": "no denial (20 days <= 30)"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "eligible, not denied",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "consistent with current-30-day",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no free expedited offer (entitlement: paid_upgrade)",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

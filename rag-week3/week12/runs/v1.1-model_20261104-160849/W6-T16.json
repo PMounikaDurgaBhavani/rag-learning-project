@@ -1,0 +1,1108 @@
+{
+ "ticket_id": "CD-10416",
+ "customer_id": "CUS-10416",
+ "trace_id": "5e9e8a75b9c04e57",
+ "prompt_version": "capstone-v1.1",
+ "planner": "model",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "refund_denied",
+ "answer": "[ESCALATED-PRIORITY]\nCD-10416: Customer Message\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge of $75. Your charge was made on August 20th, 2026, which is 76 days prior to today's date. According to our refund eligibility policy, charges made more than 30 days prior are not eligible for a refund. Therefore, we cannot process a refund for this transaction at this time.\n\nWe understand that you may have experienced inconvenience due to the unexpected charge. We recommend checking your organization settings to ensure automatic renewals are properly managed going forward.\n\nPlease let us know if there is anything else we can assist you with.\n\nBest regards,\nCloudDesk Support Team",
+ "intent": "refund",
+ "understanding": {
+  "intent": "refund",
+  "sensitive": false,
+  "needs_account_evidence": true,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [
+    "ORD-10416"
+   ],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [
+    75.0
+   ],
+   "days": [
+    76
+   ]
+  },
+  "required_evidence": [
+   "lookup_order",
+   "check_entitlement",
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": "current-30-day",
+ "policy_label": "Current 30-Day",
+ "verification": {
+  "entitlement_verified": true,
+  "policy_version": "current-30-day",
+  "policy_label": "Current 30-Day",
+  "tier": "Priority",
+  "plan": "Priority",
+  "refund_assessment": {
+   "order_id": "ORD-10416",
+   "assessable": true,
+   "days_since_charge": 76,
+   "window_days": 30,
+   "policy_version": "current-30-day",
+   "policy_article_id": "HC-008",
+   "order_status": "charged",
+   "duplicate_charge": false,
+   "amount": 75.0,
+   "eligible": false,
+   "rule": "refund_if_within_window",
+   "reason": "charged 76 days ago, outside the 30-day window of the current-30-day policy"
+  },
+  "shipping_entitlement": {
+   "standard": "included",
+   "expedited": "included",
+   "replacement": "included_expedited",
+   "hardware_included": false
+  },
+  "order_found": true,
+  "order": {
+   "found": true,
+   "order_id": "ORD-10416",
+   "customer_id": "CUS-10416",
+   "product": "CloudDesk Team plan (monthly)",
+   "kind": "subscription",
+   "amount": 75.0,
+   "currency": "USD",
+   "charge_date": "2026-08-20",
+   "days_since_charge": 76,
+   "order_status": "charged",
+   "invoice_id": "INV-10416",
+   "shipping": null,
+   "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+  },
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 5
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "refund-returns-current-30-day",
+    "article_id": "HC-008",
+    "title": "Refunds, Support Tiers and Escalation",
+    "section": "Escalating Priority Tickets",
+    "last_updated": "2026-09-15",
+    "policy_version": "current-30-day",
+    "policy_label": "Current 30-Day",
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-008-markdown-11",
+    "url": "/app/help-centre/refund-returns-current-30-day"
+   },
+   {
+    "marker": 2,
+    "slug": "refund-returns-current-30-day",
+    "article_id": "HC-008",
+    "title": "Refunds, Support Tiers and Escalation",
+    "section": "Support Tiers",
+    "last_updated": "2026-09-15",
+    "policy_version": "current-30-day",
+    "policy_label": "Current 30-Day",
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-008-markdown-10",
+    "url": "/app/help-centre/refund-returns-current-30-day"
+   },
+   {
+    "marker": 3,
+    "slug": "refund-returns-current-30-day",
+    "article_id": "HC-008",
+    "title": "Refunds, Support Tiers and Escalation",
+    "section": "Overview",
+    "last_updated": "2026-09-15",
+    "policy_version": "current-30-day",
+    "policy_label": "Current 30-Day",
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-008-markdown-1",
+    "url": "/app/help-centre/refund-returns-current-30-day"
+   },
+   {
+    "marker": 4,
+    "slug": "refund-returns-current-30-day",
+    "article_id": "HC-008",
+    "title": "Refunds, Support Tiers and Escalation",
+    "section": "Refund Eligibility Window",
+    "last_updated": "2026-09-15",
+    "policy_version": "current-30-day",
+    "policy_label": "Current 30-Day",
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-008-markdown-3",
+    "url": "/app/help-centre/refund-returns-current-30-day"
+   },
+   {
+    "marker": 5,
+    "slug": "refund-returns-current-30-day",
+    "article_id": "HC-008",
+    "title": "Refunds, Support Tiers and Escalation",
+    "section": "Refund Eligibility Window",
+    "last_updated": "2026-09-15",
+    "policy_version": "current-30-day",
+    "policy_label": "Current 30-Day",
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-008-markdown-4",
+    "url": "/app/help-centre/refund-returns-current-30-day"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 2.1,
+   "span_id": "cf3446cc60",
+   "kind": "code",
+   "summary": "intent refund"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 395.2,
+   "span_id": "6b9df7d91d",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 148275.6,
+   "span_id": "96cc8d3dc6",
+   "kind": "model",
+   "lap": 1,
+   "input_tokens": 1186,
+   "output_tokens": 40,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.0002019,
+   "summary": "<tool_call>\n{\"name\": \"lookup_order\", \"arguments\": {\"order_id\": \"ORD-10416\", \"customer_id\": \"CUS-10416\"}}\n</tool_call>"
+  },
+  {
+   "step": 4,
+   "name": "lookup_order",
+   "status": "ok",
+   "duration_ms": 20.0,
+   "span_id": "c8b00ad314",
+   "kind": "tool",
+   "server": null,
+   "forced_by": null,
+   "arguments": {
+    "order_id": "ORD-10416",
+    "customer_id": "CUS-10416"
+   },
+   "corrections": [],
+   "summary": "charged"
+  },
+  {
+   "step": 5,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 36921.1,
+   "span_id": "b693b96bf3",
+   "kind": "model",
+   "lap": 2,
+   "input_tokens": 1385,
+   "output_tokens": 41,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00023235,
+   "summary": "<tool_call>\n{\"name\": \"check_entitlement\", \"arguments\": {\"customer_id\": \"CUS-10416\", \"order_id\": \"ORD-10416\"}}\n</tool_cal"
+  },
+  {
+   "step": 6,
+   "name": "check_entitlement",
+   "status": "ok",
+   "duration_ms": 9.6,
+   "span_id": "84aee906f4",
+   "kind": "tool",
+   "server": null,
+   "forced_by": null,
+   "arguments": {
+    "customer_id": "CUS-10416",
+    "order_id": "ORD-10416"
+   },
+   "corrections": [],
+   "summary": "Priority"
+  },
+  {
+   "step": 7,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 61370.2,
+   "span_id": "38c14ff457",
+   "kind": "model",
+   "lap": 3,
+   "input_tokens": 1776,
+   "output_tokens": 33,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.0002862,
+   "summary": "<tool_call>\n{\"name\": \"search_help_centre\", \"arguments\": {\"query\": \"refund policy for priority tier\", \"top_k\": 5}}\n</tool"
+  },
+  {
+   "step": 8,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 7789.7,
+   "span_id": "3024c0b5ac",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": null,
+   "arguments": {
+    "query": "refund policy for priority tier",
+    "top_k": 5,
+    "policy_version": "current-30-day"
+   },
+   "corrections": [
+    "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "summary": "5 passages"
+  },
+  {
+   "step": 9,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 255053.6,
+   "span_id": "f411a1b3e8",
+   "kind": "agent",
+   "laps": 3,
+   "summary": "required evidence complete"
+  },
+  {
+   "step": 10,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 11.6,
+   "span_id": "95a8f020a1",
+   "kind": "code",
+   "summary": "answered: refund_denied"
+  },
+  {
+   "step": 11,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 34838.9,
+   "span_id": "416ae6bb09",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 958,
+   "output_tokens": 148,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.0002325,
+   "summary": "CD-10416: Customer Message\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge of $75. Your charge "
+  },
+  {
+   "step": 12,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "ad61eef6c4",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "summary": "1 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 1,
+   "type": "tool",
+   "name": "lookup_order",
+   "arguments": {
+    "order_id": "ORD-10416",
+    "customer_id": "CUS-10416"
+   },
+   "forced_by": null,
+   "corrections": [],
+   "result": {
+    "found": true,
+    "order_id": "ORD-10416",
+    "customer_id": "CUS-10416",
+    "product": "CloudDesk Team plan (monthly)",
+    "kind": "subscription",
+    "amount": 75.0,
+    "currency": "USD",
+    "charge_date": "2026-08-20",
+    "days_since_charge": 76,
+    "order_status": "charged",
+    "invoice_id": "INV-10416",
+    "shipping": null,
+    "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+   },
+   "error": null
+  },
+  {
+   "lap": 2,
+   "type": "tool",
+   "name": "check_entitlement",
+   "arguments": {
+    "customer_id": "CUS-10416",
+    "order_id": "ORD-10416"
+   },
+   "forced_by": null,
+   "corrections": [],
+   "result": {
+    "verified": true,
+    "customer_id": "CUS-10416",
+    "plan": "Priority",
+    "tier": "Priority",
+    "subscription_status": "active",
+    "term": "annual",
+    "renewal_date": "2027-03-04",
+    "refund_policy": {
+     "version": "current-30-day",
+     "label": "Current 30-Day",
+     "article_id": "HC-008",
+     "window_days": 30,
+     "duplicate_charge_rule": "a duplicate charge is refunded in full at any age",
+     "terms_effective": "2026-09-15"
+    },
+    "shipping_entitlement": {
+     "standard": "included",
+     "expedited": "included",
+     "replacement": "included_expedited",
+     "hardware_included": false
+    },
+    "integration": "DEMO ADAPTER: local subscription store (data/capstone/seed/subscriptions.json); production would call the billing/entitlement service",
+    "refund_assessment": {
+     "order_id": "ORD-10416",
+     "assessable": true,
+     "days_since_charge": 76,
+     "window_days": 30,
+     "policy_version": "current-30-day",
+     "policy_article_id": "HC-008",
+     "order_status": "charged",
+     "duplicate_charge": false,
+     "amount": 75.0,
+     "eligible": false,
+     "rule": "refund_if_within_window",
+     "reason": "charged 76 days ago, outside the 30-day window of the current-30-day policy"
+    }
+   },
+   "error": null
+  },
+  {
+   "lap": 3,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "refund policy for priority tier",
+    "top_k": 5,
+    "policy_version": "current-30-day"
+   },
+   "forced_by": null,
+   "corrections": [
+    "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "result": {
+    "query": "refund policy for priority tier",
+    "dropped": [],
+    "policy_version_filter": "current-30-day",
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 7333.1,
+    "trace_id": "5e9e8a75b9c04e57",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 3,
+   "type": "answer",
+   "decision": "refund_denied",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "required evidence complete",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 3,
+  "input_tokens": 5305,
+  "output_tokens": 262,
+  "model_calls": 4,
+  "tool_calls": 3,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 0,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "lookup_order": 1,
+   "check_entitlement": 1,
+   "search_help_centre": 1
+  },
+  "tokens": 5567,
+  "cost_usd": 0.00095295
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "5e9e8a75b9c04e57",
+  "calls": 1,
+  "latency_ms": 7789.7,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 290715.1,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10416 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised (76 days > 30)"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "148 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "ineligible, not promised",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": [],
+  "measured_on": "the raw draft, before any post-processing"
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 11,
+  "passed": 10,
+  "failed": 1,
+  "failed_names": [
+   "escalation_tag_iff_priority"
+  ],
+  "hard_failures": [],
+  "verdict": "fail",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10416 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised (76 days > 30)"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "148 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "ineligible, not promised",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with current-30-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "post_processing": [
+  "escalation_tag_added"
+ ],
+ "log": [
+  "[agent] ticket=CD-10416 planner=model budgets={'max_iterations': 6, 'max_tokens': 12000, 'max_cost_usd': 0.02, 'max_wall_seconds': 300.0} tools=['lookup_order', 'check_entitlement', 'escalate_ticket', 'search_help_centre', 'get_help_centre_article']",
+  "[agent] lap 1: in=1186 out=40 148276ms text='<tool_call>\\n{\"name\": \"lookup_order\", \"arguments\": {\"order_id\": \"ORD-10416\", \"customer_id\": \"CUS-1041'",
+  "[agent]   tool lookup_order({\"order_id\": \"ORD-10416\", \"customer_id\": \"CUS-10416\"}) -> {\"found\": true, \"order_id\": \"ORD-10416\", \"customer_id\": \"CUS-10416\", \"product\": \"CloudDesk Team plan (monthly)\", \"kind\": \"subscription\", \"amount\": 75.0, \"curren",
+  "[agent] lap 2: in=1385 out=41 36921ms text='<tool_call>\\n{\"name\": \"check_entitlement\", \"arguments\": {\"customer_id\": \"CUS-10416\", \"order_id\": \"ORD'",
+  "[agent]   tool check_entitlement({\"customer_id\": \"CUS-10416\", \"order_id\": \"ORD-10416\"}) -> {\"verified\": true, \"customer_id\": \"CUS-10416\", \"plan\": \"Priority\", \"tier\": \"Priority\", \"subscription_status\": \"active\", \"term\": \"annual\", \"renewal_date\": \"2027-",
+  "[agent] lap 3: in=1776 out=33 61370ms text='<tool_call>\\n{\"name\": \"search_help_centre\", \"arguments\": {\"query\": \"refund policy for priority tier\",'",
+  "[agent]   tool search_help_centre({\"query\": \"refund policy for priority tier\", \"top_k\": 5, \"policy_version\": \"current-30-day\"}) -> {\"query\": \"refund policy for priority tier\", \"results\": [{\"article_id\": \"HC-008\", \"slug\": \"refund-returns-current-30-day\", \"title\": \"Refunds, Support Tiers and "
+ ],
+ "generation": {
+  "raw": "CD-10416: Customer Message\n\nDear Customer,\n\nThank you for reaching out regarding your recent charge of $75. Your charge was made on August 20th, 2026, which is 76 days prior to today's date. According to our refund eligibility policy, charges made more than 30 days prior are not eligible for a refund. Therefore, we cannot process a refund for this transaction at this time.\n\nWe understand that you may have experienced inconvenience due to the unexpected charge. We recommend checking your organization settings to ensure automatic renewals are properly managed going forward.\n\nPlease let us know if there is anything else we can assist you with.\n\nBest regards,\nCloudDesk Support Team",
+  "input_tokens": 958,
+  "output_tokens": 148,
+  "latency_ms": 34838.9,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": false
+ },
+ "request_id": "req-daca2ec7ed62",
+ "observability": {
+  "request_id": "req-daca2ec7ed62",
+  "spans": [
+   {
+    "span_id": "cf3446cc60",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T11:06:55.067+00:00",
+    "end": "2026-11-04T11:06:55.069+00:00",
+    "duration_ms": 2.08,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "refund",
+     "injection": false,
+     "required": [
+      "lookup_order",
+      "check_entitlement",
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "6b9df7d91d",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T11:06:55.069+00:00",
+    "end": "2026-11-04T11:06:55.464+00:00",
+    "duration_ms": 394.75,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "96cc8d3dc6",
+    "parent_id": "f411a1b3e8",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:06:55.465+00:00",
+    "end": "2026-11-04T11:09:23.998+00:00",
+    "duration_ms": 148537.01,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 1,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1186,
+     "output_tokens": 40,
+     "latency_ms": 148275.6,
+     "cost_usd": 0.0002019
+    }
+   },
+   {
+    "span_id": "c8b00ad314",
+    "parent_id": "f411a1b3e8",
+    "name": "tool:lookup_order",
+    "start": "2026-11-04T11:09:24.012+00:00",
+    "end": "2026-11-04T11:09:24.033+00:00",
+    "duration_ms": 20.56,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "order_id": "ORD-10416",
+      "customer_id": "CUS-10416"
+     },
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 20.0
+    }
+   },
+   {
+    "span_id": "b693b96bf3",
+    "parent_id": "f411a1b3e8",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:09:24.036+00:00",
+    "end": "2026-11-04T11:10:01.140+00:00",
+    "duration_ms": 37105.56,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 2,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1385,
+     "output_tokens": 41,
+     "latency_ms": 36921.1,
+     "cost_usd": 0.00023235
+    }
+   },
+   {
+    "span_id": "84aee906f4",
+    "parent_id": "f411a1b3e8",
+    "name": "tool:check_entitlement",
+    "start": "2026-11-04T11:10:01.148+00:00",
+    "end": "2026-11-04T11:10:01.161+00:00",
+    "duration_ms": 12.77,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "customer_id": "CUS-10416",
+      "order_id": "ORD-10416"
+     },
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 9.6
+    }
+   },
+   {
+    "span_id": "38c14ff457",
+    "parent_id": "f411a1b3e8",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:10:01.178+00:00",
+    "end": "2026-11-04T11:11:02.688+00:00",
+    "duration_ms": 61511.31,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 3,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1776,
+     "output_tokens": 33,
+     "latency_ms": 61370.2,
+     "cost_usd": 0.0002862
+    }
+   },
+   {
+    "span_id": "3024c0b5ac",
+    "parent_id": "f411a1b3e8",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T11:11:02.697+00:00",
+    "end": "2026-11-04T11:11:10.488+00:00",
+    "duration_ms": 7791.57,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "refund policy for priority tier",
+      "top_k": 5,
+      "policy_version": "current-30-day"
+     },
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "5e9e8a75b9c04e57",
+     "trace_id_echoed": "5e9e8a75b9c04e57",
+     "results": 5,
+     "policy_version": "current-30-day",
+     "server_latency_ms": 7333.1,
+     "outcome": "ok",
+     "latency_ms": 7789.7,
+     "corrections": [
+      "policy_version current-30-day enforced from the verified entitlement (capstone-v1.1)"
+     ]
+    }
+   },
+   {
+    "span_id": "f411a1b3e8",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T11:06:55.465+00:00",
+    "end": "2026-11-04T11:11:10.511+00:00",
+    "duration_ms": 255049.87,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "model",
+     "laps": 3,
+     "tool_calls": 3,
+     "forced": 0,
+     "end": "required evidence complete"
+    }
+   },
+   {
+    "span_id": "95a8f020a1",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T11:11:10.516+00:00",
+    "end": "2026-11-04T11:11:10.527+00:00",
+    "duration_ms": 11.64,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "refund_denied",
+     "policy_version": "current-30-day",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "416ae6bb09",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T11:11:10.533+00:00",
+    "end": "2026-11-04T11:11:45.760+00:00",
+    "duration_ms": 35228.04,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 958,
+     "output_tokens": 148,
+     "model_latency_ms": 34838.9,
+     "cost_usd": 0.0002325
+    }
+   },
+   {
+    "span_id": "ad61eef6c4",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T11:11:45.766+00:00",
+    "end": "2026-11-04T11:11:45.777+00:00",
+    "duration_ms": 11.32,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 5305,
+   "output_tokens": 262,
+   "model_calls": 4,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00095295,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00095295,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "consistent",
+   "expected": "not eligible: older than 30 days and not a duplicate",
+   "reason": "no refund promised outside the window"
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 11,
+   "passed": 10,
+   "failed": 1,
+   "failed_names": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "verdict": "fail",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-10416 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": false,
+     "detail": "tier=Priority, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised (76 days > 30)"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "148 tokens of 160"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "ineligible, not promised",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "consistent with current-30-day",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

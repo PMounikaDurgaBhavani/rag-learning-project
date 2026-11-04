@@ -15,11 +15,17 @@ REFUND_WINDOW_DAYS = 30
 
 
 def refund_eligible(ticket):
-    """HC-008: within 30 days of the charge, or a duplicate charge at any age."""
+    """HC-008: within 30 days of the charge, or a duplicate charge at any age.
+
+    Week 12: a ticket may carry refund_window_days from the verified
+    entitlement (14 for accounts still on the retired HC-009 terms). Absent
+    that field the HC-008 constant applies, so every earlier week is unchanged.
+    """
     if ticket.get("duplicate_charge"):
         return True
     days = ticket.get("days_since_charge")
-    return days is not None and days <= REFUND_WINDOW_DAYS
+    window = ticket.get("refund_window_days") or REFUND_WINDOW_DAYS
+    return days is not None and days <= window
 
 
 def ticket_block(ticket):

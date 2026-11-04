@@ -1,0 +1,344 @@
+{
+  "mode": "single",
+  "ticket": {
+    "ticket_id": "CD-UI-3BD61B",
+    "tier": "Standard",
+    "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+    "charge_amount": 120.0,
+    "days_since_charge": 14,
+    "duplicate_charge": false,
+    "refund_requested": true
+  },
+  "answer": "CD-UI-3BD61B\n\nHi there,\n\nThank you for reaching out about your recent charge. As per our refund eligibility rules, charges made up to 30 days prior are eligible for a full refund. Since your charge was made 14 days ago, it qualifies for a full refund of $120.00.\n\nWe've processed your refund request and have credited your account accordingly. You should receive the funds back within 5 to 10 business days via the original payment method used during the transaction.\n\nPlease let us know if you need any further assistance.\n\nBest regards,\nCloudDesk Support Team",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-008-markdown-2",
+      "article_id": "HC-008",
+      "section": "Refund Eligibility Window",
+      "distance": 1.0637,
+      "bm25_score": null,
+      "rrf_score": 0.032522,
+      "rerank_score": -3.1727821826934814,
+      "dense_rank": 2,
+      "bm25_rank": 1
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-008-markdown-3",
+      "article_id": "HC-008",
+      "section": "Refund Eligibility Window",
+      "distance": 1.0509,
+      "bm25_score": null,
+      "rrf_score": 0.032522,
+      "rerank_score": -3.3125720024108887,
+      "dense_rank": 1,
+      "bm25_rank": 2
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-008-markdown-4",
+      "article_id": "HC-008",
+      "section": "Refund Eligibility Window",
+      "distance": 1.2118,
+      "bm25_score": null,
+      "rrf_score": 0.030303,
+      "rerank_score": -3.523467540740967,
+      "dense_rank": 6,
+      "bm25_rank": 6
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-008-markdown-5",
+      "article_id": "HC-008",
+      "section": "Duplicate Charges",
+      "distance": 1.1421,
+      "bm25_score": null,
+      "rrf_score": 0.031258,
+      "rerank_score": -4.356705665588379,
+      "dense_rank": 3,
+      "bm25_rank": 5
+    },
+    {
+      "rank": 5,
+      "chunk_id": "HC-008-markdown-6",
+      "article_id": "HC-008",
+      "section": "Refund Amount and Timing",
+      "distance": 1.2136,
+      "bm25_score": null,
+      "rrf_score": 0.029851,
+      "rerank_score": -4.489935874938965,
+      "dense_rank": 7,
+      "bm25_rank": 7
+    }
+  ],
+  "best_distance": 1.0509,
+  "lexical_anchors": [
+    "date.",
+    "days",
+    "renewal"
+  ],
+  "gate_bypass": "lexical_anchor (date., days, renewal)",
+  "tasks": [],
+  "handoffs": [],
+  "routing": null,
+  "specialists": {},
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 1,
+    "input_tokens": 813,
+    "output_tokens": 128,
+    "tokens": 941,
+    "cost_usd": 0.000199,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 0,
+    "specialist_calls": 0,
+    "tool_calls": 1,
+    "resynthesis": 0,
+    "base_context_tokens": 68,
+    "context_resend_multiplier": null,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 162776.3,
+  "trace_id": "c6a0805825a94a50",
+  "langfuse_trace_id": null,
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "ticket-v1.3",
+  "observability": {
+    "request_id": "req-35fb07ed46a8",
+    "spans": [
+      {
+        "span_id": "f736d2d891",
+        "parent_id": null,
+        "name": "retrieval",
+        "start": "2026-10-25T10:55:01.999+00:00",
+        "end": "2026-10-25T10:55:17.471+00:00",
+        "duration_ms": 15471.93,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "mode": "hybrid_rerank",
+          "strategy": "markdown",
+          "top_k": 5,
+          "n_chunks": 5,
+          "context_ids": [
+            "HC-008-markdown-2",
+            "HC-008-markdown-3",
+            "HC-008-markdown-4",
+            "HC-008-markdown-5",
+            "HC-008-markdown-6"
+          ]
+        }
+      },
+      {
+        "span_id": "3d2f9d38be",
+        "parent_id": null,
+        "name": "validation.distance_gate",
+        "start": "2026-10-25T10:55:17.475+00:00",
+        "end": "2026-10-25T10:55:17.476+00:00",
+        "duration_ms": 0.35,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "threshold": 0.75,
+          "mode": "hybrid_rerank",
+          "best_distance": 1.0509,
+          "outcome": "passed (lexical_anchor (date., days, renewal))",
+          "lexical_anchors": [
+            "date.",
+            "days",
+            "renewal"
+          ]
+        }
+      },
+      {
+        "span_id": "4b9ac00f8f",
+        "parent_id": null,
+        "name": "generation",
+        "start": "2026-10-25T10:55:17.476+00:00",
+        "end": "2026-10-25T10:57:43.106+00:00",
+        "duration_ms": 145635.04,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "provider": "local (transformers, in-process)",
+          "prompt_version": "ticket-v1.3",
+          "prompt_sha": "ad02129f8ca417fc",
+          "model_loaded_during_span": true,
+          "max_new_tokens": 160,
+          "input_tokens": 813,
+          "output_tokens": 128,
+          "model_latency_ms": 120152.2
+        }
+      },
+      {
+        "span_id": "736b90f72a",
+        "parent_id": null,
+        "name": "validation.assertions",
+        "start": "2026-10-25T10:57:43.151+00:00",
+        "end": "2026-10-25T10:57:43.222+00:00",
+        "duration_ms": 69.94,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "suite": "week6 assertions",
+          "verdict": "pass",
+          "applicable": 6
+        }
+      }
+    ],
+    "usage": {
+      "input_tokens": 813,
+      "output_tokens": 128,
+      "model_calls": 1,
+      "basis": "application-counted with the model's own tokenizer; no provider usage field exists for a local model"
+    },
+    "cost": {
+      "currency": "USD",
+      "generation_usd": 0.00019875,
+      "retrieval_usd": null,
+      "tools_usd": null,
+      "total_usd": 0.00019875,
+      "complete": true,
+      "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+      "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+      "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+    },
+    "status": "ok",
+    "provider": "local (transformers, in-process)",
+    "policy_check": {
+      "verdict": "consistent",
+      "expected": "eligible: full refund of the exact amount",
+      "reason": "no denial of an eligible refund"
+    },
+    "evaluation": {
+      "suite": "week6 assertions (src/ticket_assertions.py)",
+      "n_assertions": 7,
+      "applicable": 6,
+      "passed": 6,
+      "failed": 0,
+      "failed_names": [],
+      "verdict": "pass",
+      "results": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-UI-3BD61B found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": true,
+          "detail": "expected 120.00; numbers in reply: [30.0, 14.0, 120.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "128 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": true,
+          "detail": "no denial (14 days <= 30)"
+        }
+      ],
+      "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+    }
+  },
+  "evaluation": {
+    "suite": "week6 assertions (src/ticket_assertions.py)",
+    "n_assertions": 7,
+    "applicable": 6,
+    "passed": 6,
+    "failed": 0,
+    "failed_names": [],
+    "verdict": "pass",
+    "results": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-UI-3BD61B found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": true,
+        "passed": true,
+        "detail": "expected 120.00; numbers in reply: [30.0, 14.0, 120.0, 5.0, 10.0]"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Standard, tag absent"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": true,
+        "passed": true,
+        "detail": "128 tokens of 160"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      },
+      {
+        "name": "no_denial_inside_window",
+        "applicable": true,
+        "passed": true,
+        "detail": "no denial (14 days <= 30)"
+      }
+    ],
+    "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+  },
+  "ran_at": "2026-10-25T10:57:44+00:00",
+  "cold_start": true
+}

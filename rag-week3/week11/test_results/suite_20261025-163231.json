@@ -1,0 +1,98 @@
+{
+  "label": "frozen check: 25 frozen labelled replies + R05 drafted live (ticket-v1.3)",
+  "command": "python main.py eval --frozen --judge none",
+  "ran_at": "2026-10-25T11:04:52.203+00:00",
+  "exit_code": 0,
+  "seconds": 140.6,
+  "run_file": "week6/runs/run_20261025-163231.json",
+  "stdout_file": "week11/test_results/suite_20261025-163231.txt",
+  "summary": {
+    "ran_at": "2026-10-25T11:04:52+00:00",
+    "app_version": "76af145",
+    "judge": "none",
+    "replies": "frozen",
+    "fresh_cases": [
+      "R05"
+    ],
+    "ticket_prompt_version": "ticket-v1.3",
+    "ticket_prompt_sha": "ad02129f8ca417fc",
+    "n_cases": 26,
+    "passed": 15,
+    "failed": 11,
+    "failing_cases": [
+      "T02",
+      "T03",
+      "T04",
+      "T07",
+      "T10",
+      "T12",
+      "T13",
+      "T16",
+      "T19",
+      "T20",
+      "T21"
+    ],
+    "assertion_failures": {
+      "escalation_tag_iff_priority": [
+        "T02",
+        "T04",
+        "T07",
+        "T10",
+        "T12",
+        "T16",
+        "T19"
+      ],
+      "not_cut_off": [
+        "T03",
+        "T07",
+        "T10",
+        "T12",
+        "T13",
+        "T16",
+        "T20",
+        "T21"
+      ],
+      "no_denial_inside_window": [
+        "T03",
+        "T13",
+        "T21"
+      ],
+      "refund_amount_numeric": [
+        "T13"
+      ]
+    },
+    "regression": {
+      "R01": {
+        "pass": true,
+        "assertions_pass": true,
+        "judge": null,
+        "failed_assertions": []
+      },
+      "R02": {
+        "pass": true,
+        "assertions_pass": true,
+        "judge": null,
+        "failed_assertions": []
+      },
+      "R03": {
+        "pass": true,
+        "assertions_pass": true,
+        "judge": null,
+        "failed_assertions": []
+      },
+      "R04": {
+        "pass": true,
+        "assertions_pass": true,
+        "judge": null,
+        "failed_assertions": []
+      },
+      "R05": {
+        "pass": true,
+        "assertions_pass": true,
+        "judge": null,
+        "failed_assertions": []
+      }
+    }
+  },
+  "stdout": "Week 6 eval · 26 cases · 5 regression · modes {'M1': 8, 'M2': 5, 'M3': 5, 'M4': 4, 'M5': 4}\nReplies: frozen week6/replies_25.json for 25 labelled cases; drafting ['R05'] live (regression cases added after the freeze)\n   1/1 R05  M1  drafted\n\nJudge: not run (labels not committed yet, or --judge none). Assertions only.\n\n============================================================================================\nPASS RATE BY MODE   case passes = every applicable assertion passes  (judge not run)\n============================================================================================\nmode  Week 5 failure mode                        n  assertions      judge    pass    rate\n--------------------------------------------------------------------------------------------\nM1    refuses a question the articles answer     8         5/8          -     5/8   62.5%\nM2    not one direct question -> refusal         5         3/5          -     3/5   60.0%\nM3    reply stops mid-sentence                   5         3/5          -     3/5   60.0%\nM4    non-answer text / invented steps           4         3/4          -     3/4   75.0%\nM5    'what should I do' without steps           4         1/4          -     1/4   25.0%\n--------------------------------------------------------------------------------------------\nALL                                             26       15/26          -   15/26   57.7%\n\nASSERTIONS (deterministic)          applies  pass  fail  failing cases\n  ticket_id_echoed                      26    26     0  -\n  refund_amount_numeric                  5     4     1  T13\n  escalation_tag_iff_priority           26    19     7  T02, T04, T07, T10, T12, T16, T19\n  no_refund_outside_window               3     3     0  -\n  not_cut_off                           24    16     8  T03, T07, T10, T12, T13, T16, T20, T21\n  no_prompt_scaffolding                 26    26     0  -\n  no_denial_inside_window                5     2     3  T03, T13, T21\n\nREGRESSION CASES (replayed verbatim from failed Week 5 traces)\n  R01 <- 5a50d54f665441d4  M1  was: refused: distance_gate (0.7659 > 0.75)     now: assertions PASS (resolution not judged)\n  R02 <- a7051c474be5456e  M2  was: refused: distance_gate (0.8849 > 0.75)     now: assertions PASS (resolution not judged)\n  R03 <- 59b27d3b9fdd4225  M3  was: refused: ungrounded_answer                 now: assertions PASS (resolution not judged)\n  R04 <- 7fe81eaa6cdf466a  M4  was: refused: ungrounded_answer                 now: assertions PASS (resolution not judged)\n  R05 <- 2fa07536c6a74c3a  M1  was: answered, but denied an eligible refund (policy_check: contradicts HC-008) now: assertions PASS (resolution not judged)\n\nCRITERIA SPLIT: 7 deterministic assertions · 1 judged criterion (resolution)\n  removed from the judge (judge_v0_presplit.txt -> judge_v1.txt): 1. Ticket ID, 2. Refund amount, 3. Escalation, 4. Refund window, 5. Complete, 6. Clean, 4. Refund window (eligible side)\n\nagreement_before (judge v1): 56.0%   agreement_after (judge v2): 76.0%\n\nSaved week6/runs/run_20261025-163231.json\n"
+}

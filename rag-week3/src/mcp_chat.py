@@ -26,6 +26,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from mcp_agent import Host  # noqa: E402
+import observability as obs  # noqa: E402
+import tracing  # noqa: E402
 
 SERVER_DESCRIPTIONS = {
     "clouddesk-kb": {
@@ -249,15 +251,25 @@ def handle_mcp_chat(query: str, which_config: str = "server_two", top_k: int = 3
 
     try:
         started = time.perf_counter()
-        inventory = host.connect()
+        # Week 11: the MCP chat is a request like any other — connect and
+        # each tool call are spans, and the exchange is traced (kind
+        # mcp_chat) so it is searchable next to the model-backed answers.
+        with obs.span("mcp.connect", config=config_file) as connect_span:
+            inventory = host.connect()
+            connect_span.set(servers=list(inventory.keys()), tools=sorted(host.tools.keys()))
         planned, skipped = _plan_calls(host.tools, query, top_k)
 
         steps = [{**s, "arguments": None, "status": "skipped", "items": 0} for s in skipped]
         hits = []
         for key, server, arguments in planned:
-            result, server = host.call(key, arguments)
-            items = [] if result.get("isError") else _payload_items(result)
-            status = "error" if result.get("isError") else "data" if items else "empty"
+            with obs.span(f"tool:{key}", server=server, arguments=arguments) as tool_span:
+                result, server = host.call(key, arguments)
+                items = [] if result.get("isError") else _payload_items(result)
+                status = "error" if result.get("isError") else "data" if items else "empty"
+                tool_span.set(outcome=status, items=len(items))
+                if result.get("isError"):
+                    tool_span.status = "error"
+                    tool_span.error = "tool returned isError"
             steps.append({"tool": key, "server": server, "arguments": arguments,
                           "status": status, "items": len(items)})
             if items:
@@ -288,11 +300,32 @@ def handle_mcp_chat(query: str, which_config: str = "server_two", top_k: int = 3
         })
         call_wire = [m for m in wire if m.get("message", {}).get("method") == "tools/call"]
 
+        trace_id, observability = None, None
+        try:
+            record = tracing.build_trace(
+                {"query": query, "answer": answer, "refused": not shown,
+                 "refusal_reason": None if shown else "no_mcp_tool_returned_data",
+                 "retrieval_mode": "mcp_tools", "top_k": top_k, "prompt_version": "mcp-chat (no model)",
+                 "model_name": None, "retrieved": []},
+                latency_ms={"total": latency_ms}, source="ui")
+            record["kind"] = "mcp_chat"
+            record["mcp"] = {"servers": list(inventory.keys()), "steps": steps,
+                             "tools_called": [s["tool"] for s in steps if s["status"] != "skipped"]}
+            tracing.append(record, tags=["week9", "mcp_chat"])
+            trace_id = record["trace_id"]
+            observability = {"request_id": record.get("request_id"), "spans": record.get("spans"),
+                             "usage": record.get("usage"), "cost": record.get("cost"),
+                             "status": record.get("status")}
+        except Exception as error:            # the answer never depends on the trace
+            print(f"  [tracing] mcp chat trace not recorded: {error}")
+
         return {
             "status": "ok",
             "query": query,
             "answer": answer,
             "found": bool(shown),
+            "trace_id": trace_id,
+            "observability": observability,
             "mcp": {
                 "server": server_name,
                 "server_info": server_meta,

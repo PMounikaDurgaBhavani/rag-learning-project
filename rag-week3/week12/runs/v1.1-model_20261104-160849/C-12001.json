@@ -1,0 +1,1109 @@
+{
+ "ticket_id": "CD-12001",
+ "customer_id": "CUS-401",
+ "trace_id": "bc4fe48ba9d74efe",
+ "prompt_version": "capstone-v1.1",
+ "planner": "model",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "refund_denied",
+ "answer": "CD-12001: Thank you for reaching out regarding your recent billing issue. I understand that you were charged $240 for the annual renewal of the CloudDesk Team plan 20 days ago, which exceeds the 14-day refund eligibility window specified in the policy. According to the verified facts, charges outside this window are not eligible for refunds. Therefore, we cannot process a refund at this time. However, if you would like to ensure that the next charge does not occur, please follow the steps outlined in the article [MACRO-002]: Turn off automatic renewal in Organization Settings > Billing. This action will prevent the next charge from occurring. If you need further assistance or clarification, feel free to ask.",
+ "intent": "refund",
+ "understanding": {
+  "intent": "refund",
+  "sensitive": false,
+  "needs_account_evidence": true,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [
+    "ORD-12001"
+   ],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [
+    240.0
+   ],
+   "days": [
+    20
+   ]
+  },
+  "required_evidence": [
+   "lookup_order",
+   "check_entitlement",
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": "legacy-14-day",
+ "policy_label": "Retired 14-Day (legacy terms)",
+ "verification": {
+  "entitlement_verified": true,
+  "policy_version": "legacy-14-day",
+  "policy_label": "Retired 14-Day (legacy terms)",
+  "tier": "Standard",
+  "plan": "Partner (legacy terms)",
+  "refund_assessment": {
+   "order_id": "ORD-12001",
+   "assessable": true,
+   "days_since_charge": 20,
+   "window_days": 14,
+   "policy_version": "legacy-14-day",
+   "policy_article_id": "HC-009",
+   "order_status": "charged",
+   "duplicate_charge": false,
+   "amount": 240.0,
+   "eligible": false,
+   "rule": "refund_if_within_window",
+   "reason": "charged 20 days ago, outside the 14-day window of the legacy-14-day policy"
+  },
+  "shipping_entitlement": {
+   "standard": "included",
+   "expedited": "not_available",
+   "replacement": "per_partner_agreement",
+   "hardware_included": false
+  },
+  "order_found": true,
+  "order": {
+   "found": true,
+   "order_id": "ORD-12001",
+   "customer_id": "CUS-401",
+   "product": "CloudDesk Team plan (annual, partner-billed)",
+   "kind": "subscription",
+   "amount": 240.0,
+   "currency": "USD",
+   "charge_date": "2026-10-15",
+   "days_since_charge": 20,
+   "order_status": "charged",
+   "invoice_id": "INV-12001",
+   "shipping": null,
+   "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+  },
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [
+   {
+    "slug": "refund-returns-current-30-day",
+    "policy_version": "current-30-day",
+    "reason": "other policy version (account is on legacy-14-day)"
+   }
+  ],
+  "passages_usable": 5
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Frequently Asked Questions",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-14",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 2,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-1",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 3,
+    "slug": "refund-policy-14-day-retired",
+    "article_id": "HC-009",
+    "title": "Refund Policy (14-Day Window) \u2014 RETIRED",
+    "section": "Refund Eligibility Window",
+    "last_updated": "2025-11-10",
+    "policy_version": "legacy-14-day",
+    "policy_label": "Retired 14-Day (legacy terms)",
+    "status": "superseded",
+    "superseded_by": "HC-008",
+    "doc_type": "article",
+    "chunk_id": "HC-009-markdown-6",
+    "url": "/app/help-centre/refund-policy-14-day-retired"
+   },
+   {
+    "marker": 4,
+    "slug": "product-changelog",
+    "article_id": "HC-011",
+    "title": "CloudDesk Product Changelog",
+    "section": "2026-09-15 \u2014 Billing policy change",
+    "last_updated": "2026-10-28",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-011-markdown-4",
+    "url": "/app/help-centre/product-changelog"
+   },
+   {
+    "marker": 5,
+    "slug": "macro-refund-outside-window",
+    "article_id": "MACRO-002",
+    "title": "Macro: Refund not eligible (outside window)",
+    "section": "Macro: Refund not eligible (outside window)",
+    "last_updated": "2026-09-16",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "zendesk_macro",
+    "chunk_id": "MACRO-002-markdown-3",
+    "url": "/app/help-centre/macro-refund-outside-window"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 6.4,
+   "span_id": "1240ef2d98",
+   "kind": "code",
+   "summary": "intent refund"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 51.9,
+   "span_id": "9e50cb4e7a",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 30418.1,
+   "span_id": "dc9ac1437a",
+   "kind": "model",
+   "lap": 1,
+   "input_tokens": 1183,
+   "output_tokens": 38,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00020025,
+   "summary": "<tool_call>\n{\"name\": \"lookup_order\", \"arguments\": {\"order_id\": \"ORD-12001\", \"customer_id\": \"CUS-401\"}}\n</tool_call>"
+  },
+  {
+   "step": 4,
+   "name": "lookup_order",
+   "status": "ok",
+   "duration_ms": 8.7,
+   "span_id": "6d6460bcdb",
+   "kind": "tool",
+   "server": null,
+   "forced_by": null,
+   "arguments": {
+    "order_id": "ORD-12001",
+    "customer_id": "CUS-401"
+   },
+   "corrections": [],
+   "summary": "charged"
+  },
+  {
+   "step": 5,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 7127.3,
+   "span_id": "4f2ebe2064",
+   "kind": "model",
+   "lap": 2,
+   "input_tokens": 1383,
+   "output_tokens": 39,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00023085,
+   "summary": "<tool_call>\n{\"name\": \"check_entitlement\", \"arguments\": {\"customer_id\": \"CUS-401\", \"order_id\": \"ORD-12001\"}}\n</tool_call>"
+  },
+  {
+   "step": 6,
+   "name": "check_entitlement",
+   "status": "ok",
+   "duration_ms": 2.6,
+   "span_id": "4ea33c877a",
+   "kind": "tool",
+   "server": null,
+   "forced_by": null,
+   "arguments": {
+    "customer_id": "CUS-401",
+    "order_id": "ORD-12001"
+   },
+   "corrections": [],
+   "summary": "Partner (legacy terms)"
+  },
+  {
+   "step": 7,
+   "name": "planner.model_call",
+   "status": "ok",
+   "duration_ms": 48263.8,
+   "span_id": "ef3b4f6755",
+   "kind": "model",
+   "lap": 3,
+   "input_tokens": 1779,
+   "output_tokens": 33,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00028665,
+   "summary": "<tool_call>\n{\"name\": \"search_help_centre\", \"arguments\": {\"query\": \"refund for annual renewal agreement\", \"top_k\": 5}}\n</"
+  },
+  {
+   "step": 8,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 5109.1,
+   "span_id": "5eae918a40",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": null,
+   "arguments": {
+    "query": "refund for annual renewal agreement",
+    "top_k": 5,
+    "policy_version": "legacy-14-day"
+   },
+   "corrections": [
+    "policy_version legacy-14-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "summary": "5 passages"
+  },
+  {
+   "step": 9,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 91908.4,
+   "span_id": "78403eff86",
+   "kind": "agent",
+   "laps": 3,
+   "summary": "required evidence complete"
+  },
+  {
+   "step": 10,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 3.7,
+   "span_id": "5e89c3ec97",
+   "kind": "code",
+   "summary": "answered: refund_denied"
+  },
+  {
+   "step": 11,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 30950.5,
+   "span_id": "244387beec",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 979,
+   "output_tokens": 153,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00023865,
+   "summary": "CD-12001: Thank you for reaching out regarding your recent billing issue. I understand that you were charged $240 for th"
+  },
+  {
+   "step": 12,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "751197d13a",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [],
+   "hard_failures": [],
+   "summary": "0 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 1,
+   "type": "tool",
+   "name": "lookup_order",
+   "arguments": {
+    "order_id": "ORD-12001",
+    "customer_id": "CUS-401"
+   },
+   "forced_by": null,
+   "corrections": [],
+   "result": {
+    "found": true,
+    "order_id": "ORD-12001",
+    "customer_id": "CUS-401",
+    "product": "CloudDesk Team plan (annual, partner-billed)",
+    "kind": "subscription",
+    "amount": 240.0,
+    "currency": "USD",
+    "charge_date": "2026-10-15",
+    "days_since_charge": 20,
+    "order_status": "charged",
+    "invoice_id": "INV-12001",
+    "shipping": null,
+    "integration": "DEMO ADAPTER: local order store (data/capstone/seed/orders.json); production would call the order service"
+   },
+   "error": null
+  },
+  {
+   "lap": 2,
+   "type": "tool",
+   "name": "check_entitlement",
+   "arguments": {
+    "customer_id": "CUS-401",
+    "order_id": "ORD-12001"
+   },
+   "forced_by": null,
+   "corrections": [],
+   "result": {
+    "verified": true,
+    "customer_id": "CUS-401",
+    "plan": "Partner (legacy terms)",
+    "tier": "Standard",
+    "subscription_status": "active",
+    "term": "annual",
+    "renewal_date": "2027-01-03",
+    "refund_policy": {
+     "version": "legacy-14-day",
+     "label": "Retired 14-Day (legacy terms)",
+     "article_id": "HC-009",
+     "window_days": 14,
+     "duplicate_charge_rule": "a duplicate charge is refunded in full at any age",
+     "terms_effective": "2024-01-15"
+    },
+    "shipping_entitlement": {
+     "standard": "included",
+     "expedited": "not_available",
+     "replacement": "per_partner_agreement",
+     "hardware_included": false
+    },
+    "integration": "DEMO ADAPTER: local subscription store (data/capstone/seed/subscriptions.json); production would call the billing/entitlement service",
+    "refund_assessment": {
+     "order_id": "ORD-12001",
+     "assessable": true,
+     "days_since_charge": 20,
+     "window_days": 14,
+     "policy_version": "legacy-14-day",
+     "policy_article_id": "HC-009",
+     "order_status": "charged",
+     "duplicate_charge": false,
+     "amount": 240.0,
+     "eligible": false,
+     "rule": "refund_if_within_window",
+     "reason": "charged 20 days ago, outside the 14-day window of the legacy-14-day policy"
+    }
+   },
+   "error": null
+  },
+  {
+   "lap": 3,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "refund for annual renewal agreement",
+    "top_k": 5,
+    "policy_version": "legacy-14-day"
+   },
+   "forced_by": null,
+   "corrections": [
+    "policy_version legacy-14-day enforced from the verified entitlement (capstone-v1.1)"
+   ],
+   "result": {
+    "query": "refund for annual renewal agreement",
+    "dropped": [
+     {
+      "slug": "refund-returns-current-30-day",
+      "policy_version": "current-30-day",
+      "reason": "other policy version (account is on legacy-14-day)"
+     }
+    ],
+    "policy_version_filter": "legacy-14-day",
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 4952.6,
+    "trace_id": "bc4fe48ba9d74efe",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 3,
+   "type": "answer",
+   "decision": "refund_denied",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "required evidence complete",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 3,
+  "input_tokens": 5324,
+  "output_tokens": 263,
+  "model_calls": 4,
+  "tool_calls": 3,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 0,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "lookup_order": 1,
+   "check_entitlement": 1,
+   "search_help_centre": 1
+  },
+  "tokens": 5587,
+  "cost_usd": 0.0009564
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "bc4fe48ba9d74efe",
+  "calls": 1,
+  "latency_ms": 5109.1,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 123415.5,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12001 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised (20 days > 14)"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "153 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "ineligible, not promised",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with legacy-14-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no free expedited offer (entitlement: not_available)",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": [],
+  "measured_on": "the raw draft, before any post-processing"
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 12,
+  "passed": 12,
+  "failed": 0,
+  "failed_names": [],
+  "hard_failures": [],
+  "verdict": "pass",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12001 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": true,
+    "detail": "tier=Standard, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised (20 days > 14)"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "153 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "ineligible, not promised",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": true,
+    "passed": true,
+    "detail": "consistent with legacy-14-day",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no free expedited offer (entitlement: not_available)",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "post_processing": [],
+ "log": [
+  "[agent] ticket=CD-12001 planner=model budgets={'max_iterations': 6, 'max_tokens': 12000, 'max_cost_usd': 0.02, 'max_wall_seconds': 300.0} tools=['lookup_order', 'check_entitlement', 'escalate_ticket', 'search_help_centre', 'get_help_centre_article']",
+  "[agent] lap 1: in=1183 out=38 30418ms text='<tool_call>\\n{\"name\": \"lookup_order\", \"arguments\": {\"order_id\": \"ORD-12001\", \"customer_id\": \"CUS-401\"'",
+  "[agent]   tool lookup_order({\"order_id\": \"ORD-12001\", \"customer_id\": \"CUS-401\"}) -> {\"found\": true, \"order_id\": \"ORD-12001\", \"customer_id\": \"CUS-401\", \"product\": \"CloudDesk Team plan (annual, partner-billed)\", \"kind\": \"subscription\", \"amount\": ",
+  "[agent] lap 2: in=1383 out=39 7127ms text='<tool_call>\\n{\"name\": \"check_entitlement\", \"arguments\": {\"customer_id\": \"CUS-401\", \"order_id\": \"ORD-1'",
+  "[agent]   tool check_entitlement({\"customer_id\": \"CUS-401\", \"order_id\": \"ORD-12001\"}) -> {\"verified\": true, \"customer_id\": \"CUS-401\", \"plan\": \"Partner (legacy terms)\", \"tier\": \"Standard\", \"subscription_status\": \"active\", \"term\": \"annual\", \"renewal_d",
+  "[agent] lap 3: in=1779 out=33 48264ms text='<tool_call>\\n{\"name\": \"search_help_centre\", \"arguments\": {\"query\": \"refund for annual renewal agreeme'",
+  "[agent]   tool search_help_centre({\"query\": \"refund for annual renewal agreement\", \"top_k\": 5, \"policy_version\": \"legacy-14-day\"}) -> {\"query\": \"refund for annual renewal agreement\", \"results\": [{\"article_id\": \"HC-009\", \"slug\": \"refund-policy-14-day-retired\", \"title\": \"Refund Policy (14-Day Wi"
+ ],
+ "generation": {
+  "raw": "CD-12001: Thank you for reaching out regarding your recent billing issue. I understand that you were charged $240 for the annual renewal of the CloudDesk Team plan 20 days ago, which exceeds the 14-day refund eligibility window specified in the policy. According to the verified facts, charges outside this window are not eligible for refunds. Therefore, we cannot process a refund at this time. However, if you would like to ensure that the next charge does not occur, please follow the steps outlined in the article [MACRO-002]: Turn off automatic renewal in Organization Settings > Billing. This action will prevent the next charge from occurring. If you need further assistance or clarification, feel free to ask.",
+  "input_tokens": 979,
+  "output_tokens": 153,
+  "latency_ms": 30950.5,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": false
+ },
+ "request_id": "req-6340dd7fe88a",
+ "observability": {
+  "request_id": "req-6340dd7fe88a",
+  "spans": [
+   {
+    "span_id": "1240ef2d98",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T11:19:39.229+00:00",
+    "end": "2026-11-04T11:19:39.235+00:00",
+    "duration_ms": 6.35,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "refund",
+     "injection": false,
+     "required": [
+      "lookup_order",
+      "check_entitlement",
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "9e50cb4e7a",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T11:19:39.235+00:00",
+    "end": "2026-11-04T11:19:39.287+00:00",
+    "duration_ms": 51.88,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "dc9ac1437a",
+    "parent_id": "78403eff86",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:19:39.287+00:00",
+    "end": "2026-11-04T11:20:10.321+00:00",
+    "duration_ms": 31035.64,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 1,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1183,
+     "output_tokens": 38,
+     "latency_ms": 30418.1,
+     "cost_usd": 0.00020025
+    }
+   },
+   {
+    "span_id": "6d6460bcdb",
+    "parent_id": "78403eff86",
+    "name": "tool:lookup_order",
+    "start": "2026-11-04T11:20:10.330+00:00",
+    "end": "2026-11-04T11:20:10.339+00:00",
+    "duration_ms": 8.81,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "order_id": "ORD-12001",
+      "customer_id": "CUS-401"
+     },
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 8.7
+    }
+   },
+   {
+    "span_id": "4f2ebe2064",
+    "parent_id": "78403eff86",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:20:10.340+00:00",
+    "end": "2026-11-04T11:20:17.656+00:00",
+    "duration_ms": 7316.68,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 2,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1383,
+     "output_tokens": 39,
+     "latency_ms": 7127.3,
+     "cost_usd": 0.00023085
+    }
+   },
+   {
+    "span_id": "4ea33c877a",
+    "parent_id": "78403eff86",
+    "name": "tool:check_entitlement",
+    "start": "2026-11-04T11:20:17.662+00:00",
+    "end": "2026-11-04T11:20:17.664+00:00",
+    "duration_ms": 2.66,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "customer_id": "CUS-401",
+      "order_id": "ORD-12001"
+     },
+     "server": "in-process business adapter",
+     "outcome": "ok",
+     "latency_ms": 2.6
+    }
+   },
+   {
+    "span_id": "ef3b4f6755",
+    "parent_id": "78403eff86",
+    "name": "planner.model_call",
+    "start": "2026-11-04T11:20:17.665+00:00",
+    "end": "2026-11-04T11:21:06.059+00:00",
+    "duration_ms": 48395.16,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "lap": 3,
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "max_new_tokens": 96,
+     "input_tokens": 1779,
+     "output_tokens": 33,
+     "latency_ms": 48263.8,
+     "cost_usd": 0.00028665
+    }
+   },
+   {
+    "span_id": "5eae918a40",
+    "parent_id": "78403eff86",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T11:21:06.071+00:00",
+    "end": "2026-11-04T11:21:11.181+00:00",
+    "duration_ms": 5110.4,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "refund for annual renewal agreement",
+      "top_k": 5,
+      "policy_version": "legacy-14-day"
+     },
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "bc4fe48ba9d74efe",
+     "trace_id_echoed": "bc4fe48ba9d74efe",
+     "results": 5,
+     "policy_version": "legacy-14-day",
+     "server_latency_ms": 4952.6,
+     "outcome": "ok",
+     "latency_ms": 5109.1,
+     "corrections": [
+      "policy_version legacy-14-day enforced from the verified entitlement (capstone-v1.1)"
+     ]
+    }
+   },
+   {
+    "span_id": "78403eff86",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T11:19:39.287+00:00",
+    "end": "2026-11-04T11:21:11.194+00:00",
+    "duration_ms": 91908.37,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "model",
+     "laps": 3,
+     "tool_calls": 3,
+     "forced": 0,
+     "end": "required evidence complete"
+    }
+   },
+   {
+    "span_id": "5e89c3ec97",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T11:21:11.196+00:00",
+    "end": "2026-11-04T11:21:11.200+00:00",
+    "duration_ms": 3.66,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "refund_denied",
+     "policy_version": "legacy-14-day",
+     "passages_usable": 5
+    }
+   },
+   {
+    "span_id": "244387beec",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T11:21:11.207+00:00",
+    "end": "2026-11-04T11:21:42.598+00:00",
+    "duration_ms": 31392.29,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 979,
+     "output_tokens": 153,
+     "model_latency_ms": 30950.5,
+     "cost_usd": 0.00023865
+    }
+   },
+   {
+    "span_id": "751197d13a",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T11:21:42.620+00:00",
+    "end": "2026-11-04T11:21:42.641+00:00",
+    "duration_ms": 20.92,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 5324,
+   "output_tokens": 263,
+   "model_calls": 4,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.0009564,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.0009564,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "consistent",
+   "expected": "not eligible: older than 30 days and not a duplicate",
+   "reason": "no refund promised outside the window"
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 12,
+   "passed": 12,
+   "failed": 0,
+   "failed_names": [],
+   "hard_failures": [],
+   "verdict": "pass",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-12001 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": true,
+     "detail": "tier=Standard, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised (20 days > 14)"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "153 tokens of 160"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "ineligible, not promised",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": true,
+     "passed": true,
+     "detail": "consistent with legacy-14-day",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no free expedited offer (entitlement: not_available)",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

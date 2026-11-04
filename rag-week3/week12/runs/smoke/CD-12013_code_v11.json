@@ -1,0 +1,846 @@
+{
+ "ticket_id": "CD-12013",
+ "customer_id": "CUS-411",
+ "trace_id": "56fdd96af5d64f4d",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "knowledge_answer",
+ "answer": "CD-12013: Hi there,\n\nThank you for reaching out. Based on our system records, your account was locked due to repeated failed login attempts. The temporary lock period is 15 minutes.\n\nTo recover your account:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct email address.\n4. Verify that you are using the latest password.\n5. Try logging in again.\n\nPlease follow these steps carefully. Once you've waited 15 minutes, try logging in once more. If you still encounter issues, please contact Customer Support for further assistance.\n\nBest regards,\nCloudDesk Support Team",
+ "intent": "account_access",
+ "understanding": {
+  "intent": "account_access",
+  "sensitive": false,
+  "needs_account_evidence": false,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [],
+   "days": []
+  },
+  "required_evidence": [
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": null,
+ "policy_label": null,
+ "verification": {
+  "entitlement_verified": false,
+  "policy_version": null,
+  "policy_label": null,
+  "tier": "Priority",
+  "plan": "Priority",
+  "refund_assessment": null,
+  "shipping_entitlement": null,
+  "order_found": false,
+  "order": null,
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 3
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "account-locked-after-failed-login-attempts",
+    "article_id": "HC-002",
+    "title": "Account Locked After Failed Login Attempts",
+    "section": "What Happens When an Account Is Locked",
+    "last_updated": "2026-08-05",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-002-markdown-6",
+    "url": "/app/help-centre/account-locked-after-failed-login-attempts"
+   },
+   {
+    "marker": 2,
+    "slug": "account-locked-after-failed-login-attempts",
+    "article_id": "HC-002",
+    "title": "Account Locked After Failed Login Attempts",
+    "section": "Frequently Asked Questions",
+    "last_updated": "2026-08-05",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-002-markdown-20",
+    "url": "/app/help-centre/account-locked-after-failed-login-attempts"
+   },
+   {
+    "marker": 3,
+    "slug": "account-locked-after-failed-login-attempts",
+    "article_id": "HC-002",
+    "title": "Account Locked After Failed Login Attempts",
+    "section": "How to Recover a Locked Account",
+    "last_updated": "2026-08-05",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-002-markdown-8",
+    "url": "/app/help-centre/account-locked-after-failed-login-attempts"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 11.3,
+   "span_id": "61ccea3a01",
+   "kind": "code",
+   "summary": "intent account_access"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 248.3,
+   "span_id": "fedbc75526",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 5698.1,
+   "span_id": "365d1f32c3",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?",
+    "top_k": 5
+   },
+   "corrections": [],
+   "summary": "5 passages"
+  },
+  {
+   "step": 4,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 5703.5,
+   "span_id": "dda45438f6",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 5,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 1.0,
+   "span_id": "cffc8f8d33",
+   "kind": "code",
+   "summary": "answered: knowledge_answer"
+  },
+  {
+   "step": 6,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 36502.2,
+   "span_id": "abef9d0e6c",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 599,
+   "output_tokens": 194,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00020625,
+   "summary": "CD-12013: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your account lockout issue. As per our "
+  },
+  {
+   "step": 7,
+   "name": "validation.assertions",
+   "status": "error",
+   "duration_ms": null,
+   "span_id": "7fd9ecb248",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "escalation_tag_iff_priority",
+    "no_pii_leak"
+   ],
+   "hard_failures": [
+    "no_pii_leak"
+   ],
+   "summary": "2 failed, hard: ['no_pii_leak']"
+  },
+  {
+   "step": 8,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 16940.9,
+   "span_id": "921f80637f",
+   "kind": "model",
+   "attempt": 2,
+   "input_tokens": 637,
+   "output_tokens": 145,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00018255,
+   "summary": "CD-12013: Hi there,\n\nThank you for reaching out. Based on our system records, your account was locked due to repeated fa"
+  },
+  {
+   "step": 9,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "db5afcb536",
+   "kind": "validation",
+   "attempt": 2,
+   "failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "summary": "1 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?",
+    "top_k": 5
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "query": "I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?",
+    "dropped": [],
+    "policy_version_filter": null,
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 5658.0,
+    "trace_id": "56fdd96af5d64f4d",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "knowledge_answer",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 1236,
+  "output_tokens": 339,
+  "model_calls": 2,
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 1,
+  "regenerations": 1,
+  "calls_by_tool": {
+   "search_help_centre": 1
+  },
+  "tokens": 1575,
+  "cost_usd": 0.0003888
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "56fdd96af5d64f4d",
+  "calls": 1,
+  "latency_ms": 5698.1,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 59885.7,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12013 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "145 tokens of 200"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": []
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 8,
+  "passed": 7,
+  "failed": 1,
+  "failed_names": [
+   "escalation_tag_iff_priority"
+  ],
+  "hard_failures": [],
+  "verdict": "fail",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-12013 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": true,
+    "detail": "145 tokens of 200"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": {
+  "attempt": 1,
+  "reply": "CD-12013: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your account lockout issue. As per our system records, the temporary lock duration is 15 minutes. To regain access, please follow these steps:\n\n1. **Stop Attempting to Log In**: Ensure no further login attempts are being made.\n2. **Wait 15 Minutes**: Allow the lockout period to expire.\n3. **Verify Email Address**: Confirm you are using the correct email address associated with your account.\n4. **Check Password**: Ensure you are using the most recent password.\n5. **Try Logging In Again**: Once the 15-minute window expires, attempt to log in once more.\n\nPlease proceed with these steps to unlock your account. If you encounter any issues, feel free to contact us at [support@clouddesk.com](mailto:support@clouddesk.com) for assistance.\n\nBest regards,\nCloudDesk Support Team",
+  "hard_failures": [
+   "no_pii_leak"
+  ]
+ },
+ "log": [
+  "[agent]   FORCED tool search_help_centre({\"query\": \"I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?\", \"top_k\": 5}) -> {\"query\": \"I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?\", \"results\": [{\"article_id\": \"HC-002\"",
+  "[agent] draft rejected by the output guardrail (['no_pii_leak']); regenerating once"
+ ],
+ "generation": {
+  "raw": "CD-12013: Hi there,\n\nThank you for reaching out. Based on our system records, your account was locked due to repeated failed login attempts. The temporary lock period is 15 minutes.\n\nTo recover your account:\n\n1. **Stop attempting to log in** immediately.\n2. **Wait 15 minutes** before trying again.\n3. Ensure you are using the correct email address.\n4. Verify that you are using the latest password.\n5. Try logging in again.\n\nPlease follow these steps carefully. Once you've waited 15 minutes, try logging in once more. If you still encounter issues, please contact Customer Support for further assistance.\n\nBest regards,\nCloudDesk Support Team",
+  "input_tokens": 637,
+  "output_tokens": 145,
+  "latency_ms": 16940.9,
+  "attempt": 2,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct"
+ },
+ "request_id": "req-d4317844e1af",
+ "observability": {
+  "request_id": "req-d4317844e1af",
+  "spans": [
+   {
+    "span_id": "61ccea3a01",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T08:08:40.727+00:00",
+    "end": "2026-11-04T08:08:40.738+00:00",
+    "duration_ms": 11.28,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "account_access",
+     "injection": false,
+     "required": [
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "fedbc75526",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T08:08:40.738+00:00",
+    "end": "2026-11-04T08:08:40.986+00:00",
+    "duration_ms": 248.29,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "365d1f32c3",
+    "parent_id": "dda45438f6",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T08:08:40.987+00:00",
+    "end": "2026-11-04T08:08:46.685+00:00",
+    "duration_ms": 5698.8,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "I am locked out after a few wrong passwords this morning. How long does the lock last and how do I get back in?",
+      "top_k": 5
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "56fdd96af5d64f4d",
+     "trace_id_echoed": "56fdd96af5d64f4d",
+     "results": 5,
+     "server_latency_ms": 5658.0,
+     "outcome": "ok",
+     "latency_ms": 5698.1
+    }
+   },
+   {
+    "span_id": "dda45438f6",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T08:08:40.986+00:00",
+    "end": "2026-11-04T08:08:46.690+00:00",
+    "duration_ms": 5703.3,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 1,
+     "forced": 1,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "cffc8f8d33",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T08:08:46.690+00:00",
+    "end": "2026-11-04T08:08:46.691+00:00",
+    "duration_ms": 0.97,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "knowledge_answer",
+     "passages_usable": 3
+    }
+   },
+   {
+    "span_id": "abef9d0e6c",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T08:08:46.696+00:00",
+    "end": "2026-11-04T08:09:23.458+00:00",
+    "duration_ms": 36766.41,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 200,
+     "input_tokens": 599,
+     "output_tokens": 194,
+     "model_latency_ms": 36502.2,
+     "cost_usd": 0.00020625
+    }
+   },
+   {
+    "span_id": "7fd9ecb248",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T08:09:23.469+00:00",
+    "end": "2026-11-04T08:09:23.492+00:00",
+    "duration_ms": 22.77,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "hard_failures": [
+      "no_pii_leak"
+     ],
+     "failed": [
+      "escalation_tag_iff_priority",
+      "no_pii_leak"
+     ]
+    }
+   },
+   {
+    "span_id": "921f80637f",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T08:09:23.503+00:00",
+    "end": "2026-11-04T08:09:40.598+00:00",
+    "duration_ms": 17099.07,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 2,
+     "max_new_tokens": 200,
+     "input_tokens": 637,
+     "output_tokens": 145,
+     "model_latency_ms": 16940.9,
+     "cost_usd": 0.00018255
+    }
+   },
+   {
+    "span_id": "db5afcb536",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T08:09:40.606+00:00",
+    "end": "2026-11-04T08:09:40.608+00:00",
+    "duration_ms": 2.16,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 2,
+     "failed": [
+      "escalation_tag_iff_priority"
+     ]
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 1236,
+   "output_tokens": 339,
+   "model_calls": 2,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.0003888,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.0003888,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "unverifiable",
+   "reason": "no charge facts on the request",
+   "expected": null
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 8,
+   "passed": 7,
+   "failed": 1,
+   "failed_names": [
+    "escalation_tag_iff_priority"
+   ],
+   "hard_failures": [],
+   "verdict": "fail",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-12013 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": false,
+     "detail": "tier=Priority, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": true,
+     "detail": "145 tokens of 200"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

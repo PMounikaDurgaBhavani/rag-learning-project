@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-10-20T18:40:56+00:00",
-  "app_version": "7e44499",
+  "created_at": "2026-10-25T12:34:59+00:00",
+  "app_version": "76af145",
   "source": "week6/eval_cases.jsonl",
-  "source_sha": "4d76d0a69b8e6711",
+  "source_sha": "a1ecd4d5164a7cac",
   "selection_rule": "For each Week 5 mode M1..M5 in order: (1) the first case in week6/eval_cases.jsonl file order whose id is not one of judge v2's few-shot examples; (2) the first policy-backed case in file order not already chosen and not a few-shot example, or, if the mode has none, the next case in file order. Two cases per mode, ten in all. Expected answers are untouched.",
   "excluded_few_shot_ids": [
     "T02",

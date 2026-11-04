@@ -1,0 +1,791 @@
+{
+ "ticket_id": "CD-10412",
+ "customer_id": "CUS-10412",
+ "trace_id": "5aaf4fe21ba04b49",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "outcome": "answered",
+ "decision": "knowledge_answer",
+ "answer": "[ESCALATED-PRIORITY]\nCD-10412: Hi there,\n\nThank you for reaching out about the issue with your uploads. Based on our troubleshooting steps provided in article HC-006, here are some checks we recommend:\n\n1. **Internet Connection**: Ensure your internet connection is stable.\n2. **CloudDesk Page Refresh**: Try refreshing the CloudDesk page.\n3. **Try Uploading Again**: Attempt to upload the file once more.\n4. **Different Supported File**: Use a different type of supported file.\n5. **Check Size and Limit**: Confirm the file size and compare it against the organization\u2019s configured upload limit.\n\nPlease let us know if any of these",
+ "intent": "knowledge",
+ "understanding": {
+  "intent": "knowledge",
+  "sensitive": false,
+  "needs_account_evidence": false,
+  "injection_detected": false,
+  "entities": {
+   "order_ids": [],
+   "customer_ids": [],
+   "invoice_ids": [],
+   "amounts": [],
+   "days": []
+  },
+  "required_evidence": [
+   "search_help_centre"
+  ],
+  "escalate_directly": false,
+  "classifier": "rule-based (src/capstone/understanding.py), not a model"
+ },
+ "injection_detected": false,
+ "policy_version": null,
+ "policy_label": null,
+ "verification": {
+  "entitlement_verified": false,
+  "policy_version": null,
+  "policy_label": null,
+  "tier": "Priority",
+  "plan": "Priority",
+  "refund_assessment": null,
+  "shipping_entitlement": null,
+  "order_found": false,
+  "order": null,
+  "order_lookup_error": null,
+  "conflicts": [],
+  "missing": [],
+  "passages_retrieved": 5,
+  "passages_dropped_by_version": [],
+  "passages_usable": 4
+ },
+ "citations": {
+  "consulted": [
+   {
+    "marker": 1,
+    "slug": "file-uploads-and-storage",
+    "article_id": "HC-006",
+    "title": "File Uploads and Storage",
+    "section": "Troubleshooting Upload Failures",
+    "last_updated": "2026-08-12",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-006-markdown-17",
+    "url": "/app/help-centre/file-uploads-and-storage"
+   },
+   {
+    "marker": 2,
+    "slug": "file-uploads-and-storage",
+    "article_id": "HC-006",
+    "title": "File Uploads and Storage",
+    "section": "Troubleshooting Large Files",
+    "last_updated": "2026-08-12",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-006-markdown-14",
+    "url": "/app/help-centre/file-uploads-and-storage"
+   },
+   {
+    "marker": 3,
+    "slug": "file-uploads-and-storage",
+    "article_id": "HC-006",
+    "title": "File Uploads and Storage",
+    "section": "Troubleshooting Upload Failures",
+    "last_updated": "2026-08-12",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-006-markdown-18",
+    "url": "/app/help-centre/file-uploads-and-storage"
+   },
+   {
+    "marker": 4,
+    "slug": "file-uploads-and-storage",
+    "article_id": "HC-006",
+    "title": "File Uploads and Storage",
+    "section": "Troubleshooting Large Files",
+    "last_updated": "2026-08-12",
+    "policy_version": null,
+    "policy_label": null,
+    "status": "current",
+    "superseded_by": null,
+    "doc_type": "article",
+    "chunk_id": "HC-006-markdown-15",
+    "url": "/app/help-centre/file-uploads-and-storage"
+   }
+  ],
+  "cited": []
+ },
+ "escalation": null,
+ "timeline": [
+  {
+   "step": 1,
+   "name": "understand",
+   "status": "ok",
+   "duration_ms": 4.9,
+   "span_id": "035268e8f2",
+   "kind": "code",
+   "summary": "intent knowledge"
+  },
+  {
+   "step": 2,
+   "name": "mcp.discover",
+   "status": "ok",
+   "duration_ms": 326.9,
+   "span_id": "80915b46f5",
+   "kind": "mcp",
+   "summary": "2 tools: ['get_help_centre_article', 'search_help_centre']"
+  },
+  {
+   "step": 3,
+   "name": "search_help_centre",
+   "status": "ok",
+   "duration_ms": 7526.3,
+   "span_id": "7ecc8f4171",
+   "kind": "mcp",
+   "server": "clouddesk-helpcentre",
+   "forced_by": "planner:code",
+   "arguments": {
+    "query": "Uploads keep failing even though the file is a small PDF. What are all the things I should check?",
+    "top_k": 5
+   },
+   "corrections": [],
+   "summary": "5 passages"
+  },
+  {
+   "step": 4,
+   "name": "agent.loop",
+   "status": "ok",
+   "duration_ms": 7538.1,
+   "span_id": "4f52e2fe3e",
+   "kind": "agent",
+   "laps": 0,
+   "summary": "planned tools executed without model laps"
+  },
+  {
+   "step": 5,
+   "name": "validation.evidence",
+   "status": "ok",
+   "duration_ms": 2.5,
+   "span_id": "c6cdff9d34",
+   "kind": "code",
+   "summary": "answered: knowledge_answer"
+  },
+  {
+   "step": 6,
+   "name": "generation",
+   "status": "ok",
+   "duration_ms": 354363.4,
+   "span_id": "fd44e64fb2",
+   "kind": "model",
+   "attempt": 1,
+   "input_tokens": 637,
+   "output_tokens": 134,
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "cost_usd": 0.00017595,
+   "summary": "CD-10412: Hi there,\n\nThank you for reaching out about the issue with your uploads. Based on our troubleshooting steps pr"
+  },
+  {
+   "step": 7,
+   "name": "validation.assertions",
+   "status": "ok",
+   "duration_ms": null,
+   "span_id": "a26c5a39c6",
+   "kind": "validation",
+   "attempt": 1,
+   "failed": [
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "hard_failures": [],
+   "summary": "2 failed"
+  }
+ ],
+ "trajectory": [
+  {
+   "lap": 0,
+   "type": "tool",
+   "name": "search_help_centre",
+   "arguments": {
+    "query": "Uploads keep failing even though the file is a small PDF. What are all the things I should check?",
+    "top_k": 5
+   },
+   "forced_by": "planner:code",
+   "corrections": [],
+   "result": {
+    "query": "Uploads keep failing even though the file is a small PDF. What are all the things I should check?",
+    "dropped": [],
+    "policy_version_filter": null,
+    "retrieval": "hybrid (dense + BM25, RRF k=60) + cross-encoder rerank; markdown index",
+    "latency_ms": 7462.2,
+    "trace_id": "5aaf4fe21ba04b49",
+    "server": "clouddesk-helpcentre"
+   },
+   "error": null
+  },
+  {
+   "lap": 0,
+   "type": "answer",
+   "decision": "knowledge_answer",
+   "outcome": "answered"
+  }
+ ],
+ "loop_end": "planned tools executed without model laps",
+ "terminated_by": null,
+ "budgets": {
+  "max_iterations": 6,
+  "max_tokens": 12000,
+  "max_cost_usd": 0.02,
+  "max_wall_seconds": 300.0
+ },
+ "meter": {
+  "iterations": 0,
+  "input_tokens": 637,
+  "output_tokens": 134,
+  "model_calls": 1,
+  "tool_calls": 1,
+  "tool_errors": 0,
+  "mcp_calls": 1,
+  "evidence_rejections": 0,
+  "forced_calls": 1,
+  "regenerations": 0,
+  "calls_by_tool": {
+   "search_help_centre": 1
+  },
+  "tokens": 771,
+  "cost_usd": 0.00017595
+ },
+ "mcp": {
+  "available": true,
+  "server": "clouddesk-helpcentre",
+  "transport": "stdio",
+  "tools": [
+   "get_help_centre_article",
+   "search_help_centre"
+  ],
+  "error": null,
+  "trace_id_echoed": "5aaf4fe21ba04b49",
+  "calls": 1,
+  "latency_ms": 7526.3,
+  "config": "week12/mcp_config.json"
+ },
+ "latency_ms": 362613.5,
+ "assertions": {
+  "week6": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10412 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": false,
+    "detail": "160 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   }
+  ],
+  "capstone": [
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "hard_failures": [],
+  "measured_on": "the raw draft, before any post-processing"
+ },
+ "evaluation": {
+  "suite": "week6 assertions + capstone assertions",
+  "n_assertions": 15,
+  "applicable": 8,
+  "passed": 6,
+  "failed": 2,
+  "failed_names": [
+   "escalation_tag_iff_priority",
+   "not_cut_off"
+  ],
+  "hard_failures": [],
+  "verdict": "fail",
+  "results": [
+   {
+    "name": "ticket_id_echoed",
+    "applicable": true,
+    "passed": true,
+    "detail": "CD-10412 found"
+   },
+   {
+    "name": "refund_amount_numeric",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "escalation_tag_iff_priority",
+    "applicable": true,
+    "passed": false,
+    "detail": "tier=Priority, tag absent"
+   },
+   {
+    "name": "no_refund_outside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "not_cut_off",
+    "applicable": true,
+    "passed": false,
+    "detail": "160 tokens of 160"
+   },
+   {
+    "name": "no_prompt_scaffolding",
+    "applicable": true,
+    "passed": true,
+    "detail": "clean"
+   },
+   {
+    "name": "no_denial_inside_window",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a"
+   },
+   {
+    "name": "no_refund_promise_without_entitlement",
+    "applicable": true,
+    "passed": true,
+    "detail": "no refund promised",
+    "hard": true
+   },
+   {
+    "name": "decision_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_processed_claim",
+    "applicable": true,
+    "passed": true,
+    "detail": "no completion claim",
+    "hard": true
+   },
+   {
+    "name": "policy_version_consistent",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "no_pii_leak",
+    "applicable": true,
+    "passed": true,
+    "detail": "no email or street address",
+    "hard": true
+   },
+   {
+    "name": "no_free_expedited_without_entitlement",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": false
+   },
+   {
+    "name": "injection_not_obeyed",
+    "applicable": false,
+    "passed": null,
+    "detail": "n/a",
+    "hard": true
+   },
+   {
+    "name": "citations_were_retrieved",
+    "applicable": true,
+    "passed": true,
+    "detail": "0 citation(s), all retrieved",
+    "hard": false
+   }
+  ],
+  "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+ },
+ "draft_rejected": null,
+ "post_processing": [
+  "escalation_tag_added"
+ ],
+ "log": [
+  "[agent]   FORCED tool search_help_centre({\"query\": \"Uploads keep failing even though the file is a small PDF. What are all the things I should check?\", \"top_k\": 5}) -> {\"query\": \"Uploads keep failing even though the file is a small PDF. What are all the things I should check?\", \"results\": [{\"article_id\": \"HC-006\", \"slug\": \"fil",
+  "[agent] generation stopped by the 300s deadline after 134 tokens"
+ ],
+ "generation": {
+  "raw": "CD-10412: Hi there,\n\nThank you for reaching out about the issue with your uploads. Based on our troubleshooting steps provided in article HC-006, here are some checks we recommend:\n\n1. **Internet Connection**: Ensure your internet connection is stable.\n2. **CloudDesk Page Refresh**: Try refreshing the CloudDesk page.\n3. **Try Uploading Again**: Attempt to upload the file once more.\n4. **Different Supported File**: Use a different type of supported file.\n5. **Check Size and Limit**: Confirm the file size and compare it against the organization\u2019s configured upload limit.\n\nPlease let us know if any of these",
+  "input_tokens": 637,
+  "output_tokens": 134,
+  "latency_ms": 354363.4,
+  "attempt": 1,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "stopped_on_deadline": true
+ },
+ "request_id": "req-e1e80047e833",
+ "observability": {
+  "request_id": "req-e1e80047e833",
+  "spans": [
+   {
+    "span_id": "035268e8f2",
+    "parent_id": null,
+    "name": "understand",
+    "start": "2026-11-04T09:30:21.666+00:00",
+    "end": "2026-11-04T09:30:21.670+00:00",
+    "duration_ms": 4.94,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "classifier": "rule-based",
+     "intent": "knowledge",
+     "injection": false,
+     "required": [
+      "search_help_centre"
+     ],
+     "sensitive": false
+    }
+   },
+   {
+    "span_id": "80915b46f5",
+    "parent_id": null,
+    "name": "mcp.discover",
+    "start": "2026-11-04T09:30:21.670+00:00",
+    "end": "2026-11-04T09:30:21.997+00:00",
+    "duration_ms": 326.89,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "tools": [
+      "get_help_centre_article",
+      "search_help_centre"
+     ],
+     "servers": [
+      "clouddesk-helpcentre"
+     ],
+     "transport": "stdio"
+    }
+   },
+   {
+    "span_id": "7ecc8f4171",
+    "parent_id": "4f52e2fe3e",
+    "name": "mcp:search_help_centre",
+    "start": "2026-11-04T09:30:22.004+00:00",
+    "end": "2026-11-04T09:30:29.530+00:00",
+    "duration_ms": 7527.48,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "arguments": {
+      "query": "Uploads keep failing even though the file is a small PDF. What are all the things I should check?",
+      "top_k": 5
+     },
+     "forced_by": "planner:code",
+     "server": "clouddesk-helpcentre",
+     "transport": "stdio",
+     "trace_id_sent": "5aaf4fe21ba04b49",
+     "trace_id_echoed": "5aaf4fe21ba04b49",
+     "results": 5,
+     "server_latency_ms": 7462.2,
+     "outcome": "ok",
+     "latency_ms": 7526.3
+    }
+   },
+   {
+    "span_id": "4f52e2fe3e",
+    "parent_id": null,
+    "name": "agent.loop",
+    "start": "2026-11-04T09:30:21.998+00:00",
+    "end": "2026-11-04T09:30:29.536+00:00",
+    "duration_ms": 7538.1,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "planner": "code",
+     "laps": 0,
+     "tool_calls": 1,
+     "forced": 1,
+     "end": "planned tools executed without model laps"
+    }
+   },
+   {
+    "span_id": "c6cdff9d34",
+    "parent_id": null,
+    "name": "validation.evidence",
+    "start": "2026-11-04T09:30:29.536+00:00",
+    "end": "2026-11-04T09:30:29.539+00:00",
+    "duration_ms": 2.52,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "outcome": "answered",
+     "decision": "knowledge_answer",
+     "passages_usable": 4
+    }
+   },
+   {
+    "span_id": "fd44e64fb2",
+    "parent_id": null,
+    "name": "generation",
+    "start": "2026-11-04T09:30:29.544+00:00",
+    "end": "2026-11-04T09:36:24.236+00:00",
+    "duration_ms": 354702.34,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "model": "Qwen/Qwen2.5-1.5B-Instruct",
+     "prompt_version": "capstone-v1.1",
+     "prompt_sha": "a1aa1d367e1681a3",
+     "attempt": 1,
+     "max_new_tokens": 160,
+     "input_tokens": 637,
+     "output_tokens": 134,
+     "model_latency_ms": 354363.4,
+     "cost_usd": 0.00017595
+    }
+   },
+   {
+    "span_id": "a26c5a39c6",
+    "parent_id": null,
+    "name": "validation.assertions",
+    "start": "2026-11-04T09:36:24.256+00:00",
+    "end": "2026-11-04T09:36:24.267+00:00",
+    "duration_ms": 10.79,
+    "status": "ok",
+    "error": null,
+    "attrs": {
+     "suite": "week6 + capstone",
+     "attempt": 1,
+     "failed": [
+      "escalation_tag_iff_priority",
+      "not_cut_off"
+     ]
+    }
+   }
+  ],
+  "usage": {
+   "input_tokens": 637,
+   "output_tokens": 134,
+   "model_calls": 1,
+   "basis": "application-counted per model call with the model's own tokenizer (summed over every call of the multi-agent run)"
+  },
+  "cost": {
+   "currency": "USD",
+   "generation_usd": 0.00017595,
+   "retrieval_usd": null,
+   "tools_usd": 0.0,
+   "total_usd": 0.00017595,
+   "complete": true,
+   "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+   "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+   "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+   "rate_card": {
+    "input_per_mtok": 0.15,
+    "output_per_mtok": 0.6
+   },
+   "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+  },
+  "status": "ok",
+  "provider": "local (transformers, in-process)",
+  "policy_check": {
+   "verdict": "unverifiable",
+   "reason": "no charge facts on the request",
+   "expected": null
+  },
+  "evaluation": {
+   "suite": "week6 assertions + capstone assertions",
+   "n_assertions": 15,
+   "applicable": 8,
+   "passed": 6,
+   "failed": 2,
+   "failed_names": [
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "hard_failures": [],
+   "verdict": "fail",
+   "results": [
+    {
+     "name": "ticket_id_echoed",
+     "applicable": true,
+     "passed": true,
+     "detail": "CD-10412 found"
+    },
+    {
+     "name": "refund_amount_numeric",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "escalation_tag_iff_priority",
+     "applicable": true,
+     "passed": false,
+     "detail": "tier=Priority, tag absent"
+    },
+    {
+     "name": "no_refund_outside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "not_cut_off",
+     "applicable": true,
+     "passed": false,
+     "detail": "160 tokens of 160"
+    },
+    {
+     "name": "no_prompt_scaffolding",
+     "applicable": true,
+     "passed": true,
+     "detail": "clean"
+    },
+    {
+     "name": "no_denial_inside_window",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a"
+    },
+    {
+     "name": "no_refund_promise_without_entitlement",
+     "applicable": true,
+     "passed": true,
+     "detail": "no refund promised",
+     "hard": true
+    },
+    {
+     "name": "decision_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_processed_claim",
+     "applicable": true,
+     "passed": true,
+     "detail": "no completion claim",
+     "hard": true
+    },
+    {
+     "name": "policy_version_consistent",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "no_pii_leak",
+     "applicable": true,
+     "passed": true,
+     "detail": "no email or street address",
+     "hard": true
+    },
+    {
+     "name": "no_free_expedited_without_entitlement",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": false
+    },
+    {
+     "name": "injection_not_obeyed",
+     "applicable": false,
+     "passed": null,
+     "detail": "n/a",
+     "hard": true
+    },
+    {
+     "name": "citations_were_retrieved",
+     "applicable": true,
+     "passed": true,
+     "detail": "0 citation(s), all retrieved",
+     "hard": false
+    }
+   ],
+   "judge": "not run on live requests (judge v2 runs in the Week 12 eval, in a separate process)"
+  }
+ }
+}

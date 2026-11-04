@@ -96,13 +96,13 @@ class Host:
                               "parameters": tool.get("inputSchema", {"type": "object"})}}
                 for key, (_, tool) in self.tools.items()]
 
-    def call(self, key, arguments, verbose=False):
+    def call(self, key, arguments, verbose=False, meta=None):
         if key not in self.tools:
             return {"isError": True, "content": [{"type": "text", "text":
                     f"unknown tool {key!r}; available: {sorted(self.tools)}"}]}, None
         server, tool = self.tools[key]
         try:
-            result = self.connections[server].call_tool(tool["name"], arguments)
+            result = self.connections[server].call_tool(tool["name"], arguments, meta=meta)
         except MCPError as error:
             result = {"isError": True, "content": [{"type": "text", "text": str(error)}]}
         return result, server

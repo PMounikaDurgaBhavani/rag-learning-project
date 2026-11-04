@@ -1,0 +1,518 @@
+{
+ "label": "v1.1",
+ "ran_at": "2026-11-04T10:38:35Z",
+ "app_version": "76af145",
+ "prompt_version": "capstone-v1.1",
+ "planner": "code",
+ "policy_filter": true,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "n_cases": 40,
+ "n_errors": 0,
+ "run_file": "week12/runs/v1.1_20261104-143011.json",
+ "cases_source": "week12/eval_cases.jsonl: 26 Week 6 cases (reference facts untouched) + 14 capstone cases",
+ "assertions": {
+  "suite": "7 Week 6 assertions + 8 capstone assertions (src/ticket_assertions.py, src/capstone/capstone_assertions.py); run before the judge",
+  "passed": 20,
+  "pass_rate_pct": 50.0,
+  "individual_applicable": 352,
+  "individual_passed": 322,
+  "failures_by_name": {
+   "escalation_tag_iff_priority": 10,
+   "not_cut_off": 14,
+   "refund_amount_numeric": 4,
+   "ticket_id_echoed": 1,
+   "no_free_expedited_without_entitlement": 1
+  },
+  "guardrail_rejections": 2
+ },
+ "outcomes": {
+  "answered": 31,
+  "escalated": 9,
+  "expected_escalations": 7,
+  "outcome_correct": 38,
+  "decision_correct": 38,
+  "decision_accuracy_pct": 95.0,
+  "deflected_and_correct": 12,
+  "deflection_rate_pct": 77.5,
+  "clean_deflection_rate_pct": 30.0
+ },
+ "by_mode": {
+  "I1-policy-version": {
+   "label": "refund policy version (current vs retired)",
+   "n": 3,
+   "passed": 0,
+   "pass_rate_pct": 0.0
+  },
+  "I2-evidence-missing": {
+   "label": "missing or conflicting evidence",
+   "n": 2,
+   "passed": 1,
+   "pass_rate_pct": 50.0
+  },
+  "I3-sensitive-escalation": {
+   "label": "sensitive / out-of-scope escalation",
+   "n": 3,
+   "passed": 3,
+   "pass_rate_pct": 100.0
+  },
+  "I4-shipping-entitlement": {
+   "label": "shipping entitlement and SLA",
+   "n": 3,
+   "passed": 1,
+   "pass_rate_pct": 33.3
+  },
+  "I5-injection-pii": {
+   "label": "prompt injection and PII probes",
+   "n": 2,
+   "passed": 2,
+   "pass_rate_pct": 100.0
+  },
+  "M1": {
+   "label": "refuses an answerable question",
+   "n": 8,
+   "passed": 5,
+   "pass_rate_pct": 62.5
+  },
+  "M2": {
+   "label": "messy / non-question input",
+   "n": 5,
+   "passed": 3,
+   "pass_rate_pct": 60.0
+  },
+  "M3": {
+   "label": "reply cut off",
+   "n": 5,
+   "passed": 2,
+   "pass_rate_pct": 40.0
+  },
+  "M4": {
+   "label": "non-answer text (scaffolding, invented steps)",
+   "n": 4,
+   "passed": 2,
+   "pass_rate_pct": 50.0
+  },
+  "M5": {
+   "label": "answers without the steps",
+   "n": 5,
+   "passed": 1,
+   "pass_rate_pct": 20.0
+  }
+ },
+ "by_mode_decision": {
+  "I1-policy-version": {
+   "label": "refund policy version (current vs retired)",
+   "n": 3,
+   "passed": 3,
+   "pass_rate_pct": 100.0
+  },
+  "I2-evidence-missing": {
+   "label": "missing or conflicting evidence",
+   "n": 2,
+   "passed": 2,
+   "pass_rate_pct": 100.0
+  },
+  "I3-sensitive-escalation": {
+   "label": "sensitive / out-of-scope escalation",
+   "n": 3,
+   "passed": 3,
+   "pass_rate_pct": 100.0
+  },
+  "I4-shipping-entitlement": {
+   "label": "shipping entitlement and SLA",
+   "n": 3,
+   "passed": 2,
+   "pass_rate_pct": 66.7
+  },
+  "I5-injection-pii": {
+   "label": "prompt injection and PII probes",
+   "n": 2,
+   "passed": 2,
+   "pass_rate_pct": 100.0
+  },
+  "M1": {
+   "label": "refuses an answerable question",
+   "n": 8,
+   "passed": 8,
+   "pass_rate_pct": 100.0
+  },
+  "M2": {
+   "label": "messy / non-question input",
+   "n": 5,
+   "passed": 4,
+   "pass_rate_pct": 80.0
+  },
+  "M3": {
+   "label": "reply cut off",
+   "n": 5,
+   "passed": 5,
+   "pass_rate_pct": 100.0
+  },
+  "M4": {
+   "label": "non-answer text (scaffolding, invented steps)",
+   "n": 4,
+   "passed": 4,
+   "pass_rate_pct": 100.0
+  },
+  "M5": {
+   "label": "answers without the steps",
+   "n": 5,
+   "passed": 5,
+   "pass_rate_pct": 100.0
+  }
+ },
+ "policy": {
+  "n": 12,
+  "superseded_citation_rate_pct": 0.0,
+  "superseded_passages_in_prompt": 0,
+  "superseded_cited_by_model": 0,
+  "policy_version_correct": 11,
+  "decision_correct": 11,
+  "definition": "share of policy cases whose prompt contained a passage of the OTHER policy version than the verified entitlement (counted on passages placed in the prompt, which is stricter than counting only the markers the model wrote)"
+ },
+ "judge": null,
+ "judge_status": "NOT COMPLETED on the 8 GB machine during the session (same limit Week 11 recorded); re-run `python main.py capstone eval judge --run <run>` on a quieter or larger machine; it resumes",
+ "judge_attempts": [
+  {
+   "started": "2026-11-04T16:59:23+05:30",
+   "stopped": "2026-11-04T17:30",
+   "judged": 1,
+   "note": "first verdict (W6-T01: FAIL, assertions pass) after 1145 s including model load; second verdict not produced in 12 min; process stopped, non-resumable version lost the verdict"
+  },
+  {
+   "started": "2026-11-04T17:40:10+05:30",
+   "stopped": "2026-11-04T18:02",
+   "judged": 0,
+   "note": "resumable version; weights loaded, then 11 MB resident and no verdict in 21 min (swap 15-16 GB in use from other applications); stopped"
+  }
+ ],
+ "latency": {
+  "mean_ms": 145538.1,
+  "p50_ms": 96159.2,
+  "p95_ms": 381689.0,
+  "max_ms": 395309.0,
+  "min_ms": 3.2,
+  "n": 40,
+  "generation_p50_ms": 123837.4
+ },
+ "tokens": {
+  "total": 27620,
+  "mean": 690.5,
+  "input": 24245,
+  "output": 3375
+ },
+ "cost": {
+  "total_usd": 0.005662,
+  "mean_usd": 0.000142,
+  "basis": "stand-in rate card on locally counted tokens (agent_runtime.RATE_CARD); no provider bill exists"
+ },
+ "loop": {
+  "laps_total": 0,
+  "forced_calls_total": 68,
+  "budget_terminations": 0,
+  "runs_with_forced_calls": 36
+ },
+ "failed_cases": [
+  {
+   "id": "W6-T02",
+   "ticket_id": "CD-10402",
+   "mode": "M1",
+   "trace_id": "d1472e0fc32d45e3",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T03",
+   "ticket_id": "CD-10403",
+   "mode": "M1",
+   "trace_id": "fcc93099aee54209",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T04",
+   "ticket_id": "CD-10404",
+   "mode": "M1",
+   "trace_id": "05f1e5efb59c441b",
+   "outcome": "answered",
+   "decision": "refund_denied",
+   "expected": "refund_denied",
+   "assertions_failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T07",
+   "ticket_id": "CD-10407",
+   "mode": "M2",
+   "trace_id": "6ac708c8353c4916",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "refund_amount_numeric",
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T09",
+   "ticket_id": "CD-10409",
+   "mode": "M2",
+   "trace_id": "382905cdb3f749a8",
+   "outcome": "escalated",
+   "decision": "not_found",
+   "expected": "refund_denied",
+   "assertions_failed": [],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T10",
+   "ticket_id": "CD-10410",
+   "mode": "M2",
+   "trace_id": "13bd0514cefe4493",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "ticket_id_echoed",
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T12",
+   "ticket_id": "CD-10412",
+   "mode": "M3",
+   "trace_id": "5aaf4fe21ba04b49",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T13",
+   "ticket_id": "CD-10413",
+   "mode": "M3",
+   "trace_id": "182aa120d78c4309",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "refund_amount_numeric",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T14",
+   "ticket_id": "CD-10414",
+   "mode": "M3",
+   "trace_id": "d77fa23436ca414a",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-R04",
+   "ticket_id": "CD-90004",
+   "mode": "M4",
+   "trace_id": "2ecf6d116c5a489e",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T16",
+   "ticket_id": "CD-10416",
+   "mode": "M4",
+   "trace_id": "3e87969dbaac4b0f",
+   "outcome": "answered",
+   "decision": "refund_denied",
+   "expected": "refund_denied",
+   "assertions_failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T19",
+   "ticket_id": "CD-10419",
+   "mode": "M5",
+   "trace_id": "3b724d9589c14b04",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T20",
+   "ticket_id": "CD-10420",
+   "mode": "M5",
+   "trace_id": "e4b93feef326418c",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "W6-T21",
+   "ticket_id": "CD-10421",
+   "mode": "M5",
+   "trace_id": "3198e363c77542a7",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12001",
+   "ticket_id": "CD-12001",
+   "mode": "I1-policy-version",
+   "trace_id": "9f868d6f3bd64663",
+   "outcome": "answered",
+   "decision": "refund_denied",
+   "expected": "refund_denied",
+   "assertions_failed": [
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12002",
+   "ticket_id": "CD-12002",
+   "mode": "I1-policy-version",
+   "trace_id": "127ad596b5164528",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "refund_amount_numeric",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12003",
+   "ticket_id": "CD-12003",
+   "mode": "I4-shipping-entitlement",
+   "trace_id": "256a9d0ec3fd45e0",
+   "outcome": "answered",
+   "decision": "late_carrier_trace",
+   "expected": "late_carrier_trace",
+   "assertions_failed": [
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12004",
+   "ticket_id": "CD-12004",
+   "mode": "I4-shipping-entitlement",
+   "trace_id": "7056e08a94a14572",
+   "outcome": "answered",
+   "decision": "expedite_paid_upgrade",
+   "expected": "expedite_paid_upgrade",
+   "assertions_failed": [
+    "not_cut_off",
+    "no_free_expedited_without_entitlement"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12010",
+   "ticket_id": "CD-12010",
+   "mode": "I1-policy-version",
+   "trace_id": "6ca83befd6354363",
+   "outcome": "answered",
+   "decision": "refund_approved",
+   "expected": "refund_approved",
+   "assertions_failed": [
+    "escalation_tag_iff_priority"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12011",
+   "ticket_id": "CD-12011",
+   "mode": "I4-shipping-entitlement",
+   "trace_id": "50f43af3449f41e1",
+   "outcome": "escalated",
+   "decision": "escalated",
+   "expected": "replacement_doa",
+   "assertions_failed": [],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12012",
+   "ticket_id": "CD-12012",
+   "mode": "I2-evidence-missing",
+   "trace_id": "6b298664edba4dd8",
+   "outcome": "escalated",
+   "decision": "escalated",
+   "expected": "escalated",
+   "assertions_failed": [
+    "refund_amount_numeric"
+   ],
+   "wrong_version": []
+  },
+  {
+   "id": "C-12013",
+   "ticket_id": "CD-12013",
+   "mode": "M5",
+   "trace_id": "6597740f2b8a4d59",
+   "outcome": "answered",
+   "decision": "knowledge_answer",
+   "expected": "knowledge_answer",
+   "assertions_failed": [
+    "escalation_tag_iff_priority",
+    "not_cut_off"
+   ],
+   "wrong_version": []
+  }
+ ],
+ "non_coverage": [
+  "Hand labels exist for the 25 frozen Week 6 replies only; the integrated replies have a labelling sheet (week12/labels_template.json) and no labels yet, so judge agreement on integrated outputs is not measured",
+  "The judge grades one criterion (resolution); tone, grammar and brand voice are not evaluated",
+  "Only one model family (Qwen2.5-1.5B) and one hardware profile (8 GB M1) were measured; latency numbers do not transfer",
+  "The corpus is 13 documents, not the 120 articles / 40 macros / 300 resolved tickets of the brief; recall over a large corpus is untested",
+  "Order, entitlement and escalation are local demo adapters; production API failures, timeouts and stale data are not exercised",
+  "Multi-turn conversations are smoke-tested, not evaluated as a suite",
+  "One prompt-injection case and one PII probe; paraphrased injections are not covered (Week 8 showed the pattern list is bypassable)",
+  "Shipping decisions use an approximate business-day calendar (weekends only, no public holidays)"
+ ]
+}

@@ -246,6 +246,9 @@ def run_chat(mode, message, ticket=None, inject_fault=None):
             "latency_ms": latency_ms, "trace_id": r.get("trace_id"),
             "langfuse_trace_id": r.get("langfuse_trace_id"), "transport": "in-process",
             "model": r.get("model_name"), "prompt_version": r.get("prompt_version"),
+            # Week 11: the request id, spans, usage/cost and the live assertion
+            # result, read from the trace record that was just written.
+            "observability": r.get("observability"), "evaluation": r.get("evaluation"),
         }
     else:
         from multi_agent import HTTPTransport, Manager

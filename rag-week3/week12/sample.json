@@ -1,0 +1,20 @@
+{
+ "seed": 20261104,
+ "n": 10,
+ "population": 50,
+ "selection_rule": "random.Random(20261104).sample(sorted(ticket ids in data/capstone/seed/tickets.json), 10)",
+ "drawn_at": "2026-11-04T08:23:37Z",
+ "ticket_ids": [
+  "CD-90002",
+  "CD-7005",
+  "CD-10414",
+  "CD-10421",
+  "CD-12002",
+  "CD-12010",
+  "CD-7002",
+  "CD-10402",
+  "CD-10415",
+  "CD-12003"
+ ],
+ "note": "uncurated: the sample is drawn from every ticket in the demo inbox, not from a chosen subset"
+}

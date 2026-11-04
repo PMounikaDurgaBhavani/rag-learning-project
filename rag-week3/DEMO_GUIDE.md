@@ -1,4 +1,73 @@
-# CloudDesk RAG — Live Demo Guide, Weeks 3–9
+# Week 12 — Tier-1 Deflection Assistant: the 10-minute demo
+
+Start: `python main.py capstone up` → http://localhost:8000/app/ (the MCP help-centre server starts
+with it on port 8765). Numbers quoted below are read from the files named next to them; if a file is
+missing, the Evaluation screen says so instead of showing a number.
+
+> Timing: the first model request loads Qwen2.5-1.5B (~2 min on an 8 GB laptop). Run one ticket in
+> fast mode before the demo so the model is warm, or start with `--warm`.
+
+## Part 1 — Real run (3 min)
+
+1. **Dashboard** (`/app/dashboard`): read the tiles aloud: tickets, handled by AI, deflected,
+   escalated, deflection rate, simulated reopen rate (say "simulated"), AI response time, and the
+   human-escalation tile that says *n/a* because the demo queue has no human response data.
+2. **The uncurated sample**: `week12/sample.json` was drawn with the Week 5 rule
+   (`random.Random(20261104).sample(sorted ids, 10)`). Open the inbox and pick a ticket from that
+   list — e.g. **CD-12002** (current-terms customer who read about a 14-day window) or **CD-7002**.
+3. **Run AI analysis** in fast mode. While it runs, point at the processing steps. When it returns:
+   - *Order lookup*: order id, amount, charge date, days since charge, status (no street address).
+   - *Entitlement*: plan, tier, **policy version** (Current 30-Day, HC-008) and the refund assessment
+     made in code.
+   - *Citations*: click one — the help-centre article opens with its `last_updated` and status; the
+     retired policy shows a red RETIRED banner and never appears for this customer.
+   - *Tool execution*: each step with duration and "chosen by model / guard".
+4. **An escalated ticket**: open **CD-12006** (legal threat) or **CD-12008** (order that does not
+   exist) → Run → outcome *escalated*, the escalation reference and queue, and the hand-off text.
+   Show the escalation in the ticket's history.
+5. Approve the draft on the first ticket (edit a word first to show "Approve edited reply").
+
+## Part 2 — Failure analysis (3 min)
+
+1. **Traces** (`/app/traces`): open the trace of the ticket you just ran. Walk the spans:
+   `understand` → `mcp.discover` → `tool:lookup_order` → `tool:check_entitlement` →
+   `mcp:search_help_centre` (server, transport, *trace id echoed: identical*) → `validation.evidence`
+   → `generation` (tokens, cost) → `validation.assertions`. Scroll to the **MCP server-side log**
+   table: the same trace id written by the server process.
+2. **The real failing trace**: `week12/closed_loop.json` → `before.cases[*].trace_id` (the
+   capstone-v1.0 run with the policy filter off). Paste one id into the trace viewer: every passage in
+   the prompt is `HC-009 refund-policy-14-day-retired` for a current-terms customer. That is the
+   superseded-policy failure, captured before the fix.
+3. **The integration-created error mode**: `reports/error_taxonomy.md` row
+   `wrong_policy_version_in_prompt` (and `guard_forced_tool_call`, which only exists because the loop
+   now has a guard). Each row carries real trace ids.
+4. **Three known weaknesses**: `docs/wednesday_weaknesses.md` — latency on this hardware, the
+   judge's unvalidated agreement on integrated replies, and the drafter's loose formatting.
+
+## Part 3 — Numbers (2 min)
+
+Open **Evaluation & monitoring** (`/app/evaluation`):
+
+- Superseded-policy citation rate **before vs after**: 83.3% → 0.0% on the 12 policy cases (`week12/closed_loop.json`).
+- Sample size: 40 integrated cases (26 Week 6 + 14 capstone), `week12/eval_cases.jsonl`.
+- Assertion pass rate 20/40 (all-pass per case; 14 cut-off replies, 10 raw-draft tag misses) next to decision accuracy 38/40; pass rate by mode. Assertions ran before the judge.
+- Judge agreement: 76.0% with 25 blind hand labels (Week 6), below the 85% target. On the integrated
+  replies the judge did not complete on this 8 GB machine (two attempts, one verdict); the blind sheet
+  `week12/labels_template.json` is ready for hand labels and `eval judge` resumes elsewhere. Say this plainly.
+- "What the suite does not cover" — read two items.
+
+## Part 4 — Next steps (2 min)
+
+- The permanent regression tests: `tests/test_week12.py` → the four policy-version checks named in
+  `week12/closed_loop.json::regression_tests`; run `python tests/test_week12.py` live (no model, ~1 min).
+- Cost per deflected ticket: $0.097 (local compute) / $0.050 (API rate card) vs $3.73 human, from
+  `week12/cost_and_scaling.json`, with the assumptions listed.
+- Black Friday: 0.1 requests/s at peak × 145 s mean latency = 14.4 concurrent requests against a
+  serial ceiling of 24.7 requests/hour: the single model lock fails first (`reports/cost_and_scaling.md`).
+
+---
+
+# CloudDesk RAG — Live Demo Guide, Weeks 3–11
 
 One application, one browser tab, every week's evidence. This guide says how to
 start it, which screen to open, what to click, what to ask, what should appear,
@@ -430,6 +499,85 @@ hour on this machine.
 Open **Reports & demo**. This guide and every week's README render from the
 files, with the path shown, so a reviewer can open the same file.
 
+### Step 12 — Observability: trace, drill, RED → GREEN, cost, 10× (Week 11)
+
+Start the app as usual (`python main.py ui`, or `--warm` so the first ticket
+reply does not spend a minute loading the 1.5B model) and open **Observability**
+in the sidebar (`http://localhost:8000/#week11`). The header tiles count what is
+actually in the request index (`traces/observability.db`, rebuilt from
+`traces/traces.jsonl` at start). Measured values quoted below are the ones in
+`week11/drill.md`, `week11/cost_by_stage.md`, `week11/tenx.md` and
+`week11/test_results/`; the UI reads the same files and the same index.
+
+1. **Live chat** — choose *Ticket reply* and click the preset **Eligible refund
+   ticket (14 days, $120)**, then **Send**. The real drafter answers (the same
+   route the Agent Chatbot uses). Under the answer, *Request telemetry* is read
+   back from the record that was just written: request id, trace id, status,
+   total latency, model/provider, prompt version, tokens in/out with their
+   basis, estimated cost (labelled), retrieved context ids, the live Week 6
+   assertion result and the HC-008 policy check. Say: "none of this is in the
+   response; the card is `GET /api/week11/trace` for the id that came back."
+   Then choose *Chat answer* and ask `Can I get a refund for a charge made 45
+   days ago?` to show the 0.5B path with its grounding span.
+2. **View trace ↗** — the explorer opens on that trace: the timeline bars are
+   `retrieval → validation.distance_gate → generation → validation.assertions`
+   (or `validation.grounding` on the chat path), each with UTC start, duration,
+   status and attributes (context ids on retrieval, tokens on generation).
+   Below: input, output, and the full JSON record. Open any **older** record
+   (page back) to show the *Not recorded on this request* box: pre-Week 11
+   records have no request id and no spans, and the UI says so instead of
+   inventing them.
+3. **Trace explorer** — type `outside the eligibility window`, set *Search in*
+   to **output only**, Search. The matches are answers, not questions: the
+   complaint describes the answer. Filter *Policy check* = `contradicts` to see
+   every recorded answer that disagrees with HC-008 for its ticket, with the
+   prompt version each was produced under.
+4. **Support drill** — the complaint is already filled in: *"A customer said it
+   gave a wrong answer about refunds yesterday afternoon."* Leave the as-of date
+   on today (or set it to the day after a known incident) and press **Find
+   incident**. Read out: the measured time-to-find (`mm:ss` and ms, server
+   wall-clock), the window "yesterday 12:00–18:00 local" and whether it had to
+   widen, the slices table (time → topic in input OR output → classify each
+   answer against HC-008), and each match with the incorrect answer next to the
+   reference policy facts, the prompt version, context ids, and the fields that
+   made it discoverable. Matches are badged **recorded in normal use** or
+   **controlled incident**. If a window holds no incident the panel says so and
+   offers the two controlled incidents (real requests through the real drafter,
+   labelled fixtures).
+5. **Bonus drill** — switch *Procedure* to **2 · indexed** and press **Find
+   incident** again: same complaint, the `policy_verdict` column instead of the
+   text scan. The *Drill 1 vs drill 2* table shows both measured times and
+   names the field responsible.
+6. **Failure → fix** — left: the existing Week 6 suite and its pre-existing
+   failures (escalation tag, cut-off replies), reported separately. Right: the
+   new case **R05** (verbatim from controlled incident 1's trace) and the
+   assertion added before the fix, `no_denial_inside_window`. Below: the
+   **RED** card (full suite under `ticket-v1.2`: R05 and the eligible refund
+   cases fail the new assertion) and the **GREEN** card (full suite under
+   `ticket-v1.3`), each with its command, prompt sha, pass/fail counts, failing
+   cases, failures by assertion and the saved output. Press **Run evaluation
+   suite** (assertions only, ~1–2 minutes: the 25 labelled replies stay frozen,
+   R05 is drafted live with the current prompt) to produce a fresh result in
+   front of the reviewer; it is saved under `week11/test_results/` and read back.
+7. **Prompt & deployment** — the active prompt versions read from the code,
+   the versions as recorded on traces (first/last seen, contradictions per
+   version), the `ticket-v1.0 → v1.3` history, and the two-line canary /
+   rollback plan. Say plainly: tested locally, not deployed.
+8. **Cost & usage** — per-query cost (labelled *estimate*: tokens × the
+   stand-in rate card), tokens in/out, latency p50/p95/p99, the stage table
+   (retrieval **unmetered**, generation estimated, validation and tools code
+   only), the formula, and the breakdown by model, request type and prompt
+   version. Records without token usage are counted, not priced.
+9. **10× capacity** — current requests/day and peak hour, the same ×10, cost
+   ×10, latency percentiles, the serial throughput ceiling behind the server's
+   single model lock, which breaks first and the number behind it, the
+   assumptions, and the mitigation. If the window is thin the conclusion is
+   banded *conditional*.
+
+Terminal backup for every step: `python main.py week11 drill`,
+`python main.py week11 drill --procedure indexed`, `python main.py week11 eval`,
+`python main.py eval`, `python main.py week11 report`, `python tests/test_week11.py`.
+
 ---
 
 ## 5. Exact questions for the chat, and what to expect
@@ -468,6 +616,7 @@ python tests/test_pipeline.py          # loader, chunking, grounding, metrics, e
 python tests/test_week5_prediction.py  # prediction-experiment provenance, synthetic       (no model)
 python tests/test_weeks6_9.py          # Weeks 6–9 + the JSON API over a socket           (no model; starts the MCP servers)
 python tests/test_week10.py            # Week 10: manager, specialists, HTTP 500, API      (no model; starts the specialist worker)
+python tests/test_week11.py            # Week 11: spans, index, drill, cost/10x, API       (no model; temp trace dir)
 python tests/test_rag_live.py          # the real pipeline, traced to a temp dir          (0.5B model, ~1 min)
 ```
 
@@ -516,6 +665,9 @@ Run on 2026-10-11: all four pass — 30, 76, 87 and 22 checks, 0 failures,
 7. *MCP servers → Discovery* → **Run tools/list now** → 4 tools.
 8. Have `week7/race_summary.csv`, `week8/regression.csv`, `week9/risk_note.md` open in a terminal as backup.
 9. Decide in advance what you say about Week 6 and the Week 5 score: the honest state, not a number.
+10. Week 11: `python tests/test_week11.py` → All checks passed; open **Observability** once so the index is
+    warm; have `week11/drill.md` and `week11/test_results/` open as backup. Memory matters on an 8 GB
+    machine: close other model-backed work before pressing **Run evaluation suite** or planting an incident.
 
 ### Live-demo run order (short form)
 
@@ -523,4 +675,6 @@ Chat (answer → trap → ambiguous) → Golden set (Run evaluation) → Error
 analysis (prediction) → Judge validation (assertions run, protocol state) →
 Agent vs workflow (four numbers → budgets → live workflow → live 2-lap agent) →
 Trajectory eval (gap → mitigation → regression → rescore) → MCP servers
-(discovery live → zero diff → wire live → error → risk) → Reports.
+(discovery live → zero diff → wire live → error → risk) → Multi-agent
+benchmark (chat single → multi → fault) → Observability (live chat → trace →
+drill → bonus drill → RED/GREEN → prompt safety → cost → 10×) → Reports.

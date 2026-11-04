@@ -1,0 +1,511 @@
+{
+  "fixture_id": "duplicate-charge-denied",
+  "title": "Controlled incident 2 — duplicate charge at 40 days refused",
+  "planted_at": "2026-10-25T09:06:34.962+00:00",
+  "prompt_version_at_planting": "ticket-v1.2",
+  "ticket": {
+    "ticket_id": "CD-11902",
+    "tier": "Standard",
+    "message": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+    "charge_amount": 89.0,
+    "days_since_charge": 40,
+    "duplicate_charge": true,
+    "refund_requested": true
+  },
+  "expected": "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008).",
+  "trace_id": "4561826fb7084e8d",
+  "request_id": "req-a5cf1f7bda88",
+  "answer": "CD-11902: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your duplicate charge issue. According to our policy, duplicate charges are the only exceptions where a refund may be processed. Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.\n\nWe apologize for any inconvenience caused by this situation. However, based on our policy, we cannot process a refund for this charge due to its age.\n\nPlease note that approved refunds are typically returned to the original payment method within 5 to 10 business days. You may check your bank statements or contact your financial institution directly if you need further assistance.\n\nIf you have any questions about your billing or would like to discuss other options, please don't hesitate to",
+  "refused": false,
+  "policy_check": {
+    "verdict": "contradicts",
+    "expected": "eligible: full refund of the exact amount",
+    "reason": "denies a refund the policy grants: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+  },
+  "evaluation": {
+    "suite": "week6 assertions (src/ticket_assertions.py)",
+    "n_assertions": 7,
+    "applicable": 6,
+    "passed": 3,
+    "failed": 3,
+    "failed_names": [
+      "refund_amount_numeric",
+      "not_cut_off",
+      "no_denial_inside_window"
+    ],
+    "verdict": "fail",
+    "results": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-11902 found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": true,
+        "passed": false,
+        "detail": "expected 89.00; numbers in reply: [40.0, 5.0, 10.0]"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Standard, tag absent"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": true,
+        "passed": false,
+        "detail": "160 tokens of 160"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      },
+      {
+        "name": "no_denial_inside_window",
+        "applicable": true,
+        "passed": false,
+        "detail": "denies an eligible refund: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+      }
+    ],
+    "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+  },
+  "retrieved": [
+    "HC-008-markdown-5",
+    "HC-008-markdown-13",
+    "HC-008-markdown-6",
+    "HC-008-markdown-2",
+    "HC-008-markdown-3"
+  ],
+  "spans": [
+    {
+      "span_id": "40aef43019",
+      "parent_id": null,
+      "name": "retrieval",
+      "start": "2026-10-25T09:06:34.963+00:00",
+      "end": "2026-10-25T09:06:42.000+00:00",
+      "duration_ms": 7039.99,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "mode": "hybrid_rerank",
+        "strategy": "markdown",
+        "top_k": 5,
+        "n_chunks": 5,
+        "context_ids": [
+          "HC-008-markdown-5",
+          "HC-008-markdown-13",
+          "HC-008-markdown-6",
+          "HC-008-markdown-2",
+          "HC-008-markdown-3"
+        ]
+      }
+    },
+    {
+      "span_id": "5812d2054d",
+      "parent_id": null,
+      "name": "validation.distance_gate",
+      "start": "2026-10-25T09:06:42.013+00:00",
+      "end": "2026-10-25T09:06:42.017+00:00",
+      "duration_ms": 4.44,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "threshold": 0.75,
+        "mode": "hybrid_rerank",
+        "best_distance": 0.6397,
+        "outcome": "passed",
+        "lexical_anchors": [
+          "charged",
+          "days",
+          "invoice",
+          "same"
+        ]
+      }
+    },
+    {
+      "span_id": "c06acd6311",
+      "parent_id": null,
+      "name": "generation",
+      "start": "2026-10-25T09:06:42.018+00:00",
+      "end": "2026-10-25T09:08:58.627+00:00",
+      "duration_ms": 136613.93,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "provider": "local (transformers, in-process)",
+        "prompt_version": "ticket-v1.2",
+        "prompt_sha": "bc89f36500aaa9d5",
+        "model_loaded_during_span": false,
+        "max_new_tokens": 160,
+        "input_tokens": 696,
+        "output_tokens": 160,
+        "model_latency_ms": 136376.8
+      }
+    },
+    {
+      "span_id": "bdb63ab44c",
+      "parent_id": null,
+      "name": "validation.assertions",
+      "start": "2026-10-25T09:08:58.649+00:00",
+      "end": "2026-10-25T09:08:58.664+00:00",
+      "duration_ms": 15.85,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "suite": "week6 assertions",
+        "verdict": "fail",
+        "failed": [
+          "refund_amount_numeric",
+          "not_cut_off",
+          "no_denial_inside_window"
+        ],
+        "applicable": 6
+      }
+    }
+  ],
+  "wrong_as_expected": true,
+  "trace_record": {
+    "schema_version": 1,
+    "trace_id": "4561826fb7084e8d",
+    "ts": "2026-10-25T09:08:58.666+00:00",
+    "app_version": "76af145",
+    "source": "week11-incident",
+    "query": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+    "request": {
+      "retrieval_mode": "hybrid_rerank",
+      "strategy": "markdown",
+      "top_k": 5,
+      "threshold": 0.75,
+      "min_coverage": null,
+      "filter": null
+    },
+    "prompt": {
+      "version": "ticket-v1.2",
+      "sha": "bc89f36500aaa9d5",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a CloudDesk support agent. Write the reply that will be sent to the customer.\nUse the numbered sources for facts, steps and policy, and cite the source number in square brackets, e.g. [1].\nBegin the reply with the ticket ID, e.g. \"CD-10000: ...\".\nIf the support tier is Priority, put the tag [ESCALATED-PRIORITY] on the first line.\nIf the customer wants a refund, apply the refund policy in the sources and state the charge amount as a number.\nNever invent numbers, prices, limits or policies. If the sources do not cover something the customer asked, say so plainly.\nKeep the reply under 80 words."
+        },
+        {
+          "role": "user",
+          "content": "Sources:\n[1] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Duplicate Charges\nIf the same invoice was charged more than once, every duplicate charge is refunded in full, regardless of the 30-day window.\n\n[2] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Frequently Asked Questions\n### Can I get a refund after 30 days?\n\nNo. A charge older than 30 days is not eligible for a refund. Duplicate charges are the only exception.\n\n### How long does a refund take?\n\n[3] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Amount and Timing\nA refund is always for the exact amount that was charged. The reply to the customer must state that amount.\n\nApproved refunds are returned to the original payment method within 5 to 10 business days.\n\n[4] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Eligibility Window\nA subscription charge can be refunded in full only when the refund is requested within 30 days of the charge date.\n\n[5] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Eligibility Window\nA charge made more than 30 days before the refund request is not eligible for a refund. Support agents must not promise or process a refund for a charge outside the 30-day window.\n\nTicket (do not repeat these fields in the reply):\nTicket ID: CD-11902\nSupport tier: Standard\nCharge on account: $89.00, charged 40 days ago (a duplicate of an earlier charge on the same invoice)\nCustomer message: We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.\n\nWrite the reply to the customer now, starting with CD-11902."
+        }
+      ]
+    },
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B-Instruct",
+      "params": {
+        "max_new_tokens": 160,
+        "do_sample": false,
+        "return_full_text": false
+      }
+    },
+    "retrieval": [
+      {
+        "rank": 1,
+        "chunk_id": "HC-008-markdown-5",
+        "article_id": "HC-008",
+        "section": "Duplicate Charges",
+        "distance": 0.6397,
+        "bm25_score": null,
+        "rrf_score": 0.032787,
+        "rerank_score": 5.151305198669434,
+        "dense_rank": 1,
+        "bm25_rank": 1
+      },
+      {
+        "rank": 2,
+        "chunk_id": "HC-008-markdown-13",
+        "article_id": "HC-008",
+        "section": "Frequently Asked Questions",
+        "distance": 1.199,
+        "bm25_score": null,
+        "rrf_score": 0.031746,
+        "rerank_score": -2.542386531829834,
+        "dense_rank": 3,
+        "bm25_rank": 3
+      },
+      {
+        "rank": 3,
+        "chunk_id": "HC-008-markdown-6",
+        "article_id": "HC-008",
+        "section": "Refund Amount and Timing",
+        "distance": 1.2506,
+        "bm25_score": null,
+        "rrf_score": 0.029644,
+        "rerank_score": -3.3531785011291504,
+        "dense_rank": 6,
+        "bm25_rank": 9
+      },
+      {
+        "rank": 4,
+        "chunk_id": "HC-008-markdown-2",
+        "article_id": "HC-008",
+        "section": "Refund Eligibility Window",
+        "distance": 1.2287,
+        "bm25_score": null,
+        "rrf_score": 0.031514,
+        "rerank_score": -3.541321277618408,
+        "dense_rank": 5,
+        "bm25_rank": 2
+      },
+      {
+        "rank": 5,
+        "chunk_id": "HC-008-markdown-3",
+        "article_id": "HC-008",
+        "section": "Refund Eligibility Window",
+        "distance": 1.2163,
+        "bm25_score": null,
+        "rrf_score": 0.03125,
+        "rerank_score": -3.8179421424865723,
+        "dense_rank": 4,
+        "bm25_rank": 4
+      }
+    ],
+    "generation": {
+      "raw_output": "CD-11902: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your duplicate charge issue. According to our policy, duplicate charges are the only exceptions where a refund may be processed. Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.\n\nWe apologize for any inconvenience caused by this situation. However, based on our policy, we cannot process a refund for this charge due to its age.\n\nPlease note that approved refunds are typically returned to the original payment method within 5 to 10 business days. You may check your bank statements or contact your financial institution directly if you need further assistance.\n\nIf you have any questions about your billing or would like to discuss other options, please don't hesitate to",
+      "model_cited": [],
+      "output_tokens": 160,
+      "input_tokens": 696,
+      "max_new_tokens": 160,
+      "model_latency_ms": 136376.8
+    },
+    "outcome": {
+      "answer": "CD-11902: Customer Inquiry\n\nDear Customer,\n\nThank you for reaching out regarding your duplicate charge issue. According to our policy, duplicate charges are the only exceptions where a refund may be processed. Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.\n\nWe apologize for any inconvenience caused by this situation. However, based on our policy, we cannot process a refund for this charge due to its age.\n\nPlease note that approved refunds are typically returned to the original payment method within 5 to 10 business days. You may check your bank statements or contact your financial institution directly if you need further assistance.\n\nIf you have any questions about your billing or would like to discuss other options, please don't hesitate to",
+      "refused": false,
+      "refusal_reason": null,
+      "best_distance": 0.6397,
+      "gate_bypass": null,
+      "lexical_anchors": [
+        "charged",
+        "days",
+        "invoice",
+        "same"
+      ],
+      "sources": [],
+      "grounding_scores": []
+    },
+    "latency_ms": {
+      "total": 143678.2
+    },
+    "kind": "ticket_reply",
+    "ticket": {
+      "ticket_id": "CD-11902",
+      "tier": "Standard",
+      "message": "We were charged $89 twice on the same invoice 40 days ago. Please refund the duplicate.",
+      "charge_amount": 89.0,
+      "days_since_charge": 40,
+      "duplicate_charge": true,
+      "refund_requested": true
+    },
+    "tags": [
+      "week11",
+      "fixture",
+      "incident:duplicate-charge-denied"
+    ],
+    "observability_version": 1,
+    "provider": "local (transformers, in-process)",
+    "request_id": "req-a5cf1f7bda88",
+    "request_type": "ticket_reply",
+    "spans": [
+      {
+        "span_id": "40aef43019",
+        "parent_id": null,
+        "name": "retrieval",
+        "start": "2026-10-25T09:06:34.963+00:00",
+        "end": "2026-10-25T09:06:42.000+00:00",
+        "duration_ms": 7039.99,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "mode": "hybrid_rerank",
+          "strategy": "markdown",
+          "top_k": 5,
+          "n_chunks": 5,
+          "context_ids": [
+            "HC-008-markdown-5",
+            "HC-008-markdown-13",
+            "HC-008-markdown-6",
+            "HC-008-markdown-2",
+            "HC-008-markdown-3"
+          ]
+        }
+      },
+      {
+        "span_id": "5812d2054d",
+        "parent_id": null,
+        "name": "validation.distance_gate",
+        "start": "2026-10-25T09:06:42.013+00:00",
+        "end": "2026-10-25T09:06:42.017+00:00",
+        "duration_ms": 4.44,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "threshold": 0.75,
+          "mode": "hybrid_rerank",
+          "best_distance": 0.6397,
+          "outcome": "passed",
+          "lexical_anchors": [
+            "charged",
+            "days",
+            "invoice",
+            "same"
+          ]
+        }
+      },
+      {
+        "span_id": "c06acd6311",
+        "parent_id": null,
+        "name": "generation",
+        "start": "2026-10-25T09:06:42.018+00:00",
+        "end": "2026-10-25T09:08:58.627+00:00",
+        "duration_ms": 136613.93,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "provider": "local (transformers, in-process)",
+          "prompt_version": "ticket-v1.2",
+          "prompt_sha": "bc89f36500aaa9d5",
+          "model_loaded_during_span": false,
+          "max_new_tokens": 160,
+          "input_tokens": 696,
+          "output_tokens": 160,
+          "model_latency_ms": 136376.8
+        }
+      },
+      {
+        "span_id": "bdb63ab44c",
+        "parent_id": null,
+        "name": "validation.assertions",
+        "start": "2026-10-25T09:08:58.649+00:00",
+        "end": "2026-10-25T09:08:58.664+00:00",
+        "duration_ms": 15.85,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "suite": "week6 assertions",
+          "verdict": "fail",
+          "failed": [
+            "refund_amount_numeric",
+            "not_cut_off",
+            "no_denial_inside_window"
+          ],
+          "applicable": 6
+        }
+      }
+    ],
+    "retries": 0,
+    "errors": [],
+    "evaluation": {
+      "suite": "week6 assertions (src/ticket_assertions.py)",
+      "n_assertions": 7,
+      "applicable": 6,
+      "passed": 3,
+      "failed": 3,
+      "failed_names": [
+        "refund_amount_numeric",
+        "not_cut_off",
+        "no_denial_inside_window"
+      ],
+      "verdict": "fail",
+      "results": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-11902 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": false,
+          "detail": "expected 89.00; numbers in reply: [40.0, 5.0, 10.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": false,
+          "detail": "160 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": false,
+          "detail": "denies an eligible refund: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+        }
+      ],
+      "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+    },
+    "fixture": {
+      "id": "duplicate-charge-denied",
+      "title": "Controlled incident 2 — duplicate charge at 40 days refused",
+      "planted_at": "2026-10-25T09:06:34.962+00:00",
+      "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+      "expected": "A duplicate charge is refunded in full regardless of the 30-day window: eligible for $89.00 (HC-008)."
+    },
+    "http": {
+      "route": "week11.plant_incident",
+      "request_started_at": "2026-10-25T09:06:34.962+00:00"
+    },
+    "usage": {
+      "input_tokens": 696,
+      "output_tokens": 160,
+      "model_calls": 1,
+      "basis": "application-counted with the model's own tokenizer; no provider usage field exists for a local model"
+    },
+    "cost": {
+      "currency": "USD",
+      "generation_usd": 0.0002004,
+      "retrieval_usd": null,
+      "tools_usd": null,
+      "total_usd": 0.0002004,
+      "complete": true,
+      "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+      "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+      "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+    },
+    "status": "ok",
+    "policy_check": {
+      "verdict": "contradicts",
+      "expected": "eligible: full refund of the exact amount",
+      "reason": "denies a refund the policy grants: 'Since the charge was made 40 days ago, it falls outside the 30-day eligibility window for a refund.'"
+    }
+  }
+}

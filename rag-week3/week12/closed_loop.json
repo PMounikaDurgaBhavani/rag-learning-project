@@ -1,0 +1,889 @@
+{
+ "written_at": "2026-11-04T12:33:31Z",
+ "failure": "capstone-v1.0 searched the help centre without the account's policy version; for a current-terms customer whose message echoed the old 14-day window, every passage placed in the prompt came from the RETIRED policy (HC-009)",
+ "root_cause": "retrieval ranks by similarity; the retired article is the closest text to a question phrased in its own terms. The policy version is an account fact (entitlement), not a retrieval signal, so similarity alone cannot choose it",
+ "fix": "capstone-v1.1: once check_entitlement has verified the account, the agent passes policy_version to search_help_centre (the server drops the other version), a citation filter refuses passages of the other version, and a case with no passage of the right version escalates instead of guessing",
+ "regression_tests": [
+  "tests/test_week12.py: 'current customer, filter on: refund_approved, only HC-008 consulted, policy_version enforced on the MCP call'",
+  "tests/test_week12.py: 'filter off (v1.0): the retired policy can be cited and the guardrail catches the denial'",
+  "tests/test_week12.py: 'legacy customer: refund_denied under legacy-14-day, cites HC-009 only'",
+  "tests/test_week12.py: 'retired policy cited to a current account fails' (capstone_assertions.policy_version_consistent)"
+ ],
+ "before": {
+  "run": "week12/runs/v1.0-before_20261104-135632.json",
+  "label": "v1.0-before",
+  "ran_at": "2026-11-04T08:59:48Z",
+  "prompt_version": "capstone-v1.0 (policy filter off)",
+  "n": 12,
+  "superseded_citation_rate_pct": 83.3,
+  "superseded_passages_in_prompt": 10,
+  "superseded_cited_by_model": 0,
+  "policy_version_correct": 11,
+  "decision_correct": 11,
+  "definition": "share of policy cases whose prompt contained a passage of the OTHER policy version than the verified entitlement (counted on passages placed in the prompt, which is stricter than counting only the markers the model wrote)",
+  "cases": [
+   {
+    "id": "W6-T03",
+    "trace_id": "614be377162f496f",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": []
+   },
+   {
+    "id": "W6-T04",
+    "trace_id": "bbd93123c1764d4f",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-011",
+      null,
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-011",
+      null,
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-011",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   },
+   {
+    "id": "W6-T07",
+    "trace_id": "6b113994ef03457d",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   },
+   {
+    "id": "W6-T09",
+    "trace_id": "78f911db5de24870",
+    "policy_version": null,
+    "consulted": [],
+    "wrong_version_consulted": [],
+    "decision": "not_found",
+    "expected": "refund_denied",
+    "assertions_failed": []
+   },
+   {
+    "id": "W6-T13",
+    "trace_id": "b4be714ff8764435",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": []
+   },
+   {
+    "id": "W6-T16",
+    "trace_id": "41097b496f2d4cdb",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   },
+   {
+    "id": "W6-T21",
+    "trace_id": "765e3c73112a4398",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "W6-R05",
+    "trace_id": "1a04bcd5befd47c5",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "C-12001",
+    "trace_id": "da2afdd908214060",
+    "policy_version": "legacy-14-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-returns-current-30-day",
+     "refund-returns-current-30-day"
+    ],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "C-12002",
+    "trace_id": "bbdd1c8a2da54e4c",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "refund_amount_numeric"
+    ]
+   },
+   {
+    "id": "C-12005",
+    "trace_id": "35698d23c2864835",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-policy-14-day-retired",
+     "refund-policy-14-day-retired"
+    ],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": []
+   },
+   {
+    "id": "C-12010",
+    "trace_id": "7b6056faa5be458c",
+    "policy_version": "legacy-14-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [
+     "refund-returns-current-30-day",
+     "refund-returns-current-30-day"
+    ],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   }
+  ]
+ },
+ "after": {
+  "run": "week12/runs/v1.1_20261104-143011.json",
+  "label": "v1.1",
+  "ran_at": "2026-11-04T10:38:35Z",
+  "prompt_version": "capstone-v1.1",
+  "n": 12,
+  "superseded_citation_rate_pct": 0.0,
+  "superseded_passages_in_prompt": 0,
+  "superseded_cited_by_model": 0,
+  "policy_version_correct": 11,
+  "decision_correct": 11,
+  "definition": "share of policy cases whose prompt contained a passage of the OTHER policy version than the verified entitlement (counted on passages placed in the prompt, which is stricter than counting only the markers the model wrote)",
+  "cases": [
+   {
+    "id": "W6-T03",
+    "trace_id": "fcc93099aee54209",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "W6-T04",
+    "trace_id": "05f1e5efb59c441b",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-011",
+      null,
+      "current"
+     ],
+     [
+      "HC-011",
+      null,
+      "current"
+     ],
+     [
+      "HC-011",
+      null,
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   },
+   {
+    "id": "W6-T07",
+    "trace_id": "6ac708c8353c4916",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "refund_amount_numeric",
+     "escalation_tag_iff_priority",
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "W6-T09",
+    "trace_id": "382905cdb3f749a8",
+    "policy_version": null,
+    "consulted": [],
+    "wrong_version_consulted": [],
+    "decision": "not_found",
+    "expected": "refund_denied",
+    "assertions_failed": []
+   },
+   {
+    "id": "W6-T13",
+    "trace_id": "182aa120d78c4309",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "refund_amount_numeric",
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "W6-T16",
+    "trace_id": "3e87969dbaac4b0f",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   },
+   {
+    "id": "W6-T21",
+    "trace_id": "3198e363c77542a7",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "W6-R05",
+    "trace_id": "c1642c7bd16f430d",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": []
+   },
+   {
+    "id": "C-12001",
+    "trace_id": "9f868d6f3bd64663",
+    "policy_version": "legacy-14-day",
+    "consulted": [
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": [
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "C-12002",
+    "trace_id": "127ad596b5164528",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "refund_amount_numeric",
+     "not_cut_off"
+    ]
+   },
+   {
+    "id": "C-12005",
+    "trace_id": "5a6bb46f05d343c1",
+    "policy_version": "current-30-day",
+    "consulted": [
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "HC-008",
+      "current-30-day",
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_denied",
+    "expected": "refund_denied",
+    "assertions_failed": []
+   },
+   {
+    "id": "C-12010",
+    "trace_id": "6ca83befd6354363",
+    "policy_version": "legacy-14-day",
+    "consulted": [
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ],
+     [
+      "MACRO-001",
+      null,
+      "current"
+     ],
+     [
+      "HC-009",
+      "legacy-14-day",
+      "superseded"
+     ],
+     [
+      "MACRO-002",
+      null,
+      "current"
+     ]
+    ],
+    "wrong_version_consulted": [],
+    "decision": "refund_approved",
+    "expected": "refund_approved",
+    "assertions_failed": [
+     "escalation_tag_iff_priority"
+    ]
+   }
+  ]
+ }
+}

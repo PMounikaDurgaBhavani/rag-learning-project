@@ -3,6 +3,7 @@ import re
 import time
 
 import tracing
+import observability as obs
 
 from transformers import pipeline
 
@@ -281,6 +282,23 @@ def count_tokens(text):
         return None
 
 
+def count_prompt_tokens(messages):
+    """Prompt tokens on the exact rendered chat template (Week 11 usage field).
+
+    A local model reports no usage, so the count is made the same way the
+    model will read it: the template rendered, then tokenised. None if the
+    tokenizer cannot do it — counting must never block answering.
+    """
+    try:
+        tokenizer = get_pipeline().tokenizer
+        rendered = tokenizer.apply_chat_template(
+            messages, add_generation_prompt=True, tokenize=False
+        )
+        return len(tokenizer(rendered, add_special_tokens=False)["input_ids"])
+    except Exception:
+        return None
+
+
 def said_no_answer(answer):
     normalized = answer.lower().replace(" ", "_")
 
@@ -345,13 +363,20 @@ def _generate_answer(
         article_id=article_id
     )
 
-    chunks = retrieve_for_mode(
-        query,
-        top_k=top_k,
-        strategy=strategy,
-        where=where,
-        mode=retrieval_mode
-    )
+    # Week 11: each stage is a measured span on the request (observability).
+    with obs.span("retrieval", mode=retrieval_mode, strategy=strategy,
+                  top_k=top_k, filter=where) as retrieval_span:
+        chunks = retrieve_for_mode(
+            query,
+            top_k=top_k,
+            strategy=strategy,
+            where=where,
+            mode=retrieval_mode
+        )
+        retrieval_span.set(
+            n_chunks=len(chunks),
+            context_ids=[chunk["chunk_id"] for chunk in chunks],
+        )
 
     result = {
         "query": query,
@@ -402,67 +427,76 @@ def _generate_answer(
     # Gate 1: nothing similar enough was retrieved
     # --------------------------------------------------------
 
-    if not chunks:
-        result["answer"] = REFUSAL_MESSAGE
-        result["refused"] = True
-        result["refusal_reason"] = "no_chunks_retrieved"
-        return result
+    with obs.span("validation.distance_gate", threshold=threshold,
+                  mode=retrieval_mode) as gate:
 
-    # The gate is a dense-similarity gate. Under a fused ranking the
-    # first chunk is ordered by RRF or rerank score, so its own dense
-    # distance is not the closest one retrieved - take the minimum
-    # over every chunk that carries a distance at all.
-    distances = [
-        distance
-        for distance in (chunk_distance(chunk) for chunk in chunks)
-        if distance is not None
-    ]
-
-    best_distance = min(distances) if distances else None
-
-    result["best_distance"] = (
-        round(best_distance, 4)
-        if best_distance is not None
-        else None
-    )
-
-    if verbose:
-        print(
-            "  best distance: "
-            + (
-                f"{best_distance:.4f}"
-                if best_distance is not None
-                else "n/a (no dense score)"
-            )
-        )
-
-    # A lexical anchor overrides the distance gate, but only when a
-    # lexical retriever was actually used - the dense path keeps the
-    # Week 3 behaviour every recorded evaluation number depends on.
-    anchors = (
-        lexical_anchors(query, chunks, strategy)
-        if retrieval_mode != "dense"
-        else []
-    )
-
-    result["lexical_anchors"] = anchors
-
-    if best_distance is not None and best_distance > threshold:
-
-        if not anchors:
+        if not chunks:
             result["answer"] = REFUSAL_MESSAGE
             result["refused"] = True
-            result["refusal_reason"] = (
-                f"distance_gate ({best_distance:.4f} > {threshold})"
-            )
+            result["refusal_reason"] = "no_chunks_retrieved"
+            gate.set(outcome="refused: no_chunks_retrieved")
             return result
 
-        result["gate_bypass"] = (
-            f"lexical_anchor ({', '.join(anchors)})"
+        # The gate is a dense-similarity gate. Under a fused ranking the
+        # first chunk is ordered by RRF or rerank score, so its own dense
+        # distance is not the closest one retrieved - take the minimum
+        # over every chunk that carries a distance at all.
+        distances = [
+            distance
+            for distance in (chunk_distance(chunk) for chunk in chunks)
+            if distance is not None
+        ]
+
+        best_distance = min(distances) if distances else None
+
+        result["best_distance"] = (
+            round(best_distance, 4)
+            if best_distance is not None
+            else None
         )
+        gate.set(best_distance=result["best_distance"])
 
         if verbose:
-            print(f"  distance gate bypassed by: {anchors}")
+            print(
+                "  best distance: "
+                + (
+                    f"{best_distance:.4f}"
+                    if best_distance is not None
+                    else "n/a (no dense score)"
+                )
+            )
+
+        # A lexical anchor overrides the distance gate, but only when a
+        # lexical retriever was actually used - the dense path keeps the
+        # Week 3 behaviour every recorded evaluation number depends on.
+        anchors = (
+            lexical_anchors(query, chunks, strategy)
+            if retrieval_mode != "dense"
+            else []
+        )
+
+        result["lexical_anchors"] = anchors
+
+        if best_distance is not None and best_distance > threshold:
+
+            if not anchors:
+                result["answer"] = REFUSAL_MESSAGE
+                result["refused"] = True
+                result["refusal_reason"] = (
+                    f"distance_gate ({best_distance:.4f} > {threshold})"
+                )
+                gate.set(outcome="refused: " + result["refusal_reason"])
+                return result
+
+            result["gate_bypass"] = (
+                f"lexical_anchor ({', '.join(anchors)})"
+            )
+
+            if verbose:
+                print(f"  distance gate bypassed by: {anchors}")
+
+        gate.set(outcome="passed" + (f" ({result['gate_bypass']})" if result.get("gate_bypass") else ""),
+                 lexical_anchors=anchors or None)
 
     # --------------------------------------------------------
     # Generate
@@ -483,12 +517,25 @@ def _generate_answer(
     # is testing today's chunks, not the ones this answer actually saw.
     result["prompt_messages"] = messages
 
-    raw_answer = extract_text(
-        get_pipeline()(messages, **GENERATION_PARAMS)
-    )
-
-    result["raw_answer"] = raw_answer
-    result["output_tokens"] = count_tokens(raw_answer)
+    with obs.span("generation", model=MODEL_NAME, provider=obs.PROVIDER,
+                  prompt_version=PROMPT_VERSION, prompt_sha=prompt_sha(),
+                  model_loaded_during_span=_PIPELINE is None,
+                  max_new_tokens=GENERATION_PARAMS["max_new_tokens"]) as gen_span:
+        result["input_tokens"] = count_prompt_tokens(messages)
+        result["max_new_tokens"] = GENERATION_PARAMS["max_new_tokens"]
+        model_started = time.perf_counter()
+        raw_answer = extract_text(
+            get_pipeline()(messages, **GENERATION_PARAMS)
+        )
+        result["model_latency_ms"] = round(
+            (time.perf_counter() - model_started) * 1000.0, 1
+        )
+        result["raw_answer"] = raw_answer
+        result["output_tokens"] = count_tokens(raw_answer)
+        gen_span.set(input_tokens=result["input_tokens"],
+                     output_tokens=result["output_tokens"],
+                     model_latency_ms=result["model_latency_ms"],
+                     sentinel=said_no_answer(raw_answer))
 
     result["model_cited"] = [
         int(marker)
@@ -509,11 +556,16 @@ def _generate_answer(
     # Gate 3: attribute the answer to the chunks that support it
     # --------------------------------------------------------
 
-    supporting, all_scores = verify_answer(
-        raw_answer,
-        chunks,
-        min_coverage=min_coverage
-    )
+    with obs.span("validation.grounding", min_coverage=min_coverage) as grounding_span:
+        supporting, all_scores = verify_answer(
+            raw_answer,
+            chunks,
+            min_coverage=min_coverage
+        )
+        grounding_span.set(
+            supporting_ids=[chunk["chunk_id"] for chunk, _score in supporting],
+            outcome="grounded" if supporting else "refused: ungrounded_answer",
+        )
 
     result["grounding_scores"] = all_scores
 
@@ -549,25 +601,39 @@ def generate_answer(*args, source="cli", trace_id=None, session_id=None,
     records all of them without a write at each exit.
     """
 
-    started = time.perf_counter()
-    result = _generate_answer(*args, **kwargs)
-    elapsed_ms = round((time.perf_counter() - started) * 1000.0, 2)
+    query_text = args[0] if args else kwargs.get("query")
+    with obs.request("answer", source=source, input_text=query_text):
+        started = time.perf_counter()
+        result = _generate_answer(*args, **kwargs)
+        elapsed_ms = round((time.perf_counter() - started) * 1000.0, 2)
 
-    try:
-        trace = tracing.append(
-            tracing.build_trace(
-                result,
-                latency_ms={"total": elapsed_ms},
-                source=source,
-                trace_id=trace_id,
-            ),
-            session_id=session_id,
-            tags=tags,
-        )
-        result["trace_id"] = trace["trace_id"]
-        result["langfuse_trace_id"] = trace.get("langfuse_trace_id")
-    except Exception as error:            # answering must survive tracing
-        print(f"  [tracing] trace not recorded: {error}")
+        try:
+            trace = tracing.append(
+                tracing.build_trace(
+                    result,
+                    latency_ms={"total": elapsed_ms},
+                    source=source,
+                    trace_id=trace_id,
+                ),
+                session_id=session_id,
+                tags=tags,
+            )
+            result["trace_id"] = trace["trace_id"]
+            result["langfuse_trace_id"] = trace.get("langfuse_trace_id")
+            # Week 11: what the UI shows next to the answer, read from the
+            # record that was written — not recomputed for display.
+            result["observability"] = {
+                "request_id": trace.get("request_id"),
+                "spans": trace.get("spans"),
+                "usage": trace.get("usage"),
+                "cost": trace.get("cost"),
+                "status": trace.get("status"),
+                "provider": trace.get("provider"),
+                "policy_check": trace.get("policy_check"),
+                "evaluation": trace.get("evaluation"),
+            }
+        except Exception as error:            # answering must survive tracing
+            print(f"  [tracing] trace not recorded: {error}")
 
     # The literal prompt is large and already in the trace; keeping it on
     # the result would push it into every API response and console dump.

@@ -1,0 +1,504 @@
+{
+  "fixture_id": "refund-window-inverted",
+  "title": "Controlled incident 1 — eligible 14-day charge refused",
+  "planted_at": "2026-10-25T09:02:50.880+00:00",
+  "prompt_version_at_planting": "ticket-v1.2",
+  "ticket": {
+    "ticket_id": "CD-11901",
+    "tier": "Standard",
+    "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+    "charge_amount": 120.0,
+    "days_since_charge": 14,
+    "duplicate_charge": false,
+    "refund_requested": true
+  },
+  "expected": "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008).",
+  "trace_id": "2fa07536c6a74c3a",
+  "request_id": "req-9bf81bba51ab",
+  "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+  "refused": false,
+  "policy_check": {
+    "verdict": "contradicts",
+    "expected": "eligible: full refund of the exact amount",
+    "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+  },
+  "evaluation": {
+    "suite": "week6 assertions (src/ticket_assertions.py)",
+    "n_assertions": 7,
+    "applicable": 6,
+    "passed": 4,
+    "failed": 2,
+    "failed_names": [
+      "refund_amount_numeric",
+      "no_denial_inside_window"
+    ],
+    "verdict": "fail",
+    "results": [
+      {
+        "name": "ticket_id_echoed",
+        "applicable": true,
+        "passed": true,
+        "detail": "CD-11901 found"
+      },
+      {
+        "name": "refund_amount_numeric",
+        "applicable": true,
+        "passed": false,
+        "detail": "expected 120.00; numbers in reply: [30.0, 14.0]"
+      },
+      {
+        "name": "escalation_tag_iff_priority",
+        "applicable": true,
+        "passed": true,
+        "detail": "tier=Standard, tag absent"
+      },
+      {
+        "name": "no_refund_outside_window",
+        "applicable": false,
+        "passed": null,
+        "detail": "n/a"
+      },
+      {
+        "name": "not_cut_off",
+        "applicable": true,
+        "passed": true,
+        "detail": "142 tokens of 160"
+      },
+      {
+        "name": "no_prompt_scaffolding",
+        "applicable": true,
+        "passed": true,
+        "detail": "clean"
+      },
+      {
+        "name": "no_denial_inside_window",
+        "applicable": true,
+        "passed": false,
+        "detail": "denies an eligible refund: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+      }
+    ],
+    "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+  },
+  "retrieved": [
+    "HC-008-markdown-2",
+    "HC-008-markdown-3",
+    "HC-008-markdown-4",
+    "HC-008-markdown-5",
+    "HC-008-markdown-6"
+  ],
+  "spans": [
+    {
+      "span_id": "cf38869d11",
+      "parent_id": null,
+      "name": "retrieval",
+      "start": "2026-10-25T09:02:50.880+00:00",
+      "end": "2026-10-25T09:03:05.043+00:00",
+      "duration_ms": 14163.99,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "mode": "hybrid_rerank",
+        "strategy": "markdown",
+        "top_k": 5,
+        "n_chunks": 5,
+        "context_ids": [
+          "HC-008-markdown-2",
+          "HC-008-markdown-3",
+          "HC-008-markdown-4",
+          "HC-008-markdown-5",
+          "HC-008-markdown-6"
+        ]
+      }
+    },
+    {
+      "span_id": "f2b240aebc",
+      "parent_id": null,
+      "name": "validation.distance_gate",
+      "start": "2026-10-25T09:03:05.044+00:00",
+      "end": "2026-10-25T09:03:05.044+00:00",
+      "duration_ms": 0.18,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "threshold": 0.75,
+        "mode": "hybrid_rerank",
+        "best_distance": 1.0509,
+        "outcome": "passed (lexical_anchor (date., days, renewal))",
+        "lexical_anchors": [
+          "date.",
+          "days",
+          "renewal"
+        ]
+      }
+    },
+    {
+      "span_id": "3844275025",
+      "parent_id": null,
+      "name": "generation",
+      "start": "2026-10-25T09:03:05.044+00:00",
+      "end": "2026-10-25T09:06:33.760+00:00",
+      "duration_ms": 208724.37,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "provider": "local (transformers, in-process)",
+        "prompt_version": "ticket-v1.2",
+        "prompt_sha": "bc89f36500aaa9d5",
+        "model_loaded_during_span": true,
+        "max_new_tokens": 160,
+        "input_tokens": 680,
+        "output_tokens": 142,
+        "model_latency_ms": 176230.5
+      }
+    },
+    {
+      "span_id": "4857e22105",
+      "parent_id": null,
+      "name": "validation.assertions",
+      "start": "2026-10-25T09:06:33.787+00:00",
+      "end": "2026-10-25T09:06:33.811+00:00",
+      "duration_ms": 24.45,
+      "status": "ok",
+      "error": null,
+      "attrs": {
+        "suite": "week6 assertions",
+        "verdict": "fail",
+        "failed": [
+          "refund_amount_numeric",
+          "no_denial_inside_window"
+        ],
+        "applicable": 6
+      }
+    }
+  ],
+  "wrong_as_expected": true,
+  "trace_record": {
+    "schema_version": 1,
+    "trace_id": "2fa07536c6a74c3a",
+    "ts": "2026-10-25T09:06:33.812+00:00",
+    "app_version": "76af145",
+    "source": "week11-incident",
+    "query": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+    "request": {
+      "retrieval_mode": "hybrid_rerank",
+      "strategy": "markdown",
+      "top_k": 5,
+      "threshold": 0.75,
+      "min_coverage": null,
+      "filter": null
+    },
+    "prompt": {
+      "version": "ticket-v1.2",
+      "sha": "bc89f36500aaa9d5",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a CloudDesk support agent. Write the reply that will be sent to the customer.\nUse the numbered sources for facts, steps and policy, and cite the source number in square brackets, e.g. [1].\nBegin the reply with the ticket ID, e.g. \"CD-10000: ...\".\nIf the support tier is Priority, put the tag [ESCALATED-PRIORITY] on the first line.\nIf the customer wants a refund, apply the refund policy in the sources and state the charge amount as a number.\nNever invent numbers, prices, limits or policies. If the sources do not cover something the customer asked, say so plainly.\nKeep the reply under 80 words."
+        },
+        {
+          "role": "user",
+          "content": "Sources:\n[1] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Eligibility Window\nA subscription charge can be refunded in full only when the refund is requested within 30 days of the charge date.\n\n[2] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Eligibility Window\nA charge made more than 30 days before the refund request is not eligible for a refund. Support agents must not promise or process a refund for a charge outside the 30-day window.\n\n[3] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Eligibility Window\nWhen a charge is outside the refund window, the customer can turn off automatic renewal from Organization Settings > Billing so that the next charge does not occur.\n\n[4] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Duplicate Charges\nIf the same invoice was charged more than once, every duplicate charge is refunded in full, regardless of the 30-day window.\n\n[5] (article HC-008, file article_08_refunds_escalation.md, updated 2026-09-15)\nRefunds, Support Tiers and Escalation - Refund Amount and Timing\nA refund is always for the exact amount that was charged. The reply to the customer must state that amount.\n\nApproved refunds are returned to the original payment method within 5 to 10 business days.\n\nTicket (do not repeat these fields in the reply):\nTicket ID: CD-11901\nSupport tier: Standard\nCharge on account: $120.00, charged 14 days ago\nCustomer message: I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.\n\nWrite the reply to the customer now, starting with CD-11901."
+        }
+      ]
+    },
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B-Instruct",
+      "params": {
+        "max_new_tokens": 160,
+        "do_sample": false,
+        "return_full_text": false
+      }
+    },
+    "retrieval": [
+      {
+        "rank": 1,
+        "chunk_id": "HC-008-markdown-2",
+        "article_id": "HC-008",
+        "section": "Refund Eligibility Window",
+        "distance": 1.0637,
+        "bm25_score": null,
+        "rrf_score": 0.032522,
+        "rerank_score": -3.1727821826934814,
+        "dense_rank": 2,
+        "bm25_rank": 1
+      },
+      {
+        "rank": 2,
+        "chunk_id": "HC-008-markdown-3",
+        "article_id": "HC-008",
+        "section": "Refund Eligibility Window",
+        "distance": 1.0509,
+        "bm25_score": null,
+        "rrf_score": 0.032522,
+        "rerank_score": -3.3125720024108887,
+        "dense_rank": 1,
+        "bm25_rank": 2
+      },
+      {
+        "rank": 3,
+        "chunk_id": "HC-008-markdown-4",
+        "article_id": "HC-008",
+        "section": "Refund Eligibility Window",
+        "distance": 1.2118,
+        "bm25_score": null,
+        "rrf_score": 0.030303,
+        "rerank_score": -3.523467540740967,
+        "dense_rank": 6,
+        "bm25_rank": 6
+      },
+      {
+        "rank": 4,
+        "chunk_id": "HC-008-markdown-5",
+        "article_id": "HC-008",
+        "section": "Duplicate Charges",
+        "distance": 1.1421,
+        "bm25_score": null,
+        "rrf_score": 0.031258,
+        "rerank_score": -4.356705665588379,
+        "dense_rank": 3,
+        "bm25_rank": 5
+      },
+      {
+        "rank": 5,
+        "chunk_id": "HC-008-markdown-6",
+        "article_id": "HC-008",
+        "section": "Refund Amount and Timing",
+        "distance": 1.2136,
+        "bm25_score": null,
+        "rrf_score": 0.029851,
+        "rerank_score": -4.489935874938965,
+        "dense_rank": 7,
+        "bm25_rank": 7
+      }
+    ],
+    "generation": {
+      "raw_output": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+      "model_cited": [],
+      "output_tokens": 142,
+      "input_tokens": 680,
+      "max_new_tokens": 160,
+      "model_latency_ms": 176230.5
+    },
+    "outcome": {
+      "answer": "CD-11901: Hi there,\n\nThank you for reaching out about your refund request. Based on our policy, charges made more than 30 days prior to the refund request are not eligible for a refund. Since your charge was made 14 days ago, this transaction falls outside the 30-day window.\n\nHowever, if you have turned off automatic renewal through Organization Settings > Billing, the next charge should not occur, preventing any further charges. To ensure no additional charges, please confirm that you've disabled automatic renewal.\n\nIn case you need assistance turning off automatic renewal, feel free to reach out again. We'll guide you through the process.\n\nBest regards,\nCloudDesk Support Team",
+      "refused": false,
+      "refusal_reason": null,
+      "best_distance": 1.0509,
+      "gate_bypass": "lexical_anchor (date., days, renewal)",
+      "lexical_anchors": [
+        "date.",
+        "days",
+        "renewal"
+      ],
+      "sources": [],
+      "grounding_scores": []
+    },
+    "latency_ms": {
+      "total": 222904.52
+    },
+    "kind": "ticket_reply",
+    "ticket": {
+      "ticket_id": "CD-11901",
+      "tier": "Standard",
+      "message": "I was charged $120 for the Team plan 14 days ago but we cancelled before the renewal date. Please refund it.",
+      "charge_amount": 120.0,
+      "days_since_charge": 14,
+      "duplicate_charge": false,
+      "refund_requested": true
+    },
+    "tags": [
+      "week11",
+      "fixture",
+      "incident:refund-window-inverted"
+    ],
+    "observability_version": 1,
+    "provider": "local (transformers, in-process)",
+    "request_id": "req-9bf81bba51ab",
+    "request_type": "ticket_reply",
+    "spans": [
+      {
+        "span_id": "cf38869d11",
+        "parent_id": null,
+        "name": "retrieval",
+        "start": "2026-10-25T09:02:50.880+00:00",
+        "end": "2026-10-25T09:03:05.043+00:00",
+        "duration_ms": 14163.99,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "mode": "hybrid_rerank",
+          "strategy": "markdown",
+          "top_k": 5,
+          "n_chunks": 5,
+          "context_ids": [
+            "HC-008-markdown-2",
+            "HC-008-markdown-3",
+            "HC-008-markdown-4",
+            "HC-008-markdown-5",
+            "HC-008-markdown-6"
+          ]
+        }
+      },
+      {
+        "span_id": "f2b240aebc",
+        "parent_id": null,
+        "name": "validation.distance_gate",
+        "start": "2026-10-25T09:03:05.044+00:00",
+        "end": "2026-10-25T09:03:05.044+00:00",
+        "duration_ms": 0.18,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "threshold": 0.75,
+          "mode": "hybrid_rerank",
+          "best_distance": 1.0509,
+          "outcome": "passed (lexical_anchor (date., days, renewal))",
+          "lexical_anchors": [
+            "date.",
+            "days",
+            "renewal"
+          ]
+        }
+      },
+      {
+        "span_id": "3844275025",
+        "parent_id": null,
+        "name": "generation",
+        "start": "2026-10-25T09:03:05.044+00:00",
+        "end": "2026-10-25T09:06:33.760+00:00",
+        "duration_ms": 208724.37,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "model": "Qwen/Qwen2.5-1.5B-Instruct",
+          "provider": "local (transformers, in-process)",
+          "prompt_version": "ticket-v1.2",
+          "prompt_sha": "bc89f36500aaa9d5",
+          "model_loaded_during_span": true,
+          "max_new_tokens": 160,
+          "input_tokens": 680,
+          "output_tokens": 142,
+          "model_latency_ms": 176230.5
+        }
+      },
+      {
+        "span_id": "4857e22105",
+        "parent_id": null,
+        "name": "validation.assertions",
+        "start": "2026-10-25T09:06:33.787+00:00",
+        "end": "2026-10-25T09:06:33.811+00:00",
+        "duration_ms": 24.45,
+        "status": "ok",
+        "error": null,
+        "attrs": {
+          "suite": "week6 assertions",
+          "verdict": "fail",
+          "failed": [
+            "refund_amount_numeric",
+            "no_denial_inside_window"
+          ],
+          "applicable": 6
+        }
+      }
+    ],
+    "retries": 0,
+    "errors": [],
+    "evaluation": {
+      "suite": "week6 assertions (src/ticket_assertions.py)",
+      "n_assertions": 7,
+      "applicable": 6,
+      "passed": 4,
+      "failed": 2,
+      "failed_names": [
+        "refund_amount_numeric",
+        "no_denial_inside_window"
+      ],
+      "verdict": "fail",
+      "results": [
+        {
+          "name": "ticket_id_echoed",
+          "applicable": true,
+          "passed": true,
+          "detail": "CD-11901 found"
+        },
+        {
+          "name": "refund_amount_numeric",
+          "applicable": true,
+          "passed": false,
+          "detail": "expected 120.00; numbers in reply: [30.0, 14.0]"
+        },
+        {
+          "name": "escalation_tag_iff_priority",
+          "applicable": true,
+          "passed": true,
+          "detail": "tier=Standard, tag absent"
+        },
+        {
+          "name": "no_refund_outside_window",
+          "applicable": false,
+          "passed": null,
+          "detail": "n/a"
+        },
+        {
+          "name": "not_cut_off",
+          "applicable": true,
+          "passed": true,
+          "detail": "142 tokens of 160"
+        },
+        {
+          "name": "no_prompt_scaffolding",
+          "applicable": true,
+          "passed": true,
+          "detail": "clean"
+        },
+        {
+          "name": "no_denial_inside_window",
+          "applicable": true,
+          "passed": false,
+          "detail": "denies an eligible refund: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+        }
+      ],
+      "judge": "not run on live requests (the Week 6 judge runs only under the gated protocol)"
+    },
+    "fixture": {
+      "id": "refund-window-inverted",
+      "title": "Controlled incident 1 — eligible 14-day charge refused",
+      "planted_at": "2026-10-25T09:02:50.880+00:00",
+      "note": "controlled test incident: a real request through the real drafter, labelled so it is never mistaken for customer traffic",
+      "expected": "14 days is inside the 30-day window: eligible for a full refund of $120.00 (HC-008)."
+    },
+    "http": {
+      "route": "week11.plant_incident",
+      "request_started_at": "2026-10-25T09:02:50.880+00:00"
+    },
+    "usage": {
+      "input_tokens": 680,
+      "output_tokens": 142,
+      "model_calls": 1,
+      "basis": "application-counted with the model's own tokenizer; no provider usage field exists for a local model"
+    },
+    "cost": {
+      "currency": "USD",
+      "generation_usd": 0.0001872,
+      "retrieval_usd": null,
+      "tools_usd": null,
+      "total_usd": 0.0001872,
+      "complete": true,
+      "basis": "estimate: locally counted tokens x stand-in rate card (USD 0.15 per M input, 0.60 per M output; GPT-4o-mini class). The model runs in-process, so no provider charge exists.",
+      "retrieval_basis": "not separately metered: embedding, pgvector, BM25 and the cross-encoder run locally; measured as time only",
+      "tools_basis": "local function calls (policy lookup, MCP tools); no per-call charge",
+      "rate_card": {
+        "input_per_mtok": 0.15,
+        "output_per_mtok": 0.6
+      },
+      "formula": "total = input_tokens x 0.15/1e6 + output_tokens x 0.60/1e6; retrieval and tools add 0 (unmetered)"
+    },
+    "status": "ok",
+    "policy_check": {
+      "verdict": "contradicts",
+      "expected": "eligible: full refund of the exact amount",
+      "reason": "denies a refund the policy grants: 'Since your charge was made 14 days ago, this transaction falls outside the 30-day window.'"
+    }
+  }
+}

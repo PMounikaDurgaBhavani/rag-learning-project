@@ -59,6 +59,40 @@ SCAFFOLDING = re.compile(
     re.I | re.M,
 )
 
+# Week 11. The mirror image of REFUND_PROMISE: a sentence that refuses THIS
+# customer's refund. Found by the support drill — the drafter told 12-, 5- and
+# 29-day-old charges that they "fall outside" the 30-day window (frozen replies
+# T03, T13, T21; hand-labelled FAIL), and no assertion caught it because the
+# six above only check that an amount appears and that nothing is promised
+# outside the window. A policy sentence in general ("charges older than 30
+# days are not eligible") is not a denial; the sentence has to be about this
+# case, so CASE_SPECIFIC must match too.
+REFUND_DENIAL = re.compile(
+    r"\b(not|isn't|is not|aren't|are not|no longer)\s+(eligible|entitled|qualif\w+)\b|"
+    r"\b(cannot|can't|can not|unable to|won't|will not|not able to)\s+(\w+\s+){0,3}"
+    r"(refund\w*|process\w*\s+(a|the|your)\s+(full\s+)?refund|provide\s+(a|the|your)\s+(full\s+)?refund|"
+    r"issue\s+(a|the|your)\s+(full\s+)?refund|offer\s+(a|the|your)\s+(full\s+)?refund)|"
+    r"\b(falls?|fell|is|was|lies|sits)\s+outside\s+(of\s+)?(the\s+)?"
+    r"(\d+-day\s+|refund\s+|eligib\w+\s+|standard\s+|normal\s+)*(window|period|timeframe|time frame|criteria)|"
+    r"\bno refund\b|\bnot be refunded\b|\bineligible\b|\bdoes not (meet|qualify)\b",
+    re.I,
+)
+CASE_SPECIFIC = re.compile(
+    r"\b(your|this)\s+(charge|case|payment|request|refund|transaction|situation|instance|subscription|invoice)\b|"
+    r"\bin (your|this) case\b|\bfor your (specific )?(case|situation)\b|\bsince (the|your|it)\b|"
+    r"\btherefore\b|\bunfortunately\b|\bat this time\b|\bwe cannot\b|\bwe are unable\b|\bwe can't\b",
+    re.I,
+)
+
+
+def refund_denial_sentence(text):
+    """The first sentence that denies this customer's refund, or None."""
+    for sentence in re.split(r"(?<=[.!?])\s+|\n+", text or ""):
+        if REFUND_DENIAL.search(sentence) and CASE_SPECIFIC.search(sentence):
+            return sentence.strip()
+    return None
+
+
 # Re-tokenising decoded text can come out a token or two short of what was
 # generated, so a reply within this margin of the limit counts as cut off.
 TOKEN_LIMIT_MARGIN = 3
@@ -120,8 +154,32 @@ def no_refund_outside_window(case, reply):
 
     return True, (
         f"no refund promised ({ticket['days_since_charge']} days "
-        f"> {REFUND_WINDOW_DAYS})"
+        f"> {ticket.get('refund_window_days') or REFUND_WINDOW_DAYS})"
     )
+
+
+def no_denial_inside_window(case, reply):
+    """Week 11: a charge inside the window (or a duplicate) must not be refused.
+
+    Applies to the same tickets as refund_amount_numeric. Added after the
+    Week 11 support drill, before the fix; see week11/drill.md.
+    """
+    ticket = case["ticket"]
+    if (
+        not ticket.get("refund_requested")
+        or ticket.get("charge_amount") is None
+        or not refund_eligible(ticket)
+    ):
+        return None
+    if reply.get("refused"):
+        return None                      # a routed hand-off states no policy
+
+    sentence = refund_denial_sentence(reply["text"])
+    if sentence:
+        return False, f"denies an eligible refund: {sentence[:120]!r}"
+    why = "duplicate charge" if ticket.get("duplicate_charge") else (
+        f"{ticket['days_since_charge']} days <= {ticket.get('refund_window_days') or REFUND_WINDOW_DAYS}")
+    return True, f"no denial ({why})"
 
 
 def not_cut_off(case, reply):
@@ -147,6 +205,8 @@ ASSERTIONS = [
     ("no_refund_outside_window", no_refund_outside_window, "4. Refund window"),
     ("not_cut_off", not_cut_off, "5. Complete"),
     ("no_prompt_scaffolding", no_prompt_scaffolding, "6. Clean"),
+    # Week 11: the other half of criterion 4, found missing by the support drill.
+    ("no_denial_inside_window", no_denial_inside_window, "4. Refund window (eligible side)"),
 ]
 
 
