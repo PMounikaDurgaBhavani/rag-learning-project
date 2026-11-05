@@ -1,0 +1,433 @@
+{
+  "mode": "multi",
+  "ticket": {
+    "ticket_id": "CD-10421",
+    "tier": "Standard",
+    "message": "I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+    "charge_amount": 30.0,
+    "days_since_charge": 29,
+    "duplicate_charge": false,
+    "refund_requested": true
+  },
+  "answer": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. According to our policy, charges made more than 30 days ago are not eligible for a refund. In your case, since the charge was made 29 days ago, it is not eligible for a full refund.\n\nHowever, we understand that you were mistakenly charged $30. As a result of duplicating the charge, all duplicates are refunded in full. Therefore, you have already received a full refund for the duplicate charge.\n\nFor future reference, please ensure that invoices are reviewed carefully to avoid such mistakes. We apologize for any inconvenience caused.\n\nBest regards,\n[Your Name]  \nCloudDesk Support Team",
+  "refused": false,
+  "refusal_reason": null,
+  "not_found": false,
+  "degraded": false,
+  "task_status": "COMPLETED",
+  "errors": [],
+  "retries": 0,
+  "citations": [],
+  "retrieved": [
+    {
+      "rank": 1,
+      "chunk_id": "HC-008-markdown-13",
+      "article_id": "HC-008",
+      "section": "Frequently Asked Questions",
+      "distance": 0.9222514030119209
+    },
+    {
+      "rank": 2,
+      "chunk_id": "HC-008-markdown-3",
+      "article_id": "HC-008",
+      "section": "Refund Eligibility Window",
+      "distance": 1.018251303121637
+    },
+    {
+      "rank": 3,
+      "chunk_id": "HC-008-markdown-5",
+      "article_id": "HC-008",
+      "section": "Duplicate Charges",
+      "distance": 0.980475304183335
+    },
+    {
+      "rank": 4,
+      "chunk_id": "HC-008-markdown-2",
+      "article_id": "HC-008",
+      "section": "Refund Eligibility Window",
+      "distance": 1.0731208455182222
+    },
+    {
+      "rank": 5,
+      "chunk_id": "MACRO-002-markdown-4",
+      "article_id": "MACRO-002",
+      "section": "Macro: Refund not eligible (outside window)",
+      "distance": 0.873411047682795
+    }
+  ],
+  "best_distance": 0.873411047682795,
+  "lexical_anchors": [
+    "charged",
+    "get",
+    "refunded"
+  ],
+  "gate_bypass": null,
+  "tasks": [
+    {
+      "id": "task-79c9a2e71a",
+      "parent_id": null,
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "manager",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-11-05T09:46:31.660+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-11-05T09:46:31.664+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-11-05T09:46:31.664+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-11-05T09:57:57.028+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-10421\nSupport tier: Standard\nCharge on account: $30.00, charged 29 days ago\nCustomer message: I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+      "output": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. According to our policy, charges made more than 30 days ago are not eligible for a refund. In your case, since the charge was made 29 days ago, it is not eligible f\u2026",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-11-05T09:46:31.664+00:00",
+      "ended_at": "2026-11-05T09:57:57.028+00:00",
+      "latency_ms": 685383.2,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens": 0,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-87571070da",
+      "parent_id": "task-79c9a2e71a",
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "triage",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-11-05T09:46:31.673+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-11-05T09:46:31.673+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-11-05T09:46:31.673+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-11-05T09:49:17.023+00:00"
+        }
+      ],
+      "input": "Ticket ID: CD-10421\nSupport tier: Standard\nCharge on account: $30.00, charged 29 days ago\nCustomer message: I was charged $30 by mistake 29 days ago. What should I do to get it refunded?",
+      "output": "[\"ticket_specialist\", \"knowledge_specialist\"]",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-11-05T09:46:31.674+00:00",
+      "ended_at": "2026-11-05T09:49:17.023+00:00",
+      "latency_ms": 165355.2,
+      "model_calls": 1,
+      "input_tokens": 198,
+      "output_tokens": 39,
+      "tokens": 237,
+      "tool_calls": 0
+    },
+    {
+      "id": "task-ce4c21eb71",
+      "parent_id": "task-79c9a2e71a",
+      "agent": "ticket_specialist",
+      "role": "Ticket / support specialist",
+      "kind": "specialist",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-11-05T09:49:17.027+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-11-05T09:49:17.027+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-11-05T09:49:17.028+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-11-05T09:51:32.097+00:00"
+        }
+      ],
+      "input": "{\"ticket_id\": \"CD-10421\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\"}",
+      "output": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the \u2026",
+      "error": null,
+      "attempts": 1,
+      "transport": "in-process",
+      "started_at": "2026-11-05T09:49:17.028+00:00",
+      "ended_at": "2026-11-05T09:51:32.097+00:00",
+      "latency_ms": 135074.0,
+      "model_calls": 1,
+      "input_tokens": 453,
+      "output_tokens": 98,
+      "tokens": 551,
+      "tool_calls": 1
+    },
+    {
+      "id": "task-faef58b1f9",
+      "parent_id": "task-79c9a2e71a",
+      "agent": "knowledge_specialist",
+      "role": "Knowledge / RAG specialist",
+      "kind": "specialist",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-11-05T09:51:32.101+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-11-05T09:51:32.101+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-11-05T09:51:32.101+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-11-05T09:52:52.741+00:00"
+        }
+      ],
+      "input": "{\"ticket_id\": \"CD-10421\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\"}",
+      "output": "To get your $30 charge refunded:\n\n1. **Check Eligibility**: The charge was made more than 30 days ago, so it is not eligible for a refund according to our policy.\n\n2. **Duplicate Charge Policy**: Since the charge was duplicated, all duplica\u2026",
+      "error": null,
+      "attempts": 1,
+      "transport": "in-process",
+      "started_at": "2026-11-05T09:51:32.101+00:00",
+      "ended_at": "2026-11-05T09:52:52.742+00:00",
+      "latency_ms": 80643.8,
+      "model_calls": 1,
+      "input_tokens": 546,
+      "output_tokens": 132,
+      "tokens": 678,
+      "tool_calls": 1
+    },
+    {
+      "id": "task-11cdf008c5",
+      "parent_id": "task-79c9a2e71a",
+      "agent": "manager",
+      "role": "Manager / orchestrator",
+      "kind": "synthesis",
+      "status": "COMPLETED",
+      "transitions": [
+        {
+          "state": "CREATED",
+          "at": "2026-11-05T09:52:52.746+00:00"
+        },
+        {
+          "state": "ASSIGNED",
+          "at": "2026-11-05T09:52:52.747+00:00"
+        },
+        {
+          "state": "RUNNING",
+          "at": "2026-11-05T09:52:52.747+00:00"
+        },
+        {
+          "state": "COMPLETED",
+          "at": "2026-11-05T09:57:57.021+00:00"
+        }
+      ],
+      "input": "{\"sources\": [\"HC-008-markdown-13\", \"HC-008-markdown-3\", \"HC-008-markdown-5\", \"HC-008-markdown-2\", \"MACRO-002-markdown-4\"], \"findings\": [\"[ticket specialist] The policy determination below was made from the account records and is authoritati\u2026",
+      "output": "CD-10421\n\nDear Customer,\n\nThank you for reaching out regarding your charge. According to our policy, charges made more than 30 days ago are not eligible for a refund. In your case, since the charge was made 29 days ago, it is not eligible f\u2026",
+      "error": null,
+      "attempts": 0,
+      "transport": null,
+      "started_at": "2026-11-05T09:52:52.747+00:00",
+      "ended_at": "2026-11-05T09:57:57.023+00:00",
+      "latency_ms": 304282.5,
+      "model_calls": 1,
+      "input_tokens": 1070,
+      "output_tokens": 143,
+      "tokens": 1213,
+      "tool_calls": 0
+    }
+  ],
+  "handoffs": [
+    {
+      "id": "handoff-db5e521d81",
+      "at": "2026-11-05T09:49:17.027+00:00",
+      "direction": "dispatch",
+      "from_task": "task-79c9a2e71a",
+      "from_agent": "manager",
+      "to_task": "task-ce4c21eb71",
+      "to_agent": "ticket_specialist",
+      "summary": "{\"ticket\": {\"ticket_id\": \"CD-10421\", \"tier\": \"Standard\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\", \"charge_amount\": 30.0, \"days_since_charge\": 29, \"duplicate_charge\": false, \"refund_request\u2026",
+      "status": "sent",
+      "input_tokens": null,
+      "output_tokens": null,
+      "context_chars": 251
+    },
+    {
+      "id": "handoff-9b4a7fabb9",
+      "at": "2026-11-05T09:51:32.099+00:00",
+      "direction": "return",
+      "from_task": "task-ce4c21eb71",
+      "from_agent": "ticket_specialist",
+      "to_task": "task-79c9a2e71a",
+      "to_agent": "manager",
+      "summary": "{\"findings\": \"**Known Facts:**  \\n- The charge was made 29 days ago.  \\n- It falls within the 30-day eligibility window for refunds.  \\n\\n**Determination:**  \\n- Eligible for a full refund of $30.00.  \\n\\n**Required Actions:**  \\n- Process \u2026",
+      "status": "completed",
+      "input_tokens": 453,
+      "output_tokens": 98,
+      "context_chars": 484
+    },
+    {
+      "id": "handoff-1fdc41ae1f",
+      "at": "2026-11-05T09:51:32.101+00:00",
+      "direction": "dispatch",
+      "from_task": "task-79c9a2e71a",
+      "from_agent": "manager",
+      "to_task": "task-faef58b1f9",
+      "to_agent": "knowledge_specialist",
+      "summary": "{\"ticket\": {\"ticket_id\": \"CD-10421\", \"tier\": \"Standard\", \"message\": \"I was charged $30 by mistake 29 days ago. What should I do to get it refunded?\", \"charge_amount\": 30.0, \"days_since_charge\": 29, \"duplicate_charge\": false, \"refund_request\u2026",
+      "status": "sent",
+      "input_tokens": null,
+      "output_tokens": null,
+      "context_chars": 251
+    },
+    {
+      "id": "handoff-25e6f0f22d",
+      "at": "2026-11-05T09:52:52.744+00:00",
+      "direction": "return",
+      "from_task": "task-faef58b1f9",
+      "from_agent": "knowledge_specialist",
+      "to_task": "task-79c9a2e71a",
+      "to_agent": "manager",
+      "summary": "{\"findings\": \"To get your $30 charge refunded:\\n\\n1. **Check Eligibility**: The charge was made more than 30 days ago, so it is not eligible for a refund according to our policy.\\n\\n2. **Duplicate Charge Policy**: Since the charge was dupli\u2026",
+      "status": "completed",
+      "input_tokens": 546,
+      "output_tokens": 132,
+      "context_chars": 782
+    }
+  ],
+  "routing": {
+    "triage_raw": "{\n  \"ticket_specialist\": true,\n  \"knowledge_specialist\": true,\n  \"reason\": \"The customer asked about a charge that occurred in the past and requested a refund.\"\n}",
+    "triage_parsed": {
+      "ticket_specialist": true,
+      "knowledge_specialist": true,
+      "reason": "The customer asked about a charge that occurred in the past and requested a refund."
+    },
+    "decided_by": {
+      "knowledge_specialist": "policy: always consulted",
+      "ticket_specialist": "rule: charge or refund request on the account"
+    },
+    "dispatch": [
+      "ticket_specialist",
+      "knowledge_specialist"
+    ]
+  },
+  "specialists": {
+    "ticket_specialist": {
+      "specialist": "ticket_specialist",
+      "facts": {
+        "ticket_id": "CD-10421",
+        "tier": "Standard",
+        "escalation_required": false,
+        "escalation_tag": "[ESCALATED-PRIORITY]",
+        "refund_requested": true,
+        "charge_amount": 30.0,
+        "days_since_charge": 29,
+        "duplicate_charge": false,
+        "refund_window_days": 30,
+        "eligible": true,
+        "determination": "Charged 29 days ago, within the 30-day window: eligible for a full refund of $30.00.",
+        "missing": []
+      },
+      "findings": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the determined eligibility.  \n- Inform the customer that they are entitled to a full refund of $30.00.  \n- Ensure the refund is processed promptly.",
+      "model_cited": [],
+      "calls": [
+        {
+          "text": "**Known Facts:**  \n- The charge was made 29 days ago.  \n- It falls within the 30-day eligibility window for refunds.  \n\n**Determination:**  \n- Eligible for a full refund of $30.00.  \n\n**Required Actions:**  \n- Process the refund as per the determined eligibility.  \n- Inform the customer that they are entitled to a full refund of $30.00.  \n- Ensure the refund is processed promptly.",
+          "input_tokens": 453,
+          "output_tokens": 98,
+          "latency_ms": 127133.2,
+          "max_new_tokens": 160
+        }
+      ],
+      "tool_calls": 1,
+      "chunk_ids": [
+        "HC-008-markdown-5",
+        "HC-008-markdown-3",
+        "HC-008-markdown-2"
+      ]
+    },
+    "knowledge_specialist": {
+      "specialist": "knowledge_specialist",
+      "best_distance": 0.873411047682795,
+      "lexical_anchors": [
+        "charged",
+        "get",
+        "refunded"
+      ],
+      "evidence": true,
+      "gate_reason": null,
+      "findings": "To get your $30 charge refunded:\n\n1. **Check Eligibility**: The charge was made more than 30 days ago, so it is not eligible for a refund according to our policy.\n\n2. **Duplicate Charge Policy**: Since the charge was duplicated, all duplicates are refunded in full.\n\n3. **Subscription Charges**: Subscription charges can only be fully refunded if the refund request is made within 30 days of the charge date.\n\nGiven these points, you cannot receive a full refund due to the duplication of the charge. However, any additional charges incurred from the original transaction would still be subject to the standard 30-day eligibility period.",
+      "model_cited": [],
+      "not_covered": [],
+      "calls": [
+        {
+          "text": "To get your $30 charge refunded:\n\n1. **Check Eligibility**: The charge was made more than 30 days ago, so it is not eligible for a refund according to our policy.\n\n2. **Duplicate Charge Policy**: Since the charge was duplicated, all duplicates are refunded in full.\n\n3. **Subscription Charges**: Subscription charges can only be fully refunded if the refund request is made within 30 days of the charge date.\n\nGiven these points, you cannot receive a full refund due to the duplication of the charge. However, any additional charges incurred from the original transaction would still be subject to the standard 30-day eligibility period.",
+          "input_tokens": 546,
+          "output_tokens": 132,
+          "latency_ms": 73622.0,
+          "max_new_tokens": 160
+        }
+      ],
+      "tool_calls": 1,
+      "findings_cite_sources": false,
+      "chunk_ids": [
+        "HC-008-markdown-13",
+        "HC-008-markdown-3",
+        "HC-008-markdown-5",
+        "HC-008-markdown-2",
+        "MACRO-002-markdown-4"
+      ]
+    }
+  },
+  "resynthesis": [],
+  "meter": {
+    "model_calls": 4,
+    "input_tokens": 2267,
+    "output_tokens": 412,
+    "tokens": 2679,
+    "cost_usd": 0.00058725,
+    "rate_card": {
+      "input_per_mtok": 0.15,
+      "output_per_mtok": 0.6
+    },
+    "handoffs": 4,
+    "specialist_calls": 2,
+    "tool_calls": 2,
+    "resynthesis": 0,
+    "base_context_tokens": 60,
+    "context_resend_multiplier": 37.78,
+    "errors": 0,
+    "retries": 0
+  },
+  "latency_ms": 685390.9,
+  "trace_id": "1f7ec129ff114859",
+  "langfuse_trace_id": "fdf7068be6e0896bdd9c310a5ac016a7",
+  "transport": "in-process",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "prompt_version": "week10-multi-v1.1",
+  "fault": null,
+  "ran_at": "2026-11-05T09:57:57+00:00",
+  "cold_start": false
+}

@@ -77,3 +77,22 @@ above). The author ran a scripted end-to-end walkthrough through the real server
 (HTTP MCP discovery, inbox analysis of CD-12002, two chat turns, trace with the server-side log line,
 approval); it found two more defects, fixed as seams #26 and #27. A human click-through of the five
 screens remains pending.
+
+**Later the same evening the user's own click-through found a third defect** in the chatbot: after an
+injection/refund turn, "what is react" and "what is your name" were answered as `refund_denied` under the
+30-day policy for ORD-5002 (conv `d04e921e8c`). Root cause: the seam #27 fix inherited the thread's account
+intent for every weak-intent turn and always carried earlier order ids. Fixed as seam #28 (capstone-v1.2):
+context is inherited only by a turn that refers back to the thread, identity/greeting/unsupported turns get a
+template reply with no tool or model call, and the ORD-12002 → "Where is it now?" follow-up is a regression
+test. The recorded evaluation runs (v1.1) are unchanged; they did not contain multi-turn cases, so this
+defect was outside their coverage — a gap the reopen simulation (single follow-up turn, same issue) did not
+close either.
+
+**2026-11-05, a fourth defect from the user's click-through:** "what i have to do, when i gave wrong password"
+was escalated as not found (best distance 0.846) although HC-002 answers it; the retriever had ranked HC-002
+first and the gate rejected the informal wording. Fixed as seam #29 with a bounded, intent-aware query
+expansion on a second pass only, under a stricter gate; the global threshold and the recorded runs are unchanged.
+
+**Same day, follow-up report:** with HC-002 retrieved, the draft led with the password-manager aside and was
+cut at 160 tokens before the recovery steps. Fixed as seam #30 (capstone-v1.3): sections consolidated in the
+article's order, split sections rejoined, answer-first plain-text drafting. Token limit and gate unchanged.
